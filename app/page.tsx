@@ -8,6 +8,7 @@ type Recommendation = {
   basedOnDate: string;
   dan: number;
   pool7: string;
+  group3: string;
 };
 
 type HistoryRow = {
@@ -20,8 +21,10 @@ type HistoryRow = {
   danHit: boolean;
   pool7Hit: boolean;
   pool7Group3Covered: boolean;
+  group3Hit: boolean;
   danMissStreak: number;
   pool7MissStreak: number;
+  group3MissStreak: number;
   phase: "backfit" | "locked";
 };
 
@@ -42,6 +45,8 @@ type ApiPayload = {
     backfitPool7: Metric;
     lockedDan: Metric;
     lockedPool7: Metric;
+    backfitGroup3: Metric;
+    lockedGroup3: Metric;
   };
   formulaVersion: string;
   lockDate: string;
@@ -56,17 +61,9 @@ function HitBadge({ hit }: { hit: boolean }) {
 }
 
 function PoolBadge({ row }: { row: HistoryRow }) {
-  if (row.shape === "组三") {
+  if (row.pool7Group3Covered) {
     return (
-      <span
-        className={
-          row.pool7Group3Covered
-            ? "hit-badge group3 is-covered"
-            : "hit-badge group3"
-        }
-      >
-        {row.pool7Group3Covered ? "组三覆盖" : "组三未覆"}
-      </span>
+      <span className="hit-badge group3 is-covered">组三覆盖</span>
     );
   }
   return <HitBadge hit={row.pool7Hit} />;
@@ -162,7 +159,7 @@ export default function Home() {
       <header className="topbar">
         <div>
           <p className="eyebrow">福彩3D · 私人研究台</p>
-          <h1>今日双核参考</h1>
+          <h1>今日三项参考</h1>
         </div>
         <button
           className="refresh-button"
@@ -191,7 +188,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>V2组合评分第4名</small>
+            <small>V4三年筛选评分第4名</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -201,6 +198,13 @@ export default function Home() {
               ))}
             </div>
             <small>组六判中奖，组三覆盖另标</small>
+          </article>
+          <article className="group3-panel">
+            <div>
+              <p>组三形态</p>
+              <strong>{data.recommendation.group3}</strong>
+            </div>
+            <small>每天记录，开奖号为组三即命中</small>
           </article>
         </div>
 
@@ -217,7 +221,7 @@ export default function Home() {
           </div>
           <span className="lock-chip">LOCKED</span>
         </div>
-        <div className="metrics-grid">
+        <div className="metrics-grid three-metrics">
           <MetricCard
             label="独胆实测"
             metric={data.metrics.lockedDan}
@@ -228,9 +232,14 @@ export default function Home() {
             metric={data.metrics.lockedPool7}
             pending={lockedPending}
           />
+          <MetricCard
+            label="组三实测"
+            metric={data.metrics.lockedGroup3}
+            pending={lockedPending}
+          />
         </div>
         <p className="section-note">
-          新开奖自动进入这里。独胆连续未中超过7期，就直接标记未达目标；7码不设硬门槛。
+          新开奖自动进入这里。独胆和组三都按命中率、最长连续未中统计；7码不设硬门槛。
         </p>
       </section>
 
@@ -238,19 +247,20 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">历史回溯区</p>
-            <h2>2025年7月28日—2026年7月27日核查</h2>
+            <h2>2023年7月28日—2026年7月27日核查</h2>
           </div>
           <span className="backfit-chip">回溯拟合</span>
         </div>
-        <div className="metrics-grid">
+        <div className="metrics-grid three-metrics">
           <MetricCard label="独胆回溯" metric={data.metrics.backfitDan} />
           <MetricCard label="7码回溯" metric={data.metrics.backfitPool7} />
+          <MetricCard label="组三回溯" metric={data.metrics.backfitGroup3} />
         </div>
         <p className="section-note warning-note">
-          这段数据参与过规则筛选，只能证明历史样本达到门槛，不能当成未来保证。
+          V4是比较六类方法后的三年后验最优，逐期计算没有偷看当期开奖，但方法选择使用过这三年成绩，不能当成未来保证。
         </p>
         <p className="section-note warning-note">
-          独胆7期目标的独立年度检验未通过：训练期最长断6期，后一整年检验最长断16期，所以没有把失败公式冒充达标上线。
+          三年独胆命中311/1054（29.51%），最长断12期；组三命中264/1054（25.05%），最长断18期。
         </p>
       </section>
 
@@ -292,11 +302,12 @@ export default function Home() {
                 <div>
                   <span>7码</span>
                   <PoolBadge row={row} />
-                  <small>
-                    {row.shape === "组三"
-                      ? "不计组六奖"
-                      : `断${row.pool7MissStreak}`}
-                  </small>
+                  <small>断{row.pool7MissStreak}</small>
+                </div>
+                <div>
+                  <span>组三</span>
+                  <HitBadge hit={row.group3Hit} />
+                  <small>断{row.group3MissStreak}</small>
                 </div>
               </div>
             </article>
@@ -324,8 +335,8 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              每个数字综合最近7期出现率、最近10期总出现频率和当前遗漏期数，
-              标准化后按 −2×Z7 + Z10 − Z遗漏 计算，取评分第4名。
+              V4综合短期出现、14/60/90/120期总频率、百位与个位定位频率及最近2期状态，
+              标准化后计算综合评分并取第4名。
             </p>
             <h3>7码</h3>
             <p>
@@ -335,6 +346,8 @@ export default function Home() {
               −Z5期出现率 + Z7期出现率 + Z45期出现率
             </code>
             <p>得分从高到低取前7名。开奖号须为组六且三个不同数字全部入池才算中奖；组三的两个不同数字全部入池时只标记“组三覆盖”，不计作组六7码中奖。</p>
+            <h3>组三形态</h3>
+            <p>每天固定记录组三形态。开奖号三个数字中恰有两个不同数字即命中；豹子和组六均为未中。</p>
           </div>
         )}
       </section>

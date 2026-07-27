@@ -4,7 +4,7 @@ import path from "node:path";
 
 const DIGITS = Array.from({ length: 10 }, (_, index) => index);
 const LOCK_DATE = "2026-07-28";
-const BACKFIT_START = "2025-07-28";
+const BACKFIT_START = "2023-07-28";
 const BACKFIT_END = "2026-07-27";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -75,25 +75,38 @@ function gapValues(history) {
   });
 }
 
-function positionPeak(history) {
-  const rows = history.slice(-30);
-  return DIGITS.map((digit) => {
-    const counts = [0, 1, 2].map(
-      (position) => rows.filter((row) => row.digits[position] === digit).length,
-    );
-    return Math.max(...counts) / rows.length;
-  });
+function positionFrequency(history, window, position) {
+  const rows = history.slice(-window);
+  return DIGITS.map(
+    (digit) => rows.filter((row) => row.digits[position] === digit).length / rows.length,
+  );
 }
 
 function recommend(history) {
   const zPresence5 = zscore(presenceFrequency(history, 5));
   const zPresence7 = zscore(presenceFrequency(history, 7));
   const zPresence45 = zscore(presenceFrequency(history, 45));
-  const zOccurrence10 = zscore(occurrenceFrequency(history, 10));
-  const zGap = zscore(gapValues(history));
+  const zPresence3 = zscore(presenceFrequency(history, 3));
+  const zOccurrence14 = zscore(occurrenceFrequency(history, 14));
+  const zOccurrence60 = zscore(occurrenceFrequency(history, 60));
+  const zOccurrence90 = zscore(occurrenceFrequency(history, 90));
+  const zOccurrence120 = zscore(occurrenceFrequency(history, 120));
+  const zPosition1_10 = zscore(positionFrequency(history, 10, 0));
+  const zPosition3_30 = zscore(positionFrequency(history, 30, 2));
+  const zPosition3_60 = zscore(positionFrequency(history, 60, 2));
+  const zLast2 = zscore(presenceFrequency(history, 2));
   const rows = DIGITS.map((digit) => ({
     digit,
-    danScore: -2 * zPresence7[digit] + zOccurrence10[digit] - zGap[digit],
+    danScore:
+      -2 * zPresence3[digit] -
+      2 * zOccurrence14[digit] +
+      zOccurrence60[digit] +
+      3 * zOccurrence90[digit] -
+      3 * zOccurrence120[digit] -
+      2 * zPosition1_10[digit] +
+      3 * zPosition3_30[digit] -
+      zPosition3_60[digit] -
+      zLast2[digit],
     poolScore:
       -zPresence5[digit] + zPresence7[digit] + zPresence45[digit],
   }));
@@ -145,8 +158,8 @@ function metrics(rows, field) {
 async function fetchDraws() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dateDaysAgo(520)}&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=550&systemType=PC";
+    `?name=3d&dayStart=${dateDaysAgo(1700)}&dayEnd=${shanghaiDate()}` +
+    "&pageNo=1&pageSize=1800&systemType=PC";
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
@@ -191,6 +204,7 @@ async function main() {
   const history = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
+  let group3MissStreak = 0;
 
   for (let index = 60; index < draws.length; index += 1) {
     const row = draws[index];
@@ -202,8 +216,10 @@ async function main() {
       actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
     const pool7Group3Covered =
       actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const group3Hit = actual.size === 2;
     danMissStreak = danHit ? 0 : danMissStreak + 1;
     pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
+    group3MissStreak = group3Hit ? 0 : group3MissStreak + 1;
     history.push({
       date: row.date,
       issue: row.issue,
@@ -214,8 +230,10 @@ async function main() {
       danHit,
       pool7Hit,
       pool7Group3Covered,
+      group3Hit,
       danMissStreak,
       pool7MissStreak,
+      group3MissStreak,
       phase: row.date >= LOCK_DATE ? "locked" : "backfit",
     });
   }
@@ -229,7 +247,7 @@ async function main() {
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
-    formulaVersion: "V2.0",
+    formulaVersion: "V4.0",
     lockDate: LOCK_DATE,
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
@@ -237,6 +255,7 @@ async function main() {
       basedOnDate: latest.date,
       dan: upcoming.dan,
       pool7: upcoming.pool7.join(""),
+      group3: "组三",
     },
     history,
     metrics: {
@@ -244,6 +263,8 @@ async function main() {
       backfitPool7: metrics(backfit, "pool7Hit"),
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
+      backfitGroup3: metrics(backfit, "group3Hit"),
+      lockedGroup3: metrics(locked, "group3Hit"),
       backfitPool7Group3: {
         count: backfit.filter((row) => row.shape === "组三").length,
         hits: backfit.filter((row) => row.pool7Group3Covered).length,

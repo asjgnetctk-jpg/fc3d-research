@@ -40,6 +40,11 @@ h2 { margin-bottom: 0; font-family: "Songti SC", SimSun, serif; font-size: 22px;
 .dan-panel p, .pool-panel p { margin-bottom: 6px; color: rgba(255,255,255,.68); font-size: 13px; font-weight: 700; }
 .dan-panel strong { margin: auto 0; color: var(--lime); font-family: Georgia, serif; font-size: 92px; font-weight: 600; line-height: .8; }
 .dan-panel small, .pool-panel small { color: rgba(255,255,255,.52); font-size: 11px; }
+.group3-panel { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 17px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.07); }
+.group3-panel div { display: flex; align-items: baseline; gap: 12px; }
+.group3-panel p { margin: 0; color: rgba(255,255,255,.68); font-size: 13px; font-weight: 700; }
+.group3-panel strong { color: var(--lime); font-family: "Songti SC", SimSun, serif; font-size: 26px; }
+.group3-panel small { color: rgba(255,255,255,.52); font-size: 11px; text-align: right; }
 .number-pills { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: auto 0; }
 .number-pills span { display: grid; aspect-ratio: 1; place-items: center; border-radius: 50%; background: var(--lime); color: var(--forest); font-family: Georgia, serif; font-size: 26px; font-weight: 800; }
 .source-line { margin: 18px -20px -20px; padding: 12px 20px; background: rgba(0,0,0,.15); color: rgba(255,255,255,.58); font-size: 11px; }
@@ -49,6 +54,7 @@ h2 { margin-bottom: 0; font-family: "Songti SC", SimSun, serif; font-size: 22px;
 .lock-chip { background: rgba(65,166,111,.14); color: #25724b; }
 .backfit-chip { background: rgba(238,123,66,.13); color: #a6471c; }
 .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.metrics-grid.three-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .metric-card { display: flex; min-height: 112px; flex-direction: column; justify-content: space-between; padding: 15px; border-radius: 18px; background: #f1f5ed; }
 .metric-card.failed { outline: 2px solid #d04d3b; background: #fff1ed; }
 .metric-card span { color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -71,7 +77,7 @@ h2 { margin-bottom: 0; font-family: "Songti SC", SimSun, serif; font-size: 22px;
 .history-data span, .history-result span { font-size: 9px; }
 .history-data strong { font-size: 13px; }
 .history-data small, .history-result small { font-size: 9px; }
-.history-result { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.history-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .history-result > div { display: grid; justify-items: center; gap: 3px; }
 .hit-badge { display: inline-flex; min-width: 34px; justify-content: center; padding: 4px 7px; border-radius: 999px; background: #ece9e1; color: #807b70; font-size: 10px; font-weight: 900; }
 .hit-badge.is-hit { background: var(--lime); color: var(--forest); }
@@ -103,4 +109,8 @@ footer span { font-size: 9px; }
   .source-line { margin-right: -16px; margin-left: -16px; }
   .history-row { grid-template-columns: 54px minmax(0,1fr) auto; gap: 6px; padding-right: 7px; padding-left: 7px; }
   .history-data strong { font-size: 11px; }
+  .metrics-grid.three-metrics { grid-template-columns: 1fr 1fr; }
+  .metrics-grid.three-metrics .metric-card:last-child { grid-column: 1 / -1; min-height: 96px; }
+  .group3-panel { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .group3-panel small { text-align: left; }
 }

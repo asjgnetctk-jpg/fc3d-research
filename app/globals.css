@@ -190,6 +190,43 @@ h2 {
   flex-direction: column;
 }
 
+.group3-panel {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 17px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.group3-panel div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.group3-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.group3-panel strong {
+  color: var(--lime);
+  font-family: "Songti SC", SimSun, serif;
+  font-size: 26px;
+}
+
+.group3-panel small {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 11px;
+  text-align: right;
+}
+
 .number-pills {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -257,6 +294,10 @@ h2 {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 18px;
+}
+
+.metrics-grid.three-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .metric-card {
@@ -376,7 +417,7 @@ h2 {
 
 .history-result {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 5px;
 }
 
@@ -599,6 +640,25 @@ footer span {
 
   .history-data strong {
     font-size: 11px;
+  }
+
+  .metrics-grid.three-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .metrics-grid.three-metrics .metric-card:last-child {
+    grid-column: 1 / -1;
+    min-height: 96px;
+  }
+
+  .group3-panel {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .group3-panel small {
+    text-align: left;
   }
 }
 

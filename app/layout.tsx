@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: base,
     title: "福彩3D私人研究台",
-    description: "固定公式生成独胆与7码，逐期记录推荐、开奖和连续未中状态。",
+    description: "固定公式生成独胆、7码与组三形态，逐期记录推荐、开奖和连续未中状态。",
     applicationName: "福彩3D研究台",
     appleWebApp: {
       capable: true,

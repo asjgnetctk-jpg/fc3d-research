@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#163f31" />
     <meta
       name="description"
-      content="福彩3D独胆与7码固定公式研究台账：每日推荐、实际开奖、命中结果和连续未中期数。"
+      content="福彩3D独胆、7码与组三形态研究台账：每日推荐、实际开奖、命中结果和连续未中期数。"
     />
-    <title>福彩3D · 独胆与7码研究</title>
+    <title>福彩3D · 独胆、7码与组三研究</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./app.js" defer></script>
   </head>
@@ -17,7 +17,7 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">福彩3D · 私人研究台账</p>
-          <h1>独胆与7码</h1>
+          <h1>独胆 · 7码 · 组三</h1>
         </div>
         <button id="refresh" class="refresh-button" type="button">刷新</button>
       </header>
@@ -42,12 +42,19 @@
             <article class="dan-panel">
               <p>独胆</p>
               <strong id="dan"></strong>
-              <small>V2组合评分第4名</small>
+              <small>V4三年筛选评分第4名</small>
             </article>
             <article class="pool-panel">
               <p>7码池</p>
               <div id="pool7" class="number-pills"></div>
               <small>组六判中奖，组三覆盖另标</small>
+            </article>
+            <article class="group3-panel">
+              <div>
+                <p>组三形态</p>
+                <strong id="group3"></strong>
+              </div>
+              <small>每天记录，开奖号为组三即命中</small>
             </article>
           </div>
           <div id="source-line" class="source-line"></div>
@@ -57,13 +64,13 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">真实封盘区</p>
-              <h2>2026年7月28日起锁定V2</h2>
+              <h2>2026年7月28日起锁定V4</h2>
             </div>
             <span class="lock-chip">LOCKED</span>
           </div>
           <div id="locked-metrics" class="metrics-grid"></div>
           <p class="section-note">
-            新开奖自动进入这里。独胆连续未中超过7期会如实标红；7码不设硬性断期门槛。
+            新开奖自动进入这里。独胆和组三都按命中率、最长连续未中统计；7码不设硬性断期门槛。
           </p>
         </section>
 
@@ -71,26 +78,21 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">历史筛选区</p>
-              <h2>一年351期逐期核查</h2>
+              <h2>近三年1054期逐期核查</h2>
             </div>
             <span class="backfit-chip">事后筛选</span>
           </div>
           <div id="backfit-metrics" class="metrics-grid"></div>
           <p class="section-note warning-note">
-            区间为2025年7月28日—2026年7月27日。V2曾使用其中2026年3月—7月数据筛选，因此是真实逐期回算，但不是完整一年的独立前瞻实验。
+            区间为2023年7月28日—2026年7月27日。每一期推荐只使用当期之前的数据，但V4是在比较多种方法后三年后验选出，属于真实逐期回算，不是独立前瞻成绩。
           </p>
           <div class="audit-links">
-            <a href="./audit/v2-one-year-20250728-20260727.csv">下载逐期CSV</a>
-            <a href="./audit/v2-one-year-20250728-20260727.json">查看完整JSON审计</a>
-            <a href="./audit/v2-one-year-20250728-20260727.md">查看回测说明</a>
+            <a href="./audit/v4-three-year-20230728-20260727.csv">下载三年逐期CSV</a>
+            <a href="./audit/v4-three-year-20230728-20260727.json">查看完整JSON审计</a>
           </div>
           <p class="section-note warning-note">
-            独胆7期目标已做独立年度检验：前一年训练最长断6期，但后一整年检验最长断16期，未通过，因此没有冒充达标公式上线。
+            六类方法中，V4后验静态公式三年命中311/1054（29.51%），最长连续未中12期；组三形态命中264/1054（25.05%），最长连续未中18期。两项都不能保证7期内必然命中。
           </p>
-          <div class="audit-links">
-            <a href="./audit/v3-independent-dan-20250728-20260727.csv">下载独立检验逐期CSV</a>
-            <a href="./audit/v3-independent-dan-20250728-20260727.json">查看V3失败审计</a>
-          </div>
         </section>
 
         <section class="section-block history-section">
@@ -115,9 +117,9 @@
           <div id="formula" class="formula-content" hidden>
             <h3>独胆</h3>
             <p>
-              每个数字计算最近7期出现频率、最近10期总出现频率和当前遗漏期数，全部标准化后：
+              V4综合短期出现、14/60/90/120期总频率、百位与个位定位频率及最近2期状态，全部标准化后：
             </p>
-            <code>−2 × Z7期出现率 + Z10期总频率 − Z遗漏</code>
+            <code>−2Z出现3 −2Z总频14 +Z总频60 +3Z总频90 −3Z总频120 −2Z百10 +3Z个30 −Z个60 −Z最近2</code>
             <p>得分从高到低排列，取第4名作为独胆；同分时数字小者排前。</p>
             <h3>7码</h3>
             <p>
@@ -125,6 +127,8 @@
             </p>
             <code>−Z5期出现率 + Z7期出现率 + Z45期出现率</code>
             <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中；若开奖号为组三且两个不同数字均入池，单独标记“组三覆盖”，但不计作组六7码中奖。</p>
+            <h3>组三形态</h3>
+            <p>每天固定记录组三形态。开奖号三个数字中恰有两个不同数字即命中；豹子和组六均为未中。该玩法不推荐具体组三号码。</p>
           </div>
         </section>
 

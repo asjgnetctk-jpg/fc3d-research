@@ -21,12 +21,9 @@ function metricCard(label, metric, enforceSeven = false) {
 function historyRow(row) {
   const badge = (hit) =>
     `<span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span>`;
-  const poolBadge =
-    row.shape === "组三"
-      ? `<span class="hit-badge group3${row.pool7Group3Covered ? " is-covered" : ""}">${
-          row.pool7Group3Covered ? "组三覆盖" : "组三未覆"
-        }</span>`
-      : badge(row.pool7Hit);
+  const poolBadge = row.pool7Group3Covered
+    ? '<span class="hit-badge group3 is-covered">组三覆盖</span>'
+    : badge(row.pool7Hit);
   return `
     <article class="history-row">
       <div class="history-date">
@@ -40,9 +37,8 @@ function historyRow(row) {
       </div>
       <div class="history-result">
         <div><span>胆</span>${badge(row.danHit)}<small>断${row.danMissStreak}</small></div>
-        <div><span>7码</span>${poolBadge}<small>${
-          row.shape === "组三" ? "不计组六奖" : `断${row.pool7MissStreak}`
-        }</small></div>
+        <div><span>7码</span>${poolBadge}<small>断${row.pool7MissStreak}</small></div>
+        <div><span>组三</span>${badge(row.group3Hit)}<small>断${row.group3MissStreak}</small></div>
       </div>
     </article>
   `;
@@ -68,13 +64,18 @@ function render(data) {
     .split("")
     .map((digit) => `<span>${digit}</span>`)
     .join("");
+  $("#group3").textContent = data.recommendation.group3;
   $("#source-line").textContent = `官方数据更新至 ${data.sourceUpdatedThrough}`;
+  $("#locked-metrics").classList.add("three-metrics");
   $("#locked-metrics").innerHTML =
     metricCard("独胆实测", data.metrics.lockedDan, true) +
-    metricCard("7码实测", data.metrics.lockedPool7);
+    metricCard("7码实测", data.metrics.lockedPool7) +
+    metricCard("组三实测", data.metrics.lockedGroup3, true);
+  $("#backfit-metrics").classList.add("three-metrics");
   $("#backfit-metrics").innerHTML =
     metricCard("独胆回溯", data.metrics.backfitDan, true) +
-    metricCard("7码回溯", data.metrics.backfitPool7);
+    metricCard("7码回溯", data.metrics.backfitPool7) +
+    metricCard("组三回溯", data.metrics.backfitGroup3, true);
   $("#generated-at").textContent = `页面数据生成于 ${new Date(
     data.generatedAt,
   ).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })}`;
