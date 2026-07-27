@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta
+      name="description"
+      content="福彩3D独胆与7码固定公式研究台账：每日推荐、实际开奖、命中结果和连续未中期数。"
+    />
+    <title>福彩3D · 独胆与7码研究</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">福彩3D · 私人研究台账</p>
+          <h1>独胆与7码</h1>
+        </div>
+        <button id="refresh" class="refresh-button" type="button">刷新</button>
+      </header>
+
+      <div id="loading" class="notice">正在读取最新开奖和推荐记录…</div>
+      <div id="error" class="notice error" hidden></div>
+
+      <div id="content" hidden>
+        <section class="status-strip">
+          <span class="status-dot"></span>
+          <span id="formula-version"></span>
+          <span>·</span>
+          <span id="lock-date"></span>
+        </section>
+
+        <section class="hero-card">
+          <div class="hero-meta">
+            <span id="target-issue"></span>
+            <span id="based-on"></span>
+          </div>
+          <div class="recommendation-grid">
+            <article class="dan-panel">
+              <p>独胆</p>
+              <strong id="dan"></strong>
+              <small>14期低频第2名</small>
+            </article>
+            <article class="pool-panel">
+              <p>7码池</p>
+              <div id="pool7" class="number-pills"></div>
+              <small>按组六全入池判中</small>
+            </article>
+          </div>
+          <div id="source-line" class="source-line"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">真实封盘区</p>
+              <h2>2026年7月28日起固定公式</h2>
+            </div>
+            <span class="lock-chip">LOCKED</span>
+          </div>
+          <div id="locked-metrics" class="metrics-grid"></div>
+          <p class="section-note">
+            新开奖自动进入这里。任何一项连续未中超过7期，就直接标记策略未达标；这不代表未来可保证7期内命中。
+          </p>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">历史回溯区</p>
+              <h2>5月1日—7月27日逐期核查</h2>
+            </div>
+            <span class="backfit-chip">回溯拟合</span>
+          </div>
+          <div id="backfit-metrics" class="metrics-grid"></div>
+          <p class="section-note warning-note">
+            这段历史参与过规则筛选，只能说明历史样本达到门槛，不能当成未来保证。
+          </p>
+        </section>
+
+        <section class="section-block history-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">逐期证据</p>
+              <h2>推荐码与实际开奖号</h2>
+            </div>
+          </div>
+          <div id="history" class="history-list"></div>
+          <button id="toggle-history" class="secondary-button" type="button"></button>
+        </section>
+
+        <section class="section-block formula-block">
+          <button id="toggle-formula" class="formula-toggle" type="button" aria-expanded="false">
+            <span>
+              <small>计算规则</small>
+              <strong>每天到底怎么选？</strong>
+            </span>
+            <b>+</b>
+          </button>
+          <div id="formula" class="formula-content" hidden>
+            <h3>独胆</h3>
+            <p>
+              统计0—9在最近14期中“至少出现一次”的期数，从低到高排序，取第2名；同分时数字小者排前。
+            </p>
+            <h3>7码</h3>
+            <p>
+              每个数字计算30期频率、60期频率、EWMA5近期热度、遗漏期数和30期定位峰值，全部标准化后：
+            </p>
+            <code>Z30 − Z60 − ZEWMA5 − Z遗漏 + Z定位峰</code>
+            <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中。</p>
+          </div>
+        </section>
+
+        <footer>
+          <strong>只做研究记录，不承诺中奖</strong>
+          <p>随机开奖无法保证7期内必然命中。不要追损、翻倍、借钱或超预算投注。</p>
+          <span id="generated-at"></span>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
