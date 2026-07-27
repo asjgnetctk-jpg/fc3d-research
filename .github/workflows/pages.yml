@@ -27,6 +27,8 @@ jobs:
       - name: 读取官方开奖并生成静态数据
         run: node scripts/generate-static-data.mjs
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: pages
