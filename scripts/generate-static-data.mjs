@@ -4,7 +4,7 @@ import path from "node:path";
 
 const DIGITS = Array.from({ length: 10 }, (_, index) => index);
 const LOCK_DATE = "2026-07-28";
-const BACKFIT_START = "2026-03-01";
+const BACKFIT_START = "2025-07-28";
 const BACKFIT_END = "2026-07-27";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -145,8 +145,8 @@ function metrics(rows, field) {
 async function fetchDraws() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dateDaysAgo(300)}&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=400&systemType=PC";
+    `?name=3d&dayStart=${dateDaysAgo(520)}&dayEnd=${shanghaiDate()}` +
+    "&pageNo=1&pageSize=550&systemType=PC";
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
