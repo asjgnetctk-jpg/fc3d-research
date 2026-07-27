@@ -32,13 +32,13 @@ function historyRow(row) {
         <em>${row.phase === "locked" ? "真实" : "回溯"}</em>
       </div>
       <div class="history-data">
-        <div><span>推荐</span><strong>胆${row.dan} · ${row.pool7}</strong></div>
+        <div><span>推荐</span><strong>胆${row.dan} · ${row.pool7} · ${row.shapePlay}</strong></div>
         <div><span>开奖</span><strong>${row.draw}</strong><small>${row.shape}</small></div>
       </div>
       <div class="history-result">
         <div><span>胆</span>${badge(row.danHit)}<small>断${row.danMissStreak}</small></div>
         <div><span>7码</span>${poolBadge}<small>断${row.pool7MissStreak}</small></div>
-        <div><span>组三</span>${badge(row.group3Hit)}<small>断${row.group3MissStreak}</small></div>
+        <div><span>形态</span>${badge(row.shapeHit)}<small>断${row.shapeMissStreak}</small></div>
       </div>
     </article>
   `;
@@ -64,18 +64,18 @@ function render(data) {
     .split("")
     .map((digit) => `<span>${digit}</span>`)
     .join("");
-  $("#group3").textContent = data.recommendation.group3;
+  $("#group3").textContent = data.recommendation.shapePlay;
   $("#source-line").textContent = `官方数据更新至 ${data.sourceUpdatedThrough}`;
   $("#locked-metrics").classList.add("three-metrics");
   $("#locked-metrics").innerHTML =
     metricCard("独胆实测", data.metrics.lockedDan, true) +
     metricCard("7码实测", data.metrics.lockedPool7) +
-    metricCard("组三实测", data.metrics.lockedGroup3, true);
+    metricCard("形态实测", data.metrics.lockedShape, true);
   $("#backfit-metrics").classList.add("three-metrics");
   $("#backfit-metrics").innerHTML =
     metricCard("独胆回溯", data.metrics.backfitDan, true) +
     metricCard("7码回溯", data.metrics.backfitPool7) +
-    metricCard("组三回溯", data.metrics.backfitGroup3, true);
+    metricCard("形态二选一", data.metrics.backfitShape, true);
   $("#generated-at").textContent = `页面数据生成于 ${new Date(
     data.generatedAt,
   ).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })}`;

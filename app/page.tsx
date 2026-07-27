@@ -8,7 +8,7 @@ type Recommendation = {
   basedOnDate: string;
   dan: number;
   pool7: string;
-  group3: string;
+  shapePlay: string;
 };
 
 type HistoryRow = {
@@ -16,15 +16,16 @@ type HistoryRow = {
   issue: string;
   dan: number;
   pool7: string;
+  shapePlay: string;
   draw: string;
   shape: string;
   danHit: boolean;
   pool7Hit: boolean;
   pool7Group3Covered: boolean;
-  group3Hit: boolean;
+  shapeHit: boolean;
   danMissStreak: number;
   pool7MissStreak: number;
-  group3MissStreak: number;
+  shapeMissStreak: number;
   phase: "backfit" | "locked";
 };
 
@@ -45,8 +46,9 @@ type ApiPayload = {
     backfitPool7: Metric;
     lockedDan: Metric;
     lockedPool7: Metric;
-    backfitGroup3: Metric;
-    lockedGroup3: Metric;
+    backfitShape: Metric;
+    lockedShape: Metric;
+    shapeAlwaysGroup6Baseline: Metric;
   };
   formulaVersion: string;
   lockDate: string;
@@ -120,7 +122,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const frame = requestAnimationFrame(() => {
+      void load();
+    });
+    return () => cancelAnimationFrame(frame);
   }, [load]);
 
   const history = useMemo(() => {
@@ -188,7 +193,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>V4三年筛选评分第4名</small>
+            <small>V5按当前断期状态切换公式</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -201,10 +206,10 @@ export default function Home() {
           </article>
           <article className="group3-panel">
             <div>
-              <p>组三形态</p>
-              <strong>{data.recommendation.group3}</strong>
+              <p>形态二选一</p>
+              <strong>{data.recommendation.shapePlay}</strong>
             </div>
-            <small>每天记录，开奖号为组三即命中</small>
+            <small>推荐与实际形态一致才中；豹子算失败</small>
           </article>
         </div>
 
@@ -233,13 +238,13 @@ export default function Home() {
             pending={lockedPending}
           />
           <MetricCard
-            label="组三实测"
-            metric={data.metrics.lockedGroup3}
+            label="形态实测"
+            metric={data.metrics.lockedShape}
             pending={lockedPending}
           />
         </div>
         <p className="section-note">
-          新开奖自动进入这里。独胆和组三都按命中率、最长连续未中统计；7码不设硬门槛。
+          新开奖自动进入这里。三项都按命中率和最长连续未中统计；7码的组三覆盖只作单独标记。
         </p>
       </section>
 
@@ -254,13 +259,16 @@ export default function Home() {
         <div className="metrics-grid three-metrics">
           <MetricCard label="独胆回溯" metric={data.metrics.backfitDan} />
           <MetricCard label="7码回溯" metric={data.metrics.backfitPool7} />
-          <MetricCard label="组三回溯" metric={data.metrics.backfitGroup3} />
+          <MetricCard label="形态二选一" metric={data.metrics.backfitShape} />
         </div>
         <p className="section-note warning-note">
-          V4是比较六类方法后的三年后验最优，逐期计算没有偷看当期开奖，但方法选择使用过这三年成绩，不能当成未来保证。
+          V5逐期计算没有使用当期开奖，但四状态公式和形态阈值是比较三年成绩后选出的后验模型，不能当成独立前瞻成绩。
         </p>
         <p className="section-note warning-note">
-          三年独胆命中311/1054（29.51%），最长断12期；组三命中264/1054（25.05%），最长断18期。
+          三年独胆369/1054（35.01%），最长断9期，仍未达到7期目标；7码274/1054（26.00%），最长断11期；动态形态734/1054（69.64%），最长断4期。
+        </p>
+        <p className="section-note">
+          仅作对照：若三年每天固定选组六，历史为779/1054（73.91%）、最长断5期，但它没有做每日形态判断，所以不作为正式动态模型成绩。
         </p>
       </section>
 
@@ -284,7 +292,7 @@ export default function Home() {
                 <div>
                   <span>推荐</span>
                   <strong>
-                    胆{row.dan} · {row.pool7}
+                    胆{row.dan} · {row.pool7} · {row.shapePlay}
                   </strong>
                 </div>
                 <div>
@@ -305,9 +313,9 @@ export default function Home() {
                   <small>断{row.pool7MissStreak}</small>
                 </div>
                 <div>
-                  <span>组三</span>
-                  <HitBadge hit={row.group3Hit} />
-                  <small>断{row.group3MissStreak}</small>
+                  <span>形态</span>
+                  <HitBadge hit={row.shapeHit} />
+                  <small>断{row.shapeMissStreak}</small>
                 </div>
               </div>
             </article>
@@ -335,19 +343,15 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              V4综合短期出现、14/60/90/120期总频率、百位与个位定位频率及最近2期状态，
-              标准化后计算综合评分并取第4名。
+              V5把连续未中分成0—2、3—4、5—6、7期以上四个状态；每个状态使用不同的历史频率、定位频率和转移评分公式，再按该状态的固定名次取一个独胆。
             </p>
             <h3>7码</h3>
             <p>
-              每个数字计算最近5期、7期和45期出现率，全部标准化后：
+              同样按连续未中状态切换四套固定评分，综合近期出现、定位频率、转移频率、奇偶和中心距离，得分从高到低取前7名。
             </p>
-            <code>
-              −Z5期出现率 + Z7期出现率 + Z45期出现率
-            </code>
             <p>得分从高到低取前7名。开奖号须为组六且三个不同数字全部入池才算中奖；组三的两个不同数字全部入池时只标记“组三覆盖”，不计作组六7码中奖。</p>
-            <h3>组三形态</h3>
-            <p>每天固定记录组三形态。开奖号三个数字中恰有两个不同数字即命中；豹子和组六均为未中。</p>
+            <h3>组三/组六二选一</h3>
+            <p>根据最近3—120期的组三、组六比例，组六遗漏、最近一期与最近两期形态、近期重号率计算形态分。达到固定阈值推荐组三，否则推荐组六；实际形态一致才算命中，豹子统一算失败。</p>
           </div>
         )}
       </section>
