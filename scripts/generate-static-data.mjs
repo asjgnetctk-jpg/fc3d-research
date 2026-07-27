@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -165,7 +165,18 @@ async function fetchDraws() {
 }
 
 async function main() {
-  const draws = await fetchDraws();
+  let draws;
+  try {
+    draws = await fetchDraws();
+  } catch (error) {
+    const fallbackPath = path.join(root, "pages", "data.json");
+    const existing = JSON.parse(await readFile(fallbackPath, "utf8"));
+    if (!existing?.recommendation || !Array.isArray(existing?.history)) throw error;
+    console.warn(
+      `官方数据暂时不可用，保留已核验快照：${existing.sourceUpdatedThrough}；${error.message}`,
+    );
+    return;
+  }
   const history = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
