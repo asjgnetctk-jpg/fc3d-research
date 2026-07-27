@@ -4,7 +4,7 @@ import path from "node:path";
 
 const DIGITS = Array.from({ length: 10 }, (_, index) => index);
 const LOCK_DATE = "2026-07-28";
-const BACKFIT_START = "2026-05-01";
+const BACKFIT_START = "2026-03-01";
 const BACKFIT_END = "2026-07-27";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -35,6 +35,18 @@ function presenceFrequency(history, window) {
   const rows = history.slice(-window);
   return DIGITS.map(
     (digit) => rows.filter((row) => new Set(row.digits).has(digit)).length / rows.length,
+  );
+}
+
+function occurrenceFrequency(history, window) {
+  const rows = history.slice(-window);
+  return DIGITS.map(
+    (digit) =>
+      rows.reduce(
+        (sum, row) => sum + row.digits.filter((value) => value === digit).length,
+        0,
+      ) /
+      (rows.length * 3),
   );
 }
 
@@ -74,17 +86,16 @@ function positionPeak(history) {
 }
 
 function recommend(history) {
-  const freq14 = presenceFrequency(history, 14);
-  const z14 = zscore(freq14);
-  const z30 = zscore(presenceFrequency(history, 30));
-  const z60 = zscore(presenceFrequency(history, 60));
-  const zEwma = zscore(ewmaPresence(history, 5));
+  const zPresence5 = zscore(presenceFrequency(history, 5));
+  const zPresence7 = zscore(presenceFrequency(history, 7));
+  const zPresence45 = zscore(presenceFrequency(history, 45));
+  const zOccurrence10 = zscore(occurrenceFrequency(history, 10));
   const zGap = zscore(gapValues(history));
-  const zPeak = zscore(positionPeak(history));
   const rows = DIGITS.map((digit) => ({
     digit,
-    danScore: -z14[digit],
-    poolScore: z30[digit] - z60[digit] - zEwma[digit] - zGap[digit] + zPeak[digit],
+    danScore: -2 * zPresence7[digit] + zOccurrence10[digit] - zGap[digit],
+    poolScore:
+      -zPresence5[digit] + zPresence7[digit] + zPresence45[digit],
   }));
   const danRank = [...rows].sort(
     (left, right) => right.danScore - left.danScore || left.digit - right.digit,
@@ -93,7 +104,7 @@ function recommend(history) {
     (left, right) => right.poolScore - left.poolScore || left.digit - right.digit,
   );
   return {
-    dan: danRank[1].digit,
+    dan: danRank[3].digit,
     pool7: poolRank
       .slice(0, 7)
       .map((row) => row.digit)
@@ -215,7 +226,7 @@ async function main() {
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
-    formulaVersion: "V1.0",
+    formulaVersion: "V2.0",
     lockDate: LOCK_DATE,
     recommendation: {
       targetIssue: incrementIssue(latest.issue),

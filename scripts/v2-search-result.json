@@ -1,0 +1,1196 @@
+﻿{
+  "seed": 20260728,
+  "candidates": 60000,
+  "samples": {
+    "train": 18,
+    "test": 149
+  },
+  "baselineV1": {
+    "dan": {
+      "maxMiss": 7,
+      "hits": 52,
+      "count": 149,
+      "rate": 0.348993288590604,
+      "monthWorst": 7
+    },
+    "pool7": {
+      "maxMiss": 10,
+      "hits": 36,
+      "count": 149,
+      "rate": 0.24161073825503357,
+      "monthWorst": 10
+    }
+  },
+  "strictIndependent": {
+    "dan": {
+      "danRank": 1,
+      "train": {
+        "maxMiss": 1,
+        "hits": 14,
+        "count": 18,
+        "rate": 0.7777777777777778,
+        "monthWorst": 1
+      },
+      "test": {
+        "maxMiss": 15,
+        "hits": 44,
+        "count": 149,
+        "rate": 0.2953020134228188,
+        "monthWorst": 15
+      },
+      "weights": [
+        {
+          "feature": "presence14",
+          "weight": -2
+        },
+        {
+          "feature": "presence30",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "gap",
+          "weight": -2
+        },
+        {
+          "feature": "last2",
+          "weight": -2
+        },
+        {
+          "feature": "presence10",
+          "weight": -1
+        },
+        {
+          "feature": "occurrence30",
+          "weight": 1
+        },
+        {
+          "feature": "last3",
+          "weight": 1
+        }
+      ]
+    },
+    "pool7": {
+      "train": {
+        "maxMiss": 1,
+        "hits": 12,
+        "count": 18,
+        "rate": 0.6666666666666666,
+        "monthWorst": 1
+      },
+      "test": {
+        "maxMiss": 13,
+        "hits": 33,
+        "count": 149,
+        "rate": 0.2214765100671141,
+        "monthWorst": 13
+      },
+      "weights": [
+        {
+          "feature": "presence45",
+          "weight": 4
+        },
+        {
+          "feature": "presence10",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence20",
+          "weight": -2
+        },
+        {
+          "feature": "positionPeak20",
+          "weight": 2
+        },
+        {
+          "feature": "digitParity",
+          "weight": -2
+        },
+        {
+          "feature": "presence5",
+          "weight": 1
+        },
+        {
+          "feature": "last1",
+          "weight": -1
+        }
+      ]
+    }
+  },
+  "exploratoryNote": "以下结果从训练集前300名中再次按检验集表现排序，只能用于诊断，不再属于独立检验。",
+  "onlineDynamicSelection": {
+    "note": "每天仅使用当期之前的命中记录，在固定方法库中选择相应回看窗口内命中率最高的方法；列表按双项命中率之和排序。",
+    "librarySize": 1200,
+    "variants": [
+      {
+        "lookback": 999,
+        "dan": {
+          "maxMiss": 9,
+          "hits": 47,
+          "count": 149,
+          "rate": 0.31543624161073824,
+          "monthWorst": 9,
+          "methodChanges": 23
+        },
+        "pool7": {
+          "maxMiss": 9,
+          "hits": 36,
+          "count": 149,
+          "rate": 0.24161073825503357,
+          "monthWorst": 9,
+          "methodChanges": 22
+        }
+      },
+      {
+        "lookback": 45,
+        "dan": {
+          "maxMiss": 9,
+          "hits": 51,
+          "count": 149,
+          "rate": 0.3422818791946309,
+          "monthWorst": 9,
+          "methodChanges": 39
+        },
+        "pool7": {
+          "maxMiss": 19,
+          "hits": 28,
+          "count": 149,
+          "rate": 0.18791946308724833,
+          "monthWorst": 13,
+          "methodChanges": 53
+        }
+      },
+      {
+        "lookback": 60,
+        "dan": {
+          "maxMiss": 12,
+          "hits": 49,
+          "count": 149,
+          "rate": 0.3288590604026846,
+          "monthWorst": 10,
+          "methodChanges": 27
+        },
+        "pool7": {
+          "maxMiss": 16,
+          "hits": 29,
+          "count": 149,
+          "rate": 0.19463087248322147,
+          "monthWorst": 16,
+          "methodChanges": 49
+        }
+      },
+      {
+        "lookback": 20,
+        "dan": {
+          "maxMiss": 14,
+          "hits": 45,
+          "count": 149,
+          "rate": 0.30201342281879195,
+          "monthWorst": 12,
+          "methodChanges": 66
+        },
+        "pool7": {
+          "maxMiss": 15,
+          "hits": 33,
+          "count": 149,
+          "rate": 0.2214765100671141,
+          "monthWorst": 15,
+          "methodChanges": 62
+        }
+      },
+      {
+        "lookback": 90,
+        "dan": {
+          "maxMiss": 17,
+          "hits": 38,
+          "count": 149,
+          "rate": 0.2550335570469799,
+          "monthWorst": 15,
+          "methodChanges": 35
+        },
+        "pool7": {
+          "maxMiss": 9,
+          "hits": 38,
+          "count": 149,
+          "rate": 0.2550335570469799,
+          "monthWorst": 9,
+          "methodChanges": 28
+        }
+      },
+      {
+        "lookback": 15,
+        "dan": {
+          "maxMiss": 10,
+          "hits": 43,
+          "count": 149,
+          "rate": 0.28859060402684567,
+          "monthWorst": 10,
+          "methodChanges": 76
+        },
+        "pool7": {
+          "maxMiss": 12,
+          "hits": 31,
+          "count": 149,
+          "rate": 0.2080536912751678,
+          "monthWorst": 12,
+          "methodChanges": 63
+        }
+      },
+      {
+        "lookback": 10,
+        "dan": {
+          "maxMiss": 15,
+          "hits": 44,
+          "count": 149,
+          "rate": 0.2953020134228188,
+          "monthWorst": 10,
+          "methodChanges": 92
+        },
+        "pool7": {
+          "maxMiss": 11,
+          "hits": 30,
+          "count": 149,
+          "rate": 0.20134228187919462,
+          "monthWorst": 11,
+          "methodChanges": 90
+        }
+      },
+      {
+        "lookback": 30,
+        "dan": {
+          "maxMiss": 11,
+          "hits": 43,
+          "count": 149,
+          "rate": 0.28859060402684567,
+          "monthWorst": 10,
+          "methodChanges": 62
+        },
+        "pool7": {
+          "maxMiss": 15,
+          "hits": 27,
+          "count": 149,
+          "rate": 0.18120805369127516,
+          "monthWorst": 15,
+          "methodChanges": 46
+        }
+      }
+    ]
+  },
+  "dan": [
+    {
+      "danRank": 3,
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 6,
+        "hits": 52,
+        "count": 149,
+        "rate": 0.348993288590604,
+        "monthWorst": 6
+      },
+      "weights": [
+        {
+          "feature": "presence7",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": 1
+        },
+        {
+          "feature": "gap",
+          "weight": -1
+        }
+      ]
+    },
+    {
+      "danRank": 0,
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 7,
+        "hits": 52,
+        "count": 149,
+        "rate": 0.348993288590604,
+        "monthWorst": 7
+      },
+      "weights": [
+        {
+          "feature": "occurrence5",
+          "weight": -3
+        },
+        {
+          "feature": "presence5",
+          "weight": 2
+        },
+        {
+          "feature": "presence60",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "neighborLast",
+          "weight": 2
+        },
+        {
+          "feature": "presence7",
+          "weight": 1
+        },
+        {
+          "feature": "presence14",
+          "weight": -1
+        },
+        {
+          "feature": "positionPeak20",
+          "weight": -1
+        },
+        {
+          "feature": "last3",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 1,
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 7,
+        "hits": 45,
+        "count": 149,
+        "rate": 0.30201342281879195,
+        "monthWorst": 7
+      },
+      "weights": [
+        {
+          "feature": "occurrence5",
+          "weight": 4
+        },
+        {
+          "feature": "occurrence7",
+          "weight": 3
+        },
+        {
+          "feature": "ewma3",
+          "weight": 2
+        },
+        {
+          "feature": "last2",
+          "weight": -2
+        },
+        {
+          "feature": "presence20",
+          "weight": -1
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        },
+        {
+          "feature": "last1",
+          "weight": 1
+        },
+        {
+          "feature": "last3",
+          "weight": -1
+        }
+      ]
+    },
+    {
+      "danRank": 1,
+      "train": {
+        "maxMiss": 1,
+        "hits": 12,
+        "count": 18,
+        "rate": 0.6666666666666666,
+        "monthWorst": 1
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 54,
+        "count": 149,
+        "rate": 0.3624161073825503,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "presence30",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence7",
+          "weight": 2
+        },
+        {
+          "feature": "gap",
+          "weight": -2
+        },
+        {
+          "feature": "positionPeak30",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 1
+        },
+        {
+          "feature": "occurrence60",
+          "weight": -1
+        },
+        {
+          "feature": "ewma3",
+          "weight": -1
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        },
+        {
+          "feature": "transition80",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 3,
+      "train": {
+        "maxMiss": 2,
+        "hits": 12,
+        "count": 18,
+        "rate": 0.6666666666666666,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 52,
+        "count": 149,
+        "rate": 0.348993288590604,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "occurrence7",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "last3",
+          "weight": -2
+        },
+        {
+          "feature": "transition80",
+          "weight": 1
+        },
+        {
+          "feature": "digitCenter",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 0,
+      "train": {
+        "maxMiss": 2,
+        "hits": 11,
+        "count": 18,
+        "rate": 0.6111111111111112,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 50,
+        "count": 149,
+        "rate": 0.33557046979865773,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "occurrence7",
+          "weight": -2
+        },
+        {
+          "feature": "ewma2",
+          "weight": 2
+        },
+        {
+          "feature": "presence45",
+          "weight": 1
+        },
+        {
+          "feature": "occurrence5",
+          "weight": -1
+        },
+        {
+          "feature": "occurrence60",
+          "weight": 1
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        },
+        {
+          "feature": "positionPeak30",
+          "weight": -1
+        },
+        {
+          "feature": "digitCenter",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 2,
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 50,
+        "count": 149,
+        "rate": 0.33557046979865773,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "last1",
+          "weight": -3
+        },
+        {
+          "feature": "last3",
+          "weight": 2
+        },
+        {
+          "feature": "digitParity",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence60",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 2,
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 48,
+        "count": 149,
+        "rate": 0.3221476510067114,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "ewma3",
+          "weight": 4
+        },
+        {
+          "feature": "presence7",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence60",
+          "weight": 2
+        },
+        {
+          "feature": "ewma8",
+          "weight": -2
+        },
+        {
+          "feature": "last3",
+          "weight": 2
+        },
+        {
+          "feature": "digitCenter",
+          "weight": -2
+        },
+        {
+          "feature": "positionPeak20",
+          "weight": 1
+        },
+        {
+          "feature": "last2",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "danRank": 3,
+      "train": {
+        "maxMiss": 2,
+        "hits": 12,
+        "count": 18,
+        "rate": 0.6666666666666666,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 47,
+        "count": 149,
+        "rate": 0.31543624161073824,
+        "monthWorst": 7
+      },
+      "weights": [
+        {
+          "feature": "presence5",
+          "weight": 2
+        },
+        {
+          "feature": "presence10",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence5",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "gap",
+          "weight": 2
+        },
+        {
+          "feature": "positionPeak10",
+          "weight": -2
+        },
+        {
+          "feature": "last3",
+          "weight": 2
+        },
+        {
+          "feature": "transition80",
+          "weight": 2
+        },
+        {
+          "feature": "digitParity",
+          "weight": -2
+        }
+      ]
+    },
+    {
+      "danRank": 1,
+      "train": {
+        "maxMiss": 2,
+        "hits": 11,
+        "count": 18,
+        "rate": 0.6111111111111112,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 8,
+        "hits": 47,
+        "count": 149,
+        "rate": 0.31543624161073824,
+        "monthWorst": 8
+      },
+      "weights": [
+        {
+          "feature": "presence20",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence5",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence60",
+          "weight": 2
+        },
+        {
+          "feature": "positionPeak10",
+          "weight": 2
+        },
+        {
+          "feature": "last1",
+          "weight": -2
+        },
+        {
+          "feature": "digitParity",
+          "weight": 2
+        },
+        {
+          "feature": "presence30",
+          "weight": 1
+        },
+        {
+          "feature": "presence45",
+          "weight": -1
+        },
+        {
+          "feature": "presence60",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "pool7": [
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 41,
+        "count": 149,
+        "rate": 0.2751677852348993,
+        "monthWorst": 9
+      },
+      "weights": [
+        {
+          "feature": "presence5",
+          "weight": -1
+        },
+        {
+          "feature": "presence7",
+          "weight": 1
+        },
+        {
+          "feature": "presence45",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 37,
+        "count": 149,
+        "rate": 0.2483221476510067,
+        "monthWorst": 9
+      },
+      "weights": [
+        {
+          "feature": "presence30",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence14",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence20",
+          "weight": -2
+        },
+        {
+          "feature": "ewma5",
+          "weight": -2
+        },
+        {
+          "feature": "positionPeak30",
+          "weight": 2
+        },
+        {
+          "feature": "presence60",
+          "weight": -1
+        },
+        {
+          "feature": "ewma8",
+          "weight": 1
+        },
+        {
+          "feature": "ewma13",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 36,
+        "count": 149,
+        "rate": 0.24161073825503357,
+        "monthWorst": 9
+      },
+      "weights": [
+        {
+          "feature": "presence14",
+          "weight": -2
+        },
+        {
+          "feature": "presence30",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence5",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence60",
+          "weight": 2
+        },
+        {
+          "feature": "positionPeak10",
+          "weight": -2
+        },
+        {
+          "feature": "digitCenter",
+          "weight": -2
+        },
+        {
+          "feature": "presence10",
+          "weight": 1
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 36,
+        "count": 149,
+        "rate": 0.24161073825503357,
+        "monthWorst": 7
+      },
+      "weights": [
+        {
+          "feature": "presence7",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 2
+        },
+        {
+          "feature": "positionPeak10",
+          "weight": -2
+        },
+        {
+          "feature": "digitCenter",
+          "weight": 2
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        },
+        {
+          "feature": "transition80",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 35,
+        "count": 149,
+        "rate": 0.2348993288590604,
+        "monthWorst": 9
+      },
+      "weights": [
+        {
+          "feature": "occurrence7",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": -2
+        },
+        {
+          "feature": "ewma2",
+          "weight": 2
+        },
+        {
+          "feature": "presence5",
+          "weight": -1
+        },
+        {
+          "feature": "ewma5",
+          "weight": 1
+        },
+        {
+          "feature": "transition80",
+          "weight": -1
+        },
+        {
+          "feature": "digitCenter",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 9,
+        "hits": 34,
+        "count": 149,
+        "rate": 0.22818791946308725,
+        "monthWorst": 9
+      },
+      "weights": [
+        {
+          "feature": "presence7",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence5",
+          "weight": 2
+        },
+        {
+          "feature": "presence20",
+          "weight": -1
+        },
+        {
+          "feature": "occurrence14",
+          "weight": -1
+        },
+        {
+          "feature": "occurrence20",
+          "weight": 1
+        },
+        {
+          "feature": "ewma3",
+          "weight": -1
+        },
+        {
+          "feature": "ewma13",
+          "weight": -1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 10,
+        "hits": 39,
+        "count": 149,
+        "rate": 0.26174496644295303,
+        "monthWorst": 10
+      },
+      "weights": [
+        {
+          "feature": "presence7",
+          "weight": 2
+        },
+        {
+          "feature": "presence20",
+          "weight": 2
+        },
+        {
+          "feature": "presence30",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence10",
+          "weight": -2
+        },
+        {
+          "feature": "occurrence20",
+          "weight": -2
+        },
+        {
+          "feature": "ewma8",
+          "weight": -2
+        },
+        {
+          "feature": "positionPeak20",
+          "weight": 2
+        },
+        {
+          "feature": "digitParity",
+          "weight": -1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 10,
+        "hits": 37,
+        "count": 149,
+        "rate": 0.2483221476510067,
+        "monthWorst": 10
+      },
+      "weights": [
+        {
+          "feature": "presence20",
+          "weight": 1
+        },
+        {
+          "feature": "presence45",
+          "weight": 1
+        },
+        {
+          "feature": "last3",
+          "weight": -1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 9,
+        "count": 18,
+        "rate": 0.5,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 10,
+        "hits": 35,
+        "count": 149,
+        "rate": 0.2348993288590604,
+        "monthWorst": 10
+      },
+      "weights": [
+        {
+          "feature": "occurrence7",
+          "weight": 2
+        },
+        {
+          "feature": "ewma3",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence45",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "train": {
+        "maxMiss": 2,
+        "hits": 10,
+        "count": 18,
+        "rate": 0.5555555555555556,
+        "monthWorst": 2
+      },
+      "test": {
+        "maxMiss": 10,
+        "hits": 34,
+        "count": 149,
+        "rate": 0.22818791946308725,
+        "monthWorst": 10
+      },
+      "weights": [
+        {
+          "feature": "presence14",
+          "weight": -2
+        },
+        {
+          "feature": "gap",
+          "weight": -2
+        },
+        {
+          "feature": "ewma8",
+          "weight": 1
+        },
+        {
+          "feature": "transition80",
+          "weight": -1
+        },
+        {
+          "feature": "digitCenter",
+          "weight": 1
+        },
+        {
+          "feature": "digitParity",
+          "weight": -1
+        }
+      ]
+    }
+  ]
+}

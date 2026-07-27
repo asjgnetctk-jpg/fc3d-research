@@ -42,7 +42,7 @@
             <article class="dan-panel">
               <p>独胆</p>
               <strong id="dan"></strong>
-              <small>14期低频第2名</small>
+              <small>V2组合评分第4名</small>
             </article>
             <article class="pool-panel">
               <p>7码池</p>
@@ -57,27 +57,27 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">真实封盘区</p>
-              <h2>2026年7月28日起固定公式</h2>
+              <h2>2026年7月28日起锁定V2</h2>
             </div>
             <span class="lock-chip">LOCKED</span>
           </div>
           <div id="locked-metrics" class="metrics-grid"></div>
           <p class="section-note">
-            新开奖自动进入这里。任何一项连续未中超过7期，就直接标记策略未达标；这不代表未来可保证7期内命中。
+            新开奖自动进入这里。V2以历史命中率优先，不承诺5期内命中；超过5期会如实标红。
           </p>
         </section>
 
         <section class="section-block">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">历史回溯区</p>
-              <h2>5月1日—7月27日逐期核查</h2>
+              <p class="eyebrow">历史筛选区</p>
+              <h2>3月1日—7月27日逐期核查</h2>
             </div>
-            <span class="backfit-chip">回溯拟合</span>
+            <span class="backfit-chip">事后筛选</span>
           </div>
           <div id="backfit-metrics" class="metrics-grid"></div>
           <p class="section-note warning-note">
-            这段历史参与过规则筛选，只能说明历史样本达到门槛，不能当成未来保证。
+            V2根据这149期历史表现选出，不属于独立检验；只能作为历史比较，真正封盘验证从7月28日开始。
           </p>
         </section>
 
@@ -103,13 +103,15 @@
           <div id="formula" class="formula-content" hidden>
             <h3>独胆</h3>
             <p>
-              统计0—9在最近14期中“至少出现一次”的期数，从低到高排序，取第2名；同分时数字小者排前。
+              每个数字计算最近7期出现频率、最近10期总出现频率和当前遗漏期数，全部标准化后：
             </p>
+            <code>−2 × Z7期出现率 + Z10期总频率 − Z遗漏</code>
+            <p>得分从高到低排列，取第4名作为独胆；同分时数字小者排前。</p>
             <h3>7码</h3>
             <p>
-              每个数字计算30期频率、60期频率、EWMA5近期热度、遗漏期数和30期定位峰值，全部标准化后：
+              每个数字计算最近5期、7期和45期的出现频率，全部标准化后：
             </p>
-            <code>Z30 − Z60 − ZEWMA5 − Z遗漏 + Z定位峰</code>
+            <code>−Z5期出现率 + Z7期出现率 + Z45期出现率</code>
             <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中。</p>
           </div>
         </section>
