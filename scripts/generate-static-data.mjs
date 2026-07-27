@@ -200,6 +200,8 @@ async function main() {
     const danHit = actual.has(prediction.dan);
     const pool7Hit =
       actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool7Group3Covered =
+      actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
     danMissStreak = danHit ? 0 : danMissStreak + 1;
     pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
     history.push({
@@ -211,6 +213,7 @@ async function main() {
       shape: shape(row.digits),
       danHit,
       pool7Hit,
+      pool7Group3Covered,
       danMissStreak,
       pool7MissStreak,
       phase: row.date >= LOCK_DATE ? "locked" : "backfit",
@@ -241,6 +244,14 @@ async function main() {
       backfitPool7: metrics(backfit, "pool7Hit"),
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
+      backfitPool7Group3: {
+        count: backfit.filter((row) => row.shape === "组三").length,
+        hits: backfit.filter((row) => row.pool7Group3Covered).length,
+      },
+      lockedPool7Group3: {
+        count: locked.filter((row) => row.shape === "组三").length,
+        hits: locked.filter((row) => row.pool7Group3Covered).length,
+      },
     },
   };
 

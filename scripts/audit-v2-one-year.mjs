@@ -213,6 +213,8 @@ async function main() {
     const danHit = actual.has(prediction.dan);
     const pool7Hit =
       actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool7Group3Covered =
+      actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
     rows.push({
       date: actualRow.date,
       issue: actualRow.issue,
@@ -223,6 +225,7 @@ async function main() {
       shape: shape(actualRow.digits),
       danHit,
       pool7Hit,
+      pool7Group3Covered,
     });
   }
 
@@ -244,6 +247,8 @@ async function main() {
       pool7Rule:
         "score=-Z(5期出现率)+Z(7期出现率)+Z(45期出现率)，按分数降序取前7名",
       pool7HitRule: "开奖号为组六，且三个不同数字全部进入7码池",
+      pool7Group3Rule:
+        "开奖号为组三，且两个不同数字全部进入7码池时单列为组三覆盖；不计入组六7码中奖。",
     },
     source: {
       provider: "中国福利彩票官网",
@@ -260,6 +265,10 @@ async function main() {
     metrics: {
       dan: metric(rows, "danHit"),
       pool7: metric(rows, "pool7Hit"),
+      pool7Group3: {
+        count: rows.filter((row) => row.shape === "组三").length,
+        hits: rows.filter((row) => row.pool7Group3Covered).length,
+      },
     },
     rows,
   };
@@ -274,6 +283,7 @@ async function main() {
     "形态",
     "独胆命中",
     "7码命中",
+    "组三覆盖",
   ];
   const csvRows = rows.map((row) => [
     row.date,
@@ -285,6 +295,7 @@ async function main() {
     row.shape,
     row.danHit ? "中" : "未中",
     row.pool7Hit ? "中" : "未中",
+    row.shape === "组三" ? (row.pool7Group3Covered ? "覆盖" : "未覆盖") : "",
   ]);
   const csv = [csvHeaders, ...csvRows]
     .map((row) => row.map(csvEscape).join(","))
@@ -303,6 +314,8 @@ async function main() {
 |---|---:|---:|---:|
 | 独胆 | ${audit.metrics.dan.hits}/${audit.metrics.dan.count} | ${(audit.metrics.dan.rate * 100).toFixed(2)}% | ${audit.metrics.dan.longestMiss.length}期 |
 | 7码 | ${audit.metrics.pool7.hits}/${audit.metrics.pool7.count} | ${(audit.metrics.pool7.rate * 100).toFixed(2)}% | ${audit.metrics.pool7.longestMiss.length}期 |
+
+7码另有组三覆盖 ${audit.metrics.pool7Group3.hits}/${audit.metrics.pool7Group3.count}；仅表示组三的两个不同数字均在7码池内，不计作组六7码中奖。
 
 ## 口径限制
 

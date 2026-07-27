@@ -19,6 +19,7 @@ type HistoryRow = {
   shape: string;
   danHit: boolean;
   pool7Hit: boolean;
+  pool7Group3Covered: boolean;
   danMissStreak: number;
   pool7MissStreak: number;
   phase: "backfit" | "locked";
@@ -52,6 +53,23 @@ function HitBadge({ hit }: { hit: boolean }) {
       {hit ? "中" : "未中"}
     </span>
   );
+}
+
+function PoolBadge({ row }: { row: HistoryRow }) {
+  if (row.shape === "组三") {
+    return (
+      <span
+        className={
+          row.pool7Group3Covered
+            ? "hit-badge group3 is-covered"
+            : "hit-badge group3"
+        }
+      >
+        {row.pool7Group3Covered ? "组三覆盖" : "组三未覆"}
+      </span>
+    );
+  }
+  return <HitBadge hit={row.pool7Hit} />;
 }
 
 function MetricCard({
@@ -173,7 +191,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>14期低频第2名</small>
+            <small>V2组合评分第4名</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -182,7 +200,7 @@ export default function Home() {
                 <span key={digit}>{digit}</span>
               ))}
             </div>
-            <small>仅按组六判中</small>
+            <small>组六判中奖，组三覆盖另标</small>
           </article>
         </div>
 
@@ -212,7 +230,7 @@ export default function Home() {
           />
         </div>
         <p className="section-note">
-          新开奖自动进入这里。任何一项连续未中超过7期，就直接标记策略失效。
+          新开奖自动进入这里。独胆连续未中超过7期，就直接标记未达目标；7码不设硬门槛。
         </p>
       </section>
 
@@ -220,7 +238,7 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">历史回溯区</p>
-            <h2>5月1日—7月27日核查</h2>
+            <h2>2025年7月28日—2026年7月27日核查</h2>
           </div>
           <span className="backfit-chip">回溯拟合</span>
         </div>
@@ -230,6 +248,9 @@ export default function Home() {
         </div>
         <p className="section-note warning-note">
           这段数据参与过规则筛选，只能证明历史样本达到门槛，不能当成未来保证。
+        </p>
+        <p className="section-note warning-note">
+          独胆7期目标的独立年度检验未通过：训练期最长断6期，后一整年检验最长断16期，所以没有把失败公式冒充达标上线。
         </p>
       </section>
 
@@ -270,8 +291,12 @@ export default function Home() {
                 </div>
                 <div>
                   <span>7码</span>
-                  <HitBadge hit={row.pool7Hit} />
-                  <small>断{row.pool7MissStreak}</small>
+                  <PoolBadge row={row} />
+                  <small>
+                    {row.shape === "组三"
+                      ? "不计组六奖"
+                      : `断${row.pool7MissStreak}`}
+                  </small>
                 </div>
               </div>
             </article>
@@ -299,18 +324,17 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              统计0—9在最近14期中至少出现一次的期数，从低到高排列，取第2名。
-              同分时数字小者排前。
+              每个数字综合最近7期出现率、最近10期总出现频率和当前遗漏期数，
+              标准化后按 −2×Z7 + Z10 − Z遗漏 计算，取评分第4名。
             </p>
             <h3>7码</h3>
             <p>
-              每个数字计算30期频率、60期频率、EWMA5近期热度、遗漏期数和30期定位峰值。
-              全部标准化后：
+              每个数字计算最近5期、7期和45期出现率，全部标准化后：
             </p>
             <code>
-              Z30 − Z60 − ZEWMA5 − Z遗漏 + Z定位峰
+              −Z5期出现率 + Z7期出现率 + Z45期出现率
             </code>
-            <p>得分从高到低取前7名。开奖号须为组六且三位全部入池才算中。</p>
+            <p>得分从高到低取前7名。开奖号须为组六且三个不同数字全部入池才算中奖；组三的两个不同数字全部入池时只标记“组三覆盖”，不计作组六7码中奖。</p>
           </div>
         )}
       </section>

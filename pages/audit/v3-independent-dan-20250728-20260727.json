@@ -1,0 +1,2959 @@
+{
+  "version": "V3-independent-search-1",
+  "createdAt": "2026-07-27T19:19:13.392Z",
+  "source": {
+    "provider": "中国福利彩票官网",
+    "requestUrl": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2024-04-01&dayEnd=2026-07-27&pageNo=1&pageSize=1000&systemType=PC",
+    "integrity": {
+      "fetchedCount": 820,
+      "duplicateIssues": [],
+      "invalidRows": 0,
+      "passed": true
+    }
+  },
+  "protocol": {
+    "seed": 20260728,
+    "candidates": 180000,
+    "finalistCount": 500,
+    "trainingRange": {
+      "start": "2024-07-28",
+      "end": "2025-07-27",
+      "count": 349
+    },
+    "untouchedTestRange": {
+      "start": "2025-07-28",
+      "end": "2026-07-27",
+      "count": 351
+    },
+    "selectionRule": "只按训练期最长连续未中、分段稳定性、命中数排序选出唯一公式，再原封不动检验后一整年。"
+  },
+  "selected": {
+    "method": {
+      "rank": 4,
+      "weights": [
+        {
+          "feature": "presence3",
+          "weight": -2
+        },
+        {
+          "feature": "presence20",
+          "weight": 2
+        },
+        {
+          "feature": "occurrence3",
+          "weight": -1
+        },
+        {
+          "feature": "occurrence7",
+          "weight": -3
+        },
+        {
+          "feature": "occurrence10",
+          "weight": -3
+        },
+        {
+          "feature": "occurrence14",
+          "weight": -3
+        },
+        {
+          "feature": "occurrence20",
+          "weight": 2
+        },
+        {
+          "feature": "ewma21",
+          "weight": 1
+        },
+        {
+          "feature": "position1_10",
+          "weight": -3
+        },
+        {
+          "feature": "last2",
+          "weight": 3
+        },
+        {
+          "feature": "transition30",
+          "weight": -2
+        }
+      ]
+    },
+    "train": {
+      "count": 349,
+      "hits": 117,
+      "rate": 0.335243553008596,
+      "maxMiss": 6,
+      "maxMissStartIndex": 53,
+      "maxMissEndIndex": 58,
+      "segmentWorst": 6,
+      "firstHalfMaxMiss": 6,
+      "secondHalfMaxMiss": 6
+    },
+    "test": {
+      "count": 351,
+      "hits": 86,
+      "rate": 0.245014245014245,
+      "maxMiss": 16,
+      "maxMissStartIndex": 92,
+      "maxMissEndIndex": 107,
+      "longestMiss": {
+        "length": 16,
+        "startIssue": "2025291",
+        "startDate": "2025-11-01",
+        "endIssue": "2025306",
+        "endDate": "2025-11-16"
+      }
+    },
+    "testRows": [
+      {
+        "date": "2025-07-28",
+        "issue": "2025199",
+        "dan": 0,
+        "draw": "943",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-07-29",
+        "issue": "2025200",
+        "dan": 6,
+        "draw": "015",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-07-30",
+        "issue": "2025201",
+        "dan": 3,
+        "draw": "846",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-07-31",
+        "issue": "2025202",
+        "dan": 6,
+        "draw": "953",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-08-01",
+        "issue": "2025203",
+        "dan": 7,
+        "draw": "013",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-08-02",
+        "issue": "2025204",
+        "dan": 6,
+        "draw": "007",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-08-03",
+        "issue": "2025205",
+        "dan": 7,
+        "draw": "920",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-08-04",
+        "issue": "2025206",
+        "dan": 1,
+        "draw": "444",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2025-08-05",
+        "issue": "2025207",
+        "dan": 7,
+        "draw": "255",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2025-08-06",
+        "issue": "2025208",
+        "dan": 2,
+        "draw": "432",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-08-07",
+        "issue": "2025209",
+        "dan": 2,
+        "draw": "387",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-08-08",
+        "issue": "2025210",
+        "dan": 1,
+        "draw": "520",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-08-09",
+        "issue": "2025211",
+        "dan": 8,
+        "draw": "897",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-08-10",
+        "issue": "2025212",
+        "dan": 8,
+        "draw": "456",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-08-11",
+        "issue": "2025213",
+        "dan": 9,
+        "draw": "381",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-08-12",
+        "issue": "2025214",
+        "dan": 0,
+        "draw": "920",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-08-13",
+        "issue": "2025215",
+        "dan": 6,
+        "draw": "853",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-08-14",
+        "issue": "2025216",
+        "dan": 1,
+        "draw": "625",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-08-15",
+        "issue": "2025217",
+        "dan": 4,
+        "draw": "894",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-08-16",
+        "issue": "2025218",
+        "dan": 9,
+        "draw": "526",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-08-17",
+        "issue": "2025219",
+        "dan": 4,
+        "draw": "900",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-08-18",
+        "issue": "2025220",
+        "dan": 2,
+        "draw": "536",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-08-19",
+        "issue": "2025221",
+        "dan": 3,
+        "draw": "296",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-08-20",
+        "issue": "2025222",
+        "dan": 4,
+        "draw": "010",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-08-21",
+        "issue": "2025223",
+        "dan": 2,
+        "draw": "736",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-08-22",
+        "issue": "2025224",
+        "dan": 1,
+        "draw": "990",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-08-23",
+        "issue": "2025225",
+        "dan": 3,
+        "draw": "806",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2025-08-24",
+        "issue": "2025226",
+        "dan": 7,
+        "draw": "180",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2025-08-25",
+        "issue": "2025227",
+        "dan": 7,
+        "draw": "611",
+        "hit": false,
+        "missStreak": 10
+      },
+      {
+        "date": "2025-08-26",
+        "issue": "2025228",
+        "dan": 7,
+        "draw": "465",
+        "hit": false,
+        "missStreak": 11
+      },
+      {
+        "date": "2025-08-27",
+        "issue": "2025229",
+        "dan": 5,
+        "draw": "108",
+        "hit": false,
+        "missStreak": 12
+      },
+      {
+        "date": "2025-08-28",
+        "issue": "2025230",
+        "dan": 4,
+        "draw": "439",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-08-29",
+        "issue": "2025231",
+        "dan": 5,
+        "draw": "732",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-08-30",
+        "issue": "2025232",
+        "dan": 6,
+        "draw": "044",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-08-31",
+        "issue": "2025233",
+        "dan": 6,
+        "draw": "259",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-09-01",
+        "issue": "2025234",
+        "dan": 6,
+        "draw": "620",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-02",
+        "issue": "2025235",
+        "dan": 9,
+        "draw": "969",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-03",
+        "issue": "2025236",
+        "dan": 3,
+        "draw": "355",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-04",
+        "issue": "2025237",
+        "dan": 5,
+        "draw": "590",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-05",
+        "issue": "2025238",
+        "dan": 3,
+        "draw": "860",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-06",
+        "issue": "2025239",
+        "dan": 2,
+        "draw": "125",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-07",
+        "issue": "2025240",
+        "dan": 3,
+        "draw": "419",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-08",
+        "issue": "2025241",
+        "dan": 1,
+        "draw": "160",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-09",
+        "issue": "2025242",
+        "dan": 0,
+        "draw": "990",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-10",
+        "issue": "2025243",
+        "dan": 4,
+        "draw": "176",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-11",
+        "issue": "2025244",
+        "dan": 3,
+        "draw": "673",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-12",
+        "issue": "2025245",
+        "dan": 3,
+        "draw": "848",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-13",
+        "issue": "2025246",
+        "dan": 0,
+        "draw": "997",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-09-14",
+        "issue": "2025247",
+        "dan": 3,
+        "draw": "262",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-09-15",
+        "issue": "2025248",
+        "dan": 4,
+        "draw": "526",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-09-16",
+        "issue": "2025249",
+        "dan": 5,
+        "draw": "952",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-17",
+        "issue": "2025250",
+        "dan": 5,
+        "draw": "902",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-18",
+        "issue": "2025251",
+        "dan": 5,
+        "draw": "868",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-09-19",
+        "issue": "2025252",
+        "dan": 7,
+        "draw": "792",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-20",
+        "issue": "2025253",
+        "dan": 1,
+        "draw": "457",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-21",
+        "issue": "2025254",
+        "dan": 5,
+        "draw": "072",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-09-22",
+        "issue": "2025255",
+        "dan": 5,
+        "draw": "264",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-09-23",
+        "issue": "2025256",
+        "dan": 6,
+        "draw": "406",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-24",
+        "issue": "2025257",
+        "dan": 8,
+        "draw": "860",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-25",
+        "issue": "2025258",
+        "dan": 5,
+        "draw": "626",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-09-26",
+        "issue": "2025259",
+        "dan": 7,
+        "draw": "625",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-09-27",
+        "issue": "2025260",
+        "dan": 5,
+        "draw": "199",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-09-28",
+        "issue": "2025261",
+        "dan": 1,
+        "draw": "751",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-29",
+        "issue": "2025262",
+        "dan": 1,
+        "draw": "914",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-09-30",
+        "issue": "2025263",
+        "dan": 7,
+        "draw": "399",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-05",
+        "issue": "2025264",
+        "dan": 4,
+        "draw": "734",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-06",
+        "issue": "2025265",
+        "dan": 2,
+        "draw": "546",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-07",
+        "issue": "2025266",
+        "dan": 5,
+        "draw": "723",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-10-08",
+        "issue": "2025267",
+        "dan": 5,
+        "draw": "391",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-10-09",
+        "issue": "2025268",
+        "dan": 5,
+        "draw": "674",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-10-10",
+        "issue": "2025269",
+        "dan": 5,
+        "draw": "055",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-11",
+        "issue": "2025270",
+        "dan": 6,
+        "draw": "408",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-12",
+        "issue": "2025271",
+        "dan": 0,
+        "draw": "727",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-10-13",
+        "issue": "2025272",
+        "dan": 0,
+        "draw": "967",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-10-14",
+        "issue": "2025273",
+        "dan": 6,
+        "draw": "045",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-10-15",
+        "issue": "2025274",
+        "dan": 2,
+        "draw": "596",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-10-16",
+        "issue": "2025275",
+        "dan": 3,
+        "draw": "203",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-17",
+        "issue": "2025276",
+        "dan": 3,
+        "draw": "714",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-18",
+        "issue": "2025277",
+        "dan": 3,
+        "draw": "061",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-10-19",
+        "issue": "2025278",
+        "dan": 3,
+        "draw": "629",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-10-20",
+        "issue": "2025279",
+        "dan": 9,
+        "draw": "752",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-10-21",
+        "issue": "2025280",
+        "dan": 1,
+        "draw": "411",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-22",
+        "issue": "2025281",
+        "dan": 5,
+        "draw": "897",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-23",
+        "issue": "2025282",
+        "dan": 4,
+        "draw": "416",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-24",
+        "issue": "2025283",
+        "dan": 5,
+        "draw": "664",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-10-25",
+        "issue": "2025284",
+        "dan": 9,
+        "draw": "844",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-10-26",
+        "issue": "2025285",
+        "dan": 9,
+        "draw": "172",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-10-27",
+        "issue": "2025286",
+        "dan": 5,
+        "draw": "827",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-10-28",
+        "issue": "2025287",
+        "dan": 9,
+        "draw": "805",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-10-29",
+        "issue": "2025288",
+        "dan": 9,
+        "draw": "767",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-10-30",
+        "issue": "2025289",
+        "dan": 3,
+        "draw": "473",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-10-31",
+        "issue": "2025290",
+        "dan": 3,
+        "draw": "332",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-11-01",
+        "issue": "2025291",
+        "dan": 2,
+        "draw": "794",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-11-02",
+        "issue": "2025292",
+        "dan": 2,
+        "draw": "117",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-11-03",
+        "issue": "2025293",
+        "dan": 2,
+        "draw": "154",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-11-04",
+        "issue": "2025294",
+        "dan": 2,
+        "draw": "513",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-11-05",
+        "issue": "2025295",
+        "dan": 9,
+        "draw": "273",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-11-06",
+        "issue": "2025296",
+        "dan": 2,
+        "draw": "537",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-11-07",
+        "issue": "2025297",
+        "dan": 8,
+        "draw": "051",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-11-08",
+        "issue": "2025298",
+        "dan": 0,
+        "draw": "544",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2025-11-09",
+        "issue": "2025299",
+        "dan": 0,
+        "draw": "385",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2025-11-10",
+        "issue": "2025300",
+        "dan": 4,
+        "draw": "867",
+        "hit": false,
+        "missStreak": 10
+      },
+      {
+        "date": "2025-11-11",
+        "issue": "2025301",
+        "dan": 8,
+        "draw": "755",
+        "hit": false,
+        "missStreak": 11
+      },
+      {
+        "date": "2025-11-12",
+        "issue": "2025302",
+        "dan": 2,
+        "draw": "715",
+        "hit": false,
+        "missStreak": 12
+      },
+      {
+        "date": "2025-11-13",
+        "issue": "2025303",
+        "dan": 4,
+        "draw": "933",
+        "hit": false,
+        "missStreak": 13
+      },
+      {
+        "date": "2025-11-14",
+        "issue": "2025304",
+        "dan": 2,
+        "draw": "471",
+        "hit": false,
+        "missStreak": 14
+      },
+      {
+        "date": "2025-11-15",
+        "issue": "2025305",
+        "dan": 9,
+        "draw": "310",
+        "hit": false,
+        "missStreak": 15
+      },
+      {
+        "date": "2025-11-16",
+        "issue": "2025306",
+        "dan": 8,
+        "draw": "697",
+        "hit": false,
+        "missStreak": 16
+      },
+      {
+        "date": "2025-11-17",
+        "issue": "2025307",
+        "dan": 6,
+        "draw": "164",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-11-18",
+        "issue": "2025308",
+        "dan": 9,
+        "draw": "448",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-11-19",
+        "issue": "2025309",
+        "dan": 9,
+        "draw": "190",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-11-20",
+        "issue": "2025310",
+        "dan": 8,
+        "draw": "169",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-11-21",
+        "issue": "2025311",
+        "dan": 3,
+        "draw": "640",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-11-22",
+        "issue": "2025312",
+        "dan": 7,
+        "draw": "689",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-11-23",
+        "issue": "2025313",
+        "dan": 7,
+        "draw": "664",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-11-24",
+        "issue": "2025314",
+        "dan": 3,
+        "draw": "917",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-11-25",
+        "issue": "2025315",
+        "dan": 3,
+        "draw": "729",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-11-26",
+        "issue": "2025316",
+        "dan": 2,
+        "draw": "775",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-11-27",
+        "issue": "2025317",
+        "dan": 2,
+        "draw": "301",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2025-11-28",
+        "issue": "2025318",
+        "dan": 0,
+        "draw": "430",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-11-29",
+        "issue": "2025319",
+        "dan": 4,
+        "draw": "294",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-11-30",
+        "issue": "2025320",
+        "dan": 0,
+        "draw": "121",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-12-01",
+        "issue": "2025321",
+        "dan": 9,
+        "draw": "847",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-12-02",
+        "issue": "2025322",
+        "dan": 3,
+        "draw": "226",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-12-03",
+        "issue": "2025323",
+        "dan": 3,
+        "draw": "551",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-12-04",
+        "issue": "2025324",
+        "dan": 8,
+        "draw": "661",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-12-05",
+        "issue": "2025325",
+        "dan": 3,
+        "draw": "165",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-12-06",
+        "issue": "2025326",
+        "dan": 3,
+        "draw": "185",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-12-07",
+        "issue": "2025327",
+        "dan": 4,
+        "draw": "789",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2025-12-08",
+        "issue": "2025328",
+        "dan": 4,
+        "draw": "040",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-09",
+        "issue": "2025329",
+        "dan": 7,
+        "draw": "564",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-12-10",
+        "issue": "2025330",
+        "dan": 2,
+        "draw": "062",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-11",
+        "issue": "2025331",
+        "dan": 2,
+        "draw": "050",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-12-12",
+        "issue": "2025332",
+        "dan": 2,
+        "draw": "885",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-12-13",
+        "issue": "2025333",
+        "dan": 9,
+        "draw": "273",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-12-14",
+        "issue": "2025334",
+        "dan": 4,
+        "draw": "198",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-12-15",
+        "issue": "2025335",
+        "dan": 9,
+        "draw": "051",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-12-16",
+        "issue": "2025336",
+        "dan": 7,
+        "draw": "641",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-12-17",
+        "issue": "2025337",
+        "dan": 7,
+        "draw": "876",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-18",
+        "issue": "2025338",
+        "dan": 9,
+        "draw": "689",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-19",
+        "issue": "2025339",
+        "dan": 4,
+        "draw": "676",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-12-20",
+        "issue": "2025340",
+        "dan": 2,
+        "draw": "130",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-12-21",
+        "issue": "2025341",
+        "dan": 7,
+        "draw": "996",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2025-12-22",
+        "issue": "2025342",
+        "dan": 4,
+        "draw": "681",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2025-12-23",
+        "issue": "2025343",
+        "dan": 3,
+        "draw": "645",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2025-12-24",
+        "issue": "2025344",
+        "dan": 3,
+        "draw": "622",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2025-12-25",
+        "issue": "2025345",
+        "dan": 7,
+        "draw": "630",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2025-12-26",
+        "issue": "2025346",
+        "dan": 8,
+        "draw": "897",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-27",
+        "issue": "2025347",
+        "dan": 7,
+        "draw": "192",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2025-12-28",
+        "issue": "2025348",
+        "dan": 0,
+        "draw": "278",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2025-12-29",
+        "issue": "2025349",
+        "dan": 3,
+        "draw": "743",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-30",
+        "issue": "2025350",
+        "dan": 8,
+        "draw": "580",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2025-12-31",
+        "issue": "2025351",
+        "dan": 4,
+        "draw": "452",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-01",
+        "issue": "2026001",
+        "dan": 3,
+        "draw": "298",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-02",
+        "issue": "2026002",
+        "dan": 0,
+        "draw": "520",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-03",
+        "issue": "2026003",
+        "dan": 9,
+        "draw": "601",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-04",
+        "issue": "2026004",
+        "dan": 4,
+        "draw": "019",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-01-05",
+        "issue": "2026005",
+        "dan": 9,
+        "draw": "476",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-01-06",
+        "issue": "2026006",
+        "dan": 6,
+        "draw": "244",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-01-07",
+        "issue": "2026007",
+        "dan": 8,
+        "draw": "353",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-01-08",
+        "issue": "2026008",
+        "dan": 9,
+        "draw": "252",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-01-09",
+        "issue": "2026009",
+        "dan": 7,
+        "draw": "265",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2026-01-10",
+        "issue": "2026010",
+        "dan": 1,
+        "draw": "667",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2026-01-11",
+        "issue": "2026011",
+        "dan": 7,
+        "draw": "647",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-12",
+        "issue": "2026012",
+        "dan": 7,
+        "draw": "241",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-13",
+        "issue": "2026013",
+        "dan": 0,
+        "draw": "513",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-01-14",
+        "issue": "2026014",
+        "dan": 1,
+        "draw": "050",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-01-15",
+        "issue": "2026015",
+        "dan": 3,
+        "draw": "532",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-16",
+        "issue": "2026016",
+        "dan": 4,
+        "draw": "582",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-17",
+        "issue": "2026017",
+        "dan": 4,
+        "draw": "945",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-18",
+        "issue": "2026018",
+        "dan": 1,
+        "draw": "494",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-19",
+        "issue": "2026019",
+        "dan": 8,
+        "draw": "223",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-01-20",
+        "issue": "2026020",
+        "dan": 6,
+        "draw": "676",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-21",
+        "issue": "2026021",
+        "dan": 0,
+        "draw": "559",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-22",
+        "issue": "2026022",
+        "dan": 8,
+        "draw": "678",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-01-23",
+        "issue": "2026023",
+        "dan": 3,
+        "draw": "784",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-01-24",
+        "issue": "2026024",
+        "dan": 8,
+        "draw": "911",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-01-25",
+        "issue": "2026025",
+        "dan": 8,
+        "draw": "029",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-01-26",
+        "issue": "2026026",
+        "dan": 8,
+        "draw": "099",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-01-27",
+        "issue": "2026027",
+        "dan": 5,
+        "draw": "126",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-01-28",
+        "issue": "2026028",
+        "dan": 5,
+        "draw": "270",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-01-29",
+        "issue": "2026029",
+        "dan": 8,
+        "draw": "003",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2026-01-30",
+        "issue": "2026030",
+        "dan": 8,
+        "draw": "134",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2026-01-31",
+        "issue": "2026031",
+        "dan": 3,
+        "draw": "142",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2026-02-01",
+        "issue": "2026032",
+        "dan": 3,
+        "draw": "452",
+        "hit": false,
+        "missStreak": 10
+      },
+      {
+        "date": "2026-02-02",
+        "issue": "2026033",
+        "dan": 3,
+        "draw": "119",
+        "hit": false,
+        "missStreak": 11
+      },
+      {
+        "date": "2026-02-03",
+        "issue": "2026034",
+        "dan": 7,
+        "draw": "052",
+        "hit": false,
+        "missStreak": 12
+      },
+      {
+        "date": "2026-02-04",
+        "issue": "2026035",
+        "dan": 9,
+        "draw": "213",
+        "hit": false,
+        "missStreak": 13
+      },
+      {
+        "date": "2026-02-05",
+        "issue": "2026036",
+        "dan": 5,
+        "draw": "762",
+        "hit": false,
+        "missStreak": 14
+      },
+      {
+        "date": "2026-02-06",
+        "issue": "2026037",
+        "dan": 3,
+        "draw": "420",
+        "hit": false,
+        "missStreak": 15
+      },
+      {
+        "date": "2026-02-07",
+        "issue": "2026038",
+        "dan": 7,
+        "draw": "467",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-02-08",
+        "issue": "2026039",
+        "dan": 5,
+        "draw": "450",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-02-09",
+        "issue": "2026040",
+        "dan": 7,
+        "draw": "425",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-02-10",
+        "issue": "2026041",
+        "dan": 0,
+        "draw": "901",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-02-11",
+        "issue": "2026042",
+        "dan": 3,
+        "draw": "854",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-02-12",
+        "issue": "2026043",
+        "dan": 9,
+        "draw": "765",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-02-13",
+        "issue": "2026044",
+        "dan": 8,
+        "draw": "589",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-02-24",
+        "issue": "2026045",
+        "dan": 6,
+        "draw": "181",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-02-25",
+        "issue": "2026046",
+        "dan": 9,
+        "draw": "291",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-02-26",
+        "issue": "2026047",
+        "dan": 7,
+        "draw": "936",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-02-27",
+        "issue": "2026048",
+        "dan": 7,
+        "draw": "612",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-02-28",
+        "issue": "2026049",
+        "dan": 4,
+        "draw": "110",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-03-01",
+        "issue": "2026050",
+        "dan": 7,
+        "draw": "689",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-03-02",
+        "issue": "2026051",
+        "dan": 7,
+        "draw": "302",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-03-03",
+        "issue": "2026052",
+        "dan": 2,
+        "draw": "277",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-04",
+        "issue": "2026053",
+        "dan": 8,
+        "draw": "755",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-05",
+        "issue": "2026054",
+        "dan": 7,
+        "draw": "217",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-06",
+        "issue": "2026055",
+        "dan": 0,
+        "draw": "107",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-07",
+        "issue": "2026056",
+        "dan": 9,
+        "draw": "477",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-08",
+        "issue": "2026057",
+        "dan": 5,
+        "draw": "264",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-03-09",
+        "issue": "2026058",
+        "dan": 4,
+        "draw": "543",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-10",
+        "issue": "2026059",
+        "dan": 5,
+        "draw": "794",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-11",
+        "issue": "2026060",
+        "dan": 0,
+        "draw": "943",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-03-12",
+        "issue": "2026061",
+        "dan": 6,
+        "draw": "429",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-03-13",
+        "issue": "2026062",
+        "dan": 5,
+        "draw": "294",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-03-14",
+        "issue": "2026063",
+        "dan": 0,
+        "draw": "517",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-03-15",
+        "issue": "2026064",
+        "dan": 0,
+        "draw": "604",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-16",
+        "issue": "2026065",
+        "dan": 6,
+        "draw": "057",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-17",
+        "issue": "2026066",
+        "dan": 6,
+        "draw": "934",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-03-18",
+        "issue": "2026067",
+        "dan": 7,
+        "draw": "695",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-03-19",
+        "issue": "2026068",
+        "dan": 2,
+        "draw": "706",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-03-20",
+        "issue": "2026069",
+        "dan": 3,
+        "draw": "908",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-03-21",
+        "issue": "2026070",
+        "dan": 8,
+        "draw": "484",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-22",
+        "issue": "2026071",
+        "dan": 8,
+        "draw": "261",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-23",
+        "issue": "2026072",
+        "dan": 7,
+        "draw": "245",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-03-24",
+        "issue": "2026073",
+        "dan": 8,
+        "draw": "504",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-03-25",
+        "issue": "2026074",
+        "dan": 8,
+        "draw": "487",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-26",
+        "issue": "2026075",
+        "dan": 8,
+        "draw": "816",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-03-27",
+        "issue": "2026076",
+        "dan": 9,
+        "draw": "863",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-03-28",
+        "issue": "2026077",
+        "dan": 7,
+        "draw": "112",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-03-29",
+        "issue": "2026078",
+        "dan": 5,
+        "draw": "049",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-03-30",
+        "issue": "2026079",
+        "dan": 5,
+        "draw": "233",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-03-31",
+        "issue": "2026080",
+        "dan": 5,
+        "draw": "802",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-04-01",
+        "issue": "2026081",
+        "dan": 6,
+        "draw": "827",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-04-02",
+        "issue": "2026082",
+        "dan": 7,
+        "draw": "942",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2026-04-03",
+        "issue": "2026083",
+        "dan": 9,
+        "draw": "506",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2026-04-04",
+        "issue": "2026084",
+        "dan": 0,
+        "draw": "456",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2026-04-05",
+        "issue": "2026085",
+        "dan": 9,
+        "draw": "118",
+        "hit": false,
+        "missStreak": 10
+      },
+      {
+        "date": "2026-04-06",
+        "issue": "2026086",
+        "dan": 6,
+        "draw": "382",
+        "hit": false,
+        "missStreak": 11
+      },
+      {
+        "date": "2026-04-07",
+        "issue": "2026087",
+        "dan": 0,
+        "draw": "911",
+        "hit": false,
+        "missStreak": 12
+      },
+      {
+        "date": "2026-04-08",
+        "issue": "2026088",
+        "dan": 5,
+        "draw": "608",
+        "hit": false,
+        "missStreak": 13
+      },
+      {
+        "date": "2026-04-09",
+        "issue": "2026089",
+        "dan": 5,
+        "draw": "922",
+        "hit": false,
+        "missStreak": 14
+      },
+      {
+        "date": "2026-04-10",
+        "issue": "2026090",
+        "dan": 0,
+        "draw": "816",
+        "hit": false,
+        "missStreak": 15
+      },
+      {
+        "date": "2026-04-11",
+        "issue": "2026091",
+        "dan": 3,
+        "draw": "537",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-12",
+        "issue": "2026092",
+        "dan": 3,
+        "draw": "870",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-04-13",
+        "issue": "2026093",
+        "dan": 5,
+        "draw": "518",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-14",
+        "issue": "2026094",
+        "dan": 7,
+        "draw": "418",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-04-15",
+        "issue": "2026095",
+        "dan": 3,
+        "draw": "022",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-04-16",
+        "issue": "2026096",
+        "dan": 6,
+        "draw": "689",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-17",
+        "issue": "2026097",
+        "dan": 4,
+        "draw": "818",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-04-18",
+        "issue": "2026098",
+        "dan": 7,
+        "draw": "513",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-04-19",
+        "issue": "2026099",
+        "dan": 4,
+        "draw": "877",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-04-20",
+        "issue": "2026100",
+        "dan": 3,
+        "draw": "414",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-04-21",
+        "issue": "2026101",
+        "dan": 7,
+        "draw": "584",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-04-22",
+        "issue": "2026102",
+        "dan": 0,
+        "draw": "420",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-23",
+        "issue": "2026103",
+        "dan": 0,
+        "draw": "661",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-04-24",
+        "issue": "2026104",
+        "dan": 3,
+        "draw": "482",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-04-25",
+        "issue": "2026105",
+        "dan": 1,
+        "draw": "631",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-26",
+        "issue": "2026106",
+        "dan": 2,
+        "draw": "928",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-04-27",
+        "issue": "2026107",
+        "dan": 3,
+        "draw": "278",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-04-28",
+        "issue": "2026108",
+        "dan": 5,
+        "draw": "671",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-04-29",
+        "issue": "2026109",
+        "dan": 7,
+        "draw": "195",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-04-30",
+        "issue": "2026110",
+        "dan": 9,
+        "draw": "379",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-01",
+        "issue": "2026111",
+        "dan": 4,
+        "draw": "863",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-02",
+        "issue": "2026112",
+        "dan": 8,
+        "draw": "065",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-03",
+        "issue": "2026113",
+        "dan": 1,
+        "draw": "040",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-05-04",
+        "issue": "2026114",
+        "dan": 7,
+        "draw": "864",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-05-05",
+        "issue": "2026115",
+        "dan": 5,
+        "draw": "581",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-06",
+        "issue": "2026116",
+        "dan": 3,
+        "draw": "020",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-07",
+        "issue": "2026117",
+        "dan": 1,
+        "draw": "411",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-08",
+        "issue": "2026118",
+        "dan": 4,
+        "draw": "132",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-09",
+        "issue": "2026119",
+        "dan": 2,
+        "draw": "112",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-10",
+        "issue": "2026120",
+        "dan": 5,
+        "draw": "734",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-11",
+        "issue": "2026121",
+        "dan": 2,
+        "draw": "393",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-12",
+        "issue": "2026122",
+        "dan": 4,
+        "draw": "346",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-13",
+        "issue": "2026123",
+        "dan": 8,
+        "draw": "200",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-14",
+        "issue": "2026124",
+        "dan": 9,
+        "draw": "280",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-15",
+        "issue": "2026125",
+        "dan": 5,
+        "draw": "954",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-16",
+        "issue": "2026126",
+        "dan": 9,
+        "draw": "846",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-17",
+        "issue": "2026127",
+        "dan": 9,
+        "draw": "700",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-18",
+        "issue": "2026128",
+        "dan": 7,
+        "draw": "776",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-19",
+        "issue": "2026129",
+        "dan": 1,
+        "draw": "023",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-20",
+        "issue": "2026130",
+        "dan": 8,
+        "draw": "267",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-21",
+        "issue": "2026131",
+        "dan": 8,
+        "draw": "598",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-22",
+        "issue": "2026132",
+        "dan": 8,
+        "draw": "756",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-23",
+        "issue": "2026133",
+        "dan": 8,
+        "draw": "080",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-24",
+        "issue": "2026134",
+        "dan": 2,
+        "draw": "654",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-25",
+        "issue": "2026135",
+        "dan": 2,
+        "draw": "487",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-05-26",
+        "issue": "2026136",
+        "dan": 4,
+        "draw": "889",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-05-27",
+        "issue": "2026137",
+        "dan": 4,
+        "draw": "165",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-05-28",
+        "issue": "2026138",
+        "dan": 9,
+        "draw": "790",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-29",
+        "issue": "2026139",
+        "dan": 4,
+        "draw": "286",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-05-30",
+        "issue": "2026140",
+        "dan": 2,
+        "draw": "285",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-05-31",
+        "issue": "2026141",
+        "dan": 9,
+        "draw": "397",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-01",
+        "issue": "2026142",
+        "dan": 3,
+        "draw": "894",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-02",
+        "issue": "2026143",
+        "dan": 4,
+        "draw": "376",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-03",
+        "issue": "2026144",
+        "dan": 5,
+        "draw": "726",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-06-04",
+        "issue": "2026145",
+        "dan": 6,
+        "draw": "279",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-06-05",
+        "issue": "2026146",
+        "dan": 5,
+        "draw": "464",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-06-06",
+        "issue": "2026147",
+        "dan": 6,
+        "draw": "712",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-06-07",
+        "issue": "2026148",
+        "dan": 6,
+        "draw": "408",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2026-06-08",
+        "issue": "2026149",
+        "dan": 9,
+        "draw": "696",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-09",
+        "issue": "2026150",
+        "dan": 8,
+        "draw": "720",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-10",
+        "issue": "2026151",
+        "dan": 9,
+        "draw": "631",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-11",
+        "issue": "2026152",
+        "dan": 3,
+        "draw": "220",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-06-12",
+        "issue": "2026153",
+        "dan": 9,
+        "draw": "887",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-06-13",
+        "issue": "2026154",
+        "dan": 3,
+        "draw": "377",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-14",
+        "issue": "2026155",
+        "dan": 3,
+        "draw": "409",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-15",
+        "issue": "2026156",
+        "dan": 3,
+        "draw": "162",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-16",
+        "issue": "2026157",
+        "dan": 1,
+        "draw": "327",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-06-17",
+        "issue": "2026158",
+        "dan": 8,
+        "draw": "178",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-18",
+        "issue": "2026159",
+        "dan": 0,
+        "draw": "995",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-19",
+        "issue": "2026160",
+        "dan": 6,
+        "draw": "332",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-20",
+        "issue": "2026161",
+        "dan": 0,
+        "draw": "529",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-06-21",
+        "issue": "2026162",
+        "dan": 7,
+        "draw": "585",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-06-22",
+        "issue": "2026163",
+        "dan": 7,
+        "draw": "537",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-23",
+        "issue": "2026164",
+        "dan": 8,
+        "draw": "690",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-24",
+        "issue": "2026165",
+        "dan": 6,
+        "draw": "424",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-25",
+        "issue": "2026166",
+        "dan": 4,
+        "draw": "900",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-06-26",
+        "issue": "2026167",
+        "dan": 8,
+        "draw": "631",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-06-27",
+        "issue": "2026168",
+        "dan": 1,
+        "draw": "130",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-06-28",
+        "issue": "2026169",
+        "dan": 6,
+        "draw": "832",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-06-29",
+        "issue": "2026170",
+        "dan": 1,
+        "draw": "805",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-06-30",
+        "issue": "2026171",
+        "dan": 8,
+        "draw": "134",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-07-01",
+        "issue": "2026172",
+        "dan": 6,
+        "draw": "445",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-07-02",
+        "issue": "2026173",
+        "dan": 9,
+        "draw": "677",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-07-03",
+        "issue": "2026174",
+        "dan": 7,
+        "draw": "618",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-07-04",
+        "issue": "2026175",
+        "dan": 3,
+        "draw": "421",
+        "hit": false,
+        "missStreak": 7
+      },
+      {
+        "date": "2026-07-05",
+        "issue": "2026176",
+        "dan": 5,
+        "draw": "269",
+        "hit": false,
+        "missStreak": 8
+      },
+      {
+        "date": "2026-07-06",
+        "issue": "2026177",
+        "dan": 2,
+        "draw": "808",
+        "hit": false,
+        "missStreak": 9
+      },
+      {
+        "date": "2026-07-07",
+        "issue": "2026178",
+        "dan": 0,
+        "draw": "266",
+        "hit": false,
+        "missStreak": 10
+      },
+      {
+        "date": "2026-07-08",
+        "issue": "2026179",
+        "dan": 0,
+        "draw": "993",
+        "hit": false,
+        "missStreak": 11
+      },
+      {
+        "date": "2026-07-09",
+        "issue": "2026180",
+        "dan": 2,
+        "draw": "520",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-07-10",
+        "issue": "2026181",
+        "dan": 7,
+        "draw": "818",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-07-11",
+        "issue": "2026182",
+        "dan": 3,
+        "draw": "662",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-07-12",
+        "issue": "2026183",
+        "dan": 7,
+        "draw": "923",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-07-13",
+        "issue": "2026184",
+        "dan": 0,
+        "draw": "902",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-07-14",
+        "issue": "2026185",
+        "dan": 4,
+        "draw": "397",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-07-15",
+        "issue": "2026186",
+        "dan": 0,
+        "draw": "045",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-07-16",
+        "issue": "2026187",
+        "dan": 5,
+        "draw": "023",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-07-17",
+        "issue": "2026188",
+        "dan": 5,
+        "draw": "969",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-07-18",
+        "issue": "2026189",
+        "dan": 6,
+        "draw": "558",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-07-19",
+        "issue": "2026190",
+        "dan": 8,
+        "draw": "026",
+        "hit": false,
+        "missStreak": 4
+      },
+      {
+        "date": "2026-07-20",
+        "issue": "2026191",
+        "dan": 2,
+        "draw": "906",
+        "hit": false,
+        "missStreak": 5
+      },
+      {
+        "date": "2026-07-21",
+        "issue": "2026192",
+        "dan": 8,
+        "draw": "425",
+        "hit": false,
+        "missStreak": 6
+      },
+      {
+        "date": "2026-07-22",
+        "issue": "2026193",
+        "dan": 4,
+        "draw": "254",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-07-23",
+        "issue": "2026194",
+        "dan": 3,
+        "draw": "283",
+        "hit": true,
+        "missStreak": 0
+      },
+      {
+        "date": "2026-07-24",
+        "issue": "2026195",
+        "dan": 3,
+        "draw": "275",
+        "hit": false,
+        "missStreak": 1
+      },
+      {
+        "date": "2026-07-25",
+        "issue": "2026196",
+        "dan": 3,
+        "draw": "419",
+        "hit": false,
+        "missStreak": 2
+      },
+      {
+        "date": "2026-07-26",
+        "issue": "2026197",
+        "dan": 8,
+        "draw": "232",
+        "hit": false,
+        "missStreak": 3
+      },
+      {
+        "date": "2026-07-27",
+        "issue": "2026198",
+        "dan": 8,
+        "draw": "685",
+        "hit": true,
+        "missStreak": 0
+      }
+    ]
+  },
+  "diagnosticOnly": {
+    "warning": "以下项目查看测试期后才知道，只用于诊断，不得替代上方预先选定公式，也不得作为独立检验成绩。",
+    "bestAmongTrainingFinalistsAfterLookingAtTest": {
+      "id": 65190,
+      "train": {
+        "count": 349,
+        "hits": 102,
+        "rate": 0.2922636103151863,
+        "maxMiss": 9,
+        "maxMissStartIndex": 85,
+        "maxMissEndIndex": 93,
+        "segmentWorst": 8,
+        "firstHalfMaxMiss": 9,
+        "secondHalfMaxMiss": 7
+      },
+      "test": {
+        "count": 351,
+        "hits": 89,
+        "rate": 0.2535612535612536,
+        "maxMiss": 8,
+        "maxMissStartIndex": 25,
+        "maxMissEndIndex": 32
+      },
+      "method": {
+        "rank": 4,
+        "weights": [
+          {
+            "feature": "occurrence5",
+            "weight": -2
+          },
+          {
+            "feature": "occurrence45",
+            "weight": -2
+          },
+          {
+            "feature": "ewma13",
+            "weight": -2
+          }
+        ]
+      }
+    }
+  }
+}

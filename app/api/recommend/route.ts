@@ -20,7 +20,7 @@ type FeatureRow = {
 
 const DIGITS = Array.from({ length: 10 }, (_, index) => index);
 const LOCK_DATE = "2026-07-28";
-const BACKFIT_START = "2026-05-01";
+const BACKFIT_START = "2025-07-28";
 const BACKFIT_END = "2026-07-27";
 
 function shanghaiDate(date = new Date()) {
@@ -53,20 +53,16 @@ function presenceFrequency(history: Draw[], window: number) {
   );
 }
 
-function ewmaPresence(history: Draw[], halfLife: number) {
-  const decay = Math.exp(Math.log(0.5) / halfLife);
-  const rows = history.slice(-60).reverse();
-  const totals = Array(10).fill(0);
-  let totalWeight = 0;
-  rows.forEach((row, age) => {
-    const weight = decay ** age;
-    totalWeight += weight;
-    const present = new Set(row.digits);
-    for (const digit of DIGITS) {
-      if (present.has(digit)) totals[digit] += weight;
-    }
-  });
-  return totals.map((value) => value / totalWeight);
+function occurrenceFrequency(history: Draw[], window: number) {
+  const rows = history.slice(-window);
+  return DIGITS.map(
+    (digit) =>
+      rows.reduce(
+        (sum, row) => sum + row.digits.filter((value) => value === digit).length,
+        0,
+      ) /
+      (rows.length * 3),
+  );
 }
 
 function gapValues(history: Draw[]) {
@@ -75,16 +71,6 @@ function gapValues(history: Draw[]) {
       if (new Set(history[history.length - 1 - age].digits).has(digit)) return age;
     }
     return history.length;
-  });
-}
-
-function positionPeak(history: Draw[]) {
-  const rows = history.slice(-30);
-  return DIGITS.map((digit) => {
-    const counts = [0, 1, 2].map(
-      (position) => rows.filter((row) => row.digits[position] === digit).length,
-    );
-    return Math.max(...counts) / rows.length;
   });
 }
 
@@ -97,27 +83,21 @@ function rank(rows: FeatureRow[], score: "danScore" | "poolScore", target: "danR
 }
 
 function recommend(history: Draw[]) {
-  const freq14 = presenceFrequency(history, 14);
-  const z14 = zscore(freq14);
-  const z30 = zscore(presenceFrequency(history, 30));
-  const z60 = zscore(presenceFrequency(history, 60));
-  const zEwma = zscore(ewmaPresence(history, 5));
+  const zPresence5 = zscore(presenceFrequency(history, 5));
+  const zPresence7 = zscore(presenceFrequency(history, 7));
+  const zPresence45 = zscore(presenceFrequency(history, 45));
+  const zOccurrence10 = zscore(occurrenceFrequency(history, 10));
   const zGap = zscore(gapValues(history));
-  const zPeak = zscore(positionPeak(history));
   const rows: FeatureRow[] = DIGITS.map((digit) => ({
     digit,
-    danScore: -z14[digit],
+    danScore: -2 * zPresence7[digit] + zOccurrence10[digit] - zGap[digit],
     poolScore:
-      z30[digit] -
-      z60[digit] -
-      zEwma[digit] -
-      zGap[digit] +
-      zPeak[digit],
+      -zPresence5[digit] + zPresence7[digit] + zPresence45[digit],
   }));
   rank(rows, "danScore", "danRank");
   rank(rows, "poolScore", "poolRank");
   return {
-    dan: rows.find((row) => row.danRank === 2)!.digit,
+    dan: rows.find((row) => row.danRank === 4)!.digit,
     pool7: rows
       .filter((row) => (row.poolRank ?? 99) <= 7)
       .map((row) => row.digit)
@@ -159,11 +139,11 @@ function metrics<T extends { danHit: boolean; pool7Hit: boolean }>(
 }
 
 async function fetchDraws() {
-  const dayStart = dateDaysAgo(260);
+  const dayStart = dateDaysAgo(520);
   const dayEnd = shanghaiDate();
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dayStart}&dayEnd=${dayEnd}&pageNo=1&pageSize=300&systemType=PC`;
+    `?name=3d&dayStart=${dayStart}&dayEnd=${dayEnd}&pageNo=1&pageSize=550&systemType=PC`;
   const response = await fetch(url, {
     cache: "no-store",
     headers: {
@@ -203,6 +183,9 @@ export async function GET() {
       const pool7Hit =
         actual.size === 3 &&
         [...actual].every((digit) => prediction.pool7.includes(digit));
+      const pool7Group3Covered =
+        actual.size === 2 &&
+        [...actual].every((digit) => prediction.pool7.includes(digit));
       danMissStreak = danHit ? 0 : danMissStreak + 1;
       pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
       history.push({
@@ -214,6 +197,7 @@ export async function GET() {
         shape: shape(row.digits),
         danHit,
         pool7Hit,
+        pool7Group3Covered,
         danMissStreak,
         pool7MissStreak,
         phase: row.date >= LOCK_DATE ? ("locked" as const) : ("backfit" as const),
@@ -231,7 +215,7 @@ export async function GET() {
       {
         generatedAt: new Date().toISOString(),
         sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
-        formulaVersion: "V1.0",
+        formulaVersion: "V2.0",
         lockDate: LOCK_DATE,
         recommendation: {
           targetIssue: incrementIssue(latest.issue),

@@ -47,7 +47,7 @@
             <article class="pool-panel">
               <p>7码池</p>
               <div id="pool7" class="number-pills"></div>
-              <small>按组六全入池判中</small>
+              <small>组六判中奖，组三覆盖另标</small>
             </article>
           </div>
           <div id="source-line" class="source-line"></div>
@@ -63,7 +63,7 @@
           </div>
           <div id="locked-metrics" class="metrics-grid"></div>
           <p class="section-note">
-            新开奖自动进入这里。V2以历史命中率优先，不承诺5期内命中；超过5期会如实标红。
+            新开奖自动进入这里。独胆连续未中超过7期会如实标红；7码不设硬性断期门槛。
           </p>
         </section>
 
@@ -83,6 +83,13 @@
             <a href="./audit/v2-one-year-20250728-20260727.csv">下载逐期CSV</a>
             <a href="./audit/v2-one-year-20250728-20260727.json">查看完整JSON审计</a>
             <a href="./audit/v2-one-year-20250728-20260727.md">查看回测说明</a>
+          </div>
+          <p class="section-note warning-note">
+            独胆7期目标已做独立年度检验：前一年训练最长断6期，但后一整年检验最长断16期，未通过，因此没有冒充达标公式上线。
+          </p>
+          <div class="audit-links">
+            <a href="./audit/v3-independent-dan-20250728-20260727.csv">下载独立检验逐期CSV</a>
+            <a href="./audit/v3-independent-dan-20250728-20260727.json">查看V3失败审计</a>
           </div>
         </section>
 
@@ -117,7 +124,7 @@
               每个数字计算最近5期、7期和45期的出现频率，全部标准化后：
             </p>
             <code>−Z5期出现率 + Z7期出现率 + Z45期出现率</code>
-            <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中。</p>
+            <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中；若开奖号为组三且两个不同数字均入池，单独标记“组三覆盖”，但不计作组六7码中奖。</p>
           </div>
         </section>
 
