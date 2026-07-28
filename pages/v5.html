@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta name="description" content="福彩3D V5历史推荐逐期记录。" />
+    <title>福彩3D · V5历史推荐数据</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./assets/v5.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">福彩3D · 历史档案</p>
+          <h1>V5每日推荐数据</h1>
+        </div>
+        <span class="backfit-chip">历史档案</span>
+      </header>
+
+      <nav class="version-switch" aria-label="切换算法版本">
+        <a href="./">
+          <strong>V7</strong><span>当前算法</span>
+        </a>
+        <a class="is-active" href="./v5.html" aria-current="page">
+          <strong>V5</strong><span>历史算法</span>
+        </a>
+      </nav>
+      <p class="version-note">当前只显示V5推荐数据；V7公式、战绩和状态不会混入本页。</p>
+
+      <div id="loading" class="notice">正在读取V5逐期推荐记录…</div>
+      <div id="error" class="notice error" hidden></div>
+
+      <div id="content" hidden>
+        <section class="status-strip">
+          <span class="status-dot"></span>
+          <span>V5.0独立计算</span>
+          <span>·</span>
+          <span id="v5-source-status"></span>
+        </section>
+
+        <section class="hero-card">
+          <div class="hero-meta">
+            <span id="v5-target-issue"></span>
+            <span id="v5-based-on"></span>
+          </div>
+          <div class="recommendation-grid">
+            <article class="dan-panel">
+              <p>V5独胆</p>
+              <strong id="v5-dan"></strong>
+              <small>按V5公式及V5连续未中状态计算</small>
+            </article>
+            <article class="pool-panel">
+              <p>V5 7码池</p>
+              <div id="v5-pool7" class="number-pills"></div>
+              <small>组六判命中，组三覆盖另标</small>
+            </article>
+            <article class="group3-panel">
+              <div>
+                <p>V5形态二选一</p>
+                <strong id="v5-shape"></strong>
+              </div>
+              <small>推荐与实际形态一致才算中</small>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">五年逐期结果</p>
+              <h2>2023年7月28日起逐日记录</h2>
+            </div>
+            <span class="backfit-chip">V5</span>
+          </div>
+          <div id="v5-metrics" class="metrics-grid three-metrics"></div>
+          <p class="section-note warning-note">
+            本页固定展示V5当时每天推荐的数据，不会被V7覆盖或改写。每期都列出推荐胆码、7码、形态、实际开奖号及中没中。
+          </p>
+        </section>
+
+        <section class="section-block history-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">V5逐期证据</p>
+              <h2>推荐数据与实际开奖号</h2>
+            </div>
+          </div>
+          <div class="history-search">
+            <input
+              id="v5-search"
+              type="search"
+              placeholder="搜期号、日期、开奖号、胆码、7码、组三/组六或命中结果"
+              aria-label="搜索V5逐期数据"
+            />
+            <span id="v5-search-count"></span>
+          </div>
+          <div id="v5-history" class="history-list"></div>
+          <button id="v5-toggle-history" class="secondary-button" type="button"></button>
+        </section>
+
+        <footer>
+          <strong>V5历史档案只用于核对</strong>
+          <p>历史结果不能保证未来中奖，不要追损、翻倍、借钱或超预算投注。</p>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

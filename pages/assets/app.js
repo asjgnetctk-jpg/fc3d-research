@@ -29,7 +29,7 @@ function historyRow(row) {
       <div class="history-date">
         <strong>${row.issue}</strong>
         <span>${row.date.slice(5)}</span>
-        <em>${row.phase === "locked" ? "前瞻" : "历史回放"}</em>
+        <em>前瞻</em>
       </div>
       <div class="history-data">
         <div><span>推荐</span><strong>胆${row.dan} · ${row.pool7} · ${row.shapePlay}</strong></div>
@@ -59,7 +59,7 @@ function renderHistory() {
         row.shapePlay,
         row.draw,
         row.shape,
-        row.phase === "locked" ? "前瞻" : "历史回放",
+        "前瞻",
         row.danHit ? "胆码中" : "胆码未中",
         row.pool7Hit ? "7码中" : "7码未中",
         row.pool7Group3Covered ? "组三覆盖" : "",
@@ -107,11 +107,6 @@ function render(data) {
     metricCard("独胆多折验证", data.metrics.backfitDan) +
     metricCard("7码多折验证", data.metrics.backfitPool7) +
     metricCard("形态验证", data.metrics.backfitShape);
-  $("#replay-metrics").classList.add("three-metrics");
-  $("#replay-metrics").innerHTML =
-    metricCard("独胆历史回放", data.metrics.replayDan) +
-    metricCard("7码历史回放", data.metrics.replayPool7) +
-    metricCard("形态历史回放", data.metrics.replayShape);
   $("#generated-at").textContent = `页面数据生成于 ${new Date(
     data.generatedAt,
   ).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })}`;

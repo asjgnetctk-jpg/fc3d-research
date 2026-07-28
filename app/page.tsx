@@ -27,7 +27,7 @@ type HistoryRow = {
   danMissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "replay" | "locked";
+  phase: "locked";
 };
 
 type Metric = {
@@ -48,9 +48,6 @@ type ApiPayload = {
     lockedDan: Metric;
     lockedPool7: Metric;
     backfitShape: Metric;
-    replayDan: Metric;
-    replayPool7: Metric;
-    replayShape: Metric;
     lockedShape: Metric;
     shapeAlwaysGroup6Baseline: Metric;
   };
@@ -117,7 +114,7 @@ function matchesHistorySearch(row: HistoryRow, query: string) {
     row.shapePlay,
     row.draw,
     row.shape,
-    row.phase === "locked" ? "前瞻" : "历史回放",
+    "前瞻",
     row.danHit ? "胆码中" : "胆码未中",
     row.pool7Hit ? "7码中" : "7码未中",
     row.pool7Group3Covered ? "组三覆盖" : "",
@@ -214,8 +211,8 @@ export default function Home() {
         <Link className="is-active" href="/" aria-current="page">
           <strong>V7</strong><span>当前算法</span>
         </Link>
-        <Link href="/v6.html">
-          <strong>V6</strong><span>历史算法</span>
+        <Link href="/v5.html">
+          <strong>V5</strong><span>历史算法</span>
         </Link>
       </nav>
       <p className="version-note">两套算法、推荐记录和连续未中状态独立计算，互不混用。</p>
@@ -317,29 +314,8 @@ export default function Home() {
         <div className="audit-links">
           <a href="/audit/v7-robust-training.json">查看V7训练与分段结果</a>
           <a href="/audit/v7-locked-config.json">查看V7锁定公式配置</a>
-          <a href="/v6.html">查看V6历史推荐页</a>
+          <a href="/v5.html">查看V5历史推荐页</a>
         </div>
-      </section>
-
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">V7历史逐期回放</p>
-            <h2>2021年7月28日—2026年7月27日</h2>
-          </div>
-          <span className="backfit-chip">非独立盲测</span>
-        </div>
-        <div className="metrics-grid three-metrics">
-          <MetricCard label="独胆历史回放" metric={data.metrics.replayDan} />
-          <MetricCard label="7码历史回放" metric={data.metrics.replayPool7} />
-          <MetricCard label="形态历史回放" metric={data.metrics.replayShape} />
-        </div>
-        <p className="section-note warning-note">
-          下面逐期表已恢复这五年每天的V7推荐、开奖号、命中结果和连续未中期数。由于V7是在这段历史已经公开后建立的，所以这里只能称为“固定公式历史回放”，不能冒充独立盲测。
-        </p>
-        <p className="section-note">
-          历史回放的连续未中状态与2026年7月28日起的真实前瞻状态分开计算，不把历史回放状态带入新战绩。
-        </p>
       </section>
 
       <section className="section-block history-section">
@@ -375,7 +351,7 @@ export default function Home() {
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>{row.phase === "locked" ? "前瞻" : "历史回放"}</em>
+                <em>前瞻</em>
               </div>
               <div className="history-data">
                 <div>

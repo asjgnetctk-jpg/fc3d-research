@@ -2,6 +2,7 @@ import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import config from "../lib/v7-robust-config.json" with { type: "json" };
+import v5Config from "../lib/v5-config.json" with { type: "json" };
 import { actualShape, recommendV5 } from "../lib/v5-model.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -51,7 +52,7 @@ function metrics(rows, field) {
   };
 }
 
-function replay(draws, startDate, endDate, phase) {
+function replay(draws, startDate, endDate, phase, modelConfig = config) {
   const rows = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
@@ -64,7 +65,7 @@ function replay(draws, startDate, endDate, phase) {
       draws.slice(0, index),
       danMissStreak,
       pool7MissStreak,
-      config,
+      modelConfig,
     );
     const actual = new Set(row.digits);
     const shape = actualShape(row.digits);
@@ -144,14 +145,8 @@ async function main() {
     return;
   }
 
-  const historical = replay(
-    draws,
-    config.simulationStart,
-    config.simulationEnd,
-    "replay",
-  );
   const forward = replay(draws, config.forwardStart, null, "locked");
-  const history = [...historical.rows, ...forward.rows];
+  const history = forward.rows;
 
   const latest = draws.at(-1);
   const upcoming = recommendV5(
@@ -161,6 +156,13 @@ async function main() {
     config,
   );
   const locked = forward.rows;
+  const v5Track = replay(draws, v5Config.backfitStart, null, "locked", v5Config);
+  const upcomingV5 = recommendV5(
+    draws,
+    v5Track.danMissStreak,
+    v5Track.pool7MissStreak,
+    v5Config,
+  );
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
@@ -179,13 +181,29 @@ async function main() {
       backfitDan: pretestMetrics.dan,
       backfitPool7: pretestMetrics.pool7,
       backfitShape: pretestMetrics.shape,
-      replayDan: metrics(historical.rows, "danHit"),
-      replayPool7: metrics(historical.rows, "pool7Hit"),
-      replayShape: metrics(historical.rows, "shapeHit"),
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
       lockedShape: metrics(locked, "shapeHit"),
       shapeAlwaysGroup6Baseline: { count: 0, hits: 0, rate: 0, maxMiss: 0 },
+    },
+  };
+  const v5Payload = {
+    generatedAt: payload.generatedAt,
+    sourceUpdatedThrough: payload.sourceUpdatedThrough,
+    formulaVersion: v5Config.version,
+    recommendation: {
+      targetIssue: incrementIssue(latest.issue),
+      basedOnIssue: latest.issue,
+      basedOnDate: latest.date,
+      dan: upcomingV5.dan,
+      pool7: upcomingV5.pool7.join(""),
+      shapePlay: upcomingV5.shapePlay,
+    },
+    rows: v5Track.rows,
+    metrics: {
+      dan: metrics(v5Track.rows, "danHit"),
+      pool7: metrics(v5Track.rows, "pool7Hit"),
+      shape: metrics(v5Track.rows, "shapeHit"),
     },
   };
 
@@ -195,6 +213,16 @@ async function main() {
   await writeFile(
     path.join(root, "pages", "data.json"),
     `${JSON.stringify(payload, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(root, "pages", "v5-data.json"),
+    `${JSON.stringify(v5Payload, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(root, "public", "v5-data.json"),
+    `${JSON.stringify(v5Payload, null, 2)}\n`,
     "utf8",
   );
   await copyFile(
