@@ -27,7 +27,7 @@ type HistoryRow = {
   danMissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "locked";
+  phase: "replay" | "locked";
 };
 
 type Metric = {
@@ -114,7 +114,7 @@ function matchesHistorySearch(row: HistoryRow, query: string) {
     row.shapePlay,
     row.draw,
     row.shape,
-    "前瞻",
+    row.phase === "locked" ? "前瞻" : "V7回放",
     row.danHit ? "胆码中" : "胆码未中",
     row.pool7Hit ? "7码中" : "7码未中",
     row.pool7Group3Covered ? "组三覆盖" : "",
@@ -325,6 +325,9 @@ export default function Home() {
             <h2>每天推荐码、开奖号与命中结果</h2>
           </div>
         </div>
+        <p className="section-note">
+          2021年7月28日至2026年7月27日标记为“V7回放”；2026年7月28日起标记为“前瞻”。每期均列出推荐、开奖、中没中和断期。
+        </p>
 
         <div className="history-search">
           <input
@@ -351,7 +354,7 @@ export default function Home() {
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>前瞻</em>
+                <em>{row.phase === "locked" ? "前瞻" : "V7回放"}</em>
               </div>
               <div className="history-data">
                 <div>

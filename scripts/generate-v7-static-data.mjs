@@ -145,8 +145,14 @@ async function main() {
     return;
   }
 
+  const historical = replay(
+    draws,
+    config.simulationStart,
+    config.simulationEnd,
+    "replay",
+  );
   const forward = replay(draws, config.forwardStart, null, "locked");
-  const history = forward.rows;
+  const history = [...historical.rows, ...forward.rows];
 
   const latest = draws.at(-1);
   const upcoming = recommendV5(

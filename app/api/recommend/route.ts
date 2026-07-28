@@ -32,7 +32,7 @@ type HistoryRow = {
   danMissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "locked";
+  phase: "replay" | "locked";
 };
 
 function shanghaiDate(date = new Date()) {
@@ -169,8 +169,14 @@ export async function GET() {
     const draws = await fetchDraws();
     if (draws.length < 120) throw new Error("insufficient-history");
 
+    const historical = replay(
+      draws,
+      config.simulationStart,
+      config.simulationEnd,
+      "replay",
+    );
     const forward = replay(draws, config.forwardStart, null, "locked");
-    const history = forward.rows;
+    const history = [...historical.rows, ...forward.rows];
 
     const latest = draws.at(-1)!;
     const upcoming = recommendV5(

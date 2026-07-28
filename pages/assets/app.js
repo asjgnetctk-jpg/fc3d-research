@@ -29,7 +29,7 @@ function historyRow(row) {
       <div class="history-date">
         <strong>${row.issue}</strong>
         <span>${row.date.slice(5)}</span>
-        <em>前瞻</em>
+        <em>${row.phase === "locked" ? "前瞻" : "V7回放"}</em>
       </div>
       <div class="history-data">
         <div><span>推荐</span><strong>胆${row.dan} · ${row.pool7} · ${row.shapePlay}</strong></div>
@@ -59,7 +59,7 @@ function renderHistory() {
         row.shapePlay,
         row.draw,
         row.shape,
-        "前瞻",
+        row.phase === "locked" ? "前瞻" : "V7回放",
         row.danHit ? "胆码中" : "胆码未中",
         row.pool7Hit ? "7码中" : "7码未中",
         row.pool7Group3Covered ? "组三覆盖" : "",
