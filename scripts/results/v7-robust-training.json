@@ -1,0 +1,131 @@
+{
+  "version": "V7-robust-pretest-training-1",
+  "createdAt": "2026-07-28T11:45:55.393Z",
+  "isolation": {
+    "requestUrl": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2009-01-01&dayEnd=2021-07-27&pageNo=1&pageSize=5000&systemType=PC",
+    "actualLatestDate": "2021-07-27",
+    "rowsAfterCutoffVisibleToTrainer": 0,
+    "passed": true
+  },
+  "folds": [
+    {
+      "key": "foldA",
+      "start": "2016-01-01",
+      "end": "2017-12-31",
+      "count": 717,
+      "dan": {
+        "count": 717,
+        "hits": 208,
+        "rate": 0.2900976290097629,
+        "maxMiss": 11
+      },
+      "pool7": {
+        "count": 717,
+        "hits": 188,
+        "rate": 0.26220362622036264,
+        "maxMiss": 13
+      }
+    },
+    {
+      "key": "foldB",
+      "start": "2018-01-01",
+      "end": "2019-12-31",
+      "count": 709,
+      "dan": {
+        "count": 709,
+        "hits": 222,
+        "rate": 0.3131170662905501,
+        "maxMiss": 9
+      },
+      "pool7": {
+        "count": 709,
+        "hits": 162,
+        "rate": 0.22849083215796898,
+        "maxMiss": 14
+      }
+    },
+    {
+      "key": "foldC",
+      "start": "2020-01-01",
+      "end": "2021-07-27",
+      "count": 511,
+      "dan": {
+        "count": 511,
+        "hits": 161,
+        "rate": 0.3150684931506849,
+        "maxMiss": 9
+      },
+      "pool7": {
+        "count": 511,
+        "hits": 124,
+        "rate": 0.24266144814090018,
+        "maxMiss": 13
+      }
+    }
+  ],
+  "robustSummary": {
+    "dan": {
+      "folds": [
+        {
+          "count": 717,
+          "hits": 208,
+          "rate": 0.2900976290097629,
+          "maxMiss": 11
+        },
+        {
+          "count": 709,
+          "hits": 222,
+          "rate": 0.3131170662905501,
+          "maxMiss": 9
+        },
+        {
+          "count": 511,
+          "hits": 161,
+          "rate": 0.3150684931506849,
+          "maxMiss": 9
+        }
+      ],
+      "worstMaxMiss": 11,
+      "meanMaxMiss": 9.666666666666666,
+      "meanRate": 0.3060943961503326,
+      "totalHits": 591,
+      "totalCount": 1937
+    },
+    "pool7": {
+      "folds": [
+        {
+          "count": 717,
+          "hits": 188,
+          "rate": 0.26220362622036264,
+          "maxMiss": 13
+        },
+        {
+          "count": 709,
+          "hits": 162,
+          "rate": 0.22849083215796898,
+          "maxMiss": 14
+        },
+        {
+          "count": 511,
+          "hits": 124,
+          "rate": 0.24266144814090018,
+          "maxMiss": 13
+        }
+      ],
+      "worstMaxMiss": 14,
+      "meanMaxMiss": 13.333333333333334,
+      "meanRate": 0.24445196883974393,
+      "totalHits": 474,
+      "totalCount": 1937
+    },
+    "targetMaxMiss": 10
+  },
+  "search": {
+    "seed": 20260801,
+    "candidatesPerPlay": 32000,
+    "keptPerPlay": 1200,
+    "policyTrials": 240000,
+    "objective": "先要求三个历史验证段的最差连续未中不超过10期，再压低最差断期和平均断期，最后提高平均命中率。"
+  },
+  "lockedConfigSha256": "c1f890b1925b229ea6100d8b6964a30dc454c2f874d3b5b7fc1540565ae34963"
+}
