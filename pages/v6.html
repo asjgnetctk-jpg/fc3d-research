@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta name="description" content="福彩3D V6历史推荐逐期记录。" />
+    <title>福彩3D · V6历史推荐数据</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./assets/v6.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">福彩3D · 历史档案</p>
+          <h1>V6每日推荐数据</h1>
+        </div>
+        <a class="refresh-button" href="./">返回V7</a>
+      </header>
+
+      <div id="loading" class="notice">正在读取V6逐期推荐记录…</div>
+      <div id="error" class="notice error" hidden></div>
+
+      <div id="content" hidden>
+        <section class="status-strip">
+          <span class="status-dot"></span>
+          <span>V6.0-blind历史档案</span>
+          <span>·</span>
+          <span>共1756期</span>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">五年逐期结果</p>
+              <h2>2021年7月28日—2026年7月27日</h2>
+            </div>
+            <span class="backfit-chip">V6</span>
+          </div>
+          <div id="v6-metrics" class="metrics-grid three-metrics"></div>
+          <p class="section-note warning-note">
+            本页固定展示V6当时每天推荐的数据，不会被V7覆盖或改写。每期都列出推荐胆码、7码、形态、实际开奖号及中没中。
+          </p>
+        </section>
+
+        <section class="section-block history-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">V6逐期证据</p>
+              <h2>推荐数据与实际开奖号</h2>
+            </div>
+          </div>
+          <div class="history-search">
+            <input
+              id="v6-search"
+              type="search"
+              placeholder="搜期号、日期、开奖号、胆码、7码、组三/组六或命中结果"
+              aria-label="搜索V6逐期数据"
+            />
+            <span id="v6-search-count"></span>
+          </div>
+          <div id="v6-history" class="history-list"></div>
+          <button id="v6-toggle-history" class="secondary-button" type="button"></button>
+        </section>
+
+        <footer>
+          <strong>V6历史档案只用于核对</strong>
+          <p>历史结果不能保证未来中奖，不要追损、翻倍、借钱或超预算投注。</p>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

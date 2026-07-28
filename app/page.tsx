@@ -306,6 +306,7 @@ export default function Home() {
         <div className="audit-links">
           <a href="/audit/v7-robust-training.json">查看V7训练与分段结果</a>
           <a href="/audit/v7-locked-config.json">查看V7锁定公式配置</a>
+          <a href="/v6.html">查看V6历史推荐页</a>
         </div>
       </section>
 
