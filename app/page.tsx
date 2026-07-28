@@ -26,7 +26,7 @@ type HistoryRow = {
   danMissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "backfit" | "locked";
+  phase: "replay" | "locked";
 };
 
 type Metric = {
@@ -47,6 +47,9 @@ type ApiPayload = {
     lockedDan: Metric;
     lockedPool7: Metric;
     backfitShape: Metric;
+    replayDan: Metric;
+    replayPool7: Metric;
+    replayShape: Metric;
     lockedShape: Metric;
     shapeAlwaysGroup6Baseline: Metric;
   };
@@ -276,11 +279,32 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section-block">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">V7历史逐期回放</p>
+            <h2>2021年7月28日—2026年7月27日</h2>
+          </div>
+          <span className="backfit-chip">非独立盲测</span>
+        </div>
+        <div className="metrics-grid three-metrics">
+          <MetricCard label="独胆历史回放" metric={data.metrics.replayDan} />
+          <MetricCard label="7码历史回放" metric={data.metrics.replayPool7} />
+          <MetricCard label="形态历史回放" metric={data.metrics.replayShape} />
+        </div>
+        <p className="section-note warning-note">
+          下面逐期表已恢复这五年每天的V7推荐、开奖号、命中结果和连续未中期数。由于V7是在这段历史已经公开后建立的，所以这里只能称为“固定公式历史回放”，不能冒充独立盲测。
+        </p>
+        <p className="section-note">
+          历史回放的连续未中状态与2026年7月28日起的真实前瞻状态分开计算，不把历史回放状态带入新战绩。
+        </p>
+      </section>
+
       <section className="section-block history-section">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">逐期证据</p>
-            <h2>推荐码与实际开奖号</h2>
+            <p className="eyebrow">V7逐期证据</p>
+            <h2>每天推荐码、开奖号与命中结果</h2>
           </div>
         </div>
 
@@ -293,7 +317,7 @@ export default function Home() {
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>前瞻</em>
+                <em>{row.phase === "locked" ? "前瞻" : "历史回放"}</em>
               </div>
               <div className="history-data">
                 <div>

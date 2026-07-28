@@ -51,6 +51,54 @@ function metrics(rows, field) {
   };
 }
 
+function replay(draws, startDate, endDate, phase) {
+  const rows = [];
+  let danMissStreak = 0;
+  let pool7MissStreak = 0;
+  let shapeMissStreak = 0;
+
+  for (let index = 120; index < draws.length; index += 1) {
+    const row = draws[index];
+    if (row.date < startDate || (endDate && row.date > endDate)) continue;
+    const prediction = recommendV5(
+      draws.slice(0, index),
+      danMissStreak,
+      pool7MissStreak,
+      config,
+    );
+    const actual = new Set(row.digits);
+    const shape = actualShape(row.digits);
+    const danHit = actual.has(prediction.dan);
+    const pool7Hit =
+      actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool7Group3Covered =
+      actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const shapeHit = shape === prediction.shapePlay;
+    danMissStreak = danHit ? 0 : danMissStreak + 1;
+    pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
+    shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
+    rows.push({
+      date: row.date,
+      issue: row.issue,
+      dan: prediction.dan,
+      pool7: prediction.pool7.join(""),
+      shapePlay: prediction.shapePlay,
+      draw: row.draw,
+      shape,
+      danHit,
+      pool7Hit,
+      pool7Group3Covered,
+      shapeHit,
+      danMissStreak,
+      pool7MissStreak,
+      shapeMissStreak,
+      phase,
+    });
+  }
+
+  return { rows, danMissStreak, pool7MissStreak };
+}
+
 async function fetchDraws() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
@@ -96,53 +144,23 @@ async function main() {
     return;
   }
 
-  const history = [];
-  let danMissStreak = 0;
-  let pool7MissStreak = 0;
-  let shapeMissStreak = 0;
-
-  for (let index = 120; index < draws.length; index += 1) {
-    const row = draws[index];
-    if (row.date < config.forwardStart) continue;
-    const prediction = recommendV5(
-      draws.slice(0, index),
-      danMissStreak,
-      pool7MissStreak,
-      config,
-    );
-    const actual = new Set(row.digits);
-    const shape = actualShape(row.digits);
-    const danHit = actual.has(prediction.dan);
-    const pool7Hit =
-      actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
-    const pool7Group3Covered =
-      actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
-    const shapeHit = shape === prediction.shapePlay;
-    danMissStreak = danHit ? 0 : danMissStreak + 1;
-    pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
-    shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
-    history.push({
-      date: row.date,
-      issue: row.issue,
-      dan: prediction.dan,
-      pool7: prediction.pool7.join(""),
-      shapePlay: prediction.shapePlay,
-      draw: row.draw,
-      shape,
-      danHit,
-      pool7Hit,
-      pool7Group3Covered,
-      shapeHit,
-      danMissStreak,
-      pool7MissStreak,
-      shapeMissStreak,
-      phase: "locked",
-    });
-  }
+  const historical = replay(
+    draws,
+    config.simulationStart,
+    config.simulationEnd,
+    "replay",
+  );
+  const forward = replay(draws, config.forwardStart, null, "locked");
+  const history = [...historical.rows, ...forward.rows];
 
   const latest = draws.at(-1);
-  const upcoming = recommendV5(draws, danMissStreak, pool7MissStreak, config);
-  const locked = history;
+  const upcoming = recommendV5(
+    draws,
+    forward.danMissStreak,
+    forward.pool7MissStreak,
+    config,
+  );
+  const locked = forward.rows;
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
@@ -161,6 +179,9 @@ async function main() {
       backfitDan: pretestMetrics.dan,
       backfitPool7: pretestMetrics.pool7,
       backfitShape: pretestMetrics.shape,
+      replayDan: metrics(historical.rows, "danHit"),
+      replayPool7: metrics(historical.rows, "pool7Hit"),
+      replayShape: metrics(historical.rows, "shapeHit"),
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
       lockedShape: metrics(locked, "shapeHit"),
