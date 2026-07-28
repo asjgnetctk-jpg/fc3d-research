@@ -1,0 +1,122 @@
+{
+  "version": "V7.0-robust",
+  "formulaLockedAt": "2026-07-28T11:45:55.385Z",
+  "trainingDataCutoff": "2021-07-27",
+  "forwardStart": "2026-07-28",
+  "simulationStart": "2021-07-28",
+  "simulationEnd": "2026-07-27",
+  "dan": {
+    "methods": [
+      {
+        "id": 8771,
+        "rank": 1,
+        "weights": {
+          "position3_10": -2,
+          "presence20": -1,
+          "position2_20": -1,
+          "position2_10": 1
+        }
+      },
+      {
+        "id": 26398,
+        "rank": 1,
+        "weights": {
+          "occurrence45": 2,
+          "digitCenter": -3,
+          "position2_30": -3,
+          "digitParity": -2,
+          "position2_60": -2,
+          "presence20": -3
+        }
+      },
+      {
+        "id": 21262,
+        "rank": 8,
+        "weights": {
+          "occurrence45": 1,
+          "last2": 1,
+          "transition120": -2,
+          "occurrence7": -2,
+          "occurrence30": 2,
+          "transition60": 2,
+          "position3_60": 2,
+          "presence45": -2,
+          "position2_10": -3
+        }
+      },
+      {
+        "id": 2626,
+        "rank": 4,
+        "weights": {
+          "presence20": -2,
+          "occurrence10": 3,
+          "presence90": 3,
+          "digitCenter": -3,
+          "position2_60": 1
+        }
+      }
+    ]
+  },
+  "pool7": {
+    "methods": [
+      {
+        "id": 802,
+        "rank": 6,
+        "weights": {
+          "presence45": -2,
+          "position3_20": -1,
+          "digitParity": 2,
+          "occurrence10": -1,
+          "occurrence30": -2,
+          "position1_10": -3,
+          "occurrence60": -2,
+          "presence3": -2
+        }
+      },
+      {
+        "id": 17110,
+        "rank": 3,
+        "weights": {
+          "position3_20": -1,
+          "position2_60": -2,
+          "occurrence120": -2,
+          "position3_30": 2,
+          "position1_30": 1,
+          "transition120": 1,
+          "presence20": -3,
+          "position2_20": 1
+        }
+      },
+      {
+        "id": 8431,
+        "rank": 4,
+        "weights": {
+          "digitCenter": 1,
+          "last2": -1,
+          "position2_60": -1
+        }
+      },
+      {
+        "id": 4279,
+        "rank": 7,
+        "weights": {
+          "occurrence30": -3,
+          "digitCenter": -2,
+          "presence5": -3
+        }
+      }
+    ]
+  },
+  "shapeChoice": {
+    "threshold": 1.8047619047619046,
+    "weights": {
+      "group3Rate14": 4,
+      "lastGroup3": 1,
+      "group6Rate90": -3,
+      "group3Rate120": -2,
+      "last2Group6": 4,
+      "recentRepeatRate10": -4,
+      "group3Rate3": 2
+    }
+  }
+}

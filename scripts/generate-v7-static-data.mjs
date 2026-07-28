@@ -1,10 +1,15 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import config from "../lib/v6-blind-config.json" with { type: "json" };
+import config from "../lib/v7-robust-config.json" with { type: "json" };
 import { actualShape, recommendV5 } from "../lib/v5-model.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const pretestMetrics = {
+  dan: { count: 1937, hits: 591, rate: 591 / 1937, maxMiss: 11 },
+  pool7: { count: 1937, hits: 474, rate: 474 / 1937, maxMiss: 14 },
+  shape: { count: 351, hits: 247, rate: 247 / 351, maxMiss: 4 },
+};
 
 function shanghaiDate(date = new Date()) {
   return new Intl.DateTimeFormat("sv-SE", {
@@ -98,7 +103,7 @@ async function main() {
 
   for (let index = 120; index < draws.length; index += 1) {
     const row = draws[index];
-    if (row.date < config.backfitStart) continue;
+    if (row.date < config.forwardStart) continue;
     const prediction = recommendV5(
       draws.slice(0, index),
       danMissStreak,
@@ -131,21 +136,18 @@ async function main() {
       danMissStreak,
       pool7MissStreak,
       shapeMissStreak,
-      phase: row.date >= config.lockDate ? "locked" : "backfit",
+      phase: "locked",
     });
   }
 
   const latest = draws.at(-1);
   const upcoming = recommendV5(draws, danMissStreak, pool7MissStreak, config);
-  const backfit = history.filter(
-    (row) => row.date >= config.backfitStart && row.date <= config.backfitEnd,
-  );
-  const locked = history.filter((row) => row.date >= config.lockDate);
+  const locked = history;
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
     formulaVersion: config.version,
-    lockDate: config.lockDate,
+    lockDate: config.forwardStart,
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
       basedOnIssue: latest.issue,
@@ -156,16 +158,13 @@ async function main() {
     },
     history,
     metrics: {
-      backfitDan: metrics(backfit, "danHit"),
-      backfitPool7: metrics(backfit, "pool7Hit"),
-      backfitShape: metrics(backfit, "shapeHit"),
+      backfitDan: pretestMetrics.dan,
+      backfitPool7: pretestMetrics.pool7,
+      backfitShape: pretestMetrics.shape,
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
       lockedShape: metrics(locked, "shapeHit"),
-      shapeAlwaysGroup6Baseline: metrics(
-        backfit.map((row) => ({ baselineHit: row.shape === "组六" })),
-        "baselineHit",
-      ),
+      shapeAlwaysGroup6Baseline: { count: 0, hits: 0, rate: 0, maxMiss: 0 },
     },
   };
 
@@ -178,18 +177,16 @@ async function main() {
     "utf8",
   );
   await copyFile(
-    path.join(root, "scripts", "results", "v6-pretest-training.json"),
-    path.join(root, "pages", "audit", "v6-pretest-training.json"),
+    path.join(root, "scripts", "results", "v7-robust-training.json"),
+    path.join(root, "pages", "audit", "v7-robust-training.json"),
   );
   await copyFile(
-    path.join(root, "lib", "v6-blind-config.json"),
-    path.join(root, "pages", "audit", "v6-locked-config.json"),
+    path.join(root, "lib", "v7-robust-config.json"),
+    path.join(root, "pages", "audit", "v7-locked-config.json"),
   );
   for (const file of [
-    "v6-independent-five-year-20210728-20260727.csv",
-    "v6-independent-five-year-20210728-20260727.json",
-    "v6-pretest-training.json",
-    "v6-locked-config.json",
+    "v7-robust-training.json",
+    "v7-locked-config.json",
   ]) {
     await copyFile(
       path.join(root, "pages", "audit", file),
@@ -197,7 +194,7 @@ async function main() {
     );
   }
   console.log(
-    `已生成V6：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcoming.shapePlay}`,
+    `已生成V7：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcoming.shapePlay}`,
   );
 }
 

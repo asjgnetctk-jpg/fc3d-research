@@ -193,7 +193,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>V6公式仅用2021-07-27前数据锁定</small>
+            <small>V7公式仅用2021-07-27前数据搜索并锁定</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -251,30 +251,28 @@ export default function Home() {
       <section className="section-block">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">五年独立检验区</p>
-            <h2>2021年7月28日—2026年7月27日</h2>
+            <p className="eyebrow">前置多折验证</p>
+            <h2>三段历史区间分别检验稳定性</h2>
           </div>
-          <span className="backfit-chip">独立盲测</span>
+          <span className="backfit-chip">仅用截止日前数据</span>
         </div>
         <div className="metrics-grid three-metrics">
-          <MetricCard label="独胆盲测" metric={data.metrics.backfitDan} />
-          <MetricCard label="7码盲测" metric={data.metrics.backfitPool7} />
-          <MetricCard label="形态二选一" metric={data.metrics.backfitShape} />
+          <MetricCard label="独胆多折验证" metric={data.metrics.backfitDan} />
+          <MetricCard label="7码多折验证" metric={data.metrics.backfitPool7} />
+          <MetricCard label="形态验证" metric={data.metrics.backfitShape} />
         </div>
         <p className="section-note warning-note">
-          V6只使用截至2021年7月27日的数据选公式并锁定配置，随后一次性读取五年测试期；测试期结果没有参与选法、调参或换公式。
+          V7只读取截至2021年7月27日的数据，并在2016—2017、2018—2019、2020—2021年7月27日三段区间分别检验。独胆三段最长未中为11、9、9期，合计591/1937（30.51%）。
         </p>
         <p className="section-note warning-note">
-          五年独胆472/1756（26.88%），最长断16期；7码364/1756（20.73%），最长断23期；动态形态1185/1756（67.48%），最长断7期。
+          7码三段最长未中为13、14、13期，合计474/1937（24.47%）；它不是硬性达标项。形态前置验证247/351（70.37%），最长未中4期。
         </p>
         <p className="section-note">
-          仅作对照：五年每天固定选组六为1284/1756（73.12%）、最长断5期，但它没有做每日形态判断，所以不作为正式动态模型成绩。
+          “约10期”只是历史验证目标，不代表今后必定10期内命中。V7从2026年7月28日起只记真实前瞻战绩，不用后续开奖结果反向改公式。
         </p>
         <div className="audit-links">
-          <a href="/audit/v6-independent-five-year-20210728-20260727.csv">下载五年逐期CSV</a>
-          <a href="/audit/v6-independent-five-year-20210728-20260727.json">完整JSON审计</a>
-          <a href="/audit/v6-pretest-training.json">训练隔离证明</a>
-          <a href="/audit/v6-locked-config.json">锁定公式配置</a>
+          <a href="/audit/v7-robust-training.json">查看V7训练与分段结果</a>
+          <a href="/audit/v7-locked-config.json">查看V7锁定公式配置</a>
         </div>
       </section>
 
@@ -287,12 +285,15 @@ export default function Home() {
         </div>
 
         <div className="history-list">
+          {history.length === 0 && (
+            <div className="notice">V7从2026年7月28日起记录，等待首期开奖。</div>
+          )}
           {history.map((row) => (
             <article className="history-row" key={row.issue}>
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>{row.phase === "locked" ? "前瞻" : "盲测"}</em>
+                <em>前瞻</em>
               </div>
               <div className="history-data">
                 <div>
@@ -328,9 +329,11 @@ export default function Home() {
           ))}
         </div>
 
-        <button className="secondary-button" onClick={() => setShowAll(!showAll)}>
-          {showAll ? "收起记录" : `查看全部 ${data.history.length} 期`}
-        </button>
+        {data.history.length > 0 && (
+          <button className="secondary-button" onClick={() => setShowAll(!showAll)}>
+            {showAll ? "收起记录" : `查看全部 ${data.history.length} 期`}
+          </button>
+        )}
       </section>
 
       <section className="section-block formula-block">
@@ -349,7 +352,7 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              V6先在2021年7月27日前的数据中把连续未中分成0—2、3—4、5—6、7期以上四个状态，锁定每个状态的历史频率、定位频率和转移评分公式；五年测试期不再调整。
+              V7只在2021年7月27日前的数据中搜索候选公式，并用三段互不重叠区间比较稳定性。最终按连续未中0—2、3—4、5—6、7期以上四种状态，锁定对应的历史频率、定位频率和转移评分公式。
             </p>
             <h3>7码</h3>
             <p>

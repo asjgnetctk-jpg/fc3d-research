@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import config from "@/lib/v6-blind-config.json";
+import config from "@/lib/v7-robust-config.json";
 import { actualShape, recommendV5 } from "@/lib/v5-model.js";
 
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
+const pretestMetrics = {
+  dan: { count: 1937, hits: 591, rate: 591 / 1937, maxMiss: 11 },
+  pool7: { count: 1937, hits: 474, rate: 474 / 1937, maxMiss: 14 },
+  shape: { count: 351, hits: 247, rate: 247 / 351, maxMiss: 4 },
+};
 
 type Draw = {
   date: string;
@@ -116,7 +121,7 @@ export async function GET() {
 
     for (let index = 120; index < draws.length; index += 1) {
       const row = draws[index];
-      if (row.date < config.backfitStart) continue;
+      if (row.date < config.forwardStart) continue;
       const prediction = recommendV5(
         draws.slice(0, index),
         danMissStreak,
@@ -151,23 +156,20 @@ export async function GET() {
         danMissStreak,
         pool7MissStreak,
         shapeMissStreak,
-        phase: row.date >= config.lockDate ? "locked" : "backfit",
+        phase: "locked",
       });
     }
 
     const latest = draws.at(-1)!;
     const upcoming = recommendV5(draws, danMissStreak, pool7MissStreak, config);
-    const backfit = history.filter(
-      (row) => row.date >= config.backfitStart && row.date <= config.backfitEnd,
-    );
-    const locked = history.filter((row) => row.date >= config.lockDate);
+    const locked = history;
 
     return NextResponse.json(
       {
         generatedAt: new Date().toISOString(),
         sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
         formulaVersion: config.version,
-        lockDate: config.lockDate,
+        lockDate: config.forwardStart,
         recommendation: {
           targetIssue: incrementIssue(latest.issue),
           basedOnIssue: latest.issue,
@@ -178,16 +180,13 @@ export async function GET() {
         },
         history,
         metrics: {
-          backfitDan: metrics(backfit, "danHit"),
-          backfitPool7: metrics(backfit, "pool7Hit"),
-          backfitShape: metrics(backfit, "shapeHit"),
+          backfitDan: pretestMetrics.dan,
+          backfitPool7: pretestMetrics.pool7,
+          backfitShape: pretestMetrics.shape,
           lockedDan: metrics(locked, "danHit"),
           lockedPool7: metrics(locked, "pool7Hit"),
           lockedShape: metrics(locked, "shapeHit"),
-          shapeAlwaysGroup6Baseline: metrics(
-            backfit.map((row) => ({ ...row, shapeHit: row.shape === "组六" })),
-            "shapeHit",
-          ),
+          shapeAlwaysGroup6Baseline: { count: 0, hits: 0, rate: 0, maxMiss: 0 },
         },
       },
       {

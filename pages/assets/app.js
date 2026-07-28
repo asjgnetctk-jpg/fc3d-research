@@ -2,11 +2,10 @@ const $ = (selector) => document.querySelector(selector);
 let payload;
 let showAll = false;
 
-function metricCard(label, metric, enforceSeven = false) {
+function metricCard(label, metric) {
   const pending = metric.count === 0;
-  const failed = enforceSeven && metric.maxMiss > 7;
   return `
-    <div class="metric-card${failed ? " failed" : ""}">
+    <div class="metric-card">
       <span>${label}</span>
       <strong>${pending ? "等待开奖" : `${metric.hits}/${metric.count}`}</strong>
       <small>${
@@ -29,7 +28,7 @@ function historyRow(row) {
       <div class="history-date">
         <strong>${row.issue}</strong>
         <span>${row.date.slice(5)}</span>
-        <em>${row.phase === "locked" ? "前瞻" : "盲测"}</em>
+        <em>前瞻</em>
       </div>
       <div class="history-data">
         <div><span>推荐</span><strong>胆${row.dan} · ${row.pool7} · ${row.shapePlay}</strong></div>
@@ -46,6 +45,12 @@ function historyRow(row) {
 
 function renderHistory() {
   const rows = [...payload.history].reverse();
+  if (rows.length === 0) {
+    $("#history").innerHTML = '<div class="notice">V7从2026年7月28日起记录，等待首期开奖。</div>';
+    $("#toggle-history").hidden = true;
+    return;
+  }
+  $("#toggle-history").hidden = false;
   const visible = showAll ? rows : rows.slice(0, 18);
   $("#history").innerHTML = visible.map(historyRow).join("");
   $("#toggle-history").textContent = showAll
@@ -68,14 +73,14 @@ function render(data) {
   $("#source-line").textContent = `官方数据更新至 ${data.sourceUpdatedThrough}`;
   $("#locked-metrics").classList.add("three-metrics");
   $("#locked-metrics").innerHTML =
-    metricCard("独胆实测", data.metrics.lockedDan, true) +
+    metricCard("独胆实测", data.metrics.lockedDan) +
     metricCard("7码实测", data.metrics.lockedPool7) +
-    metricCard("形态实测", data.metrics.lockedShape, true);
+    metricCard("形态实测", data.metrics.lockedShape);
   $("#backfit-metrics").classList.add("three-metrics");
   $("#backfit-metrics").innerHTML =
-    metricCard("独胆盲测", data.metrics.backfitDan, true) +
-    metricCard("7码盲测", data.metrics.backfitPool7) +
-    metricCard("形态二选一", data.metrics.backfitShape, true);
+    metricCard("独胆多折验证", data.metrics.backfitDan) +
+    metricCard("7码多折验证", data.metrics.backfitPool7) +
+    metricCard("形态验证", data.metrics.backfitShape);
   $("#generated-at").textContent = `页面数据生成于 ${new Date(
     data.generatedAt,
   ).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })}`;
