@@ -42,7 +42,7 @@
             <article class="dan-panel">
               <p>独胆</p>
               <strong id="dan"></strong>
-              <small>V5按当前断期状态切换公式</small>
+              <small>V6公式仅用2021-07-27前数据锁定</small>
             </article>
             <article class="pool-panel">
               <p>7码池</p>
@@ -64,7 +64,7 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">真实封盘区</p>
-              <h2>2026年7月28日起锁定V5</h2>
+              <h2>2026年7月28日起继续前瞻记录</h2>
             </div>
             <span class="lock-chip">LOCKED</span>
           </div>
@@ -77,24 +77,26 @@
         <section class="section-block">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">历史筛选区</p>
-              <h2>近三年1054期逐期核查</h2>
+              <p class="eyebrow">五年独立检验区</p>
+              <h2>2021年7月28日—2026年7月27日</h2>
             </div>
-            <span class="backfit-chip">事后筛选</span>
+            <span class="backfit-chip">独立盲测</span>
           </div>
           <div id="backfit-metrics" class="metrics-grid"></div>
           <p class="section-note warning-note">
-            区间为2023年7月28日—2026年7月27日。每一期推荐只使用当期之前的数据，但V5参数是在比较整段三年成绩后选出，属于真实逐期回算和后验拟合，不是独立前瞻成绩。
+            V6只使用截至2021年7月27日的数据搜索并锁定公式，之后才一次性读取五年测试期；测试期结果没有参与选法、调参或换公式。
           </p>
           <div class="audit-links">
-            <a href="./audit/v5-three-way-20230728-20260727.csv">下载三年逐期CSV</a>
-            <a href="./audit/v5-three-way-20230728-20260727.json">查看完整JSON审计</a>
+            <a href="./audit/v6-independent-five-year-20210728-20260727.csv">下载五年逐期CSV</a>
+            <a href="./audit/v6-independent-five-year-20210728-20260727.json">查看完整JSON审计</a>
+            <a href="./audit/v6-pretest-training.json">查看训练隔离证明</a>
+            <a href="./audit/v6-locked-config.json">查看锁定公式配置</a>
           </div>
           <p class="section-note warning-note">
-            V5三年独胆369/1054（35.01%），最长断9期，仍未达到7期目标；7码274/1054（26.00%），最长断11期；动态形态734/1054（69.64%），最长断4期。以上均为后验筛选，不保证未来表现。
+            五年独立盲测：独胆472/1756（26.88%），最长断16期；7码364/1756（20.73%），最长断23期；动态形态1185/1756（67.48%），最长断7期。
           </p>
           <p class="section-note">
-            对照基线：三年每天固定选组六为779/1054（73.91%）、最长断5期，但没有做每日形态判断，因此不作为正式动态模型成绩。
+            对照基线：五年每天固定选组六为1284/1756（73.12%）、最长断5期，但没有做每日形态判断，因此不作为正式动态模型成绩。
           </p>
         </section>
 
@@ -120,7 +122,7 @@
           <div id="formula" class="formula-content" hidden>
             <h3>独胆</h3>
             <p>
-              V5把连续未中分为0—2、3—4、5—6、7期以上四个状态；每个状态使用不同的历史频率、定位频率和转移评分公式。
+              V6先在2021年7月27日前的数据中把连续未中分为0—2、3—4、5—6、7期以上四个状态，锁定每个状态的历史频率、定位频率和转移评分公式；五年测试期不再调整。
             </p>
             <p>按当前状态对应公式对0—9评分，并按该公式锁定的固定名次取一个独胆；同分时数字小者排前。</p>
             <h3>7码</h3>

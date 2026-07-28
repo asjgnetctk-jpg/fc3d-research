@@ -1,7 +1,7 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import config from "../lib/v5-config.json" with { type: "json" };
+import config from "../lib/v6-blind-config.json" with { type: "json" };
 import { actualShape, recommendV5 } from "../lib/v5-model.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -49,13 +49,13 @@ function metrics(rows, field) {
 async function fetchDraws() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dateDaysAgo(1700)}&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=1800&systemType=PC";
+    `?name=3d&dayStart=${dateDaysAgo(4800)}&dayEnd=${shanghaiDate()}` +
+    "&pageNo=1&pageSize=5000&systemType=PC";
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
       Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
-      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/5.0)",
+      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/6.0)",
     },
   });
   if (!response.ok) throw new Error(`官方数据请求失败：HTTP ${response.status}`);
@@ -162,23 +162,42 @@ async function main() {
       lockedDan: metrics(locked, "danHit"),
       lockedPool7: metrics(locked, "pool7Hit"),
       lockedShape: metrics(locked, "shapeHit"),
-      shapeAlwaysGroup6Baseline: {
-        count: 1054,
-        hits: 779,
-        rate: 0.7390891840607211,
-        maxMiss: 5,
-      },
+      shapeAlwaysGroup6Baseline: metrics(
+        backfit.map((row) => ({ baselineHit: row.shape === "组六" })),
+        "baselineHit",
+      ),
     },
   };
 
   await mkdir(path.join(root, "pages"), { recursive: true });
+  await mkdir(path.join(root, "pages", "audit"), { recursive: true });
+  await mkdir(path.join(root, "public", "audit"), { recursive: true });
   await writeFile(
     path.join(root, "pages", "data.json"),
     `${JSON.stringify(payload, null, 2)}\n`,
     "utf8",
   );
+  await copyFile(
+    path.join(root, "scripts", "results", "v6-pretest-training.json"),
+    path.join(root, "pages", "audit", "v6-pretest-training.json"),
+  );
+  await copyFile(
+    path.join(root, "lib", "v6-blind-config.json"),
+    path.join(root, "pages", "audit", "v6-locked-config.json"),
+  );
+  for (const file of [
+    "v6-independent-five-year-20210728-20260727.csv",
+    "v6-independent-five-year-20210728-20260727.json",
+    "v6-pretest-training.json",
+    "v6-locked-config.json",
+  ]) {
+    await copyFile(
+      path.join(root, "pages", "audit", file),
+      path.join(root, "public", "audit", file),
+    );
+  }
   console.log(
-    `已生成V5：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcoming.shapePlay}`,
+    `已生成V6：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcoming.shapePlay}`,
   );
 }
 

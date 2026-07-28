@@ -193,7 +193,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>V5按当前断期状态切换公式</small>
+            <small>V6公式仅用2021-07-27前数据锁定</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -222,7 +222,7 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">真实封盘区</p>
-            <h2>7月28日起，不再改公式</h2>
+            <h2>2026年7月28日起继续前瞻记录</h2>
           </div>
           <span className="lock-chip">LOCKED</span>
         </div>
@@ -251,25 +251,31 @@ export default function Home() {
       <section className="section-block">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">历史回溯区</p>
-            <h2>2023年7月28日—2026年7月27日核查</h2>
+            <p className="eyebrow">五年独立检验区</p>
+            <h2>2021年7月28日—2026年7月27日</h2>
           </div>
-          <span className="backfit-chip">回溯拟合</span>
+          <span className="backfit-chip">独立盲测</span>
         </div>
         <div className="metrics-grid three-metrics">
-          <MetricCard label="独胆回溯" metric={data.metrics.backfitDan} />
-          <MetricCard label="7码回溯" metric={data.metrics.backfitPool7} />
+          <MetricCard label="独胆盲测" metric={data.metrics.backfitDan} />
+          <MetricCard label="7码盲测" metric={data.metrics.backfitPool7} />
           <MetricCard label="形态二选一" metric={data.metrics.backfitShape} />
         </div>
         <p className="section-note warning-note">
-          V5逐期计算没有使用当期开奖，但四状态公式和形态阈值是比较三年成绩后选出的后验模型，不能当成独立前瞻成绩。
+          V6只使用截至2021年7月27日的数据选公式并锁定配置，随后一次性读取五年测试期；测试期结果没有参与选法、调参或换公式。
         </p>
         <p className="section-note warning-note">
-          三年独胆369/1054（35.01%），最长断9期，仍未达到7期目标；7码274/1054（26.00%），最长断11期；动态形态734/1054（69.64%），最长断4期。
+          五年独胆472/1756（26.88%），最长断16期；7码364/1756（20.73%），最长断23期；动态形态1185/1756（67.48%），最长断7期。
         </p>
         <p className="section-note">
-          仅作对照：若三年每天固定选组六，历史为779/1054（73.91%）、最长断5期，但它没有做每日形态判断，所以不作为正式动态模型成绩。
+          仅作对照：五年每天固定选组六为1284/1756（73.12%）、最长断5期，但它没有做每日形态判断，所以不作为正式动态模型成绩。
         </p>
+        <div className="audit-links">
+          <a href="/audit/v6-independent-five-year-20210728-20260727.csv">下载五年逐期CSV</a>
+          <a href="/audit/v6-independent-five-year-20210728-20260727.json">完整JSON审计</a>
+          <a href="/audit/v6-pretest-training.json">训练隔离证明</a>
+          <a href="/audit/v6-locked-config.json">锁定公式配置</a>
+        </div>
       </section>
 
       <section className="section-block history-section">
@@ -286,7 +292,7 @@ export default function Home() {
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>{row.phase === "locked" ? "真实" : "回溯"}</em>
+                <em>{row.phase === "locked" ? "前瞻" : "盲测"}</em>
               </div>
               <div className="history-data">
                 <div>
@@ -343,7 +349,7 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              V5把连续未中分成0—2、3—4、5—6、7期以上四个状态；每个状态使用不同的历史频率、定位频率和转移评分公式，再按该状态的固定名次取一个独胆。
+              V6先在2021年7月27日前的数据中把连续未中分成0—2、3—4、5—6、7期以上四个状态，锁定每个状态的历史频率、定位频率和转移评分公式；五年测试期不再调整。
             </p>
             <h3>7码</h3>
             <p>

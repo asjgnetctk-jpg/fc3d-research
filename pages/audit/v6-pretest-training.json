@@ -1,0 +1,57 @@
+{
+  "version": "V6-five-year-pretest-training-1",
+  "createdAt": "2026-07-28T11:23:49.134Z",
+  "isolation": {
+    "requestUrl": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2014-01-01&dayEnd=2021-07-27&pageNo=1&pageSize=3500&systemType=PC",
+    "requestedEnd": "2021-07-27",
+    "actualLatestDate": "2021-07-27",
+    "testDataRowsAvailableToTrainer": 0,
+    "passed": true
+  },
+  "ranges": {
+    "development": {
+      "start": "2015-01-01",
+      "end": "2020-07-27",
+      "count": 1944
+    },
+    "validation": {
+      "start": "2020-07-28",
+      "end": "2021-07-27",
+      "count": 351
+    },
+    "sealedTest": {
+      "start": "2021-07-28",
+      "end": "2026-07-27"
+    }
+  },
+  "search": {
+    "seed": 20260731,
+    "methodCandidates": 24000,
+    "keptPerPlay": 500,
+    "policyTrials": 140000,
+    "shapeCandidates": 24000,
+    "objective": "只根据三年前验证集：优先最长连续未中不超过7期，再压低最长未中，最后提高命中率。"
+  },
+  "validationMetrics": {
+    "dan": {
+      "count": 351,
+      "hits": 121,
+      "rate": 0.34472934472934474,
+      "maxMiss": 7
+    },
+    "pool7": {
+      "count": 351,
+      "hits": 96,
+      "rate": 0.27350427350427353,
+      "maxMiss": 8
+    },
+    "shape": {
+      "count": 351,
+      "hits": 247,
+      "rate": 0.7037037037037037,
+      "maxMiss": 4
+    },
+    "shapeGroup3RecommendationShare": 0.1168091168091168
+  },
+  "lockedConfigSha256": "1d517b2e5bb08aab03550fed39194d5308cf3554f09f9d30c23b26b8f2d99e8d"
+}

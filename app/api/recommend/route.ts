@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import config from "@/lib/v5-config.json";
+import config from "@/lib/v6-blind-config.json";
 import { actualShape, recommendV5 } from "@/lib/v5-model.js";
 
 export const runtime = "edge";
@@ -73,14 +73,14 @@ function metrics(rows: HistoryRow[], field: "danHit" | "pool7Hit" | "shapeHit") 
 async function fetchDraws(): Promise<Draw[]> {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dateDaysAgo(1700)}&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=1800&systemType=PC";
+    `?name=3d&dayStart=${dateDaysAgo(4800)}&dayEnd=${shanghaiDate()}` +
+    "&pageNo=1&pageSize=5000&systemType=PC";
   const response = await fetch(url, {
     cache: "no-store",
     headers: {
       Accept: "application/json",
       Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
-      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/5.0)",
+      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/6.0)",
     },
   });
   if (!response.ok) throw new Error(`official-data-${response.status}`);
@@ -184,12 +184,10 @@ export async function GET() {
           lockedDan: metrics(locked, "danHit"),
           lockedPool7: metrics(locked, "pool7Hit"),
           lockedShape: metrics(locked, "shapeHit"),
-          shapeAlwaysGroup6Baseline: {
-            count: 1054,
-            hits: 779,
-            rate: 0.7390891840607211,
-            maxMiss: 5,
-          },
+          shapeAlwaysGroup6Baseline: metrics(
+            backfit.map((row) => ({ ...row, shapeHit: row.shape === "组六" })),
+            "shapeHit",
+          ),
         },
       },
       {
