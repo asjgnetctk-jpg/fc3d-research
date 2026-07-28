@@ -103,12 +103,35 @@ function MetricCard({
   );
 }
 
+function matchesHistorySearch(row: HistoryRow, query: string) {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (!tokens.length) return true;
+  const searchable = [
+    row.date,
+    row.issue,
+    `胆${row.dan}`,
+    `胆码${row.dan}`,
+    row.pool7,
+    `7码${row.pool7}`,
+    row.shapePlay,
+    row.draw,
+    row.shape,
+    row.phase === "locked" ? "前瞻" : "历史回放",
+    row.danHit ? "胆码中" : "胆码未中",
+    row.pool7Hit ? "7码中" : "7码未中",
+    row.pool7Group3Covered ? "组三覆盖" : "",
+    row.shapeHit ? "形态中" : "形态未中",
+  ].join(" ").toLowerCase();
+  return tokens.every((token) => searchable.includes(token));
+}
+
 export default function Home() {
   const [data, setData] = useState<ApiPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showFormula, setShowFormula] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -133,9 +156,16 @@ export default function Home() {
 
   const history = useMemo(() => {
     if (!data) return [];
-    const reversed = [...data.history].reverse();
+    const reversed = data.history
+      .filter((row) => matchesHistorySearch(row, searchQuery))
+      .reverse();
     return showAll ? reversed : reversed.slice(0, 18);
-  }, [data, showAll]);
+  }, [data, searchQuery, showAll]);
+
+  const filteredCount = useMemo(
+    () => data?.history.filter((row) => matchesHistorySearch(row, searchQuery)).length ?? 0,
+    [data, searchQuery],
+  );
 
   if (loading && !data) {
     return (
@@ -308,9 +338,25 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="history-search">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(event) => {
+              setSearchQuery(event.target.value);
+              setShowAll(false);
+            }}
+            placeholder="搜期号、日期、开奖号、胆码、7码、组三/组六或命中结果"
+            aria-label="搜索V7逐期数据"
+          />
+          <span>{filteredCount}期</span>
+        </div>
+
         <div className="history-list">
           {history.length === 0 && (
-            <div className="notice">V7从2026年7月28日起记录，等待首期开奖。</div>
+            <div className="notice">
+              {searchQuery.trim() ? "没有找到符合条件的V7记录。" : "暂无V7逐期记录。"}
+            </div>
           )}
           {history.map((row) => (
             <article className="history-row" key={row.issue}>
@@ -353,9 +399,9 @@ export default function Home() {
           ))}
         </div>
 
-        {data.history.length > 0 && (
+        {filteredCount > 18 && (
           <button className="secondary-button" onClick={() => setShowAll(!showAll)}>
-            {showAll ? "收起记录" : `查看全部 ${data.history.length} 期`}
+            {showAll ? "收起记录" : `查看全部 ${filteredCount} 期`}
           </button>
         )}
       </section>

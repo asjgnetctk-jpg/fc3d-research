@@ -364,6 +364,37 @@ h2 {
   padding: 0 8px;
 }
 
+.history-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 8px 0;
+}
+
+.history-search input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid rgba(22, 63, 49, 0.18);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  padding: 13px 15px;
+  font: inherit;
+  outline: none;
+}
+
+.history-search input:focus {
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(22, 63, 49, 0.1);
+}
+
+.history-search span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .history-list {
   display: grid;
   gap: 8px;

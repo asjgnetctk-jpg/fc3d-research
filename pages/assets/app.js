@@ -1,6 +1,7 @@
 const $ = (selector) => document.querySelector(selector);
 let payload;
 let showAll = false;
+let searchQuery = "";
 
 function metricCard(label, metric) {
   const pending = metric.count === 0;
@@ -44,18 +45,43 @@ function historyRow(row) {
 }
 
 function renderHistory() {
-  const rows = [...payload.history].reverse();
+  const tokens = searchQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const rows = payload.history
+    .filter((row) => {
+      if (!tokens.length) return true;
+      const searchable = [
+        row.date,
+        row.issue,
+        `胆${row.dan}`,
+        `胆码${row.dan}`,
+        row.pool7,
+        `7码${row.pool7}`,
+        row.shapePlay,
+        row.draw,
+        row.shape,
+        row.phase === "locked" ? "前瞻" : "历史回放",
+        row.danHit ? "胆码中" : "胆码未中",
+        row.pool7Hit ? "7码中" : "7码未中",
+        row.pool7Group3Covered ? "组三覆盖" : "",
+        row.shapeHit ? "形态中" : "形态未中",
+      ].join(" ").toLowerCase();
+      return tokens.every((token) => searchable.includes(token));
+    })
+    .reverse();
+  $("#search-count").textContent = `${rows.length}期`;
   if (rows.length === 0) {
-    $("#history").innerHTML = '<div class="notice">V7从2026年7月28日起记录，等待首期开奖。</div>';
+    $("#history").innerHTML = `<div class="notice">${
+      searchQuery.trim() ? "没有找到符合条件的V7记录。" : "暂无V7逐期记录。"
+    }</div>`;
     $("#toggle-history").hidden = true;
     return;
   }
-  $("#toggle-history").hidden = false;
+  $("#toggle-history").hidden = rows.length <= 18;
   const visible = showAll ? rows : rows.slice(0, 18);
   $("#history").innerHTML = visible.map(historyRow).join("");
   $("#toggle-history").textContent = showAll
     ? "收起记录"
-    : `查看全部 ${payload.history.length} 期`;
+    : `查看全部 ${rows.length} 期`;
 }
 
 function render(data) {
@@ -114,6 +140,11 @@ async function load() {
 $("#refresh").addEventListener("click", load);
 $("#toggle-history").addEventListener("click", () => {
   showAll = !showAll;
+  renderHistory();
+});
+$("#history-search").addEventListener("input", (event) => {
+  searchQuery = event.target.value;
+  showAll = false;
   renderHistory();
 });
 $("#toggle-formula").addEventListener("click", () => {
