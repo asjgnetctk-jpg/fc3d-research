@@ -22,6 +22,16 @@
         <button id="refresh" class="refresh-button" type="button">刷新</button>
       </header>
 
+      <nav class="version-switch" aria-label="切换算法版本">
+        <a class="is-active" href="./" aria-current="page">
+          <strong>V7</strong><span>当前算法</span>
+        </a>
+        <a href="./v6.html">
+          <strong>V6</strong><span>历史算法</span>
+        </a>
+      </nav>
+      <p class="version-note">两套算法、推荐记录和连续未中状态独立计算，互不混用。</p>
+
       <div id="loading" class="notice">正在读取最新开奖和推荐记录…</div>
       <div id="error" class="notice error" hidden></div>
 

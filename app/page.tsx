@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Recommendation = {
   targetIssue: string;
@@ -208,6 +209,16 @@ export default function Home() {
           {loading ? "刷新中" : "刷新"}
         </button>
       </header>
+
+      <nav className="version-switch" aria-label="切换算法版本">
+        <Link className="is-active" href="/" aria-current="page">
+          <strong>V7</strong><span>当前算法</span>
+        </Link>
+        <Link href="/v6.html">
+          <strong>V6</strong><span>历史算法</span>
+        </Link>
+      </nav>
+      <p className="version-note">两套算法、推荐记录和连续未中状态独立计算，互不混用。</p>
 
       <section className="status-strip">
         <span className="status-dot" />
