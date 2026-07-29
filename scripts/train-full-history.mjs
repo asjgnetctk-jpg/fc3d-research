@@ -8,9 +8,11 @@ import { buildGroup3Examples, runGroup3Online } from "../lib/group3-online.js";
 const DATA_PATH = "scripts/data/fc3d-full-history.json";
 const INTEGRITY_PATH = "scripts/results/full-history-integrity.json";
 const SEED = 2026072901;
-const RANDOM_METHODS = 6000;
-const KEEP_PER_PLAY = 120;
-const POLICY_TRIALS = 12000;
+const RANDOM_METHODS = 24000;
+const KEEP_PER_PLAY = 300;
+const POLICY_TRIALS = 8000;
+const STREAK_STATES = 10;
+const RECENT_THREE_YEAR_START = "2023-07-28";
 const MIN_HISTORY = 120;
 const PLAYS = ["dan", "pool5", "pool6", "pool7"];
 const FOLDS = [
@@ -72,6 +74,13 @@ function metrics(hits) {
 
 function summarize(rows, hits) {
   const overall = metrics(hits);
+  const recentThreeYearHits = [];
+  for (let index = 0; index < rows.length; index += 1) {
+    if (rows[index].date >= RECENT_THREE_YEAR_START) {
+      recentThreeYearHits.push(hits[index]);
+    }
+  }
+  const recentThreeYears = metrics(recentThreeYearHits);
   const folds = FOLDS.map((fold) => {
     const scoped = [];
     for (let index = 0; index < rows.length; index += 1) {
@@ -81,6 +90,10 @@ function summarize(rows, hits) {
   });
   return {
     overall,
+    recentThreeYears: {
+      start: RECENT_THREE_YEAR_START,
+      ...recentThreeYears,
+    },
     folds,
     worstFoldMaxMiss: Math.max(...folds.map((fold) => fold.maxMiss)),
     meanFoldMaxMiss:
@@ -91,6 +104,7 @@ function summarize(rows, hits) {
 function compareSummary(left, right) {
   return (
     left.overall.maxMiss - right.overall.maxMiss ||
+    left.recentThreeYears.maxMiss - right.recentThreeYears.maxMiss ||
     left.worstFoldMaxMiss - right.worstFoldMaxMiss ||
     left.meanFoldMaxMiss - right.meanFoldMaxMiss ||
     right.overall.rate - left.overall.rate
@@ -98,7 +112,7 @@ function compareSummary(left, right) {
 }
 
 function streakBucket(missStreak) {
-  return missStreak < 3 ? 0 : missStreak < 5 ? 1 : missStreak < 7 ? 2 : 3;
+  return Math.min(missStreak, STREAK_STATES - 1);
 }
 
 function randomMethod(random, id) {
@@ -262,13 +276,14 @@ function evaluatePolicy(rows, library, choices) {
 }
 
 function searchPolicy(rows, library, random) {
+  const initialChoices = Array(STREAK_STATES).fill(0);
   let best = {
-    choices: [0, 0, 0, 0],
-    result: evaluatePolicy(rows, library, [0, 0, 0, 0]),
+    choices: initialChoices,
+    result: evaluatePolicy(rows, library, initialChoices),
   };
   for (let trial = 0; trial < POLICY_TRIALS; trial += 1) {
     const choices = Array.from(
-      { length: 4 },
+      { length: STREAK_STATES },
       () => Math.floor(random() * library.length),
     );
     const result = evaluatePolicy(rows, library, choices);
@@ -278,7 +293,7 @@ function searchPolicy(rows, library, random) {
   }
   for (let round = 0; round < 3; round += 1) {
     let improved = false;
-    for (let bucket = 0; bucket < 4; bucket += 1) {
+    for (let bucket = 0; bucket < STREAK_STATES; bucket += 1) {
       for (let choice = 0; choice < library.length; choice += 1) {
         const choices = [...best.choices];
         choices[bucket] = choice;
@@ -393,7 +408,7 @@ async function main() {
     canonicalDataSha256: data.canonicalSha256,
   };
   const v7Config = {
-    version: "V7.3-full-history",
+    version: "V7.4-adaptive10",
     ...common,
     dan: {
       methods: policies.dan.choices.map(
@@ -408,7 +423,7 @@ async function main() {
     shapeChoice: oldV7.shapeChoice,
   };
   const poolConfig = {
-    version: "pools56-full-history-1",
+    version: "pools56-adaptive10-1",
     ...common,
     pool5: {
       methods: policies.pool5.choices.map(
@@ -427,7 +442,7 @@ async function main() {
     ...group3Search.best.config,
   };
   const report = {
-    version: "full-history-training-1",
+    version: "full-history-training-2",
     createdAt: trainedAt,
     warning:
       "All available outcomes were used for model selection. Results are in-sample expanding replay, not an independent blind test.",
@@ -445,10 +460,12 @@ async function main() {
       totalRankingMethods: searched,
       keptPerPlay: KEEP_PER_PLAY,
       policyTrialsPerPlay: POLICY_TRIALS,
+      streakStates: STREAK_STATES,
+      recentThreeYearStart: RECENT_THREE_YEAR_START,
       features: FEATURES.length,
       group3Hyperparameters: group3Search.searched,
       objective:
-        "Minimize full-history maximum miss first, then worst fold maximum miss, then mean fold maximum miss, then maximize hit rate.",
+        "Minimize full-history maximum miss first, then recent-three-year maximum miss, then worst fold maximum miss, mean fold maximum miss, and finally maximize hit rate.",
     },
     folds: FOLDS,
     results: Object.fromEntries(

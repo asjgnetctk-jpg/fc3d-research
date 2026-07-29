@@ -1,6 +1,6 @@
 {
-  "version": "full-history-training-1",
-  "createdAt": "2026-07-29T07:12:05.795Z",
+  "version": "full-history-training-2",
+  "createdAt": "2026-07-29T10:13:23.865Z",
   "warning": "All available outcomes were used for model selection. Results are in-sample expanding replay, not an independent blind test.",
   "data": {
     "count": 7706,
@@ -29,14 +29,16 @@
   },
   "search": {
     "seed": 2026072901,
-    "randomRankingMethods": 6000,
+    "randomRankingMethods": 24000,
     "seededRankingMethods": 16,
-    "totalRankingMethods": 6016,
-    "keptPerPlay": 120,
-    "policyTrialsPerPlay": 12000,
+    "totalRankingMethods": 24016,
+    "keptPerPlay": 300,
+    "policyTrialsPerPlay": 8000,
+    "streakStates": 10,
+    "recentThreeYearStart": "2023-07-28",
     "features": 43,
     "group3Hyperparameters": 72,
-    "objective": "Minimize full-history maximum miss first, then worst fold maximum miss, then mean fold maximum miss, then maximize hit rate."
+    "objective": "Minimize full-history maximum miss first, then recent-three-year maximum miss, then worst fold maximum miss, mean fold maximum miss, and finally maximize hit rate."
   },
   "folds": [
     {
@@ -70,9 +72,16 @@
       "metrics": {
         "overall": {
           "count": 7586,
-          "hits": 2142,
-          "rate": 0.2823622462430794,
+          "hits": 2124,
+          "rate": 0.2799894542578434,
           "maxMiss": 15
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 307,
+          "rate": 0.2909952606635071,
+          "maxMiss": 13
         },
         "folds": [
           {
@@ -80,8 +89,8 @@
             "start": "2004-01-01",
             "end": "2008-12-31",
             "count": 1386,
-            "hits": 403,
-            "rate": 0.2907647907647908,
+            "hits": 384,
+            "rate": 0.27705627705627706,
             "maxMiss": 14
           },
           {
@@ -89,26 +98,26 @@
             "start": "2009-01-01",
             "end": "2012-12-31",
             "count": 1433,
-            "hits": 443,
-            "rate": 0.3091416608513608,
-            "maxMiss": 13
+            "hits": 408,
+            "rate": 0.2847173761339846,
+            "maxMiss": 15
           },
           {
             "key": "2013-2016",
             "start": "2013-01-01",
             "end": "2016-12-31",
             "count": 1432,
-            "hits": 378,
-            "rate": 0.2639664804469274,
-            "maxMiss": 15
+            "hits": 396,
+            "rate": 0.276536312849162,
+            "maxMiss": 12
           },
           {
             "key": "2017-2020",
             "start": "2017-01-01",
             "end": "2020-12-31",
             "count": 1380,
-            "hits": 380,
-            "rate": 0.2753623188405797,
+            "hits": 361,
+            "rate": 0.26159420289855073,
             "maxMiss": 14
           },
           {
@@ -116,59 +125,128 @@
             "start": "2021-01-01",
             "end": "2099-12-31",
             "count": 1955,
-            "hits": 538,
-            "rate": 0.2751918158567775,
-            "maxMiss": 15
+            "hits": 575,
+            "rate": 0.29411764705882354,
+            "maxMiss": 14
           }
         ],
         "worstFoldMaxMiss": 15,
-        "meanFoldMaxMiss": 14.2
+        "meanFoldMaxMiss": 13.8
       },
       "choices": [
-        74,
-        50,
-        71,
-        8
+        98,
+        132,
+        22,
+        290,
+        180,
+        215,
+        199,
+        296,
+        242,
+        222
       ],
       "methods": [
         {
-          "id": "full-3726",
+          "id": "full-6055",
+          "rank": 9,
+          "weights": {
+            "occurrence5": 2,
+            "presence5": -1,
+            "occurrence30": -2,
+            "occurrence90": -3
+          }
+        },
+        {
+          "id": "full-13490",
+          "rank": 7,
+          "weights": {
+            "occurrence45": -3,
+            "digitCenter": 1,
+            "occurrence10": -1,
+            "occurrence20": 3,
+            "occurrence90": -1
+          }
+        },
+        {
+          "id": "full-19040",
+          "rank": 10,
+          "weights": {
+            "occurrence60": 1,
+            "position2_20": 3,
+            "position2_10": -3,
+            "presence7": -1
+          }
+        },
+        {
+          "id": "full-1079",
           "rank": 1,
           "weights": {
-            "gap": 2,
-            "presence7": -1,
+            "position1_20": -1,
+            "presence120": -3
+          }
+        },
+        {
+          "id": "full-13580",
+          "rank": 9,
+          "weights": {
+            "occurrence20": 2,
+            "presence45": 3,
+            "position1_30": -1,
+            "presence60": 3,
             "digitCenter": -2
           }
         },
         {
-          "id": "full-3890",
-          "rank": 3,
+          "id": "full-4098",
+          "rank": 1,
           "weights": {
-            "occurrence5": 2,
-            "gap": -2,
-            "occurrence120": -3,
-            "position3_20": 3
+            "occurrence30": 2,
+            "position1_30": -3,
+            "presence60": 3,
+            "position1_20": 1,
+            "transition120": 2
           }
         },
         {
-          "id": "full-2414",
-          "rank": 3,
-          "weights": {
-            "position2_30": 3,
-            "transition120": 3,
-            "transition60": -2,
-            "presence45": -3,
-            "gap": -3
-          }
-        },
-        {
-          "id": "full-2592",
+          "id": "full-12144",
           "rank": 6,
           "weights": {
-            "presence30": -2,
-            "presence10": 2,
-            "position2_30": 1,
-            "position3_20": -3
+            "occurrence14": 2,
+            "presence45": 1,
+            "presence5": 3,
+            "position1_20": -3
+          }
+        },
+        {
+          "id": "full-16911",
+          "rank": 6,
+          "weights": {
+            "presence90": 1,
+            "occurrence10": -3,
+            "presence3": -3,
+            "transition120": -3
+          }
+        },
+        {
+          "id": "full-23855",
+          "rank": 8,
+          "weights": {
+            "position1_10": 3,
+            "occurrence20": 1,
+            "digitCenter": 3,
+            "presence30": 2
+          }
+        },
+        {
+          "id": "full-23525",
+          "rank": 3,
+          "weights": {
+            "occurrence30": -1,
+            "presence60": -2,
+            "occurrence45": 1,
+            "transition30": -3,
+            "presence7": -3,
+            "position1_20": 3
           }
         }
       ]
@@ -177,9 +255,16 @@
       "metrics": {
         "overall": {
           "count": 7586,
-          "hits": 545,
-          "rate": 0.0718428684418666,
-          "maxMiss": 59
+          "hits": 541,
+          "rate": 0.07131558133403638,
+          "maxMiss": 56
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 73,
+          "rate": 0.06919431279620854,
+          "maxMiss": 45
         },
         "folds": [
           {
@@ -187,90 +272,96 @@
             "start": "2004-01-01",
             "end": "2008-12-31",
             "count": 1386,
-            "hits": 89,
-            "rate": 0.06421356421356421,
-            "maxMiss": 58
+            "hits": 94,
+            "rate": 0.06782106782106782,
+            "maxMiss": 56
           },
           {
             "key": "2009-2012",
             "start": "2009-01-01",
             "end": "2012-12-31",
             "count": 1433,
-            "hits": 105,
-            "rate": 0.0732728541521284,
-            "maxMiss": 51
+            "hits": 98,
+            "rate": 0.06838799720865317,
+            "maxMiss": 49
           },
           {
             "key": "2013-2016",
             "start": "2013-01-01",
             "end": "2016-12-31",
             "count": 1432,
-            "hits": 105,
-            "rate": 0.07332402234636871,
-            "maxMiss": 52
+            "hits": 100,
+            "rate": 0.06983240223463687,
+            "maxMiss": 50
           },
           {
             "key": "2017-2020",
             "start": "2017-01-01",
             "end": "2020-12-31",
             "count": 1380,
-            "hits": 105,
-            "rate": 0.07608695652173914,
-            "maxMiss": 59
+            "hits": 100,
+            "rate": 0.07246376811594203,
+            "maxMiss": 48
           },
           {
             "key": "2021-2026",
             "start": "2021-01-01",
             "end": "2099-12-31",
             "count": 1955,
-            "hits": 141,
-            "rate": 0.0721227621483376,
-            "maxMiss": 55
+            "hits": 149,
+            "rate": 0.07621483375959079,
+            "maxMiss": 45
           }
         ],
-        "worstFoldMaxMiss": 59,
-        "meanFoldMaxMiss": 55
+        "worstFoldMaxMiss": 56,
+        "meanFoldMaxMiss": 49.6
       },
       "choices": [
-        84,
-        76,
-        74,
-        3
+        143,
+        124,
+        202,
+        25,
+        227,
+        62,
+        240,
+        95,
+        52,
+        18
       ],
       "methods": [
         {
-          "id": "full-1337",
-          "rank": 9,
-          "weights": {
-            "digitParity": 3,
-            "occurrence45": -2,
-            "position1_60": 1,
-            "digitCenter": -3
-          }
-        },
-        {
-          "id": "full-89",
+          "id": "full-5961",
           "rank": 3,
           "weights": {
-            "occurrence14": -3,
-            "occurrence60": 2,
-            "position1_10": 5,
-            "digitCenter": -1,
+            "position3_60": -2,
             "presence60": -3,
-            "gap": 3
+            "occurrence7": 3,
+            "occurrence45": -2
           }
         },
         {
-          "id": "full-346",
-          "rank": 4,
+          "id": "full-5361",
+          "rank": 1,
           "weights": {
-            "position3_10": -3,
-            "presence14": -1,
-            "position1_60": -2
+            "presence120": 2,
+            "position2_30": -2
           }
         },
         {
-          "id": "full-436",
+          "id": "full-1539",
+          "rank": 3,
+          "weights": {
+            "presence10": 1,
+            "digitCenter": 1,
+            "presence90": -3,
+            "presence30": 2,
+            "position3_30": 2,
+            "occurrence60": -3,
+            "position1_10": 2
+          }
+        },
+        {
+          "id": "seed-11",
           "rank": 8,
           "weights": {
             "position3_20": -2,
@@ -279,6 +370,63 @@
             "presence60": 1,
             "position1_30": -1
           }
+        },
+        {
+          "id": "full-5806",
+          "rank": 4,
+          "weights": {
+            "position1_30": -1,
+            "presence7": -2,
+            "occurrence10": 2
+          }
+        },
+        {
+          "id": "full-10109",
+          "rank": 6,
+          "weights": {
+            "transition120": 1,
+            "presence60": -1,
+            "position2_60": -1,
+            "occurrence45": -2,
+            "presence90": 3
+          }
+        },
+        {
+          "id": "full-9247",
+          "rank": 2,
+          "weights": {
+            "position3_10": 2,
+            "occurrence45": -1,
+            "presence120": 2
+          }
+        },
+        {
+          "id": "full-14943",
+          "rank": 10,
+          "weights": {
+            "position2_30": 3,
+            "presence7": 3,
+            "presence3": -3
+          }
+        },
+        {
+          "id": "full-7809",
+          "rank": 9,
+          "weights": {
+            "presence5": -1,
+            "digitParity": 3,
+            "position1_60": 3,
+            "position3_10": -2,
+            "presence120": 2
+          }
+        },
+        {
+          "id": "full-14960",
+          "rank": 8,
+          "weights": {
+            "position2_30": 1,
+            "occurrence10": -2
+          }
         }
       ]
     },
@@ -286,9 +434,16 @@
       "metrics": {
         "overall": {
           "count": 7586,
-          "hits": 955,
-          "rate": 0.12588979699446348,
-          "maxMiss": 32
+          "hits": 1004,
+          "rate": 0.1323490640653836,
+          "maxMiss": 33
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 151,
+          "rate": 0.14312796208530806,
+          "maxMiss": 22
         },
         "folds": [
           {
@@ -296,99 +451,158 @@
             "start": "2004-01-01",
             "end": "2008-12-31",
             "count": 1386,
-            "hits": 158,
-            "rate": 0.113997113997114,
-            "maxMiss": 32
+            "hits": 210,
+            "rate": 0.15151515151515152,
+            "maxMiss": 25
           },
           {
             "key": "2009-2012",
             "start": "2009-01-01",
             "end": "2012-12-31",
             "count": 1433,
-            "hits": 174,
-            "rate": 0.12142358688066993,
-            "maxMiss": 31
+            "hits": 184,
+            "rate": 0.1284019539427774,
+            "maxMiss": 28
           },
           {
             "key": "2013-2016",
             "start": "2013-01-01",
             "end": "2016-12-31",
             "count": 1432,
-            "hits": 175,
-            "rate": 0.12220670391061453,
-            "maxMiss": 32
+            "hits": 171,
+            "rate": 0.11941340782122906,
+            "maxMiss": 33
           },
           {
             "key": "2017-2020",
             "start": "2017-01-01",
             "end": "2020-12-31",
             "count": 1380,
-            "hits": 200,
-            "rate": 0.14492753623188406,
-            "maxMiss": 27
+            "hits": 168,
+            "rate": 0.12173913043478261,
+            "maxMiss": 33
           },
           {
             "key": "2021-2026",
             "start": "2021-01-01",
             "end": "2099-12-31",
             "count": 1955,
-            "hits": 248,
-            "rate": 0.1268542199488491,
-            "maxMiss": 30
+            "hits": 271,
+            "rate": 0.13861892583120206,
+            "maxMiss": 25
           }
         ],
-        "worstFoldMaxMiss": 32,
-        "meanFoldMaxMiss": 30.4
+        "worstFoldMaxMiss": 33,
+        "meanFoldMaxMiss": 28.8
       },
       "choices": [
-        77,
-        21,
-        86,
-        0
+        286,
+        127,
+        221,
+        283,
+        238,
+        63,
+        287,
+        215,
+        64,
+        179
       ],
       "methods": [
         {
-          "id": "full-4477",
-          "rank": 5,
+          "id": "full-18308",
+          "rank": 2,
           "weights": {
-            "occurrence45": 2,
-            "occurrence3": 2,
-            "position1_30": -2,
-            "occurrence60": 1
+            "position1_60": 2,
+            "presence5": 1,
+            "position2_30": 2,
+            "presence30": -3
           }
         },
         {
-          "id": "full-3409",
+          "id": "full-14435",
+          "rank": 7,
+          "weights": {
+            "transition120": -3,
+            "presence5": 2
+          }
+        },
+        {
+          "id": "full-16051",
+          "rank": 8,
+          "weights": {
+            "gap": -2,
+            "occurrence14": 1
+          }
+        },
+        {
+          "id": "full-9882",
           "rank": 1,
           "weights": {
-            "presence60": 1,
-            "presence10": -2,
-            "digitCenter": 2,
-            "transition120": 1,
-            "digitParity": 1,
-            "occurrence5": 1,
-            "occurrence3": -2
+            "position2_10": -3,
+            "presence3": -3,
+            "position2_20": -2
           }
         },
         {
-          "id": "full-3691",
-          "rank": 6,
-          "weights": {
-            "position3_20": -2,
-            "occurrence7": 1,
-            "position3_30": -3
-          }
-        },
-        {
-          "id": "full-1597",
+          "id": "full-16856",
           "rank": 4,
           "weights": {
-            "presence20": -2,
-            "occurrence60": -1,
-            "presence60": 1,
-            "occurrence14": -2,
-            "digitParity": 3,
-            "position1_10": 1
+            "transition120": -3,
+            "position2_60": -3,
+            "presence10": 2,
+            "presence3": 3
+          }
+        },
+        {
+          "id": "full-12117",
+          "rank": 10,
+          "weights": {
+            "presence7": 3,
+            "transition120": -3,
+            "transition30": 3,
+            "occurrence5": -2,
+            "position3_20": 3,
+            "position2_10": -3,
+            "occurrence14": 2
+          }
+        },
+        {
+          "id": "full-8016",
+          "rank": 7,
+          "weights": {
+            "occurrence3": 1,
+            "position2_60": -2,
+            "position1_60": -2,
+            "position1_30": 1,
+            "transition120": -3
+          }
+        },
+        {
+          "id": "full-23140",
+          "rank": 3,
+          "weights": {
+            "occurrence90": -1,
+            "gap": 1,
+            "occurrence120": 1,
+            "presence14": 2,
+            "position2_60": 2,
+            "presence5": -1
+          }
+        },
+        {
+          "id": "full-9151",
+          "rank": 6,
+          "weights": {
+            "occurrence7": 3,
+            "occurrence10": -3
+          }
+        },
+        {
+          "id": "full-20959",
+          "rank": 1,
+          "weights": {
+            "position3_20": -1,
+            "presence30": 1
           }
         }
       ]
@@ -397,9 +611,16 @@
       "metrics": {
         "overall": {
           "count": 7586,
-          "hits": 1653,
-          "rate": 0.21790139731083574,
-          "maxMiss": 20
+          "hits": 1648,
+          "rate": 0.21724228842604798,
+          "maxMiss": 18
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 254,
+          "rate": 0.24075829383886255,
+          "maxMiss": 13
         },
         "folds": [
           {
@@ -407,8 +628,8 @@
             "start": "2004-01-01",
             "end": "2008-12-31",
             "count": 1386,
-            "hits": 292,
-            "rate": 0.2106782106782107,
+            "hits": 287,
+            "rate": 0.20707070707070707,
             "maxMiss": 18
           },
           {
@@ -418,80 +639,159 @@
             "count": 1433,
             "hits": 319,
             "rate": 0.2226099092812282,
-            "maxMiss": 20
+            "maxMiss": 18
           },
           {
             "key": "2013-2016",
             "start": "2013-01-01",
             "end": "2016-12-31",
             "count": 1432,
-            "hits": 308,
-            "rate": 0.21508379888268156,
-            "maxMiss": 19
+            "hits": 297,
+            "rate": 0.20740223463687152,
+            "maxMiss": 18
           },
           {
             "key": "2017-2020",
             "start": "2017-01-01",
             "end": "2020-12-31",
             "count": 1380,
-            "hits": 297,
-            "rate": 0.21521739130434783,
-            "maxMiss": 15
+            "hits": 300,
+            "rate": 0.21739130434782608,
+            "maxMiss": 17
           },
           {
             "key": "2021-2026",
             "start": "2021-01-01",
             "end": "2099-12-31",
             "count": 1955,
-            "hits": 437,
-            "rate": 0.2235294117647059,
-            "maxMiss": 20
+            "hits": 445,
+            "rate": 0.22762148337595908,
+            "maxMiss": 17
           }
         ],
-        "worstFoldMaxMiss": 20,
-        "meanFoldMaxMiss": 18.4
+        "worstFoldMaxMiss": 18,
+        "meanFoldMaxMiss": 17.6
       },
       "choices": [
-        26,
-        24,
-        111,
-        13
+        229,
+        99,
+        97,
+        293,
+        225,
+        201,
+        299,
+        248,
+        131,
+        7
       ],
       "methods": [
         {
-          "id": "full-886",
-          "rank": 2,
+          "id": "full-7594",
+          "rank": 4,
           "weights": {
-            "presence20": -1,
-            "presence7": -1,
-            "transition120": -2,
-            "last3": 3
+            "occurrence7": -1,
+            "position1_60": -2,
+            "transition120": -1,
+            "position2_30": 1,
+            "position1_10": 3
           }
         },
         {
-          "id": "full-2407",
-          "rank": 3,
+          "id": "full-18690",
+          "rank": 4,
           "weights": {
-            "presence10": 3,
-            "position3_10": -3
+            "last3": -1,
+            "presence14": -2,
+            "presence10": -1,
+            "position3_30": -2,
+            "digitCenter": 3
           }
         },
         {
-          "id": "full-262",
+          "id": "full-9088",
           "rank": 5,
           "weights": {
-            "occurrence10": 1,
+            "occurrence30": 1,
+            "presence14": -3,
+            "presence45": 1,
+            "digitCenter": 1,
+            "position1_10": 2,
+            "last1": 2,
+            "presence20": -2
+          }
+        },
+        {
+          "id": "full-7363",
+          "rank": 8,
+          "weights": {
+            "position2_60": 2,
+            "position2_10": -1
+          }
+        },
+        {
+          "id": "full-15263",
+          "rank": 5,
+          "weights": {
+            "last3": -1,
+            "occurrence10": -2,
+            "gap": 2
+          }
+        },
+        {
+          "id": "full-21584",
+          "rank": 3,
+          "weights": {
+            "position1_20": -1,
+            "presence120": 1,
+            "occurrence7": -3,
+            "position1_30": 1,
+            "presence90": -2,
+            "transition30": 3,
+            "occurrence14": 2
+          }
+        },
+        {
+          "id": "full-19365",
+          "rank": 10,
+          "weights": {
+            "transition30": 3,
+            "position1_20": -1,
             "position3_10": 3
           }
         },
         {
-          "id": "full-2903",
-          "rank": 7,
+          "id": "full-5717",
+          "rank": 4,
           "weights": {
-            "occurrence120": 3,
-            "presence120": -3,
-            "digitCenter": -1,
+            "position2_10": -3,
+            "occurrence30": -1,
+            "last2": 1,
+            "position3_20": -2,
+            "presence20": 3,
+            "position1_30": 2,
+            "position2_20": 3
+          }
+        },
+        {
+          "id": "full-16118",
+          "rank": 10,
+          "weights": {
+            "position2_20": -2,
+            "presence30": 1,
+            "presence120": -1,
+            "position2_60": 1,
+            "occurrence14": 2,
+            "presence10": -1,
             "occurrence90": -3
+          }
+        },
+        {
+          "id": "full-8188",
+          "rank": 9,
+          "weights": {
+            "presence60": 3,
+            "presence10": -2,
+            "occurrence30": -1
           }
         }
       ]
@@ -507,7 +807,7 @@
     "brier": 0.1953061754429176,
     "config": {
       "version": "group3-full-history-online-1",
-      "trainedAt": "2026-07-29T07:12:05.795Z",
+      "trainedAt": "2026-07-29T10:13:23.865Z",
       "trainingMode": "full-history-expanding-replay",
       "trainingDataStart": "2004-10-18",
       "trainingDataCutoff": "2026-07-28",
@@ -708,8 +1008,761 @@
     ]
   },
   "configHashes": {
-    "v7": "cd4bdc0a235a34836d73bb8c7cb4d1ddac37b831ad5a90c70c969224fe53a0c4",
-    "pools56": "943e104ddf24a7d11e7b28b9a9cb6d085d7a9f978079deb8ea17e8d75376e5ec",
-    "group3": "83a19cec63ecbe16913b4cc0c8fdb0a5eda40f63b4bf053828ee146fd4b4311b"
+    "v7": "b4b7a387a72e165c1e56e704013f6dd9b39e69970758cc07cfb223991120a319",
+    "pools56": "4759169ac73e5f49470124e495637b193d82ac5adadbf2535985b9b93d2f62e5",
+    "group3": "41c2ce4cf88dfe93509e3555b5326554887547f8248312d25eca4aeee5626028"
+  },
+  "finalSelection": {
+    "dan": {
+      "selected": "expanded",
+      "incumbent": {
+        "overall": {
+          "count": 7586,
+          "hits": 2142,
+          "rate": 0.2823622462430794,
+          "maxMiss": 15
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 285,
+          "rate": 0.27014218009478674,
+          "maxMiss": 15
+        }
+      },
+      "expanded": {
+        "overall": {
+          "count": 7586,
+          "hits": 2124,
+          "rate": 0.2799894542578434,
+          "maxMiss": 15
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 307,
+          "rate": 0.2909952606635071,
+          "maxMiss": 13
+        }
+      },
+      "final": {
+        "overall": {
+          "count": 7586,
+          "hits": 2124,
+          "rate": 0.2799894542578434,
+          "maxMiss": 15
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 307,
+          "rate": 0.2909952606635071,
+          "maxMiss": 13
+        }
+      }
+    },
+    "pool7": {
+      "selected": "expanded",
+      "incumbent": {
+        "overall": {
+          "count": 7586,
+          "hits": 1653,
+          "rate": 0.21790139731083574,
+          "maxMiss": 20
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 246,
+          "rate": 0.23317535545023696,
+          "maxMiss": 19
+        }
+      },
+      "expanded": {
+        "overall": {
+          "count": 7586,
+          "hits": 1648,
+          "rate": 0.21724228842604798,
+          "maxMiss": 18
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 254,
+          "rate": 0.24075829383886255,
+          "maxMiss": 13
+        }
+      },
+      "final": {
+        "overall": {
+          "count": 7586,
+          "hits": 1648,
+          "rate": 0.21724228842604798,
+          "maxMiss": 18
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 254,
+          "rate": 0.24075829383886255,
+          "maxMiss": 13
+        }
+      }
+    },
+    "pool5": {
+      "selected": "expanded",
+      "incumbent": {
+        "overall": {
+          "count": 7586,
+          "hits": 545,
+          "rate": 0.0718428684418666,
+          "maxMiss": 59
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 71,
+          "rate": 0.06729857819905213,
+          "maxMiss": 49
+        }
+      },
+      "expanded": {
+        "overall": {
+          "count": 7586,
+          "hits": 541,
+          "rate": 0.07131558133403638,
+          "maxMiss": 56
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 73,
+          "rate": 0.06919431279620854,
+          "maxMiss": 45
+        }
+      },
+      "final": {
+        "overall": {
+          "count": 7586,
+          "hits": 541,
+          "rate": 0.07131558133403638,
+          "maxMiss": 56
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 73,
+          "rate": 0.06919431279620854,
+          "maxMiss": 45
+        }
+      }
+    },
+    "pool6": {
+      "selected": "incumbent",
+      "incumbent": {
+        "overall": {
+          "count": 7586,
+          "hits": 955,
+          "rate": 0.12588979699446348,
+          "maxMiss": 32
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 140,
+          "rate": 0.13270142180094788,
+          "maxMiss": 26
+        }
+      },
+      "expanded": {
+        "overall": {
+          "count": 7586,
+          "hits": 1004,
+          "rate": 0.1323490640653836,
+          "maxMiss": 33
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 151,
+          "rate": 0.14312796208530806,
+          "maxMiss": 22
+        }
+      },
+      "final": {
+        "overall": {
+          "count": 7586,
+          "hits": 955,
+          "rate": 0.12588979699446348,
+          "maxMiss": 32
+        },
+        "recentThreeYears": {
+          "start": "2023-07-28",
+          "count": 1055,
+          "hits": 140,
+          "rate": 0.13270142180094788,
+          "maxMiss": 26
+        }
+      }
+    }
+  },
+  "finalSelectionRule": "Keep the expanded model only when it improves full-history maximum miss; use recent-three-year maximum miss and hit rate as tie-breakers.",
+  "streakRepair": {
+    "candidatesPerBucket": 12000,
+    "repairedBuckets": [
+      9,
+      8,
+      7
+    ],
+    "audit": {
+      "dan": {
+        "before": {
+          "overall": {
+            "count": 7586,
+            "hits": 2124,
+            "rate": 0.2799894542578434,
+            "maxMiss": 15
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 307,
+            "rate": 0.2909952606635071,
+            "maxMiss": 13
+          }
+        },
+        "after": {
+          "overall": {
+            "count": 7586,
+            "hits": 2124,
+            "rate": 0.2799894542578434,
+            "maxMiss": 15
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 307,
+            "rate": 0.2909952606635071,
+            "maxMiss": 13
+          }
+        },
+        "accepted": false,
+        "steps": [
+          {
+            "bucket": 9,
+            "criticalRows": 144,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            }
+          },
+          {
+            "bucket": 8,
+            "criticalRows": 42,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            }
+          },
+          {
+            "bucket": 7,
+            "criticalRows": 42,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 2124,
+                "rate": 0.2799894542578434,
+                "maxMiss": 15
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 307,
+                "rate": 0.2909952606635071,
+                "maxMiss": 13
+              }
+            }
+          }
+        ]
+      },
+      "pool5": {
+        "before": {
+          "overall": {
+            "count": 7586,
+            "hits": 541,
+            "rate": 0.07131558133403638,
+            "maxMiss": 56
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 73,
+            "rate": 0.06919431279620854,
+            "maxMiss": 45
+          }
+        },
+        "after": {
+          "overall": {
+            "count": 7586,
+            "hits": 541,
+            "rate": 0.07131558133403638,
+            "maxMiss": 56
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 73,
+            "rate": 0.06919431279620854,
+            "maxMiss": 45
+          }
+        },
+        "accepted": false,
+        "steps": [
+          {
+            "bucket": 9,
+            "criticalRows": 139,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            }
+          },
+          {
+            "bucket": 8,
+            "criticalRows": 3,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            }
+          },
+          {
+            "bucket": 7,
+            "criticalRows": 3,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 541,
+                "rate": 0.07131558133403638,
+                "maxMiss": 56
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 73,
+                "rate": 0.06919431279620854,
+                "maxMiss": 45
+              }
+            }
+          }
+        ]
+      },
+      "pool6": {
+        "before": {
+          "overall": {
+            "count": 7586,
+            "hits": 955,
+            "rate": 0.12588979699446348,
+            "maxMiss": 32
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 140,
+            "rate": 0.13270142180094788,
+            "maxMiss": 26
+          }
+        },
+        "after": {
+          "overall": {
+            "count": 7586,
+            "hits": 980,
+            "rate": 0.12918534141840232,
+            "maxMiss": 32
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 145,
+            "rate": 0.13744075829383887,
+            "maxMiss": 26
+          }
+        },
+        "accepted": true,
+        "steps": [
+          {
+            "bucket": 9,
+            "criticalRows": 383,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 955,
+                "rate": 0.12588979699446348,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 140,
+                "rate": 0.13270142180094788,
+                "maxMiss": 26
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 955,
+                "rate": 0.12588979699446348,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 140,
+                "rate": 0.13270142180094788,
+                "maxMiss": 26
+              }
+            }
+          },
+          {
+            "bucket": 8,
+            "criticalRows": 18,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 955,
+                "rate": 0.12588979699446348,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 140,
+                "rate": 0.13270142180094788,
+                "maxMiss": 26
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 975,
+                "rate": 0.12852623253361456,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 143,
+                "rate": 0.13554502369668248,
+                "maxMiss": 26
+              }
+            }
+          },
+          {
+            "bucket": 7,
+            "criticalRows": 11,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 975,
+                "rate": 0.12852623253361456,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 143,
+                "rate": 0.13554502369668248,
+                "maxMiss": 26
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 980,
+                "rate": 0.12918534141840232,
+                "maxMiss": 32
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 145,
+                "rate": 0.13744075829383887,
+                "maxMiss": 26
+              }
+            }
+          }
+        ]
+      },
+      "pool7": {
+        "before": {
+          "overall": {
+            "count": 7586,
+            "hits": 1648,
+            "rate": 0.21724228842604798,
+            "maxMiss": 18
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 254,
+            "rate": 0.24075829383886255,
+            "maxMiss": 13
+          }
+        },
+        "after": {
+          "overall": {
+            "count": 7586,
+            "hits": 1648,
+            "rate": 0.21724228842604798,
+            "maxMiss": 18
+          },
+          "recentThreeYears": {
+            "start": "2023-07-28",
+            "count": 1055,
+            "hits": 254,
+            "rate": 0.24075829383886255,
+            "maxMiss": 13
+          }
+        },
+        "accepted": false,
+        "steps": [
+          {
+            "bucket": 9,
+            "criticalRows": 264,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            }
+          },
+          {
+            "bucket": 8,
+            "criticalRows": 39,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            }
+          },
+          {
+            "bucket": 7,
+            "criticalRows": 39,
+            "before": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            },
+            "after": {
+              "overall": {
+                "count": 7586,
+                "hits": 1648,
+                "rate": 0.21724228842604798,
+                "maxMiss": 18
+              },
+              "recentThreeYears": {
+                "start": "2023-07-28",
+                "count": 1055,
+                "hits": 254,
+                "rate": 0.24075829383886255,
+                "maxMiss": 13
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 }

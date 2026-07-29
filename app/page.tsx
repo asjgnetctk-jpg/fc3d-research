@@ -4,7 +4,27 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 type PlayKey = "dan" | "pool5" | "pool6" | "pool7" | "group3";
-type Metric = { count: number; hits: number; rate: number; maxMiss: number };
+type LongestRun = {
+  length: number;
+  startIssue: string;
+  startDate: string;
+  endIssue: string;
+  endDate: string;
+};
+type Metric = {
+  count: number;
+  hits: number;
+  rate: number;
+  maxMiss: number;
+  recentThreeYears: {
+    count: number;
+    hits: number;
+    rate: number;
+    maxMiss: number;
+    startDate: string;
+    longestRuns: LongestRun[];
+  };
+};
 
 type Recommendation = {
   targetIssue: string;
@@ -189,7 +209,7 @@ function formulaText(play: PlayKey) {
   if (play === "group3") {
     return "采用扩展窗口在线逻辑模型：只用当期之前的数据更新参数，以历史组三频率、遗漏、最近三期形态及上一期结构为特征。概率进入最近365期预测值前20%时明确推荐组三；其他期只显示概率，不计推荐成败。超参数由完整历史结果筛选，回放成绩不代表未来。";
   }
-  return `${playLabel(play)}使用独立的低断档公式。完整搜索记录比较了6,016套排名公式，并为每种玩法测试12,000套连续未中状态组合；每期开奖后更新近期频率、定位、遗漏和转移特征。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
+  return `${playLabel(play)}使用独立公式。扩大搜索比较了24,016套排名公式和8,000套十段连断状态组合，并对高连断状态追加每段12,000套修复公式；只有全历史最长连断确实下降才替换旧模型。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
 }
 
 export default function Home() {
@@ -379,6 +399,24 @@ export default function Home() {
           <small>
             命中率 {(metric.rate * 100).toFixed(1)}% · 最长连续未中{" "}
             {metric.maxMiss}期
+          </small>
+        </div>
+        <div className="recent-metric">
+          <span>近3年（{metric.recentThreeYears.startDate}起）</span>
+          <strong>
+            {metric.recentThreeYears.hits}/{metric.recentThreeYears.count} ·
+            命中率{(metric.recentThreeYears.rate * 100).toFixed(1)}%
+          </strong>
+          <b>最长连断 {metric.recentThreeYears.maxMiss}期</b>
+          <small>
+            {metric.recentThreeYears.longestRuns.length
+              ? metric.recentThreeYears.longestRuns
+                  .map(
+                    (run) =>
+                      `${run.startIssue}期（${run.startDate}）—${run.endIssue}期（${run.endDate}）`,
+                  )
+                  .join("；")
+              : "没有未命中区间"}
           </small>
         </div>
         {activePlay === "group3" && (

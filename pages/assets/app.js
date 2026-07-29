@@ -132,7 +132,7 @@ function formulaText(play) {
   if (play === "group3") {
     return "采用扩展窗口在线逻辑模型：只用当期之前的数据更新参数，以历史组三频率、遗漏、最近三期形态及上一期结构为特征。概率进入最近365期预测值前20%时明确推荐组三；其他期只显示概率，不计推荐成败。超参数由完整历史结果筛选，回放成绩不代表未来。";
   }
-  return `${labels[play]}使用独立的低断档公式。完整搜索记录比较了6,016套排名公式，并为每种玩法测试12,000套连续未中状态组合；每期开奖后更新近期频率、定位、遗漏和转移特征。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
+  return `${labels[play]}使用独立公式。扩大搜索比较了24,016套排名公式和8,000套十段连断状态组合，并对高连断状态追加每段12,000套修复公式；只有全历史最长连断确实下降才替换旧模型。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
 }
 
 function renderCurrent() {
@@ -166,6 +166,22 @@ function renderCurrent() {
   $("#metric-score").textContent = `${metric.hits}/${metric.count}`;
   $("#metric-detail").textContent =
     `命中率 ${(metric.rate * 100).toFixed(1)}% · 最长连续未中 ${metric.maxMiss}期`;
+  const recent = metric.recentThreeYears;
+  const recentRuns = recent.longestRuns;
+  $("#recent-three-year").innerHTML = `
+    <span>近3年（${recent.startDate}起）</span>
+    <strong>${recent.hits}/${recent.count} · 命中率${(recent.rate * 100).toFixed(1)}%</strong>
+    <b>最长连断 ${recent.maxMiss}期</b>
+    <small>${
+      recentRuns.length
+        ? recentRuns
+            .map(
+              (run) =>
+                `${run.startIssue}期（${run.startDate}）—${run.endIssue}期（${run.endDate}）`,
+            )
+            .join("；")
+        : "没有未命中区间"
+    }</small>`;
   $("#group3-metric-note").hidden = activePlay !== "group3";
   $("#formula-label").textContent = `${labels[activePlay]}计算规则`;
   $("#formula-text").textContent = formulaText(activePlay);

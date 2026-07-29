@@ -58,6 +58,52 @@ function metrics(rows, field) {
   };
 }
 
+function recentThreeYearMetrics(rows, field, startDate) {
+  const scoped = rows.filter((row) => row.date >= startDate);
+  const base = metrics(scoped, field);
+  let current = [];
+  const longestRuns = [];
+  for (const row of scoped) {
+    if (row[field]) {
+      if (current.length) longestRuns.push(current);
+      current = [];
+    } else {
+      current.push(row);
+    }
+  }
+  if (current.length) longestRuns.push(current);
+  const maxMiss = longestRuns.reduce(
+    (maximum, run) => Math.max(maximum, run.length),
+    0,
+  );
+  return {
+    ...base,
+    startDate,
+    longestRuns: longestRuns
+      .filter((run) => run.length === maxMiss)
+      .map((run) => ({
+        length: run.length,
+        startIssue: run[0].issue,
+        startDate: run[0].date,
+        endIssue: run.at(-1).issue,
+        endDate: run.at(-1).date,
+      })),
+  };
+}
+
+function metricBundle(rows, field, recentStartDate) {
+  return {
+    ...metrics(rows, field),
+    recentThreeYears: recentThreeYearMetrics(rows, field, recentStartDate),
+  };
+}
+
+function dateYearsAgo(dateText, years) {
+  const date = new Date(`${dateText}T00:00:00Z`);
+  date.setUTCFullYear(date.getUTCFullYear() - years);
+  return date.toISOString().slice(0, 10);
+}
+
 function rollingReplay(draws, startDate, modelConfig) {
   const rows = [];
   let danMissStreak = 0;
@@ -303,6 +349,7 @@ async function main() {
     v5Config,
   );
   const generatedAt = new Date().toISOString();
+  const recentThreeYearStart = dateYearsAgo(latest.date, 3);
   const payload = {
     generatedAt,
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
@@ -333,15 +380,17 @@ async function main() {
     },
     history,
     metrics: {
-      dan: metrics(history, "danHit"),
-      pool7: metrics(history, "pool7Hit"),
-      pool6: metrics(history, "pool6Hit"),
-      pool5: metrics(history, "pool5Hit"),
-      group3: metrics(
+      dan: metricBundle(history, "danHit", recentThreeYearStart),
+      pool7: metricBundle(history, "pool7Hit", recentThreeYearStart),
+      pool6: metricBundle(history, "pool6Hit", recentThreeYearStart),
+      pool5: metricBundle(history, "pool5Hit", recentThreeYearStart),
+      group3: metricBundle(
         history.filter((row) => row.shapeEvaluated),
         "shapeHit",
+        recentThreeYearStart,
       ),
       totalPeriods: history.length,
+      recentThreeYearStart,
     },
   };
   const v5Payload = {
