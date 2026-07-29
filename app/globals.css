@@ -94,6 +94,55 @@ button {
   text-align: center;
 }
 
+.beijing-clock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(22, 63, 49, 0.08);
+  color: var(--forest);
+}
+
+.beijing-clock span {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.beijing-clock strong {
+  font-family: Georgia, "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+}
+
+.play-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 5px;
+  border-radius: 17px;
+  background: rgba(22, 63, 49, 0.08);
+}
+
+.play-tabs button {
+  padding: 10px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.play-tabs button.is-active {
+  background: var(--forest);
+  color: white;
+  box-shadow: 0 6px 14px rgba(22, 63, 49, 0.18);
+}
+
 .eyebrow {
   margin: 0 0 6px;
   color: var(--forest-2);
@@ -298,6 +347,80 @@ h2 {
   font-size: 11px;
 }
 
+.play-hero {
+  min-height: 292px;
+}
+
+.single-dan,
+.single-pool,
+.single-group3 {
+  display: flex;
+  min-height: 210px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 22px 2px 8px;
+}
+
+.single-dan p,
+.single-pool p {
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.single-dan strong {
+  color: var(--lime);
+  font-family: Georgia, serif;
+  font-size: 126px;
+  font-weight: 600;
+  line-height: 0.85;
+}
+
+.single-pool .number-pills {
+  width: min(100%, 480px);
+  grid-template-columns: repeat(7, 1fr);
+  margin: 12px 0 18px;
+}
+
+.single-pool .number-pills.pool-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.single-pool .number-pills.pool-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.single-pool small,
+.single-group3 small {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+}
+
+.single-group3 {
+  align-items: flex-start;
+}
+
+.single-group3 span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.single-group3 strong {
+  margin: 8px 0 0;
+  color: var(--lime);
+  font-family: "Songti SC", SimSun, serif;
+  font-size: 38px;
+}
+
+.single-group3 b {
+  margin: 4px 0 12px;
+  font-family: Georgia, serif;
+  font-size: 62px;
+  font-weight: 600;
+}
+
 .section-block {
   margin-top: 16px;
   padding: 20px;
@@ -369,6 +492,15 @@ h2 {
 .metric-card small {
   color: var(--muted);
   font-size: 10px;
+}
+
+.total-result .metric-card {
+  min-height: 132px;
+  margin-top: 18px;
+}
+
+.total-result .metric-card strong {
+  font-size: 36px;
 }
 
 .section-note {
@@ -513,6 +645,11 @@ h2 {
   gap: 5px;
 }
 
+.history-result.single-result {
+  grid-template-columns: 1fr;
+  min-width: 58px;
+}
+
 .history-result > div {
   display: grid;
   justify-items: center;
@@ -539,6 +676,12 @@ h2 {
 .hit-badge.is-hit {
   background: var(--lime);
   color: var(--forest);
+}
+
+.hit-badge.is-skip {
+  min-width: 48px;
+  background: #e7ebe3;
+  color: var(--muted);
 }
 
 .hit-badge.group3 {
@@ -716,6 +859,22 @@ footer span {
 
   .number-pills span {
     font-size: 22px;
+  }
+
+  .single-pool .number-pills {
+    gap: 5px;
+  }
+
+  .single-pool .number-pills span {
+    font-size: 20px;
+  }
+
+  .single-dan strong {
+    font-size: 108px;
+  }
+
+  .single-group3 b {
+    font-size: 52px;
   }
 
   .source-line {

@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: base,
     title: "福彩3D私人研究台",
-    description: "V7逐期滚动计算独胆、7码与组三参考概率，每期只使用当期开奖前已公开的数据。",
+    description: "V7逐期滚动计算独胆、5码、6码、7码与组三概率，分项展示全部战绩和最长连续未中。",
     applicationName: "福彩3D研究台",
     appleWebApp: {
       capable: true,
@@ -29,13 +29,13 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     openGraph: {
       title: "福彩3D 私人研究台",
-      description: "独胆 · 7码 · 组三概率 · V7逐期滚动计算",
+      description: "独胆 · 5码 · 6码 · 7码 · 组三概率",
       images: [{ url: imageUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: "福彩3D 私人研究台",
-      description: "独胆 · 7码 · 组三概率 · V7逐期滚动计算",
+      description: "独胆 · 5码 · 6码 · 7码 · 组三概率",
       images: [imageUrl],
     },
   };

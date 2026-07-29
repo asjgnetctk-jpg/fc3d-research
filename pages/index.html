@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#163f31" />
-    <meta
-      name="description"
-      content="福彩3D独胆、7码与组三概率研究台账：逐期滚动计算、实际开奖、命中结果和连续未中期数。"
-    />
-    <title>福彩3D · 独胆、7码与组三概率</title>
+    <meta name="description" content="福彩3D独胆、5码、6码、7码与组三概率逐期滚动研究台账。" />
+    <title>福彩3D · 五项滚动研究</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./assets/app.js" defer></script>
   </head>
@@ -16,21 +13,21 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">福彩3D · 私人研究台账</p>
-          <h1>独胆 · 7码 · 组三</h1>
+          <p class="eyebrow">福彩3D · 私人研究台</p>
+          <h1>五项滚动研究</h1>
         </div>
         <button id="refresh" class="refresh-button" type="button">刷新</button>
       </header>
 
+      <div class="beijing-clock">
+        <span>北京时间</span>
+        <strong id="beijing-time">正在校时</strong>
+      </div>
+
       <nav class="version-switch" aria-label="切换算法版本">
-        <a class="is-active" href="./" aria-current="page">
-          <strong>V7</strong><span>当前算法</span>
-        </a>
-        <a href="./v5.html">
-          <strong>V5</strong><span>历史算法</span>
-        </a>
+        <a class="is-active" href="./" aria-current="page"><strong>V7</strong><span>当前算法</span></a>
+        <a href="./v5.html"><strong>V5</strong><span>历史算法</span></a>
       </nav>
-      <p class="version-note">两套算法、推荐记录和连续未中状态独立计算，互不混用。</p>
 
       <div id="loading" class="notice">正在读取最新开奖和推荐记录…</div>
       <div id="error" class="notice error" hidden></div>
@@ -40,53 +37,54 @@
           <span class="status-dot"></span>
           <span id="formula-version"></span>
           <span>·</span>
-          <span id="lock-date"></span>
+          <span id="training-date"></span>
         </section>
 
-        <section class="hero-card">
+        <nav class="play-tabs" aria-label="切换研究项目">
+          <button class="is-active" data-play="dan">独胆</button>
+          <button data-play="pool5">5码</button>
+          <button data-play="pool6">6码</button>
+          <button data-play="pool7">7码</button>
+          <button data-play="group3">组三</button>
+        </nav>
+
+        <section class="hero-card play-hero">
           <div class="hero-meta">
             <span id="target-issue"></span>
             <span id="based-on"></span>
           </div>
-          <div class="recommendation-grid">
-            <article class="dan-panel">
-              <p>独胆</p>
-              <strong id="dan"></strong>
-              <small>每期只读取当期开奖前已经公开的数据</small>
-            </article>
-            <article class="pool-panel">
-              <p>7码池</p>
-              <div id="pool7" class="number-pills"></div>
-              <small>组六判中奖，组三覆盖另标</small>
-            </article>
-            <article class="group3-panel">
-              <div>
-                <p>组三判断</p>
-                <strong id="group3"></strong>
-              </div>
-              <small><span id="group3-probability"></span> · 数学基准约27%</small>
-            </article>
-          </div>
+          <div id="current-play"></div>
           <div id="source-line" class="source-line"></div>
+        </section>
+
+        <section class="section-block total-result">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">全部期数总结果</p>
+              <h2 id="metric-title"></h2>
+            </div>
+            <span id="total-periods" class="backfit-chip"></span>
+          </div>
+          <div class="metric-card">
+            <span id="metric-count-label"></span>
+            <strong id="metric-score"></strong>
+            <small id="metric-detail"></small>
+          </div>
+          <p id="group3-metric-note" class="section-note" hidden>
+            未明确推荐组三的期数不算中奖，也不算失败；避免用“非组三概率高”抬高成绩。
+          </p>
         </section>
 
         <section class="section-block history-section">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">V7逐期滚动记录</p>
-              <h2>每天推荐码、开奖号与命中结果</h2>
+              <p id="history-eyebrow" class="eyebrow"></p>
+              <h2>当期推荐、开奖号与真实结果</h2>
             </div>
           </div>
-          <p class="section-note">
-            每一期只使用该期开奖前的数据计算。开奖号公布后才并入总数据库，供下一期更新；不会读取未来答案。
-          </p>
+          <p class="section-note">每一期只使用该期开奖前的数据；开奖后才进入下一期训练与计算。</p>
           <div class="history-search">
-            <input
-              id="history-search"
-              type="search"
-              placeholder="搜期号、日期、开奖号、胆码、7码、组三概率或命中结果"
-              aria-label="搜索V7逐期数据"
-            />
+            <input id="history-search" type="search" placeholder="搜期号、日期、开奖号或推荐号码" />
             <span id="search-count"></span>
           </div>
           <div id="history" class="history-list"></div>
@@ -95,31 +93,18 @@
 
         <section class="section-block formula-block">
           <button id="toggle-formula" class="formula-toggle" type="button" aria-expanded="false">
-            <span>
-              <small>计算规则</small>
-              <strong>每天到底怎么选？</strong>
-            </span>
+            <span><small id="formula-label"></small><strong>这项每天怎么选？</strong></span>
             <b>+</b>
           </button>
           <div id="formula" class="formula-content" hidden>
-            <h3>独胆</h3>
-            <p>
-              每期按时间顺序计算：预测某一期时，只读取它之前已经开奖的数据。上一期开奖后，开奖号才进入总数据库，用于更新近期频率、定位频率、转移频率和遗漏状态。
-            </p>
-            <p>按当前状态对应公式对0—9评分，并按该公式锁定的固定名次取一个独胆；同分时数字小者排前。</p>
-            <h3>7码</h3>
-            <p>
-              同样按连续未中状态切换四套固定评分，综合近期出现、定位频率、转移频率、奇偶和中心距离。
-            </p>
-            <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中；若开奖号为组三且两个不同数字均入池，单独标记“组三覆盖”，但不计作组六7码中奖。</p>
-            <h3>是否开组三</h3>
-            <p>先用截至前一期的数据计算组三模型分，再用此前最多1200期的“当时模型分—实际是否组三”记录进行滚动校准，取最接近的160期并加入27%的数学先验，得到今日组三参考概率。达到27%显示“看组三”，否则显示“不看组三”。这里不推荐组六；“不看组三”仅表示模型估计没有超过数学基准。</p>
+            <p id="formula-text"></p>
+            <div id="formula-audits" class="audit-links"></div>
           </div>
         </section>
 
         <footer>
           <strong>只做研究记录，不承诺中奖</strong>
-          <p>随机开奖无法保证7期内必然命中。不要追损、翻倍、借钱或超预算投注。</p>
+          <p>历史最短断档不代表未来必然复制。不要追损、翻倍、借钱或超预算投注。</p>
           <span id="generated-at"></span>
         </footer>
       </div>

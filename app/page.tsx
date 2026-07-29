@@ -3,33 +3,48 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
+type PlayKey = "dan" | "pool5" | "pool6" | "pool7" | "group3";
+type Metric = { count: number; hits: number; rate: number; maxMiss: number };
+
 type Recommendation = {
   targetIssue: string;
   basedOnIssue: string;
   basedOnDate: string;
   dan: number;
+  pool5: string;
+  pool6: string;
   pool7: string;
   shapePlay: string;
   group3Probability: number;
+  group3Level: "high" | "middle" | "low";
 };
 
 type HistoryRow = {
   date: string;
   issue: string;
   dan: number;
+  pool5: string;
+  pool6: string;
   pool7: string;
   shapePlay: string;
   group3Probability: number;
+  group3Level: "high" | "middle" | "low";
+  shapeEvaluated: boolean;
   draw: string;
   shape: string;
   danHit: boolean;
+  pool5Hit: boolean;
+  pool6Hit: boolean;
   pool7Hit: boolean;
+  pool5Group3Covered: boolean;
+  pool6Group3Covered: boolean;
   pool7Group3Covered: boolean;
   shapeHit: boolean;
   danMissStreak: number;
+  pool5MissStreak: number;
+  pool6MissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "rolling";
 };
 
 type ApiPayload = {
@@ -38,14 +53,45 @@ type ApiPayload = {
   recommendation: Recommendation;
   history: HistoryRow[];
   metrics: {
-    dan: { count: number; hits: number; rate: number; maxMiss: number };
-    pool7: { count: number; hits: number; rate: number; maxMiss: number };
-    group3: { count: number; hits: number; rate: number; maxMiss: number };
+    dan: Metric;
+    pool5: Metric;
+    pool6: Metric;
+    pool7: Metric;
+    group3: Metric;
+    totalPeriods: number;
   };
   formulaVersion: string;
-  trainingMode: "expanding-window";
   trainingUpdatedThrough: string;
 };
+
+const PLAYS: Array<{ key: PlayKey; label: string }> = [
+  { key: "dan", label: "独胆" },
+  { key: "pool5", label: "5码" },
+  { key: "pool6", label: "6码" },
+  { key: "pool7", label: "7码" },
+  { key: "group3", label: "组三" },
+];
+
+function BeijingClock() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  return (
+    <div className="beijing-clock">
+      <span>北京时间</span>
+      <strong>
+        {now
+          ? now.toLocaleString("zh-CN", {
+              timeZone: "Asia/Shanghai",
+              hour12: false,
+            })
+          : "正在校时"}
+      </strong>
+    </div>
+  );
+}
 
 function HitBadge({ hit }: { hit: boolean }) {
   return (
@@ -55,13 +101,53 @@ function HitBadge({ hit }: { hit: boolean }) {
   );
 }
 
-function PoolBadge({ row }: { row: HistoryRow }) {
-  if (row.pool7Group3Covered) {
-    return (
-      <span className="hit-badge group3 is-covered">组三覆盖</span>
-    );
+function PoolBadge({
+  hit,
+  covered,
+}: {
+  hit: boolean;
+  covered: boolean;
+}) {
+  if (covered) {
+    return <span className="hit-badge group3 is-covered">组三覆盖</span>;
   }
-  return <HitBadge hit={row.pool7Hit} />;
+  return <HitBadge hit={hit} />;
+}
+
+function metricFor(data: ApiPayload, play: PlayKey) {
+  return data.metrics[play];
+}
+
+function playLabel(play: PlayKey) {
+  return PLAYS.find((item) => item.key === play)?.label ?? play;
+}
+
+function poolValue(row: HistoryRow, play: PlayKey) {
+  if (play === "pool5") return row.pool5;
+  if (play === "pool6") return row.pool6;
+  return row.pool7;
+}
+
+function rowHit(row: HistoryRow, play: PlayKey) {
+  if (play === "dan") return row.danHit;
+  if (play === "pool5") return row.pool5Hit;
+  if (play === "pool6") return row.pool6Hit;
+  if (play === "pool7") return row.pool7Hit;
+  return row.shapeHit;
+}
+
+function rowStreak(row: HistoryRow, play: PlayKey) {
+  if (play === "dan") return row.danMissStreak;
+  if (play === "pool5") return row.pool5MissStreak;
+  if (play === "pool6") return row.pool6MissStreak;
+  if (play === "pool7") return row.pool7MissStreak;
+  return row.shapeMissStreak;
+}
+
+function poolCovered(row: HistoryRow, play: PlayKey) {
+  if (play === "pool5") return row.pool5Group3Covered;
+  if (play === "pool6") return row.pool6Group3Covered;
+  return row.pool7Group3Covered;
 }
 
 function matchesHistorySearch(row: HistoryRow, query: string) {
@@ -70,27 +156,39 @@ function matchesHistorySearch(row: HistoryRow, query: string) {
   const searchable = [
     row.date,
     row.issue,
-    `胆${row.dan}`,
-    `胆码${row.dan}`,
-    row.pool7,
-    `7码${row.pool7}`,
-    row.shapePlay,
-    `${(row.group3Probability * 100).toFixed(1)}%`,
     row.draw,
+    `胆${row.dan}`,
+    `5码${row.pool5}`,
+    `6码${row.pool6}`,
+    `7码${row.pool7}`,
+    row.pool5,
+    row.pool6,
+    row.pool7,
+    row.shapePlay,
     row.shape,
-    "滚动",
-    row.danHit ? "胆码中" : "胆码未中",
-    row.pool7Hit ? "7码中" : "7码未中",
-    row.pool7Group3Covered ? "组三覆盖" : "",
-    row.shapeHit ? "组三判断中" : "组三判断未中",
-  ].join(" ").toLowerCase();
+    `${(row.group3Probability * 100).toFixed(1)}%`,
+    row.shapeEvaluated ? "推荐组三" : "未推荐组三",
+  ]
+    .join(" ")
+    .toLowerCase();
   return tokens.every((token) => searchable.includes(token));
+}
+
+function formulaText(play: PlayKey) {
+  if (play === "dan") {
+    return "每期只使用此前已开奖数据，按当前连续未中状态切换评分公式，综合近期频率、定位频率、转移频率、遗漏、奇偶和中心距离，对0—9排序后取一个独胆。";
+  }
+  if (play === "group3") {
+    return "以过去的组三频率、遗漏、最近三期形态、上一期和值/跨度/奇偶大小和相邻两期重号为特征；早期数据训练并选择方法，之后逐期开奖后更新。模型把当期概率排进最近365期前20%时才明确推荐组三，未推荐期不计中奖。";
+  }
+  return `${playLabel(play)}使用独立的低断档公式。训练时在40,000套候选评分中搜索，并测试220,000套连续未中状态组合；每期开奖后更新近期频率、定位、遗漏和转移特征。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
 }
 
 export default function Home() {
   const [data, setData] = useState<ApiPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activePlay, setActivePlay] = useState<PlayKey>("dan");
   const [showFormula, setShowFormula] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -110,24 +208,18 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      void load();
-    });
+    const frame = requestAnimationFrame(() => void load());
     return () => cancelAnimationFrame(frame);
   }, [load]);
 
-  const history = useMemo(() => {
-    if (!data) return [];
-    const reversed = data.history
-      .filter((row) => matchesHistorySearch(row, searchQuery))
-      .reverse();
-    return showAll ? reversed : reversed.slice(0, 18);
-  }, [data, searchQuery, showAll]);
-
-  const filteredCount = useMemo(
-    () => data?.history.filter((row) => matchesHistorySearch(row, searchQuery)).length ?? 0,
+  const filteredRows = useMemo(
+    () =>
+      data?.history
+        .filter((row) => matchesHistorySearch(row, searchQuery))
+        .reverse() ?? [],
     [data, searchQuery],
   );
+  const history = showAll ? filteredRows : filteredRows.slice(0, 18);
 
   if (loading && !data) {
     return (
@@ -137,7 +229,6 @@ export default function Home() {
       </main>
     );
   }
-
   if (error && !data) {
     return (
       <main className="app-shell error-shell">
@@ -150,24 +241,34 @@ export default function Home() {
       </main>
     );
   }
-
   if (!data) return null;
+
+  const metric = metricFor(data, activePlay);
+  const recommendation = data.recommendation;
+  const pool =
+    activePlay === "pool5"
+      ? recommendation.pool5
+      : activePlay === "pool6"
+        ? recommendation.pool6
+        : recommendation.pool7;
+
   return (
     <main className="app-shell">
       <header className="topbar">
         <div>
           <p className="eyebrow">福彩3D · 私人研究台</p>
-          <h1>今日三项参考</h1>
+          <h1>五项滚动研究</h1>
         </div>
         <button
           className="refresh-button"
           onClick={() => void load()}
           disabled={loading}
-          aria-label="刷新最新数据"
         >
           {loading ? "刷新中" : "刷新"}
         </button>
       </header>
+
+      <BeijingClock />
 
       <nav className="version-switch" aria-label="切换算法版本">
         <Link className="is-active" href="/" aria-current="page">
@@ -177,7 +278,6 @@ export default function Home() {
           <strong>V5</strong><span>历史算法</span>
         </Link>
       </nav>
-      <p className="version-note">两套算法、推荐记录和连续未中状态独立计算，互不混用。</p>
 
       <section className="status-strip">
         <span className="status-dot" />
@@ -186,56 +286,97 @@ export default function Home() {
         <span>数据更新至 {data.trainingUpdatedThrough}</span>
       </section>
 
-      <section className="hero-card">
+      <nav className="play-tabs" aria-label="切换研究项目">
+        {PLAYS.map((play) => (
+          <button
+            key={play.key}
+            className={activePlay === play.key ? "is-active" : ""}
+            onClick={() => {
+              setActivePlay(play.key);
+              setShowAll(false);
+            }}
+          >
+            {play.label}
+          </button>
+        ))}
+      </nav>
+
+      <section className="hero-card play-hero">
         <div className="hero-meta">
-          <span>第 {data.recommendation.targetIssue} 期</span>
-          <span>基于 {data.recommendation.basedOnIssue} 期及此前数据</span>
+          <span>第 {recommendation.targetIssue} 期</span>
+          <span>基于 {recommendation.basedOnIssue} 期及此前数据</span>
         </div>
-
-        <div className="recommendation-grid">
-          <article className="dan-panel">
-            <p>独胆</p>
-            <strong>{data.recommendation.dan}</strong>
-            <small>每期只读取当期开奖前已经公开的数据</small>
-          </article>
-          <article className="pool-panel">
-            <p>7码池</p>
-            <div className="number-pills">
-              {data.recommendation.pool7.split("").map((digit) => (
-                <span key={digit}>{digit}</span>
-              ))}
+        {activePlay === "dan" && (
+          <div className="single-dan">
+            <p>独胆推荐</p>
+            <strong>{recommendation.dan}</strong>
+          </div>
+        )}
+        {activePlay.startsWith("pool") && (
+          <div className="single-pool">
+            <p>{playLabel(activePlay)}推荐</p>
+            <div className={`number-pills pool-${pool.length}`}>
+              {pool.split("").map((digit) => <span key={digit}>{digit}</span>)}
             </div>
-            <small>组六判中奖，组三覆盖另标</small>
-          </article>
-          <article className="group3-panel">
-            <div>
-              <p>组三判断</p>
-              <strong>{data.recommendation.shapePlay}</strong>
-            </div>
+            <small>组六全覆盖计命中；组三覆盖单独标记</small>
+          </div>
+        )}
+        {activePlay === "group3" && (
+          <div className="single-group3">
+            <span>模型判断</span>
+            <strong>{recommendation.shapePlay}</strong>
+            <b>{(recommendation.group3Probability * 100).toFixed(1)}%</b>
             <small>
-              模型参考概率{" "}
-              {(data.recommendation.group3Probability * 100).toFixed(1)}%
-              {" · "}数学基准约27%
+              当前处于
+              {recommendation.group3Level === "high"
+                ? "高概率区"
+                : recommendation.group3Level === "low"
+                  ? "低概率区"
+                  : "中间区"}
+              ；只有高概率区才进入组三推荐战绩
             </small>
-          </article>
-        </div>
+          </div>
+        )}
+        <div className="source-line">官方数据更新至 {data.sourceUpdatedThrough}</div>
+      </section>
 
-        <div className="source-line">
-          官方数据更新至 {data.sourceUpdatedThrough}
+      <section className="section-block total-result">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">全部期数总结果</p>
+            <h2>{playLabel(activePlay)}滚动战绩</h2>
+          </div>
+          <span className="backfit-chip">{data.metrics.totalPeriods}期数据</span>
         </div>
+        <div className="metric-card">
+          <span>
+            {activePlay === "group3"
+              ? `明确推荐${metric.count}次`
+              : `全部${metric.count}期`}
+          </span>
+          <strong>{metric.hits}/{metric.count}</strong>
+          <small>
+            命中率 {(metric.rate * 100).toFixed(1)}% · 最长连续未中{" "}
+            {metric.maxMiss}期
+          </small>
+        </div>
+        {activePlay === "group3" && (
+          <p className="section-note">
+            未明确推荐组三的期数不算中奖，也不算失败；避免用“非组三概率高”抬高成绩。
+          </p>
+        )}
       </section>
 
       <section className="section-block history-section">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">V7逐期滚动记录</p>
-            <h2>每天推荐码、开奖号与命中结果</h2>
+            <p className="eyebrow">{playLabel(activePlay)}逐期证据</p>
+            <h2>当期推荐、开奖号与真实结果</h2>
           </div>
         </div>
         <p className="section-note">
-          每一期只使用该期开奖前的数据计算。开奖号公布后才并入总数据库，供下一期更新；不会读取未来答案。
+          每一期只使用该期开奖前的数据；开奖后才进入下一期训练与计算。
         </p>
-
         <div className="history-search">
           <input
             type="search"
@@ -244,63 +385,59 @@ export default function Home() {
               setSearchQuery(event.target.value);
               setShowAll(false);
             }}
-            placeholder="搜期号、日期、开奖号、胆码、7码、组三概率或命中结果"
-            aria-label="搜索V7逐期数据"
+            placeholder="搜期号、日期、开奖号或推荐号码"
           />
-          <span>{filteredCount}期</span>
+          <span>{filteredRows.length}期</span>
         </div>
-
         <div className="history-list">
-          {history.length === 0 && (
-            <div className="notice">
-              {searchQuery.trim() ? "没有找到符合条件的V7记录。" : "暂无V7逐期记录。"}
-            </div>
-          )}
-          {history.map((row) => (
-            <article className="history-row" key={row.issue}>
-              <div className="history-date">
-                <strong>{row.issue}</strong>
-                <span>{row.date.slice(5)}</span>
-                <em>滚动</em>
-              </div>
-              <div className="history-data">
-                <div>
-                  <span>推荐</span>
-                  <strong>
-                    胆{row.dan} · {row.pool7} · {row.shapePlay}{" "}
-                    {(row.group3Probability * 100).toFixed(1)}%
-                  </strong>
+          {history.map((row) => {
+            const isGroup3 = activePlay === "group3";
+            const isPool = activePlay.startsWith("pool");
+            const evaluated = !isGroup3 || row.shapeEvaluated;
+            const recommendationText =
+              activePlay === "dan"
+                ? `胆${row.dan}`
+                : isGroup3
+                  ? `${row.shapePlay} ${(row.group3Probability * 100).toFixed(1)}%`
+                  : poolValue(row, activePlay);
+            return (
+              <article className="history-row" key={row.issue}>
+                <div className="history-date">
+                  <strong>{row.issue}</strong>
+                  <span>{row.date.slice(5)}</span>
+                  <em>滚动</em>
                 </div>
-                <div>
-                  <span>开奖</span>
-                  <strong>{row.draw}</strong>
-                  <small>{row.shape}</small>
+                <div className="history-data">
+                  <div><span>推荐</span><strong>{recommendationText}</strong></div>
+                  <div><span>开奖</span><strong>{row.draw}</strong><small>{row.shape}</small></div>
                 </div>
-              </div>
-              <div className="history-result">
-                <div>
-                  <span>胆</span>
-                  <HitBadge hit={row.danHit} />
-                  <small>断{row.danMissStreak}</small>
+                <div className="history-result single-result">
+                  <div>
+                    <span>{playLabel(activePlay)}</span>
+                    {isGroup3 && !evaluated ? (
+                      <span className="hit-badge is-skip">未推荐</span>
+                    ) : isPool ? (
+                      <PoolBadge
+                        hit={rowHit(row, activePlay)}
+                        covered={poolCovered(row, activePlay)}
+                      />
+                    ) : (
+                      <HitBadge hit={rowHit(row, activePlay)} />
+                    )}
+                    <small>
+                      {isGroup3 && !evaluated
+                        ? row.group3Level === "low" ? "低位" : "中位"
+                        : `断${rowStreak(row, activePlay)}`}
+                    </small>
+                  </div>
                 </div>
-                <div>
-                  <span>7码</span>
-                  <PoolBadge row={row} />
-                  <small>断{row.pool7MissStreak}</small>
-                </div>
-                <div>
-                  <span>组三</span>
-                  <HitBadge hit={row.shapeHit} />
-                  <small>断{row.shapeMissStreak}</small>
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
-
-        {filteredCount > 18 && (
+        {filteredRows.length > 18 && (
           <button className="secondary-button" onClick={() => setShowAll(!showAll)}>
-            {showAll ? "收起记录" : `查看全部 ${filteredCount} 期`}
+            {showAll ? "收起记录" : `查看全部 ${filteredRows.length} 期`}
           </button>
         )}
       </section>
@@ -312,35 +449,31 @@ export default function Home() {
           aria-expanded={showFormula}
         >
           <span>
-            <small>计算规则</small>
-            <strong>每天到底怎么选？</strong>
+            <small>{playLabel(activePlay)}计算规则</small>
+            <strong>这项每天怎么选？</strong>
           </span>
           <b>{showFormula ? "−" : "+"}</b>
         </button>
         {showFormula && (
           <div className="formula-content">
-            <h3>独胆</h3>
-            <p>
-              每期按时间顺序计算：预测某一期时，只读取它之前已经开奖的数据。上一期开奖后，开奖号才进入总数据库，用于更新近期频率、定位频率、转移频率和遗漏状态。
-            </p>
-            <h3>7码</h3>
-            <p>
-              同样按连续未中状态切换四套固定评分，综合近期出现、定位频率、转移频率、奇偶和中心距离，得分从高到低取前7名。
-            </p>
-            <p>得分从高到低取前7名。开奖号须为组六且三个不同数字全部入池才算中奖；组三的两个不同数字全部入池时只标记“组三覆盖”，不计作组六7码中奖。</p>
-            <h3>是否开组三</h3>
-            <p>
-              先用截至前一期的数据计算组三模型分，再用此前最多1200期的“当时模型分—实际是否组三”记录进行滚动校准，取最接近的160期并加入27%的数学先验，得到今日组三参考概率。达到27%显示“看组三”，否则显示“不看组三”。这里不推荐组六；“不看组三”仅表示模型估计没有超过数学基准。
-            </p>
+            <p>{formulaText(activePlay)}</p>
+            <div className="audit-links">
+              {activePlay === "group3" ? (
+                <a href="/audit/group3-knn-search.json">查看组三训练与测试数据</a>
+              ) : activePlay === "pool5" || activePlay === "pool6" ? (
+                <>
+                  <a href="/audit/pool56-robust-search.json">查看5/6码训练搜索</a>
+                  <a href="/audit/pool56-untouched-test.json">查看后五年顺序测试</a>
+                </>
+              ) : null}
+            </div>
           </div>
         )}
       </section>
 
       <footer>
         <strong>只做研究记录，不承诺中奖</strong>
-        <p>
-          随机开奖无法保证7期内必然命中。不要追损、翻倍、借钱或超预算投注。
-        </p>
+        <p>历史最短断档不代表未来必然复制。不要追损、翻倍、借钱或超预算投注。</p>
         <span>
           页面生成于{" "}
           {new Date(data.generatedAt).toLocaleString("zh-CN", {

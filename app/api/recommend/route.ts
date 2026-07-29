@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 import config from "@/lib/v7-robust-config.json";
+import pool56Config from "@/lib/pool56-config.json";
+import group3Config from "@/lib/group3-online-config.json";
+import { recommendPool, recommendV5 } from "@/lib/v5-model.js";
 import {
-  group3Decision,
-  group3Probability,
-  recommendV5,
-} from "@/lib/v5-model.js";
+  buildGroup3Examples,
+  forecastNextGroup3Knn,
+  runGroup3Knn,
+} from "@/lib/group3-online.js";
 
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
-const ROLLING_VERSION = "V7.1-rolling";
+const ROLLING_VERSION = "V7.2-rolling";
 
 type Draw = {
   date: string;
@@ -21,19 +24,28 @@ type HistoryRow = {
   date: string;
   issue: string;
   dan: number;
+  pool5: string;
+  pool6: string;
   pool7: string;
-  shapePlay: string;
-  group3Probability: number;
   draw: string;
   shape: string;
   danHit: boolean;
+  pool5Hit: boolean;
+  pool6Hit: boolean;
   pool7Hit: boolean;
+  pool5Group3Covered: boolean;
+  pool6Group3Covered: boolean;
   pool7Group3Covered: boolean;
-  shapeHit: boolean;
   danMissStreak: number;
+  pool5MissStreak: number;
+  pool6MissStreak: number;
   pool7MissStreak: number;
-  shapeMissStreak: number;
-  phase: "rolling";
+  shapePlay?: string;
+  group3Probability?: number;
+  group3Level?: "high" | "middle" | "low";
+  shapeEvaluated?: boolean;
+  shapeHit?: boolean;
+  shapeMissStreak?: number;
 };
 
 function shanghaiDate(date = new Date()) {
@@ -45,17 +57,11 @@ function shanghaiDate(date = new Date()) {
   }).format(date);
 }
 
-function dateDaysAgo(days: number) {
-  const date = new Date();
-  date.setUTCDate(date.getUTCDate() - days);
-  return shanghaiDate(date);
-}
-
 function incrementIssue(issue: string) {
   return String(Number(issue) + 1).padStart(issue.length, "0");
 }
 
-function metrics(rows: HistoryRow[], field: "danHit" | "pool7Hit" | "shapeHit") {
+function metrics(rows: HistoryRow[], field: keyof HistoryRow) {
   let hits = 0;
   let current = 0;
   let maxMiss = 0;
@@ -76,88 +82,100 @@ function metrics(rows: HistoryRow[], field: "danHit" | "pool7Hit" | "shapeHit") 
   };
 }
 
-function rollingReplay(
-  draws: Draw[],
-  startDate: string,
-  endDate: string | null,
-) {
+function rollingReplay(draws: Draw[], startDate: string) {
   const rows: HistoryRow[] = [];
-  const calibrationRows: Array<{ score: number; group3: boolean }> = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
-  let shapeMissStreak = 0;
+  let pool6MissStreak = 0;
+  let pool5MissStreak = 0;
 
   for (let index = 120; index < draws.length; index += 1) {
     const row = draws[index];
+    const priorDraws = draws.slice(0, index);
     const prediction = recommendV5(
-      draws.slice(0, index),
+      priorDraws,
       danMissStreak,
       pool7MissStreak,
       config,
     );
-    const probability = group3Probability(
-      prediction.shapeScore,
-      calibrationRows,
+    const pool6 = recommendPool(
+      priorDraws,
+      pool6MissStreak,
+      pool56Config.pool6.methods,
+      6,
     );
-    const pickGroup3 = group3Decision(probability);
+    const pool5 = recommendPool(
+      priorDraws,
+      pool5MissStreak,
+      pool56Config.pool5.methods,
+      5,
+    );
     const actual = new Set(row.digits);
     const actualGroup3 = actual.size === 2;
     const danHit = actual.has(prediction.dan);
     const pool7Hit =
       actual.size === 3 &&
       [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool6Hit =
+      actual.size === 3 && [...actual].every((digit) => pool6.includes(digit));
+    const pool5Hit =
+      actual.size === 3 && [...actual].every((digit) => pool5.includes(digit));
     const pool7Group3Covered =
       actualGroup3 &&
       [...actual].every((digit) => prediction.pool7.includes(digit));
-    const shapeHit = pickGroup3 === actualGroup3;
+    const pool6Group3Covered =
+      actualGroup3 && [...actual].every((digit) => pool6.includes(digit));
+    const pool5Group3Covered =
+      actualGroup3 && [...actual].every((digit) => pool5.includes(digit));
+
     danMissStreak = danHit ? 0 : danMissStreak + 1;
     pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
-    shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
-    calibrationRows.push({
-      score: prediction.shapeScore,
-      group3: actualGroup3,
-    });
+    pool6MissStreak = pool6Hit ? 0 : pool6MissStreak + 1;
+    pool5MissStreak = pool5Hit ? 0 : pool5MissStreak + 1;
+    if (row.date < startDate) continue;
 
-    if (row.date < startDate || (endDate && row.date > endDate)) continue;
     rows.push({
       date: row.date,
       issue: row.issue,
       dan: prediction.dan,
       pool7: prediction.pool7.join(""),
-      shapePlay: pickGroup3 ? "看组三" : "不看组三",
-      group3Probability: probability,
+      pool6: pool6.join(""),
+      pool5: pool5.join(""),
       draw: row.draw,
       shape: actualGroup3 ? "开组三" : "未开组三",
       danHit,
       pool7Hit,
+      pool6Hit,
+      pool5Hit,
       pool7Group3Covered,
-      shapeHit,
+      pool6Group3Covered,
+      pool5Group3Covered,
       danMissStreak,
       pool7MissStreak,
-      shapeMissStreak,
-      phase: "rolling",
+      pool6MissStreak,
+      pool5MissStreak,
     });
   }
-
   return {
     rows,
     danMissStreak,
     pool7MissStreak,
-    calibrationRows,
+    pool6MissStreak,
+    pool5MissStreak,
   };
 }
 
 async function fetchDraws(): Promise<Draw[]> {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=${dateDaysAgo(4800)}&dayEnd=${shanghaiDate()}` +
+    `?name=3d&dayStart=2009-01-01&dayEnd=${shanghaiDate()}` +
     "&pageNo=1&pageSize=5000&systemType=PC";
   const response = await fetch(url, {
     cache: "no-store",
     headers: {
       Accept: "application/json",
       Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
-      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/6.0)",
+      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/7.2)",
     },
   });
   if (!response.ok) throw new Error(`official-data-${response.status}`);
@@ -184,10 +202,35 @@ async function fetchDraws(): Promise<Draw[]> {
 export async function GET() {
   try {
     const draws = await fetchDraws();
-    if (draws.length < 120) throw new Error("insufficient-history");
-
-    const rolling = rollingReplay(draws, config.simulationStart, null);
-    const history = rolling.rows;
+    if (draws.length < 365) throw new Error("insufficient-history");
+    const rolling = rollingReplay(draws, config.simulationStart);
+    const group3Track = runGroup3Knn(
+      buildGroup3Examples(draws),
+      group3Config,
+      config.simulationStart,
+    );
+    const group3ByIssue = new Map(
+      group3Track.rows.map((row) => [row.issue, row]),
+    );
+    let shapeMissStreak = 0;
+    const history = rolling.rows.map((row) => {
+      const group3 = group3ByIssue.get(row.issue);
+      if (!group3) throw new Error(`group3-row-missing:${row.issue}`);
+      const shapeEvaluated = group3.level === "high";
+      const shapeHit = shapeEvaluated && group3.group3;
+      if (shapeEvaluated) {
+        shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
+      }
+      return {
+        ...row,
+        shapePlay: shapeEvaluated ? "推荐组三" : "不推荐组三",
+        group3Probability: group3.probability,
+        group3Level: group3.level,
+        shapeEvaluated,
+        shapeHit,
+        shapeMissStreak,
+      };
+    });
 
     const latest = draws.at(-1)!;
     const upcoming = recommendV5(
@@ -196,11 +239,19 @@ export async function GET() {
       rolling.pool7MissStreak,
       config,
     );
-    const upcomingGroup3Probability = group3Probability(
-      upcoming.shapeScore,
-      rolling.calibrationRows,
+    const upcomingPool6 = recommendPool(
+      draws,
+      rolling.pool6MissStreak,
+      pool56Config.pool6.methods,
+      6,
     );
-    const upcomingGroup3 = group3Decision(upcomingGroup3Probability);
+    const upcomingPool5 = recommendPool(
+      draws,
+      rolling.pool5MissStreak,
+      pool56Config.pool5.methods,
+      5,
+    );
+    const upcomingGroup3 = forecastNextGroup3Knn(draws, group3Config);
 
     return NextResponse.json(
       {
@@ -215,19 +266,27 @@ export async function GET() {
           basedOnDate: latest.date,
           dan: upcoming.dan,
           pool7: upcoming.pool7.join(""),
-          shapePlay: upcomingGroup3 ? "看组三" : "不看组三",
-          group3Probability: upcomingGroup3Probability,
+          pool6: upcomingPool6.join(""),
+          pool5: upcomingPool5.join(""),
+          shapePlay:
+            upcomingGroup3.level === "high" ? "推荐组三" : "不推荐组三",
+          group3Probability: upcomingGroup3.probability,
+          group3Level: upcomingGroup3.level,
         },
         history,
         metrics: {
           dan: metrics(history, "danHit"),
+          pool5: metrics(history, "pool5Hit"),
+          pool6: metrics(history, "pool6Hit"),
           pool7: metrics(history, "pool7Hit"),
-          group3: metrics(history, "shapeHit"),
+          group3: metrics(
+            history.filter((row) => row.shapeEvaluated),
+            "shapeHit",
+          ),
+          totalPeriods: history.length,
         },
       },
-      {
-        headers: { "Cache-Control": "no-store, max-age=0" },
-      },
+      { headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   } catch (error) {
     console.error("recommendation-api", error);

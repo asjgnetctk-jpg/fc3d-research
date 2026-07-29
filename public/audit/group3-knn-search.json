@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-07-29T05:25:12.783Z",
+  "isolation": {
+    "trainingEnd": "2018-12-31",
+    "validation": [
+      "2019-01-01",
+      "2021-07-27"
+    ],
+    "untouchedTest": [
+      "2021-07-28",
+      "2026-07-28"
+    ]
+  },
+  "best": {
+    "config": {
+      "featureSet": "compact",
+      "neighbors": 50,
+      "priorStrength": 50
+    },
+    "validation": {
+      "count": 862,
+      "baseRate": 0.27610208816705334,
+      "highCalls": 196,
+      "highRate": 0.32142857142857145,
+      "lowCalls": 169,
+      "lowRate": 0.24260355029585798,
+      "separation": 0.07882502113271347,
+      "brier": 0.20067161801334255
+    }
+  },
+  "test": {
+    "count": 1757,
+    "baseRate": 0.257256687535572,
+    "highCalls": 358,
+    "highRate": 0.2849162011173184,
+    "lowCalls": 368,
+    "lowRate": 0.2418478260869565,
+    "separation": 0.0430683750303619,
+    "brier": 0.19258035954762623
+  },
+  "top": [
+    {
+      "config": {
+        "featureSet": "compact",
+        "neighbors": 50,
+        "priorStrength": 50
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 196,
+        "highRate": 0.32142857142857145,
+        "lowCalls": 169,
+        "lowRate": 0.24260355029585798,
+        "separation": 0.07882502113271347,
+        "brier": 0.20067161801334255
+      }
+    },
+    {
+      "config": {
+        "featureSet": "compact",
+        "neighbors": 200,
+        "priorStrength": 50
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 208,
+        "highRate": 0.2932692307692308,
+        "lowCalls": 179,
+        "lowRate": 0.21787709497206703,
+        "separation": 0.07539213579716375,
+        "brier": 0.20002227411826648
+      }
+    },
+    {
+      "config": {
+        "featureSet": "compact",
+        "neighbors": 50,
+        "priorStrength": 20
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 195,
+        "highRate": 0.31794871794871793,
+        "lowCalls": 169,
+        "lowRate": 0.24260355029585798,
+        "separation": 0.07534516765285995,
+        "brier": 0.20092957095977404
+      }
+    },
+    {
+      "config": {
+        "featureSet": "compact",
+        "neighbors": 200,
+        "priorStrength": 20
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 209,
+        "highRate": 0.291866028708134,
+        "lowCalls": 179,
+        "lowRate": 0.21787709497206703,
+        "separation": 0.07398893373606696,
+        "brier": 0.20004137830810828
+      }
+    },
+    {
+      "config": {
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 50
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 196,
+        "highRate": 0.2857142857142857,
+        "lowCalls": 186,
+        "lowRate": 0.23655913978494625,
+        "separation": 0.04915514592933945,
+        "brier": 0.2002237393997751
+      }
+    },
+    {
+      "config": {
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 20
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "highCalls": 195,
+        "highRate": 0.28205128205128205,
+        "lowCalls": 185,
+        "lowRate": 0.23783783783783785,
+        "separation": 0.0442134442134442,
+        "brier": 0.20030487763068405
+      }
+    }
+  ]
+}

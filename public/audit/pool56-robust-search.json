@@ -1,0 +1,86 @@
+{
+  "version": "pools56-robust-search-1",
+  "createdAt": "2026-07-29T05:15:33.918Z",
+  "isolation": {
+    "requestUrl": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2009-01-01&dayEnd=2021-07-27&pageNo=1&pageSize=5000&systemType=PC",
+    "trainingDataCutoff": "2021-07-27",
+    "rowsAfterCutoffVisibleToSearch": 0
+  },
+  "folds": [
+    {
+      "key": "foldA",
+      "start": "2016-01-01",
+      "end": "2017-12-31"
+    },
+    {
+      "key": "foldB",
+      "start": "2018-01-01",
+      "end": "2019-12-31"
+    },
+    {
+      "key": "foldC",
+      "start": "2020-01-01",
+      "end": "2021-07-27"
+    }
+  ],
+  "search": {
+    "candidatesPerPlay": 40000,
+    "keptPerPlay": 1200,
+    "policyTrialsPerPlay": 220000,
+    "featureCount": 43,
+    "objective": "先压低三个时间段中的最坏连续未中，再压低平均连续未中，最后提高命中次数。"
+  },
+  "pool5": {
+    "folds": [
+      {
+        "count": 717,
+        "hits": 67,
+        "rate": 0.09344490934449093,
+        "maxMiss": 30
+      },
+      {
+        "count": 709,
+        "hits": 62,
+        "rate": 0.08744710860366714,
+        "maxMiss": 33
+      },
+      {
+        "count": 511,
+        "hits": 36,
+        "rate": 0.07045009784735812,
+        "maxMiss": 33
+      }
+    ],
+    "worstMaxMiss": 33,
+    "meanMaxMiss": 32,
+    "totalHits": 165,
+    "totalCount": 1937
+  },
+  "pool6": {
+    "folds": [
+      {
+        "count": 717,
+        "hits": 108,
+        "rate": 0.1506276150627615,
+        "maxMiss": 19
+      },
+      {
+        "count": 709,
+        "hits": 99,
+        "rate": 0.13963328631875882,
+        "maxMiss": 21
+      },
+      {
+        "count": 511,
+        "hits": 88,
+        "rate": 0.17221135029354206,
+        "maxMiss": 18
+      }
+    ],
+    "worstMaxMiss": 21,
+    "meanMaxMiss": 19.333333333333332,
+    "totalHits": 295,
+    "totalCount": 1937
+  },
+  "configSha256": "62617a946968032c921bc35f30852d7f83c422fdcfc6a9092dbcab46ac3f2fef"
+}

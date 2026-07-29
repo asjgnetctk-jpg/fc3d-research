@@ -1,0 +1,357 @@
+{
+  "generatedAt": "2026-07-29T05:06:01.641Z",
+  "source": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2009-01-01&dayEnd=2026-07-28&pageNo=1&pageSize=5000&systemType=PC",
+  "isolation": {
+    "initialTrainingEnd": "2018-12-31",
+    "validation": [
+      "2019-01-01",
+      "2021-07-27"
+    ],
+    "untouchedTest": [
+      "2021-07-28",
+      "2026-07-28"
+    ]
+  },
+  "selected": {
+    "config": {
+      "version": "group3-online-1",
+      "featureSet": "full",
+      "learningRate": 0.01,
+      "l2": 0.001,
+      "epochs": 8,
+      "onlineStart": "2019-01-01"
+    },
+    "validation": {
+      "count": 862,
+      "baseRate": 0.27610208816705334,
+      "brier": 0.20014905428363328,
+      "logLoss": 0.5899627549013264,
+      "highCalls": 277,
+      "highHits": 79,
+      "highRate": 0.2851985559566787,
+      "highLift": 0.009096467789625362,
+      "lowCalls": 115,
+      "lowHits": 22,
+      "lowRate": 0.19130434782608696,
+      "separation": 0.09389420813059174,
+      "maxRecommendedMiss": 12
+    }
+  },
+  "test": {
+    "count": 1757,
+    "baseRate": 0.257256687535572,
+    "brier": 0.1918840272869841,
+    "logLoss": 0.5723571724248627,
+    "highCalls": 337,
+    "highHits": 92,
+    "highRate": 0.27299703264094954,
+    "highLift": 0.01574034510537753,
+    "lowCalls": 438,
+    "lowHits": 105,
+    "lowRate": 0.23972602739726026,
+    "separation": 0.03327100524368928,
+    "maxRecommendedMiss": 12
+  },
+  "topCandidates": [
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.001,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.20014905428363328,
+        "logLoss": 0.5899627549013264,
+        "highCalls": 277,
+        "highHits": 79,
+        "highRate": 0.2851985559566787,
+        "highLift": 0.009096467789625362,
+        "lowCalls": 115,
+        "lowHits": 22,
+        "lowRate": 0.19130434782608696,
+        "separation": 0.09389420813059174,
+        "maxRecommendedMiss": 12
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.0001,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.20013288222536613,
+        "logLoss": 0.5899270391825265,
+        "highCalls": 272,
+        "highHits": 79,
+        "highRate": 0.29044117647058826,
+        "highLift": 0.01433908830353492,
+        "lowCalls": 116,
+        "lowHits": 23,
+        "lowRate": 0.19827586206896552,
+        "separation": 0.09216531440162273,
+        "maxRecommendedMiss": 12
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.01,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.1999357610382991,
+        "logLoss": 0.5894028496957507,
+        "highCalls": 246,
+        "highHits": 72,
+        "highRate": 0.2926829268292683,
+        "highLift": 0.016580838662214936,
+        "lowCalls": 119,
+        "lowHits": 25,
+        "lowRate": 0.21008403361344538,
+        "separation": 0.0825988932158229,
+        "maxRecommendedMiss": 9
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.001,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.19989661226941507,
+        "logLoss": 0.5893023748278285,
+        "highCalls": 237,
+        "highHits": 69,
+        "highRate": 0.2911392405063291,
+        "highLift": 0.015037152339275772,
+        "lowCalls": 123,
+        "lowHits": 26,
+        "lowRate": 0.21138211382113822,
+        "separation": 0.07975712668519089,
+        "maxRecommendedMiss": 9
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.0001,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.19989259534502465,
+        "logLoss": 0.5892920665486491,
+        "highCalls": 235,
+        "highHits": 68,
+        "highRate": 0.28936170212765955,
+        "highLift": 0.013259613960606209,
+        "lowCalls": 124,
+        "lowHits": 26,
+        "lowRate": 0.20967741935483872,
+        "separation": 0.07968428277282083,
+        "maxRecommendedMiss": 9
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.01,
+        "epochs": 16,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.1998567821733551,
+        "logLoss": 0.5892027154086728,
+        "highCalls": 222,
+        "highHits": 68,
+        "highRate": 0.3063063063063063,
+        "highLift": 0.030204218139252947,
+        "lowCalls": 132,
+        "lowHits": 30,
+        "lowRate": 0.22727272727272727,
+        "separation": 0.07903357903357902,
+        "maxRecommendedMiss": 10
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.0001,
+        "epochs": 16,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.1999286508534095,
+        "logLoss": 0.5894714779400902,
+        "highCalls": 265,
+        "highHits": 75,
+        "highRate": 0.2830188679245283,
+        "highLift": 0.006916779757474956,
+        "lowCalls": 121,
+        "lowHits": 25,
+        "lowRate": 0.2066115702479339,
+        "separation": 0.0764072976765944,
+        "maxRecommendedMiss": 14
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.001,
+        "epochs": 16,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.19996623416402357,
+        "logLoss": 0.5895478664624563,
+        "highCalls": 264,
+        "highHits": 74,
+        "highRate": 0.2803030303030303,
+        "highLift": 0.004200942135976937,
+        "lowCalls": 120,
+        "lowHits": 25,
+        "lowRate": 0.20833333333333334,
+        "separation": 0.07196969696969693,
+        "maxRecommendedMiss": 16
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.0001,
+        "epochs": 16,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.1997895066632009,
+        "logLoss": 0.5890356457774385,
+        "highCalls": 209,
+        "highHits": 65,
+        "highRate": 0.31100478468899523,
+        "highLift": 0.03490269652194189,
+        "lowCalls": 146,
+        "lowHits": 35,
+        "lowRate": 0.23972602739726026,
+        "separation": 0.07127875729173497,
+        "maxRecommendedMiss": 11
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.01,
+        "epochs": 8,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.2003195736050175,
+        "logLoss": 0.5903729290227108,
+        "highCalls": 295,
+        "highHits": 80,
+        "highRate": 0.2711864406779661,
+        "highLift": -0.004915647489087238,
+        "lowCalls": 110,
+        "lowHits": 22,
+        "lowRate": 0.2,
+        "separation": 0.07118644067796609,
+        "maxRecommendedMiss": 14
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.003,
+        "l2": 0.001,
+        "epochs": 16,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.19979480960039286,
+        "logLoss": 0.5890484020701694,
+        "highCalls": 208,
+        "highHits": 64,
+        "highRate": 0.3076923076923077,
+        "highLift": 0.03159021952525437,
+        "lowCalls": 147,
+        "lowHits": 35,
+        "lowRate": 0.23809523809523808,
+        "separation": 0.06959706959706963,
+        "maxRecommendedMiss": 11
+      }
+    },
+    {
+      "config": {
+        "version": "group3-online-1",
+        "featureSet": "full",
+        "learningRate": 0.01,
+        "l2": 0.0001,
+        "epochs": 3,
+        "onlineStart": "2019-01-01"
+      },
+      "validation": {
+        "count": 862,
+        "baseRate": 0.27610208816705334,
+        "brier": 0.2003626824551677,
+        "logLoss": 0.5904675124674217,
+        "highCalls": 292,
+        "highHits": 76,
+        "highRate": 0.2602739726027397,
+        "highLift": -0.015828115564313627,
+        "lowCalls": 115,
+        "lowHits": 22,
+        "lowRate": 0.19130434782608696,
+        "separation": 0.06896962477665275,
+        "maxRecommendedMiss": 14
+      }
+    }
+  ]
+}
