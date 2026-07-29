@@ -3,14 +3,15 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import config from "../lib/v7-robust-config.json" with { type: "json" };
 import v5Config from "../lib/v5-config.json" with { type: "json" };
-import { actualShape, recommendV5 } from "../lib/v5-model.js";
+import {
+  actualShape,
+  group3Decision,
+  group3Probability,
+  recommendV5,
+} from "../lib/v5-model.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const pretestMetrics = {
-  dan: { count: 1937, hits: 591, rate: 591 / 1937, maxMiss: 11 },
-  pool7: { count: 1937, hits: 474, rate: 474 / 1937, maxMiss: 14 },
-  shape: { count: 351, hits: 247, rate: 247 / 351, maxMiss: 4 },
-};
+const ROLLING_VERSION = "V7.1-rolling";
 
 function shanghaiDate(date = new Date()) {
   return new Intl.DateTimeFormat("sv-SE", {
@@ -52,7 +53,7 @@ function metrics(rows, field) {
   };
 }
 
-function replay(draws, startDate, endDate, phase, modelConfig = config) {
+function legacyReplay(draws, startDate, endDate, phase, modelConfig) {
   const rows = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
@@ -100,6 +101,73 @@ function replay(draws, startDate, endDate, phase, modelConfig = config) {
   return { rows, danMissStreak, pool7MissStreak };
 }
 
+function rollingReplay(draws, startDate, endDate, modelConfig) {
+  const rows = [];
+  const calibrationRows = [];
+  let danMissStreak = 0;
+  let pool7MissStreak = 0;
+  let shapeMissStreak = 0;
+
+  for (let index = 120; index < draws.length; index += 1) {
+    const row = draws[index];
+    const priorDraws = draws.slice(0, index);
+    const prediction = recommendV5(
+      priorDraws,
+      danMissStreak,
+      pool7MissStreak,
+      modelConfig,
+    );
+    const probability = group3Probability(
+      prediction.shapeScore,
+      calibrationRows,
+    );
+    const pickGroup3 = group3Decision(probability);
+    const actual = new Set(row.digits);
+    const actualGroup3 = actual.size === 2;
+    const danHit = actual.has(prediction.dan);
+    const pool7Hit =
+      actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool7Group3Covered =
+      actualGroup3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+    const shapeHit = pickGroup3 === actualGroup3;
+
+    danMissStreak = danHit ? 0 : danMissStreak + 1;
+    pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
+    shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
+    calibrationRows.push({
+      score: prediction.shapeScore,
+      group3: actualGroup3,
+    });
+
+    if (row.date < startDate || (endDate && row.date > endDate)) continue;
+    rows.push({
+      date: row.date,
+      issue: row.issue,
+      dan: prediction.dan,
+      pool7: prediction.pool7.join(""),
+      shapePlay: pickGroup3 ? "看组三" : "不看组三",
+      group3Probability: probability,
+      draw: row.draw,
+      shape: actualGroup3 ? "开组三" : "未开组三",
+      danHit,
+      pool7Hit,
+      pool7Group3Covered,
+      shapeHit,
+      danMissStreak,
+      pool7MissStreak,
+      shapeMissStreak,
+      phase: "rolling",
+    });
+  }
+
+  return {
+    rows,
+    danMissStreak,
+    pool7MissStreak,
+    calibrationRows,
+  };
+}
+
 async function fetchDraws() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
@@ -145,24 +213,28 @@ async function main() {
     return;
   }
 
-  const historical = replay(
-    draws,
-    config.simulationStart,
-    config.simulationEnd,
-    "replay",
-  );
-  const forward = replay(draws, config.forwardStart, null, "locked");
-  const history = [...historical.rows, ...forward.rows];
+  const rolling = rollingReplay(draws, config.simulationStart, null, config);
+  const history = rolling.rows;
 
   const latest = draws.at(-1);
   const upcoming = recommendV5(
     draws,
-    forward.danMissStreak,
-    forward.pool7MissStreak,
+    rolling.danMissStreak,
+    rolling.pool7MissStreak,
     config,
   );
-  const locked = forward.rows;
-  const v5Track = replay(draws, v5Config.backfitStart, null, "locked", v5Config);
+  const upcomingGroup3Probability = group3Probability(
+    upcoming.shapeScore,
+    rolling.calibrationRows,
+  );
+  const upcomingGroup3 = group3Decision(upcomingGroup3Probability);
+  const v5Track = legacyReplay(
+    draws,
+    v5Config.backfitStart,
+    null,
+    "locked",
+    v5Config,
+  );
   const upcomingV5 = recommendV5(
     draws,
     v5Track.danMissStreak,
@@ -172,25 +244,23 @@ async function main() {
   const payload = {
     generatedAt: new Date().toISOString(),
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
-    formulaVersion: config.version,
-    lockDate: config.forwardStart,
+    formulaVersion: ROLLING_VERSION,
+    trainingMode: "expanding-window",
+    trainingUpdatedThrough: latest.date,
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
       basedOnIssue: latest.issue,
       basedOnDate: latest.date,
       dan: upcoming.dan,
       pool7: upcoming.pool7.join(""),
-      shapePlay: upcoming.shapePlay,
+      shapePlay: upcomingGroup3 ? "看组三" : "不看组三",
+      group3Probability: upcomingGroup3Probability,
     },
     history,
     metrics: {
-      backfitDan: pretestMetrics.dan,
-      backfitPool7: pretestMetrics.pool7,
-      backfitShape: pretestMetrics.shape,
-      lockedDan: metrics(locked, "danHit"),
-      lockedPool7: metrics(locked, "pool7Hit"),
-      lockedShape: metrics(locked, "shapeHit"),
-      shapeAlwaysGroup6Baseline: { count: 0, hits: 0, rate: 0, maxMiss: 0 },
+      dan: metrics(history, "danHit"),
+      pool7: metrics(history, "pool7Hit"),
+      group3: metrics(history, "shapeHit"),
     },
   };
   const v5Payload = {
@@ -249,7 +319,7 @@ async function main() {
     );
   }
   console.log(
-    `已生成V7：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcoming.shapePlay}`,
+    `已生成V7：${latest.issue}期后推荐 胆${upcoming.dan} / 7码${upcoming.pool7.join("")} / ${upcomingGroup3 ? "看组三" : "不看组三"} ${(upcomingGroup3Probability * 100).toFixed(1)}%`,
   );
 }
 

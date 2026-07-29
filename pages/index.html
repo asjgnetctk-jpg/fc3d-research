@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#163f31" />
     <meta
       name="description"
-      content="福彩3D独胆、7码与组三/组六二选一研究台账：每日推荐、实际开奖、命中结果和连续未中期数。"
+      content="福彩3D独胆、7码与组三概率研究台账：逐期滚动计算、实际开奖、命中结果和连续未中期数。"
     />
-    <title>福彩3D · 独胆、7码与形态二选一</title>
+    <title>福彩3D · 独胆、7码与组三概率</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./assets/app.js" defer></script>
   </head>
@@ -17,7 +17,7 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">福彩3D · 私人研究台账</p>
-          <h1>独胆 · 7码 · 形态</h1>
+          <h1>独胆 · 7码 · 组三</h1>
         </div>
         <button id="refresh" class="refresh-button" type="button">刷新</button>
       </header>
@@ -52,7 +52,7 @@
             <article class="dan-panel">
               <p>独胆</p>
               <strong id="dan"></strong>
-              <small>V7公式仅用2021-07-27前数据搜索并锁定</small>
+              <small>每期只读取当期开奖前已经公开的数据</small>
             </article>
             <article class="pool-panel">
               <p>7码池</p>
@@ -61,69 +61,30 @@
             </article>
             <article class="group3-panel">
               <div>
-                <p>形态二选一</p>
+                <p>组三判断</p>
                 <strong id="group3"></strong>
               </div>
-              <small>推荐与实际形态一致才中；豹子算失败</small>
+              <small><span id="group3-probability"></span> · 数学基准约27%</small>
             </article>
           </div>
           <div id="source-line" class="source-line"></div>
         </section>
 
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">真实封盘区</p>
-              <h2>2026年7月28日起继续前瞻记录</h2>
-            </div>
-            <span class="lock-chip">LOCKED</span>
-          </div>
-          <div id="locked-metrics" class="metrics-grid"></div>
-          <p class="section-note">
-            新开奖自动进入这里。三项都统计命中率和最长连续未中；7码的组三覆盖只作单独标记。
-          </p>
-        </section>
-
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">前置多折验证</p>
-              <h2>三段历史区间分别检验稳定性</h2>
-            </div>
-            <span class="backfit-chip">仅用截止日前数据</span>
-          </div>
-          <div id="backfit-metrics" class="metrics-grid"></div>
-          <p class="section-note warning-note">
-            V7只读取截至2021年7月27日的数据，并在2016—2017、2018—2019、2020—2021年7月27日三段区间分别检验。独胆三段最长未中为11、9、9期，合计591/1937（30.51%）。
-          </p>
-          <div class="audit-links">
-            <a href="./audit/v7-robust-training.json">查看V7训练与分段结果</a>
-            <a href="./audit/v7-locked-config.json">查看V7锁定公式配置</a>
-            <a href="./v5.html">查看V5历史推荐页</a>
-          </div>
-          <p class="section-note warning-note">
-            7码三段最长未中为13、14、13期，合计474/1937（24.47%）；它不是硬性达标项。形态前置验证247/351（70.37%），最长未中4期。
-          </p>
-          <p class="section-note">
-            “约10期”只是历史验证目标，不代表今后必定10期内命中。V7从2026年7月28日起只记真实前瞻战绩，不用后续开奖结果反向改公式。
-          </p>
-        </section>
-
         <section class="section-block history-section">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">V7逐期证据</p>
+              <p class="eyebrow">V7逐期滚动记录</p>
               <h2>每天推荐码、开奖号与命中结果</h2>
             </div>
           </div>
           <p class="section-note">
-            2021年7月28日至2026年7月27日标记为“V7回放”；2026年7月28日起标记为“前瞻”。每期均列出推荐、开奖、中没中和断期。
+            每一期只使用该期开奖前的数据计算。开奖号公布后才并入总数据库，供下一期更新；不会读取未来答案。
           </p>
           <div class="history-search">
             <input
               id="history-search"
               type="search"
-              placeholder="搜期号、日期、开奖号、胆码、7码、组三/组六或命中结果"
+              placeholder="搜期号、日期、开奖号、胆码、7码、组三概率或命中结果"
               aria-label="搜索V7逐期数据"
             />
             <span id="search-count"></span>
@@ -143,7 +104,7 @@
           <div id="formula" class="formula-content" hidden>
             <h3>独胆</h3>
             <p>
-              V7只在2021年7月27日前的数据中搜索候选公式，并用三段互不重叠区间比较稳定性。最终按连续未中0—2、3—4、5—6、7期以上四种状态，锁定对应的历史频率、定位频率和转移评分公式。
+              每期按时间顺序计算：预测某一期时，只读取它之前已经开奖的数据。上一期开奖后，开奖号才进入总数据库，用于更新近期频率、定位频率、转移频率和遗漏状态。
             </p>
             <p>按当前状态对应公式对0—9评分，并按该公式锁定的固定名次取一个独胆；同分时数字小者排前。</p>
             <h3>7码</h3>
@@ -151,8 +112,8 @@
               同样按连续未中状态切换四套固定评分，综合近期出现、定位频率、转移频率、奇偶和中心距离。
             </p>
             <p>得分从高到低取前7名。开奖号必须是组六，且三个数字全部入池才算7码命中；若开奖号为组三且两个不同数字均入池，单独标记“组三覆盖”，但不计作组六7码中奖。</p>
-            <h3>组三/组六二选一</h3>
-            <p>根据最近3—120期的组三、组六比例，组六遗漏、最近一期与最近两期形态、近期重号率计算形态分。达到固定阈值推荐组三，否则推荐组六；实际形态一致才算命中，豹子统一算失败。</p>
+            <h3>是否开组三</h3>
+            <p>先用截至前一期的数据计算组三模型分，再用此前最多1200期的“当时模型分—实际是否组三”记录进行滚动校准，取最接近的160期并加入27%的数学先验，得到今日组三参考概率。达到27%显示“看组三”，否则显示“不看组三”。这里不推荐组六；“不看组三”仅表示模型估计没有超过数学基准。</p>
           </div>
         </section>
 

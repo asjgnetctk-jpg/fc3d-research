@@ -10,6 +10,7 @@ type Recommendation = {
   dan: number;
   pool7: string;
   shapePlay: string;
+  group3Probability: number;
 };
 
 type HistoryRow = {
@@ -18,6 +19,7 @@ type HistoryRow = {
   dan: number;
   pool7: string;
   shapePlay: string;
+  group3Probability: number;
   draw: string;
   shape: string;
   danHit: boolean;
@@ -27,14 +29,7 @@ type HistoryRow = {
   danMissStreak: number;
   pool7MissStreak: number;
   shapeMissStreak: number;
-  phase: "replay" | "locked";
-};
-
-type Metric = {
-  count: number;
-  hits: number;
-  rate: number;
-  maxMiss: number;
+  phase: "rolling";
 };
 
 type ApiPayload = {
@@ -43,16 +38,13 @@ type ApiPayload = {
   recommendation: Recommendation;
   history: HistoryRow[];
   metrics: {
-    backfitDan: Metric;
-    backfitPool7: Metric;
-    lockedDan: Metric;
-    lockedPool7: Metric;
-    backfitShape: Metric;
-    lockedShape: Metric;
-    shapeAlwaysGroup6Baseline: Metric;
+    dan: { count: number; hits: number; rate: number; maxMiss: number };
+    pool7: { count: number; hits: number; rate: number; maxMiss: number };
+    group3: { count: number; hits: number; rate: number; maxMiss: number };
   };
   formulaVersion: string;
-  lockDate: string;
+  trainingMode: "expanding-window";
+  trainingUpdatedThrough: string;
 };
 
 function HitBadge({ hit }: { hit: boolean }) {
@@ -72,35 +64,6 @@ function PoolBadge({ row }: { row: HistoryRow }) {
   return <HitBadge hit={row.pool7Hit} />;
 }
 
-function MetricCard({
-  label,
-  metric,
-  pending,
-}: {
-  label: string;
-  metric: Metric;
-  pending?: boolean;
-}) {
-  return (
-    <div className="metric-card">
-      <span>{label}</span>
-      {pending ? (
-        <strong>等待开奖</strong>
-      ) : (
-        <>
-          <strong>
-            {metric.hits}/{metric.count}
-          </strong>
-          <small>
-            命中率 {(metric.rate * 100).toFixed(1)}% · 最长断{" "}
-            {metric.maxMiss}期
-          </small>
-        </>
-      )}
-    </div>
-  );
-}
-
 function matchesHistorySearch(row: HistoryRow, query: string) {
   const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   if (!tokens.length) return true;
@@ -112,13 +75,14 @@ function matchesHistorySearch(row: HistoryRow, query: string) {
     row.pool7,
     `7码${row.pool7}`,
     row.shapePlay,
+    `${(row.group3Probability * 100).toFixed(1)}%`,
     row.draw,
     row.shape,
-    row.phase === "locked" ? "前瞻" : "V7回放",
+    "滚动",
     row.danHit ? "胆码中" : "胆码未中",
     row.pool7Hit ? "7码中" : "7码未中",
     row.pool7Group3Covered ? "组三覆盖" : "",
-    row.shapeHit ? "形态中" : "形态未中",
+    row.shapeHit ? "组三判断中" : "组三判断未中",
   ].join(" ").toLowerCase();
   return tokens.every((token) => searchable.includes(token));
 }
@@ -188,8 +152,6 @@ export default function Home() {
   }
 
   if (!data) return null;
-  const lockedPending = data.metrics.lockedDan.count === 0;
-
   return (
     <main className="app-shell">
       <header className="topbar">
@@ -219,9 +181,9 @@ export default function Home() {
 
       <section className="status-strip">
         <span className="status-dot" />
-        <span>公式 {data.formulaVersion} 已锁定</span>
+        <span>{data.formulaVersion} 逐期滚动</span>
         <span className="status-separator">·</span>
-        <span>{data.lockDate}起真实验证</span>
+        <span>数据更新至 {data.trainingUpdatedThrough}</span>
       </section>
 
       <section className="hero-card">
@@ -234,7 +196,7 @@ export default function Home() {
           <article className="dan-panel">
             <p>独胆</p>
             <strong>{data.recommendation.dan}</strong>
-            <small>V7公式仅用2021-07-27前数据搜索并锁定</small>
+            <small>每期只读取当期开奖前已经公开的数据</small>
           </article>
           <article className="pool-panel">
             <p>7码池</p>
@@ -247,10 +209,14 @@ export default function Home() {
           </article>
           <article className="group3-panel">
             <div>
-              <p>形态二选一</p>
+              <p>组三判断</p>
               <strong>{data.recommendation.shapePlay}</strong>
             </div>
-            <small>推荐与实际形态一致才中；豹子算失败</small>
+            <small>
+              模型参考概率{" "}
+              {(data.recommendation.group3Probability * 100).toFixed(1)}%
+              {" · "}数学基准约27%
+            </small>
           </article>
         </div>
 
@@ -259,74 +225,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">真实封盘区</p>
-            <h2>2026年7月28日起继续前瞻记录</h2>
-          </div>
-          <span className="lock-chip">LOCKED</span>
-        </div>
-        <div className="metrics-grid three-metrics">
-          <MetricCard
-            label="独胆实测"
-            metric={data.metrics.lockedDan}
-            pending={lockedPending}
-          />
-          <MetricCard
-            label="7码实测"
-            metric={data.metrics.lockedPool7}
-            pending={lockedPending}
-          />
-          <MetricCard
-            label="形态实测"
-            metric={data.metrics.lockedShape}
-            pending={lockedPending}
-          />
-        </div>
-        <p className="section-note">
-          新开奖自动进入这里。三项都按命中率和最长连续未中统计；7码的组三覆盖只作单独标记。
-        </p>
-      </section>
-
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">前置多折验证</p>
-            <h2>三段历史区间分别检验稳定性</h2>
-          </div>
-          <span className="backfit-chip">仅用截止日前数据</span>
-        </div>
-        <div className="metrics-grid three-metrics">
-          <MetricCard label="独胆多折验证" metric={data.metrics.backfitDan} />
-          <MetricCard label="7码多折验证" metric={data.metrics.backfitPool7} />
-          <MetricCard label="形态验证" metric={data.metrics.backfitShape} />
-        </div>
-        <p className="section-note warning-note">
-          V7只读取截至2021年7月27日的数据，并在2016—2017、2018—2019、2020—2021年7月27日三段区间分别检验。独胆三段最长未中为11、9、9期，合计591/1937（30.51%）。
-        </p>
-        <p className="section-note warning-note">
-          7码三段最长未中为13、14、13期，合计474/1937（24.47%）；它不是硬性达标项。形态前置验证247/351（70.37%），最长未中4期。
-        </p>
-        <p className="section-note">
-          “约10期”只是历史验证目标，不代表今后必定10期内命中。V7从2026年7月28日起只记真实前瞻战绩，不用后续开奖结果反向改公式。
-        </p>
-        <div className="audit-links">
-          <a href="/audit/v7-robust-training.json">查看V7训练与分段结果</a>
-          <a href="/audit/v7-locked-config.json">查看V7锁定公式配置</a>
-          <a href="/v5.html">查看V5历史推荐页</a>
-        </div>
-      </section>
-
       <section className="section-block history-section">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">V7逐期证据</p>
+            <p className="eyebrow">V7逐期滚动记录</p>
             <h2>每天推荐码、开奖号与命中结果</h2>
           </div>
         </div>
         <p className="section-note">
-          2021年7月28日至2026年7月27日标记为“V7回放”；2026年7月28日起标记为“前瞻”。每期均列出推荐、开奖、中没中和断期。
+          每一期只使用该期开奖前的数据计算。开奖号公布后才并入总数据库，供下一期更新；不会读取未来答案。
         </p>
 
         <div className="history-search">
@@ -337,7 +244,7 @@ export default function Home() {
               setSearchQuery(event.target.value);
               setShowAll(false);
             }}
-            placeholder="搜期号、日期、开奖号、胆码、7码、组三/组六或命中结果"
+            placeholder="搜期号、日期、开奖号、胆码、7码、组三概率或命中结果"
             aria-label="搜索V7逐期数据"
           />
           <span>{filteredCount}期</span>
@@ -354,13 +261,14 @@ export default function Home() {
               <div className="history-date">
                 <strong>{row.issue}</strong>
                 <span>{row.date.slice(5)}</span>
-                <em>{row.phase === "locked" ? "前瞻" : "V7回放"}</em>
+                <em>滚动</em>
               </div>
               <div className="history-data">
                 <div>
                   <span>推荐</span>
                   <strong>
-                    胆{row.dan} · {row.pool7} · {row.shapePlay}
+                    胆{row.dan} · {row.pool7} · {row.shapePlay}{" "}
+                    {(row.group3Probability * 100).toFixed(1)}%
                   </strong>
                 </div>
                 <div>
@@ -381,7 +289,7 @@ export default function Home() {
                   <small>断{row.pool7MissStreak}</small>
                 </div>
                 <div>
-                  <span>形态</span>
+                  <span>组三</span>
                   <HitBadge hit={row.shapeHit} />
                   <small>断{row.shapeMissStreak}</small>
                 </div>
@@ -413,15 +321,17 @@ export default function Home() {
           <div className="formula-content">
             <h3>独胆</h3>
             <p>
-              V7只在2021年7月27日前的数据中搜索候选公式，并用三段互不重叠区间比较稳定性。最终按连续未中0—2、3—4、5—6、7期以上四种状态，锁定对应的历史频率、定位频率和转移评分公式。
+              每期按时间顺序计算：预测某一期时，只读取它之前已经开奖的数据。上一期开奖后，开奖号才进入总数据库，用于更新近期频率、定位频率、转移频率和遗漏状态。
             </p>
             <h3>7码</h3>
             <p>
               同样按连续未中状态切换四套固定评分，综合近期出现、定位频率、转移频率、奇偶和中心距离，得分从高到低取前7名。
             </p>
             <p>得分从高到低取前7名。开奖号须为组六且三个不同数字全部入池才算中奖；组三的两个不同数字全部入池时只标记“组三覆盖”，不计作组六7码中奖。</p>
-            <h3>组三/组六二选一</h3>
-            <p>根据最近3—120期的组三、组六比例，组六遗漏、最近一期与最近两期形态、近期重号率计算形态分。达到固定阈值推荐组三，否则推荐组六；实际形态一致才算命中，豹子统一算失败。</p>
+            <h3>是否开组三</h3>
+            <p>
+              先用截至前一期的数据计算组三模型分，再用此前最多1200期的“当时模型分—实际是否组三”记录进行滚动校准，取最接近的160期并加入27%的数学先验，得到今日组三参考概率。达到27%显示“看组三”，否则显示“不看组三”。这里不推荐组六；“不看组三”仅表示模型估计没有超过数学基准。
+            </p>
           </div>
         )}
       </section>
