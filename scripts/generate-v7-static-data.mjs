@@ -105,6 +105,65 @@ function dateYearsAgo(dateText, years) {
   return date.toISOString().slice(0, 10);
 }
 
+function omissionMetric(draws, digit, position = null) {
+  const runs = [];
+  let currentRun = [];
+  let lastSeen = null;
+
+  for (const row of draws) {
+    const appeared =
+      position === null
+        ? row.digits.includes(digit)
+        : row.digits[position] === digit;
+    if (appeared) {
+      if (currentRun.length) runs.push(currentRun);
+      currentRun = [];
+      lastSeen = row;
+    } else {
+      currentRun.push(row);
+    }
+  }
+  if (currentRun.length) runs.push(currentRun);
+
+  const max = runs.reduce(
+    (maximum, run) => Math.max(maximum, run.length),
+    0,
+  );
+  return {
+    current: currentRun.length,
+    max,
+    lastSeenIssue: lastSeen?.issue ?? null,
+    lastSeenDate: lastSeen?.date ?? null,
+    maxRuns: runs
+      .filter((run) => run.length === max)
+      .map((run) => ({
+        length: run.length,
+        startIssue: run[0].issue,
+        startDate: run[0].date,
+        endIssue: run.at(-1).issue,
+        endDate: run.at(-1).date,
+      })),
+  };
+}
+
+function digitOmissionReport(draws) {
+  const latest = draws.at(-1);
+  return {
+    throughIssue: latest.issue,
+    throughDate: latest.date,
+    totalPeriods: draws.length,
+    definition:
+      "当前遗漏为截至最新一期连续未出现期数；最大遗漏为完整历史数据中的最长连续未出现期数。整体遗漏按百十个位任一位置出现即归零，定位遗漏只按对应位置出现归零。",
+    digits: Array.from({ length: 10 }, (_, digit) => ({
+      digit,
+      overall: omissionMetric(draws, digit),
+      hundreds: omissionMetric(draws, digit, 0),
+      tens: omissionMetric(draws, digit, 1),
+      units: omissionMetric(draws, digit, 2),
+    })),
+  };
+}
+
 function rollingReplay(draws, startDate, modelConfig) {
   const rows = [];
   let danMissStreak = 0;
@@ -367,6 +426,7 @@ async function main() {
       canonicalSha256,
       report: "./audit/full-history-integrity.json",
     },
+    digitOmissions: digitOmissionReport(draws),
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
       basedOnIssue: latest.issue,

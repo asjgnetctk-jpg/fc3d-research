@@ -210,6 +210,27 @@ function render(data) {
   $("#based-on").textContent = `基于${data.recommendation.basedOnIssue}期及此前数据`;
   $("#source-line").textContent = `官方数据更新至 ${data.sourceUpdatedThrough}`;
   $("#total-periods").textContent = `${data.metrics.totalPeriods}期数据`;
+  $("#omission-through-issue").textContent =
+    `截止${data.digitOmissions.throughIssue}期`;
+  $("#omission-definition").textContent = data.digitOmissions.definition;
+  const omissionKeys = ["overall", "hundreds", "tens", "units"];
+  $("#omission-rows").innerHTML = data.digitOmissions.digits
+    .map(
+      (row) => `<tr>
+        <th scope="row"><b>${row.digit}</b></th>
+        ${omissionKeys
+          .map(
+            (key) => `<td>
+              <span class="omission-current">今 <b>${row[key].current}</b></span>
+              <span class="omission-max">最大 <b>${row[key].max}</b></span>
+            </td>`,
+          )
+          .join("")}
+      </tr>`,
+    )
+    .join("");
+  $("#omission-through").textContent =
+    `共统计${data.digitOmissions.totalPeriods}期，最新开奖日期${data.digitOmissions.throughDate}。横向滑动表格可完整查看定位数据。`;
   $("#generated-at").textContent = `页面生成于 ${new Date(data.generatedAt).toLocaleString(
     "zh-CN",
     { timeZone: "Asia/Shanghai", hour12: false },

@@ -563,6 +563,117 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.omission-section {
+  border-top: 4px solid var(--forest);
+}
+
+.omission-legend {
+  display: flex;
+  gap: 14px;
+  margin: 14px 0 8px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.omission-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.omission-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.current-dot {
+  background: var(--orange);
+}
+
+.max-dot {
+  background: var(--forest);
+}
+
+.omission-table-wrap {
+  overflow-x: auto;
+  margin: 0 -8px;
+  padding: 0 8px 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.omission-table {
+  width: 100%;
+  min-width: 570px;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.omission-table th,
+.omission-table td {
+  padding: 9px 8px;
+  text-align: center;
+}
+
+.omission-table thead th {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.omission-table tbody th,
+.omission-table tbody td {
+  background: #f3f5ef;
+}
+
+.omission-table tbody th {
+  border-radius: 12px 0 0 12px;
+}
+
+.omission-table tbody tr td:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.omission-table tbody th b {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  margin: auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--lime);
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
+
+.omission-table td span {
+  display: block;
+  white-space: nowrap;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.omission-current {
+  color: #a6471c;
+}
+
+.omission-current b {
+  font-size: 15px;
+}
+
+.omission-max {
+  color: var(--forest);
+}
+
+.omission-through {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
 .warning-note {
   color: #a6471c;
 }

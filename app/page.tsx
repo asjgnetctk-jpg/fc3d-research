@@ -28,6 +28,22 @@ type Metric = {
   recentThreeYears: PeriodMetric;
 };
 
+type OmissionMetric = {
+  current: number;
+  max: number;
+  lastSeenIssue: string | null;
+  lastSeenDate: string | null;
+  maxRuns: LongestRun[];
+};
+
+type DigitOmission = {
+  digit: number;
+  overall: OmissionMetric;
+  hundreds: OmissionMetric;
+  tens: OmissionMetric;
+  units: OmissionMetric;
+};
+
 type Recommendation = {
   targetIssue: string;
   basedOnIssue: string;
@@ -91,6 +107,13 @@ type ApiPayload = {
     periods: number;
     canonicalSha256: string;
     report: string;
+  };
+  digitOmissions: {
+    throughIssue: string;
+    throughDate: string;
+    totalPeriods: number;
+    definition: string;
+    digits: DigitOmission[];
   };
 };
 
@@ -326,6 +349,59 @@ export default function Home() {
           数据范围 {data.trainingDataStart}—{data.trainingUpdatedThrough} ·
           前瞻记录从第{data.forwardStartIssue}期开始 · SHA-256{" "}
           {data.dataIntegrity.canonicalSha256.slice(0, 16)}…
+        </small>
+      </section>
+
+      <section className="section-block omission-section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">0—9完整历史统计</p>
+            <h2>数字与定位遗漏</h2>
+          </div>
+          <span className="backfit-chip">
+            截止{data.digitOmissions.throughIssue}期
+          </span>
+        </div>
+        <p className="section-note">{data.digitOmissions.definition}</p>
+        <div className="omission-legend" aria-label="遗漏表图例">
+          <span><i className="current-dot" />当前遗漏</span>
+          <span><i className="max-dot" />历史最大</span>
+        </div>
+        <div className="omission-table-wrap">
+          <table className="omission-table">
+            <thead>
+              <tr>
+                <th>数字</th>
+                <th>整体</th>
+                <th>百位</th>
+                <th>十位</th>
+                <th>个位</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.digitOmissions.digits.map((row) => (
+                <tr key={row.digit}>
+                  <th scope="row"><b>{row.digit}</b></th>
+                  {(["overall", "hundreds", "tens", "units"] as const).map(
+                    (key) => (
+                      <td key={key}>
+                        <span className="omission-current">
+                          今 <b>{row[key].current}</b>
+                        </span>
+                        <span className="omission-max">
+                          最大 <b>{row[key].max}</b>
+                        </span>
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <small className="omission-through">
+          共统计{data.digitOmissions.totalPeriods}期，最新开奖日期
+          {data.digitOmissions.throughDate}。点击或横向滑动表格可完整查看定位数据。
         </small>
       </section>
 
