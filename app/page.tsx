@@ -11,19 +11,21 @@ type LongestRun = {
   endIssue: string;
   endDate: string;
 };
+type PeriodMetric = {
+  count: number;
+  hits: number;
+  rate: number;
+  maxMiss: number;
+  startDate: string;
+  longestRuns: LongestRun[];
+};
 type Metric = {
   count: number;
   hits: number;
   rate: number;
   maxMiss: number;
-  recentThreeYears: {
-    count: number;
-    hits: number;
-    rate: number;
-    maxMiss: number;
-    startDate: string;
-    longestRuns: LongestRun[];
-  };
+  recentOneYear: PeriodMetric;
+  recentThreeYears: PeriodMetric;
 };
 
 type Recommendation = {
@@ -401,7 +403,25 @@ export default function Home() {
             {metric.maxMiss}期
           </small>
         </div>
-        <div className="recent-metric">
+        <div className="recent-metric one-year">
+          <span>近1年（{metric.recentOneYear.startDate}起）</span>
+          <strong>
+            {metric.recentOneYear.hits}/{metric.recentOneYear.count} ·
+            命中率{(metric.recentOneYear.rate * 100).toFixed(1)}%
+          </strong>
+          <b>最长连断 {metric.recentOneYear.maxMiss}期</b>
+          <small>
+            {metric.recentOneYear.longestRuns.length
+              ? metric.recentOneYear.longestRuns
+                  .map(
+                    (run) =>
+                      `${run.startIssue}期（${run.startDate}）—${run.endIssue}期（${run.endDate}）`,
+                  )
+                  .join("；")
+              : "没有未命中区间"}
+          </small>
+        </div>
+        <div className="recent-metric three-year">
           <span>近3年（{metric.recentThreeYears.startDate}起）</span>
           <strong>
             {metric.recentThreeYears.hits}/{metric.recentThreeYears.count} ·

@@ -58,7 +58,7 @@ function metrics(rows, field) {
   };
 }
 
-function recentThreeYearMetrics(rows, field, startDate) {
+function periodMetrics(rows, field, startDate) {
   const scoped = rows.filter((row) => row.date >= startDate);
   const base = metrics(scoped, field);
   let current = [];
@@ -91,10 +91,11 @@ function recentThreeYearMetrics(rows, field, startDate) {
   };
 }
 
-function metricBundle(rows, field, recentStartDate) {
+function metricBundle(rows, field, recentOneYearStart, recentThreeYearStart) {
   return {
     ...metrics(rows, field),
-    recentThreeYears: recentThreeYearMetrics(rows, field, recentStartDate),
+    recentOneYear: periodMetrics(rows, field, recentOneYearStart),
+    recentThreeYears: periodMetrics(rows, field, recentThreeYearStart),
   };
 }
 
@@ -349,6 +350,7 @@ async function main() {
     v5Config,
   );
   const generatedAt = new Date().toISOString();
+  const recentOneYearStart = dateYearsAgo(latest.date, 1);
   const recentThreeYearStart = dateYearsAgo(latest.date, 3);
   const payload = {
     generatedAt,
@@ -380,16 +382,38 @@ async function main() {
     },
     history,
     metrics: {
-      dan: metricBundle(history, "danHit", recentThreeYearStart),
-      pool7: metricBundle(history, "pool7Hit", recentThreeYearStart),
-      pool6: metricBundle(history, "pool6Hit", recentThreeYearStart),
-      pool5: metricBundle(history, "pool5Hit", recentThreeYearStart),
+      dan: metricBundle(
+        history,
+        "danHit",
+        recentOneYearStart,
+        recentThreeYearStart,
+      ),
+      pool7: metricBundle(
+        history,
+        "pool7Hit",
+        recentOneYearStart,
+        recentThreeYearStart,
+      ),
+      pool6: metricBundle(
+        history,
+        "pool6Hit",
+        recentOneYearStart,
+        recentThreeYearStart,
+      ),
+      pool5: metricBundle(
+        history,
+        "pool5Hit",
+        recentOneYearStart,
+        recentThreeYearStart,
+      ),
       group3: metricBundle(
         history.filter((row) => row.shapeEvaluated),
         "shapeHit",
+        recentOneYearStart,
         recentThreeYearStart,
       ),
       totalPeriods: history.length,
+      recentOneYearStart,
       recentThreeYearStart,
     },
   };

@@ -166,22 +166,25 @@ function renderCurrent() {
   $("#metric-score").textContent = `${metric.hits}/${metric.count}`;
   $("#metric-detail").textContent =
     `命中率 ${(metric.rate * 100).toFixed(1)}% · 最长连续未中 ${metric.maxMiss}期`;
-  const recent = metric.recentThreeYears;
-  const recentRuns = recent.longestRuns;
-  $("#recent-three-year").innerHTML = `
-    <span>近3年（${recent.startDate}起）</span>
-    <strong>${recent.hits}/${recent.count} · 命中率${(recent.rate * 100).toFixed(1)}%</strong>
-    <b>最长连断 ${recent.maxMiss}期</b>
-    <small>${
-      recentRuns.length
-        ? recentRuns
-            .map(
-              (run) =>
-                `${run.startIssue}期（${run.startDate}）—${run.endIssue}期（${run.endDate}）`,
-            )
-            .join("；")
-        : "没有未命中区间"
-    }</small>`;
+  const renderPeriod = (selector, label, recent) => {
+    const runs = recent.longestRuns;
+    $(selector).innerHTML = `
+      <span>${label}（${recent.startDate}起）</span>
+      <strong>${recent.hits}/${recent.count} · 命中率${(recent.rate * 100).toFixed(1)}%</strong>
+      <b>最长连断 ${recent.maxMiss}期</b>
+      <small>${
+        runs.length
+          ? runs
+              .map(
+                (run) =>
+                  `${run.startIssue}期（${run.startDate}）—${run.endIssue}期（${run.endDate}）`,
+              )
+              .join("；")
+          : "没有未命中区间"
+      }</small>`;
+  };
+  renderPeriod("#recent-one-year", "近1年", metric.recentOneYear);
+  renderPeriod("#recent-three-year", "近3年", metric.recentThreeYears);
   $("#group3-metric-note").hidden = activePlay !== "group3";
   $("#formula-label").textContent = `${labels[activePlay]}计算规则`;
   $("#formula-text").textContent = formulaText(activePlay);
