@@ -1,8 +1,19 @@
 {
-  "version": "group3-knn-1",
-  "method": "knn",
-  "featureSet": "compact",
-  "neighbors": 50,
-  "priorStrength": 50,
-  "onlineStart": "2019-01-01"
+  "version": "group3-full-history-online-1",
+  "trainedAt": "2026-07-29T07:12:05.795Z",
+  "trainingMode": "full-history-expanding-replay",
+  "trainingDataStart": "2004-10-18",
+  "trainingDataCutoff": "2026-07-28",
+  "trainingIssueCutoff": "2026199",
+  "forwardStartIssue": "2026200",
+  "simulationStart": "2005-02-22",
+  "simulationEnd": "2026-07-28",
+  "canonicalDataSha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0",
+  "method": "online-logistic",
+  "featureSet": "full",
+  "learningRate": 0.03,
+  "l2": 0.0001,
+  "epochs": 1,
+  "onlineStart": "2008-01-01",
+  "highQuantile": 0.8
 }

@@ -1,58 +1,54 @@
 {
-  "version": "V7.0-robust",
-  "formulaLockedAt": "2026-07-28T11:45:55.385Z",
-  "trainingDataCutoff": "2021-07-27",
-  "forwardStart": "2026-07-28",
-  "simulationStart": "2021-07-28",
-  "simulationEnd": "2026-07-27",
+  "version": "V7.3-full-history",
+  "trainedAt": "2026-07-29T07:12:05.795Z",
+  "trainingMode": "full-history-expanding-replay",
+  "trainingDataStart": "2004-10-18",
+  "trainingDataCutoff": "2026-07-28",
+  "trainingIssueCutoff": "2026199",
+  "forwardStartIssue": "2026200",
+  "simulationStart": "2005-02-22",
+  "simulationEnd": "2026-07-28",
+  "canonicalDataSha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0",
   "dan": {
     "methods": [
       {
-        "id": 8771,
+        "id": "full-3726",
         "rank": 1,
         "weights": {
-          "position3_10": -2,
-          "presence20": -1,
-          "position2_20": -1,
-          "position2_10": 1
+          "gap": 2,
+          "presence7": -1,
+          "digitCenter": -2
         }
       },
       {
-        "id": 26398,
-        "rank": 1,
+        "id": "full-3890",
+        "rank": 3,
         "weights": {
-          "occurrence45": 2,
-          "digitCenter": -3,
-          "position2_30": -3,
-          "digitParity": -2,
-          "position2_60": -2,
-          "presence20": -3
+          "occurrence5": 2,
+          "gap": -2,
+          "occurrence120": -3,
+          "position3_20": 3
         }
       },
       {
-        "id": 21262,
-        "rank": 8,
+        "id": "full-2414",
+        "rank": 3,
         "weights": {
-          "occurrence45": 1,
-          "last2": 1,
-          "transition120": -2,
-          "occurrence7": -2,
-          "occurrence30": 2,
-          "transition60": 2,
-          "position3_60": 2,
-          "presence45": -2,
-          "position2_10": -3
+          "position2_30": 3,
+          "transition120": 3,
+          "transition60": -2,
+          "presence45": -3,
+          "gap": -3
         }
       },
       {
-        "id": 2626,
-        "rank": 4,
+        "id": "full-2592",
+        "rank": 6,
         "weights": {
-          "presence20": -2,
-          "occurrence10": 3,
-          "presence90": 3,
-          "digitCenter": -3,
-          "position2_60": 1
+          "presence30": -2,
+          "presence10": 2,
+          "position2_30": 1,
+          "position3_20": -3
         }
       }
     ]
@@ -60,49 +56,39 @@
   "pool7": {
     "methods": [
       {
-        "id": 802,
-        "rank": 6,
+        "id": "full-886",
+        "rank": 2,
         "weights": {
-          "presence45": -2,
-          "position3_20": -1,
-          "digitParity": 2,
-          "occurrence10": -1,
-          "occurrence30": -2,
-          "position1_10": -3,
-          "occurrence60": -2,
-          "presence3": -2
+          "presence20": -1,
+          "presence7": -1,
+          "transition120": -2,
+          "last3": 3
         }
       },
       {
-        "id": 17110,
+        "id": "full-2407",
         "rank": 3,
         "weights": {
-          "position3_20": -1,
-          "position2_60": -2,
-          "occurrence120": -2,
-          "position3_30": 2,
-          "position1_30": 1,
-          "transition120": 1,
-          "presence20": -3,
-          "position2_20": 1
+          "presence10": 3,
+          "position3_10": -3
         }
       },
       {
-        "id": 8431,
-        "rank": 4,
+        "id": "full-262",
+        "rank": 5,
         "weights": {
-          "digitCenter": 1,
-          "last2": -1,
-          "position2_60": -1
+          "occurrence10": 1,
+          "position3_10": 3
         }
       },
       {
-        "id": 4279,
+        "id": "full-2903",
         "rank": 7,
         "weights": {
-          "occurrence30": -3,
-          "digitCenter": -2,
-          "presence5": -3
+          "occurrence120": 3,
+          "presence120": -3,
+          "digitCenter": -1,
+          "occurrence90": -3
         }
       }
     ]

@@ -1,0 +1,715 @@
+{
+  "version": "full-history-training-1",
+  "createdAt": "2026-07-29T07:12:05.795Z",
+  "warning": "All available outcomes were used for model selection. Results are in-sample expanding replay, not an independent blind test.",
+  "data": {
+    "count": 7706,
+    "first": {
+      "issue": "2004001",
+      "date": "2004-10-18",
+      "draw": "070",
+      "digits": [
+        0,
+        7,
+        0
+      ]
+    },
+    "last": {
+      "issue": "2026199",
+      "date": "2026-07-28",
+      "draw": "591",
+      "digits": [
+        5,
+        9,
+        1
+      ]
+    },
+    "canonicalSha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0",
+    "integrityReport": "scripts/results/full-history-integrity.json"
+  },
+  "search": {
+    "seed": 2026072901,
+    "randomRankingMethods": 6000,
+    "seededRankingMethods": 16,
+    "totalRankingMethods": 6016,
+    "keptPerPlay": 120,
+    "policyTrialsPerPlay": 12000,
+    "features": 43,
+    "group3Hyperparameters": 72,
+    "objective": "Minimize full-history maximum miss first, then worst fold maximum miss, then mean fold maximum miss, then maximize hit rate."
+  },
+  "folds": [
+    {
+      "key": "2004-2008",
+      "start": "2004-01-01",
+      "end": "2008-12-31"
+    },
+    {
+      "key": "2009-2012",
+      "start": "2009-01-01",
+      "end": "2012-12-31"
+    },
+    {
+      "key": "2013-2016",
+      "start": "2013-01-01",
+      "end": "2016-12-31"
+    },
+    {
+      "key": "2017-2020",
+      "start": "2017-01-01",
+      "end": "2020-12-31"
+    },
+    {
+      "key": "2021-2026",
+      "start": "2021-01-01",
+      "end": "2099-12-31"
+    }
+  ],
+  "results": {
+    "dan": {
+      "metrics": {
+        "overall": {
+          "count": 7586,
+          "hits": 2142,
+          "rate": 0.2823622462430794,
+          "maxMiss": 15
+        },
+        "folds": [
+          {
+            "key": "2004-2008",
+            "start": "2004-01-01",
+            "end": "2008-12-31",
+            "count": 1386,
+            "hits": 403,
+            "rate": 0.2907647907647908,
+            "maxMiss": 14
+          },
+          {
+            "key": "2009-2012",
+            "start": "2009-01-01",
+            "end": "2012-12-31",
+            "count": 1433,
+            "hits": 443,
+            "rate": 0.3091416608513608,
+            "maxMiss": 13
+          },
+          {
+            "key": "2013-2016",
+            "start": "2013-01-01",
+            "end": "2016-12-31",
+            "count": 1432,
+            "hits": 378,
+            "rate": 0.2639664804469274,
+            "maxMiss": 15
+          },
+          {
+            "key": "2017-2020",
+            "start": "2017-01-01",
+            "end": "2020-12-31",
+            "count": 1380,
+            "hits": 380,
+            "rate": 0.2753623188405797,
+            "maxMiss": 14
+          },
+          {
+            "key": "2021-2026",
+            "start": "2021-01-01",
+            "end": "2099-12-31",
+            "count": 1955,
+            "hits": 538,
+            "rate": 0.2751918158567775,
+            "maxMiss": 15
+          }
+        ],
+        "worstFoldMaxMiss": 15,
+        "meanFoldMaxMiss": 14.2
+      },
+      "choices": [
+        74,
+        50,
+        71,
+        8
+      ],
+      "methods": [
+        {
+          "id": "full-3726",
+          "rank": 1,
+          "weights": {
+            "gap": 2,
+            "presence7": -1,
+            "digitCenter": -2
+          }
+        },
+        {
+          "id": "full-3890",
+          "rank": 3,
+          "weights": {
+            "occurrence5": 2,
+            "gap": -2,
+            "occurrence120": -3,
+            "position3_20": 3
+          }
+        },
+        {
+          "id": "full-2414",
+          "rank": 3,
+          "weights": {
+            "position2_30": 3,
+            "transition120": 3,
+            "transition60": -2,
+            "presence45": -3,
+            "gap": -3
+          }
+        },
+        {
+          "id": "full-2592",
+          "rank": 6,
+          "weights": {
+            "presence30": -2,
+            "presence10": 2,
+            "position2_30": 1,
+            "position3_20": -3
+          }
+        }
+      ]
+    },
+    "pool5": {
+      "metrics": {
+        "overall": {
+          "count": 7586,
+          "hits": 545,
+          "rate": 0.0718428684418666,
+          "maxMiss": 59
+        },
+        "folds": [
+          {
+            "key": "2004-2008",
+            "start": "2004-01-01",
+            "end": "2008-12-31",
+            "count": 1386,
+            "hits": 89,
+            "rate": 0.06421356421356421,
+            "maxMiss": 58
+          },
+          {
+            "key": "2009-2012",
+            "start": "2009-01-01",
+            "end": "2012-12-31",
+            "count": 1433,
+            "hits": 105,
+            "rate": 0.0732728541521284,
+            "maxMiss": 51
+          },
+          {
+            "key": "2013-2016",
+            "start": "2013-01-01",
+            "end": "2016-12-31",
+            "count": 1432,
+            "hits": 105,
+            "rate": 0.07332402234636871,
+            "maxMiss": 52
+          },
+          {
+            "key": "2017-2020",
+            "start": "2017-01-01",
+            "end": "2020-12-31",
+            "count": 1380,
+            "hits": 105,
+            "rate": 0.07608695652173914,
+            "maxMiss": 59
+          },
+          {
+            "key": "2021-2026",
+            "start": "2021-01-01",
+            "end": "2099-12-31",
+            "count": 1955,
+            "hits": 141,
+            "rate": 0.0721227621483376,
+            "maxMiss": 55
+          }
+        ],
+        "worstFoldMaxMiss": 59,
+        "meanFoldMaxMiss": 55
+      },
+      "choices": [
+        84,
+        76,
+        74,
+        3
+      ],
+      "methods": [
+        {
+          "id": "full-1337",
+          "rank": 9,
+          "weights": {
+            "digitParity": 3,
+            "occurrence45": -2,
+            "position1_60": 1,
+            "digitCenter": -3
+          }
+        },
+        {
+          "id": "full-89",
+          "rank": 3,
+          "weights": {
+            "occurrence14": -3,
+            "occurrence60": 2,
+            "position1_10": 5,
+            "digitCenter": -1,
+            "presence60": -3,
+            "gap": 3
+          }
+        },
+        {
+          "id": "full-346",
+          "rank": 4,
+          "weights": {
+            "position3_10": -3,
+            "presence14": -1,
+            "position1_60": -2
+          }
+        },
+        {
+          "id": "full-436",
+          "rank": 8,
+          "weights": {
+            "position3_20": -2,
+            "occurrence30": -2,
+            "position1_20": 3,
+            "presence60": 1,
+            "position1_30": -1
+          }
+        }
+      ]
+    },
+    "pool6": {
+      "metrics": {
+        "overall": {
+          "count": 7586,
+          "hits": 955,
+          "rate": 0.12588979699446348,
+          "maxMiss": 32
+        },
+        "folds": [
+          {
+            "key": "2004-2008",
+            "start": "2004-01-01",
+            "end": "2008-12-31",
+            "count": 1386,
+            "hits": 158,
+            "rate": 0.113997113997114,
+            "maxMiss": 32
+          },
+          {
+            "key": "2009-2012",
+            "start": "2009-01-01",
+            "end": "2012-12-31",
+            "count": 1433,
+            "hits": 174,
+            "rate": 0.12142358688066993,
+            "maxMiss": 31
+          },
+          {
+            "key": "2013-2016",
+            "start": "2013-01-01",
+            "end": "2016-12-31",
+            "count": 1432,
+            "hits": 175,
+            "rate": 0.12220670391061453,
+            "maxMiss": 32
+          },
+          {
+            "key": "2017-2020",
+            "start": "2017-01-01",
+            "end": "2020-12-31",
+            "count": 1380,
+            "hits": 200,
+            "rate": 0.14492753623188406,
+            "maxMiss": 27
+          },
+          {
+            "key": "2021-2026",
+            "start": "2021-01-01",
+            "end": "2099-12-31",
+            "count": 1955,
+            "hits": 248,
+            "rate": 0.1268542199488491,
+            "maxMiss": 30
+          }
+        ],
+        "worstFoldMaxMiss": 32,
+        "meanFoldMaxMiss": 30.4
+      },
+      "choices": [
+        77,
+        21,
+        86,
+        0
+      ],
+      "methods": [
+        {
+          "id": "full-4477",
+          "rank": 5,
+          "weights": {
+            "occurrence45": 2,
+            "occurrence3": 2,
+            "position1_30": -2,
+            "occurrence60": 1
+          }
+        },
+        {
+          "id": "full-3409",
+          "rank": 1,
+          "weights": {
+            "presence60": 1,
+            "presence10": -2,
+            "digitCenter": 2,
+            "transition120": 1,
+            "digitParity": 1,
+            "occurrence5": 1,
+            "occurrence3": -2
+          }
+        },
+        {
+          "id": "full-3691",
+          "rank": 6,
+          "weights": {
+            "position3_20": -2,
+            "occurrence7": 1,
+            "position3_30": -3
+          }
+        },
+        {
+          "id": "full-1597",
+          "rank": 4,
+          "weights": {
+            "presence20": -2,
+            "occurrence60": -1,
+            "presence60": 1,
+            "occurrence14": -2,
+            "digitParity": 3,
+            "position1_10": 1
+          }
+        }
+      ]
+    },
+    "pool7": {
+      "metrics": {
+        "overall": {
+          "count": 7586,
+          "hits": 1653,
+          "rate": 0.21790139731083574,
+          "maxMiss": 20
+        },
+        "folds": [
+          {
+            "key": "2004-2008",
+            "start": "2004-01-01",
+            "end": "2008-12-31",
+            "count": 1386,
+            "hits": 292,
+            "rate": 0.2106782106782107,
+            "maxMiss": 18
+          },
+          {
+            "key": "2009-2012",
+            "start": "2009-01-01",
+            "end": "2012-12-31",
+            "count": 1433,
+            "hits": 319,
+            "rate": 0.2226099092812282,
+            "maxMiss": 20
+          },
+          {
+            "key": "2013-2016",
+            "start": "2013-01-01",
+            "end": "2016-12-31",
+            "count": 1432,
+            "hits": 308,
+            "rate": 0.21508379888268156,
+            "maxMiss": 19
+          },
+          {
+            "key": "2017-2020",
+            "start": "2017-01-01",
+            "end": "2020-12-31",
+            "count": 1380,
+            "hits": 297,
+            "rate": 0.21521739130434783,
+            "maxMiss": 15
+          },
+          {
+            "key": "2021-2026",
+            "start": "2021-01-01",
+            "end": "2099-12-31",
+            "count": 1955,
+            "hits": 437,
+            "rate": 0.2235294117647059,
+            "maxMiss": 20
+          }
+        ],
+        "worstFoldMaxMiss": 20,
+        "meanFoldMaxMiss": 18.4
+      },
+      "choices": [
+        26,
+        24,
+        111,
+        13
+      ],
+      "methods": [
+        {
+          "id": "full-886",
+          "rank": 2,
+          "weights": {
+            "presence20": -1,
+            "presence7": -1,
+            "transition120": -2,
+            "last3": 3
+          }
+        },
+        {
+          "id": "full-2407",
+          "rank": 3,
+          "weights": {
+            "presence10": 3,
+            "position3_10": -3
+          }
+        },
+        {
+          "id": "full-262",
+          "rank": 5,
+          "weights": {
+            "occurrence10": 1,
+            "position3_10": 3
+          }
+        },
+        {
+          "id": "full-2903",
+          "rank": 7,
+          "weights": {
+            "occurrence120": 3,
+            "presence120": -3,
+            "digitCenter": -1,
+            "occurrence90": -3
+          }
+        }
+      ]
+    }
+  },
+  "group3": {
+    "highRecommendationMetrics": {
+      "count": 1460,
+      "hits": 380,
+      "rate": 0.2602739726027397,
+      "maxMiss": 19
+    },
+    "brier": 0.1953061754429176,
+    "config": {
+      "version": "group3-full-history-online-1",
+      "trainedAt": "2026-07-29T07:12:05.795Z",
+      "trainingMode": "full-history-expanding-replay",
+      "trainingDataStart": "2004-10-18",
+      "trainingDataCutoff": "2026-07-28",
+      "trainingIssueCutoff": "2026199",
+      "forwardStartIssue": "2026200",
+      "simulationStart": "2005-02-22",
+      "simulationEnd": "2026-07-28",
+      "canonicalDataSha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0",
+      "method": "online-logistic",
+      "featureSet": "full",
+      "learningRate": 0.03,
+      "l2": 0.0001,
+      "epochs": 1,
+      "onlineStart": "2008-01-01",
+      "highQuantile": 0.8
+    },
+    "leaders": [
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0.0001,
+          "epochs": 1,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1460,
+          "hits": 380,
+          "rate": 0.2602739726027397,
+          "maxMiss": 19
+        },
+        "brier": 0.1953061754429176
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0,
+          "epochs": 1,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1459,
+          "hits": 381,
+          "rate": 0.26113776559287183,
+          "maxMiss": 19
+        },
+        "brier": 0.19530638444944473
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0.001,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1459,
+          "hits": 376,
+          "rate": 0.2577107607950651,
+          "maxMiss": 20
+        },
+        "brier": 0.19523528470751525
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0.001,
+          "epochs": 1,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1472,
+          "hits": 379,
+          "rate": 0.25747282608695654,
+          "maxMiss": 20
+        },
+        "brier": 0.1953055061052741
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0.0001,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1460,
+          "hits": 378,
+          "rate": 0.2589041095890411,
+          "maxMiss": 23
+        },
+        "brier": 0.19523810884300763
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.03,
+          "l2": 0,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1455,
+          "hits": 376,
+          "rate": 0.2584192439862543,
+          "maxMiss": 23
+        },
+        "brier": 0.19523870186358117
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.001,
+          "l2": 0.001,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1266,
+          "hits": 365,
+          "rate": 0.2883096366508689,
+          "maxMiss": 24
+        },
+        "brier": 0.1936124959005944
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.001,
+          "l2": 0.0001,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1265,
+          "hits": 364,
+          "rate": 0.28774703557312253,
+          "maxMiss": 24
+        },
+        "brier": 0.19361255700125343
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "full",
+          "learningRate": 0.001,
+          "l2": 0,
+          "epochs": 3,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1266,
+          "hits": 364,
+          "rate": 0.28751974723538704,
+          "maxMiss": 24
+        },
+        "brier": 0.19361256380593383
+      },
+      {
+        "config": {
+          "method": "online-logistic",
+          "featureSet": "compact",
+          "learningRate": 0.001,
+          "l2": 0,
+          "epochs": 1,
+          "onlineStart": "2008-01-01",
+          "highQuantile": 0.8
+        },
+        "highMetrics": {
+          "count": 1220,
+          "hits": 324,
+          "rate": 0.26557377049180325,
+          "maxMiss": 25
+        },
+        "brier": 0.19354436708657108
+      }
+    ]
+  },
+  "configHashes": {
+    "v7": "cd4bdc0a235a34836d73bb8c7cb4d1ddac37b831ad5a90c70c969224fe53a0c4",
+    "pools56": "943e104ddf24a7d11e7b28b9a9cb6d085d7a9f978079deb8ea17e8d75376e5ec",
+    "group3": "83a19cec63ecbe16913b4cc0c8fdb0a5eda40f63b4bf053828ee146fd4b4311b"
+  }
+}

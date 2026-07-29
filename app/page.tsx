@@ -62,6 +62,14 @@ type ApiPayload = {
   };
   formulaVersion: string;
   trainingUpdatedThrough: string;
+  trainingDataStart: string;
+  forwardStartIssue: string;
+  evaluationNotice: string;
+  dataIntegrity: {
+    periods: number;
+    canonicalSha256: string;
+    report: string;
+  };
 };
 
 const PLAYS: Array<{ key: PlayKey; label: string }> = [
@@ -176,12 +184,12 @@ function matchesHistorySearch(row: HistoryRow, query: string) {
 
 function formulaText(play: PlayKey) {
   if (play === "dan") {
-    return "每期只使用此前已开奖数据，按当前连续未中状态切换评分公式，综合近期频率、定位频率、转移频率、遗漏、奇偶和中心距离，对0—9排序后取一个独胆。";
+    return "先把每期开奖前可见的近期频率、定位频率、转移频率、遗漏、奇偶和中心距离转成特征，再按当前连续未中状态切换四套评分公式，对0—9排序后取一个独胆。当前公式由完整历史结果参与筛选，因此页面战绩属于训练回放，不是独立盲测。";
   }
   if (play === "group3") {
-    return "以过去的组三频率、遗漏、最近三期形态、上一期和值/跨度/奇偶大小和相邻两期重号为特征；早期数据训练并选择方法，之后逐期开奖后更新。模型把当期概率排进最近365期前20%时才明确推荐组三，未推荐期不计中奖。";
+    return "采用扩展窗口在线逻辑模型：只用当期之前的数据更新参数，以历史组三频率、遗漏、最近三期形态及上一期结构为特征。概率进入最近365期预测值前20%时明确推荐组三；其他期只显示概率，不计推荐成败。超参数由完整历史结果筛选，回放成绩不代表未来。";
   }
-  return `${playLabel(play)}使用独立的低断档公式。训练时在40,000套候选评分中搜索，并测试220,000套连续未中状态组合；每期开奖后更新近期频率、定位、遗漏和转移特征。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
+  return `${playLabel(play)}使用独立的低断档公式。完整搜索记录比较了6,016套排名公式，并为每种玩法测试12,000套连续未中状态组合；每期开奖后更新近期频率、定位、遗漏和转移特征。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。`;
 }
 
 export default function Home() {
@@ -284,6 +292,19 @@ export default function Home() {
         <span>{data.formulaVersion} 逐期滚动</span>
         <span className="status-separator">·</span>
         <span>数据更新至 {data.trainingUpdatedThrough}</span>
+      </section>
+
+      <section className="section-block integrity-block">
+        <p className="section-note">{data.evaluationNotice}</p>
+        <div className="audit-links">
+          <a href="/audit/full-history-integrity.json">查看7706期数据真实性报告</a>
+          <a href="/audit/full-history-training.json">查看全历史训练与回放报告</a>
+        </div>
+        <small>
+          数据范围 {data.trainingDataStart}—{data.trainingUpdatedThrough} ·
+          前瞻记录从第{data.forwardStartIssue}期开始 · SHA-256{" "}
+          {data.dataIntegrity.canonicalSha256.slice(0, 16)}…
+        </small>
       </section>
 
       <nav className="play-tabs" aria-label="切换研究项目">
@@ -459,13 +480,12 @@ export default function Home() {
             <p>{formulaText(activePlay)}</p>
             <div className="audit-links">
               {activePlay === "group3" ? (
-                <a href="/audit/group3-knn-search.json">查看组三训练与测试数据</a>
+                <a href="/audit/full-history-training.json">查看组三全历史训练报告</a>
               ) : activePlay === "pool5" || activePlay === "pool6" ? (
-                <>
-                  <a href="/audit/pool56-robust-search.json">查看5/6码训练搜索</a>
-                  <a href="/audit/pool56-untouched-test.json">查看后五年顺序测试</a>
-                </>
-              ) : null}
+                <a href="/audit/full-history-training.json">查看5/6码全历史训练报告</a>
+              ) : (
+                <a href="/audit/full-history-training.json">查看全历史训练报告</a>
+              )}
             </div>
           </div>
         )}

@@ -12,12 +12,17 @@ import {
 } from "../lib/v5-model.js";
 import {
   buildGroup3Examples,
-  forecastNextGroup3Knn,
-  runGroup3Knn,
+  forecastNextGroup3,
+  runGroup3Online,
 } from "../lib/group3-online.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ROLLING_VERSION = "V7.2-rolling";
+const FULL_HISTORY_PATH = path.join(
+  root,
+  "scripts",
+  "data",
+  "fc3d-full-history.json",
+);
 
 function shanghaiDate(date = new Date()) {
   return new Intl.DateTimeFormat("sv-SE", {
@@ -53,55 +58,7 @@ function metrics(rows, field) {
   };
 }
 
-function legacyReplay(draws, startDate, endDate, phase, modelConfig) {
-  const rows = [];
-  let danMissStreak = 0;
-  let pool7MissStreak = 0;
-  let shapeMissStreak = 0;
-
-  for (let index = 120; index < draws.length; index += 1) {
-    const row = draws[index];
-    if (row.date < startDate || (endDate && row.date > endDate)) continue;
-    const prediction = recommendV5(
-      draws.slice(0, index),
-      danMissStreak,
-      pool7MissStreak,
-      modelConfig,
-    );
-    const actual = new Set(row.digits);
-    const shape = actualShape(row.digits);
-    const danHit = actual.has(prediction.dan);
-    const pool7Hit =
-      actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
-    const pool7Group3Covered =
-      actual.size === 2 && [...actual].every((digit) => prediction.pool7.includes(digit));
-    const shapeHit = shape === prediction.shapePlay;
-    danMissStreak = danHit ? 0 : danMissStreak + 1;
-    pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
-    shapeMissStreak = shapeHit ? 0 : shapeMissStreak + 1;
-    rows.push({
-      date: row.date,
-      issue: row.issue,
-      dan: prediction.dan,
-      pool7: prediction.pool7.join(""),
-      shapePlay: prediction.shapePlay,
-      draw: row.draw,
-      shape,
-      danHit,
-      pool7Hit,
-      pool7Group3Covered,
-      shapeHit,
-      danMissStreak,
-      pool7MissStreak,
-      shapeMissStreak,
-      phase,
-    });
-  }
-
-  return { rows, danMissStreak, pool7MissStreak };
-}
-
-function rollingReplay(draws, startDate, endDate, modelConfig) {
+function rollingReplay(draws, startDate, modelConfig) {
   const rows = [];
   let danMissStreak = 0;
   let pool7MissStreak = 0;
@@ -133,13 +90,15 @@ function rollingReplay(draws, startDate, endDate, modelConfig) {
     const actualGroup3 = actual.size === 2;
     const danHit = actual.has(prediction.dan);
     const pool7Hit =
-      actual.size === 3 && [...actual].every((digit) => prediction.pool7.includes(digit));
-    const pool7Group3Covered =
-      actualGroup3 && [...actual].every((digit) => prediction.pool7.includes(digit));
+      actual.size === 3 &&
+      [...actual].every((digit) => prediction.pool7.includes(digit));
     const pool6Hit =
       actual.size === 3 && [...actual].every((digit) => pool6.includes(digit));
     const pool5Hit =
       actual.size === 3 && [...actual].every((digit) => pool5.includes(digit));
+    const pool7Group3Covered =
+      actualGroup3 &&
+      [...actual].every((digit) => prediction.pool7.includes(digit));
     const pool6Group3Covered =
       actualGroup3 && [...actual].every((digit) => pool6.includes(digit));
     const pool5Group3Covered =
@@ -149,8 +108,7 @@ function rollingReplay(draws, startDate, endDate, modelConfig) {
     pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
     pool6MissStreak = pool6Hit ? 0 : pool6MissStreak + 1;
     pool5MissStreak = pool5Hit ? 0 : pool5MissStreak + 1;
-
-    if (row.date < startDate || (endDate && row.date > endDate)) continue;
+    if (row.date < startDate) continue;
     rows.push({
       date: row.date,
       issue: row.issue,
@@ -159,7 +117,7 @@ function rollingReplay(draws, startDate, endDate, modelConfig) {
       pool6: pool6.join(""),
       pool5: pool5.join(""),
       draw: row.draw,
-      shape: actualGroup3 ? "开组三" : "未开组三",
+      shape: actualShape(row.digits),
       danHit,
       pool7Hit,
       pool6Hit,
@@ -171,10 +129,9 @@ function rollingReplay(draws, startDate, endDate, modelConfig) {
       pool7MissStreak,
       pool6MissStreak,
       pool5MissStreak,
-      phase: "rolling",
+      phase: "full-history-training-replay",
     });
   }
-
   return {
     rows,
     danMissStreak,
@@ -184,56 +141,117 @@ function rollingReplay(draws, startDate, endDate, modelConfig) {
   };
 }
 
-async function fetchDraws() {
+function legacyReplay(draws, modelConfig) {
+  const rows = [];
+  let danMissStreak = 0;
+  let pool7MissStreak = 0;
+  for (let index = 120; index < draws.length; index += 1) {
+    const row = draws[index];
+    if (row.date < modelConfig.backfitStart) continue;
+    const prediction = recommendV5(
+      draws.slice(0, index),
+      danMissStreak,
+      pool7MissStreak,
+      modelConfig,
+    );
+    const actual = new Set(row.digits);
+    const shape = actualShape(row.digits);
+    const danHit = actual.has(prediction.dan);
+    const pool7Hit =
+      actual.size === 3 &&
+      [...actual].every((digit) => prediction.pool7.includes(digit));
+    const pool7Group3Covered =
+      actual.size === 2 &&
+      [...actual].every((digit) => prediction.pool7.includes(digit));
+    const shapeHit = shape === prediction.shapePlay;
+    danMissStreak = danHit ? 0 : danMissStreak + 1;
+    pool7MissStreak = pool7Hit ? 0 : pool7MissStreak + 1;
+    rows.push({
+      date: row.date,
+      issue: row.issue,
+      dan: prediction.dan,
+      pool7: prediction.pool7.join(""),
+      shapePlay: prediction.shapePlay,
+      draw: row.draw,
+      shape,
+      danHit,
+      pool7Hit,
+      pool7Group3Covered,
+      shapeHit,
+      danMissStreak,
+      pool7MissStreak,
+      phase: "locked",
+    });
+  }
+  return { rows, danMissStreak, pool7MissStreak };
+}
+
+async function fetchOfficialCurrent() {
   const url =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=2009-01-01&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=5000&systemType=PC";
+    `?name=3d&dayStart=2013-01-01&dayEnd=${shanghaiDate()}` +
+    "&pageNo=1&pageSize=10000&systemType=PC";
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
       Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
-      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/6.0)",
+      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/full-history)",
     },
   });
-  if (!response.ok) throw new Error(`官方数据请求失败：HTTP ${response.status}`);
+  if (!response.ok) throw new Error(`official-data-${response.status}`);
   const payload = await response.json();
-  const draws = (payload.result ?? [])
-    .map((item) => ({
-      date: item.date.slice(0, 10),
-      issue: String(item.code),
-      digits: item.red.split(",").map(Number),
-      draw: item.red.replaceAll(",", ""),
-    }))
-    .filter(
-      (item) =>
-        /^\d{4}-\d{2}-\d{2}$/.test(item.date) &&
-        /^\d{7}$/.test(item.issue) &&
-        item.digits.length === 3 &&
-        item.digits.every((digit) => Number.isInteger(digit) && digit >= 0 && digit <= 9),
-    )
-    .sort((left, right) => left.date.localeCompare(right.date));
-  if (draws.length < 120) throw new Error(`有效历史数据不足：${draws.length}期`);
-  return draws;
+  return (payload.result ?? []).map((item) => ({
+    date: item.date.slice(0, 10),
+    issue: String(item.code),
+    digits: item.red.split(",").map(Number),
+    draw: item.red.replaceAll(",", ""),
+  }));
+}
+
+async function loadDraws() {
+  const snapshot = JSON.parse(await readFile(FULL_HISTORY_PATH, "utf8"));
+  const byIssue = new Map(
+    snapshot.rows.map((row) => [
+      row.issue,
+      {
+        date: row.date,
+        issue: row.issue,
+        digits: row.digits,
+        draw: row.draw,
+      },
+    ]),
+  );
+  try {
+    for (const row of await fetchOfficialCurrent()) byIssue.set(row.issue, row);
+  } catch (error) {
+    console.warn(`Official refresh unavailable; using verified snapshot: ${error.message}`);
+  }
+  return {
+    canonicalSha256: snapshot.canonicalSha256,
+    draws: [...byIssue.values()].sort((left, right) =>
+      left.issue.localeCompare(right.issue),
+    ),
+  };
+}
+
+async function copyAudit(file, outputName = file) {
+  await copyFile(
+    path.join(root, "scripts", "results", file),
+    path.join(root, "pages", "audit", outputName),
+  );
+  await copyFile(
+    path.join(root, "pages", "audit", outputName),
+    path.join(root, "public", "audit", outputName),
+  );
 }
 
 async function main() {
-  let draws;
-  try {
-    draws = await fetchDraws();
-  } catch (error) {
-    const fallbackPath = path.join(root, "pages", "data.json");
-    const existing = JSON.parse(await readFile(fallbackPath, "utf8"));
-    if (!existing?.recommendation || !Array.isArray(existing?.history)) throw error;
-    console.warn(`官方数据暂不可用，保留已核验快照：${error.message}`);
-    return;
-  }
-
-  const rolling = rollingReplay(draws, config.simulationStart, null, config);
-  const group3Track = runGroup3Knn(
+  const { draws, canonicalSha256 } = await loadDraws();
+  const rolling = rollingReplay(draws, config.simulationStart, config);
+  const group3Track = runGroup3Online(
     buildGroup3Examples(draws),
     group3Config,
-    config.simulationStart,
+    group3Config.onlineStart,
   );
   const group3ByIssue = new Map(
     group3Track.rows.map((row) => [row.issue, row]),
@@ -241,17 +259,16 @@ async function main() {
   let group3MissStreak = 0;
   const history = rolling.rows.map((row) => {
     const group3 = group3ByIssue.get(row.issue);
-    if (!group3) throw new Error(`group3-row-missing:${row.issue}`);
-    const shapeEvaluated = group3.level === "high";
-    const shapeHit = shapeEvaluated && group3.group3;
+    const shapeEvaluated = group3?.level === "high";
+    const shapeHit = Boolean(shapeEvaluated && group3?.group3);
     if (shapeEvaluated) {
       group3MissStreak = shapeHit ? 0 : group3MissStreak + 1;
     }
     return {
       ...row,
-      shapePlay: shapeEvaluated ? "推荐组三" : "不推荐组三",
-      group3Probability: group3.probability,
-      group3Level: group3.level,
+      shapePlay: shapeEvaluated ? "推荐组三" : "暂不推荐组三",
+      group3Probability: group3?.probability ?? 0.27,
+      group3Level: group3?.level ?? "middle",
       shapeEvaluated,
       shapeHit,
       shapeMissStreak: group3MissStreak,
@@ -277,26 +294,30 @@ async function main() {
     pool56Config.pool5.methods,
     5,
   );
-  const upcomingGroup3 = forecastNextGroup3Knn(draws, group3Config);
-  const v5Track = legacyReplay(
-    draws,
-    v5Config.backfitStart,
-    null,
-    "locked",
-    v5Config,
-  );
+  const upcomingGroup3 = forecastNextGroup3(draws, group3Config);
+  const v5Track = legacyReplay(draws, v5Config);
   const upcomingV5 = recommendV5(
     draws,
     v5Track.danMissStreak,
     v5Track.pool7MissStreak,
     v5Config,
   );
+  const generatedAt = new Date().toISOString();
   const payload = {
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
-    formulaVersion: ROLLING_VERSION,
-    trainingMode: "expanding-window",
+    formulaVersion: config.version,
+    trainingMode: "full-history-expanding-replay",
     trainingUpdatedThrough: latest.date,
+    trainingDataStart: draws[0].date,
+    forwardStartIssue: config.forwardStartIssue,
+    evaluationNotice:
+      "全量结果参与了模型选择；以下为训练回放，不是独立盲测。真实前瞻从下一期开奖开始另计。",
+    dataIntegrity: {
+      periods: draws.length,
+      canonicalSha256,
+      report: "./audit/full-history-integrity.json",
+    },
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
       basedOnIssue: latest.issue,
@@ -306,7 +327,7 @@ async function main() {
       pool6: upcomingPool6.join(""),
       pool5: upcomingPool5.join(""),
       shapePlay:
-        upcomingGroup3.level === "high" ? "推荐组三" : "不推荐组三",
+        upcomingGroup3.level === "high" ? "推荐组三" : "暂不推荐组三",
       group3Probability: upcomingGroup3.probability,
       group3Level: upcomingGroup3.level,
     },
@@ -324,7 +345,7 @@ async function main() {
     },
   };
   const v5Payload = {
-    generatedAt: payload.generatedAt,
+    generatedAt,
     sourceUpdatedThrough: payload.sourceUpdatedThrough,
     formulaVersion: v5Config.version,
     recommendation: {
@@ -348,63 +369,41 @@ async function main() {
   await mkdir(path.join(root, "public", "audit"), { recursive: true });
   await writeFile(
     path.join(root, "pages", "data.json"),
-    `${JSON.stringify(payload, null, 2)}\n`,
+    `${JSON.stringify(payload)}\n`,
     "utf8",
   );
   await writeFile(
     path.join(root, "pages", "v5-data.json"),
-    `${JSON.stringify(v5Payload, null, 2)}\n`,
+    `${JSON.stringify(v5Payload)}\n`,
     "utf8",
   );
   await writeFile(
     path.join(root, "public", "v5-data.json"),
-    `${JSON.stringify(v5Payload, null, 2)}\n`,
+    `${JSON.stringify(v5Payload)}\n`,
     "utf8",
   );
-  await copyFile(
-    path.join(root, "scripts", "results", "v7-robust-training.json"),
-    path.join(root, "pages", "audit", "v7-robust-training.json"),
-  );
-  await copyFile(
-    path.join(root, "lib", "v7-robust-config.json"),
-    path.join(root, "pages", "audit", "v7-locked-config.json"),
-  );
-  await copyFile(
-    path.join(root, "scripts", "results", "group3-knn-search.json"),
-    path.join(root, "pages", "audit", "group3-knn-search.json"),
-  );
-  await copyFile(
-    path.join(root, "scripts", "results", "pool56-robust-search.json"),
-    path.join(root, "pages", "audit", "pool56-robust-search.json"),
-  );
-  await copyFile(
-    path.join(root, "scripts", "results", "pool56-untouched-test.json"),
-    path.join(root, "pages", "audit", "pool56-untouched-test.json"),
-  );
-  await copyFile(
-    path.join(root, "lib", "group3-online-config.json"),
-    path.join(root, "pages", "audit", "group3-online-config.json"),
-  );
-  await copyFile(
-    path.join(root, "lib", "pool56-config.json"),
-    path.join(root, "pages", "audit", "pool56-config.json"),
-  );
-  for (const file of [
-    "v7-robust-training.json",
-    "v7-locked-config.json",
-    "group3-knn-search.json",
-    "pool56-robust-search.json",
-    "pool56-untouched-test.json",
-    "group3-online-config.json",
-    "pool56-config.json",
+  for (const [source, output] of [
+    ["full-history-integrity.json", "full-history-integrity.json"],
+    ["full-history-training.json", "full-history-training.json"],
+  ]) {
+    await copyAudit(source, output);
+  }
+  for (const [source, output] of [
+    ["v7-robust-config.json", "v7-locked-config.json"],
+    ["pool56-config.json", "pool56-config.json"],
+    ["group3-online-config.json", "group3-online-config.json"],
   ]) {
     await copyFile(
-      path.join(root, "pages", "audit", file),
-      path.join(root, "public", "audit", file),
+      path.join(root, "lib", source),
+      path.join(root, "pages", "audit", output),
+    );
+    await copyFile(
+      path.join(root, "pages", "audit", output),
+      path.join(root, "public", "audit", output),
     );
   }
   console.log(
-    `已生成V7：${latest.issue}期后 胆${upcoming.dan} / 5码${upcomingPool5.join("")} / 6码${upcomingPool6.join("")} / 7码${upcoming.pool7.join("")} / ${upcomingGroup3.level === "high" ? "推荐组三" : "不推荐组三"} ${(upcomingGroup3.probability * 100).toFixed(1)}%`,
+    `Generated ${config.version}: ${latest.issue} -> dan ${upcoming.dan}, pool5 ${upcomingPool5.join("")}, pool6 ${upcomingPool6.join("")}, pool7 ${upcoming.pool7.join("")}, group3 ${(upcomingGroup3.probability * 100).toFixed(1)}%`,
   );
 }
 

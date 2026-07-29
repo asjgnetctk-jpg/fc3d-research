@@ -1,0 +1,330 @@
+{
+  "generatedAt": "2026-07-29T06:56:11.727Z",
+  "passed": true,
+  "range": {
+    "firstIssue": "2004001",
+    "firstDate": "2004-10-18",
+    "lastIssue": "2026199",
+    "lastDate": "2026-07-28",
+    "count": 7706
+  },
+  "sources": {
+    "cwl": {
+      "url": "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=3d&dayStart=2004-01-01&dayEnd=2099-12-31&pageNo=1&pageSize=10000&systemType=PC",
+      "integrity": {
+        "count": 4704,
+        "first": {
+          "issue": "2013002",
+          "date": "2013-01-02",
+          "draw": "670",
+          "digits": [
+            6,
+            7,
+            0
+          ]
+        },
+        "last": {
+          "issue": "2026199",
+          "date": "2026-07-28",
+          "draw": "591",
+          "digits": [
+            5,
+            9,
+            1
+          ]
+        },
+        "duplicateIssues": [],
+        "duplicateDates": [],
+        "sha256": "f1324d9ebbc06a3596afdeb80ed4a858baa2bcdac2a7414878146c71afd8f00e"
+      }
+    },
+    "jiangsuOfficialArchive": {
+      "url": "https://www.jslottery.com/winning_history_a?locale=zh-CN&lottery_type_id=9",
+      "cached": true,
+      "indexCount": 2941,
+      "excludedIndexEntries": [
+        {
+          "issue": "2004244",
+          "id": 2657
+        }
+      ],
+      "datesFromSecondary": 2,
+      "integrity": {
+        "count": 2940,
+        "first": {
+          "issue": "2004001",
+          "date": "2004-10-18",
+          "draw": "070",
+          "digits": [
+            0,
+            7,
+            0
+          ]
+        },
+        "last": {
+          "issue": "2013001",
+          "date": "2013-01-01",
+          "draw": "203",
+          "digits": [
+            2,
+            0,
+            3
+          ]
+        },
+        "duplicateIssues": [],
+        "duplicateDates": [
+          "2005-10-13"
+        ],
+        "sha256": "914fd0db076e0f804bfe8fcc74587116a7a386bebfb74e95ef1ea7111a4484c1"
+      }
+    },
+    "jiangsuOfficialSupplement": {
+      "cached": false,
+      "requestedIssues": 62,
+      "integrity": {
+        "count": 62,
+        "first": {
+          "issue": "2013003",
+          "date": "2013-01-03",
+          "draw": "166",
+          "digits": [
+            1,
+            6,
+            6
+          ]
+        },
+        "last": {
+          "issue": "2013168",
+          "date": "2013-06-24",
+          "draw": "556",
+          "digits": [
+            5,
+            5,
+            6
+          ]
+        },
+        "duplicateIssues": [],
+        "duplicateDates": [],
+        "sha256": "3e0e14b918b4f2d812bb42519208c8cd3dd704658afc5ed0e35e476eac8e2000"
+      }
+    },
+    "secondaryMirror": {
+      "url": "https://datachart.500star.com/sd/history/inc/history.php?start=2004001&end=2026199",
+      "integrity": {
+        "count": 7706,
+        "first": {
+          "issue": "2004001",
+          "date": "2004-10-18",
+          "draw": "070",
+          "digits": [
+            0,
+            7,
+            0
+          ]
+        },
+        "last": {
+          "issue": "2026199",
+          "date": "2026-07-28",
+          "draw": "591",
+          "digits": [
+            5,
+            9,
+            1
+          ]
+        },
+        "duplicateIssues": [],
+        "duplicateDates": [
+          "2005-05-30",
+          "2005-05-15",
+          "2006-07-21"
+        ],
+        "sha256": "a63b194b882fcab178dce610b15e86995bc9c2e6994cb27322bf548a4a45161c"
+      }
+    }
+  },
+  "checks": {
+    "cwlVsSecondaryDraws": {
+      "checked": 4704,
+      "missing": [],
+      "conflicts": [],
+      "passed": true
+    },
+    "jiangsuVsSecondaryDraws": {
+      "checked": 2940,
+      "missing": [],
+      "conflicts": [],
+      "passed": true
+    },
+    "jiangsuVsSecondaryDateAudit": {
+      "checked": 2940,
+      "missing": [],
+      "conflicts": [
+        {
+          "issue": "2005001",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2004-01-01"
+          },
+          "right": {
+            "date": "2005-01-01"
+          }
+        },
+        {
+          "issue": "2005113",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2005-04-30"
+          },
+          "right": {
+            "date": "2005-05-30"
+          }
+        },
+        {
+          "issue": "2005126",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2005-05-13"
+          },
+          "right": {
+            "date": "2005-05-14"
+          }
+        },
+        {
+          "issue": "2005127",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2005-05-14"
+          },
+          "right": {
+            "date": "2005-05-15"
+          }
+        },
+        {
+          "issue": "2005244",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2005-10-13"
+          },
+          "right": {
+            "date": "2005-09-08"
+          }
+        },
+        {
+          "issue": "2006193",
+          "fields": [
+            "date"
+          ],
+          "left": {
+            "date": "2006-07-20"
+          },
+          "right": {
+            "date": "2006-07-21"
+          }
+        }
+      ],
+      "passed": false
+    },
+    "jiangsuSupplementVsSecondaryDraws": {
+      "checked": 62,
+      "missing": [],
+      "conflicts": [],
+      "passed": true
+    },
+    "officialCoverage": {
+      "checked": 7706,
+      "missing": [],
+      "passed": true
+    },
+    "issueSequence": {
+      "gaps": [],
+      "passed": true
+    },
+    "officialFirstIssue2004001": {
+      "passed": true,
+      "expected": {
+        "issue": "2004001",
+        "date": "2004-10-18",
+        "draw": "070"
+      },
+      "actual": {
+        "issue": "2004001",
+        "date": "2004-10-18",
+        "draw": "070",
+        "digits": [
+          0,
+          7,
+          0
+        ]
+      }
+    }
+  },
+  "dateOverrides": {
+    "2005001": {
+      "date": "2005-01-01",
+      "source": "500 mirror and chronological sequence",
+      "reason": "Jiangsu detail page contains a wrong year in one date field"
+    },
+    "2005113": {
+      "date": "2005-04-30",
+      "source": "Jiangsu official archive",
+      "reason": "500 mirror contains a one-month typo"
+    },
+    "2005126": {
+      "date": "2005-05-13",
+      "source": "Jiangsu official archive",
+      "reason": "500 mirror date is shifted by one day"
+    },
+    "2005127": {
+      "date": "2005-05-14",
+      "source": "Jiangsu official archive",
+      "reason": "500 mirror date is shifted by one day"
+    },
+    "2005244": {
+      "date": "2005-09-08",
+      "source": "500 mirror and chronological sequence",
+      "reason": "Jiangsu parser picked a later notice date instead of draw date"
+    },
+    "2006193": {
+      "date": "2006-07-20",
+      "source": "Jiangsu official archive and chronological sequence",
+      "reason": "500 mirror duplicates the following issue date"
+    }
+  },
+  "canonicalIntegrity": {
+    "count": 7706,
+    "first": {
+      "issue": "2004001",
+      "date": "2004-10-18",
+      "draw": "070",
+      "digits": [
+        0,
+        7,
+        0
+      ]
+    },
+    "last": {
+      "issue": "2026199",
+      "date": "2026-07-28",
+      "draw": "591",
+      "digits": [
+        5,
+        9,
+        1
+      ]
+    },
+    "duplicateIssues": [],
+    "duplicateDates": [],
+    "sha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0"
+  },
+  "canonicalSha256": "835beb9f98dd2fb295f9f8ad4443756119943d75f77be9e3561a9286418523e0"
+}
