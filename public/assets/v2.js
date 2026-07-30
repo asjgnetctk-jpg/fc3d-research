@@ -104,7 +104,7 @@ function renderCurrent() {
       <div class="single-dan">
         <p>V2独胆推荐</p>
         <strong>${recommendation.dan}</strong>
-        <small>一年训练内最长连断5期；未来不作同等保证</small>
+        <small>历史训练内最长连断5期；未来不作同等保证</small>
       </div>`;
   } else {
     const pool = recommendation[activePlay];

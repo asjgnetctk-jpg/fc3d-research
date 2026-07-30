@@ -1,6 +1,6 @@
 {
   "version": "V2-one-year-streak-min",
-  "trainedAt": "2026-07-30T05:39:07.971Z",
+  "trainedAt": "2026-07-30T07:04:00.333Z",
   "trainingMode": "one-year-in-sample-streak-minimization",
   "trainingStart": "2025-07-29",
   "trainingEnd": "2026-07-29",
@@ -11,15 +11,37 @@
   "futureGuarantee": false,
   "danHardTrainingTarget": 5,
   "search": {
-    "seed": 2026073002,
-    "methodsPerBucket": 3500,
+    "seed": 2026073027,
+    "methodsPerBucket": 5000,
     "methodBuckets": 60,
-    "passes": 3
+    "passes": 5,
+    "candidateSeeds": [
+      2026073011,
+      2026073027,
+      2026073059
+    ],
+    "selectedSeedByPlay": {
+      "dan": "2026073027",
+      "pool5": "2026073059",
+      "pool6": "2026073059",
+      "pool7": "2026073059"
+    },
+    "selectionPriority": "lowest maxMiss, then highest hits"
   },
   "plays": {
     "dan": {
       "methods": [
         {
+          "id": "v2-dan-0-0-3271",
+          "rank": 4,
+          "weights": {
+            "position1_20": -3,
+            "presence45": -1,
+            "position2_10": 4,
+            "position1_10": 1
+          }
+        },
+        {
           "id": "v2-baseline-dan",
           "rank": 4,
           "weights": {
@@ -38,91 +60,75 @@
           }
         },
         {
-          "id": "v2-baseline-dan",
-          "rank": 4,
+          "id": "v2-dan-0-3-2071",
+          "rank": 3,
           "weights": {
-            "presence7": -2,
-            "occurrence10": 1,
-            "gap": -1
+            "presence30": -1,
+            "occurrence5": 2,
+            "occurrence45": 3,
+            "transition60": -1
           }
         },
         {
-          "id": "v2-dan-0-3-362",
-          "rank": 6,
+          "id": "v2-dan-1-4-2600",
+          "rank": 3,
           "weights": {
-            "position1_10": -2,
-            "position3_60": 4
+            "transition120": -2,
+            "presence3": 2,
+            "occurrence90": 1,
+            "last2": 3,
+            "occurrence7": 1
           }
         },
         {
-          "id": "v2-dan-hard-0-4-2296",
-          "rank": 10,
-          "weights": {
-            "position2_10": 1,
-            "position1_30": -1,
-            "digitParity": 3,
-            "occurrence90": -3,
-            "position1_60": 3
-          }
-        },
-        {
-          "id": "v2-dan-hard-1-5-7098",
-          "rank": 8,
-          "weights": {
-            "presence45": -2,
-            "position1_10": -4,
-            "occurrence45": -2,
-            "position3_60": 1,
-            "position3_10": 4
-          }
-        },
-        {
-          "id": "v2-dan-1-6-141",
-          "rank": 4,
-          "weights": {
-            "presence10": 4,
-            "last3": 1,
-            "last1": 2,
-            "occurrence60": 1,
-            "occurrence7": 1,
-            "position1_30": 1
-          }
-        },
-        {
-          "id": "v2-dan-0-7-669",
-          "rank": 6,
-          "weights": {
-            "gap": -2,
-            "position2_10": 1,
-            "transition60": -4,
-            "occurrence30": 2,
-            "presence5": 3,
-            "presence90": 4
-          }
-        },
-        {
-          "id": "v2-dan-0-8-22",
+          "id": "v2-dan-hard-0-5-43040",
           "rank": 5,
           "weights": {
-            "occurrence20": -1,
-            "position3_30": -3,
-            "occurrence10": 3,
-            "presence3": 4,
-            "occurrence60": -1
+            "position2_60": 3,
+            "presence90": 2
           }
         },
         {
-          "id": "v2-dan-0-9-88",
-          "rank": 9,
+          "id": "v2-dan-1-6-128",
+          "rank": 1,
           "weights": {
-            "position2_10": -3,
-            "position1_60": 3,
-            "presence30": -2,
-            "presence45": -2,
-            "presence14": -4,
-            "occurrence5": 2,
-            "presence60": -3,
-            "presence3": -2
+            "gap": 1,
+            "presence10": -3,
+            "occurrence14": 4,
+            "occurrence3": -1
+          }
+        },
+        {
+          "id": "v2-dan-0-7-22",
+          "rank": 3,
+          "weights": {
+            "last1": 2,
+            "position1_20": 4,
+            "presence120": -3,
+            "occurrence7": 1,
+            "position1_30": -3,
+            "position3_30": 1
+          }
+        },
+        {
+          "id": "v2-dan-0-8-59",
+          "rank": 4,
+          "weights": {
+            "position2_10": -1,
+            "last2": 3,
+            "position1_20": 2,
+            "occurrence120": -4,
+            "presence30": 4,
+            "presence45": 3,
+            "presence3": -1
+          }
+        },
+        {
+          "id": "v2-dan-0-9-65",
+          "rank": 3,
+          "weights": {
+            "position2_60": -2,
+            "presence5": 1
           }
         },
         {
@@ -580,20 +586,292 @@
     "pool5": {
       "methods": [
         {
-          "id": "v2-pool5-0-0-34",
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-2-2-2877",
+          "rank": 9,
+          "weights": {
+            "occurrence45": 4,
+            "position2_30": -1,
+            "presence45": 5,
+            "position3_20": -4,
+            "transition60": -4,
+            "occurrence60": 4
+          }
+        },
+        {
+          "id": "v2-pool5-1-3-464",
           "rank": 2,
           "weights": {
+            "occurrence5": -4,
+            "position1_10": -2,
+            "transition120": 4,
+            "presence30": 3,
+            "position3_30": 2
+          }
+        },
+        {
+          "id": "v2-pool5-0-4-135",
+          "rank": 9,
+          "weights": {
+            "position2_60": -1,
+            "digitCenter": 1,
+            "position3_60": 2,
+            "gap": -4
+          }
+        },
+        {
+          "id": "v2-pool5-2-5-25",
+          "rank": 6,
+          "weights": {
+            "position1_20": 1,
+            "occurrence5": 1
+          }
+        },
+        {
+          "id": "v2-pool5-1-6-3181",
+          "rank": 10,
+          "weights": {
+            "occurrence45": -3,
+            "position2_10": 4,
+            "position3_10": 2,
+            "position2_30": -1,
+            "presence60": 4,
+            "last1": 3,
+            "position1_30": 3
+          }
+        },
+        {
+          "id": "v2-pool5-2-7-4870",
+          "rank": 8,
+          "weights": {
+            "position2_20": 4,
+            "position1_10": 2
+          }
+        },
+        {
+          "id": "v2-pool5-2-8-3312",
+          "rank": 1,
+          "weights": {
+            "digitCenter": 3,
+            "position2_10": 3,
+            "occurrence20": 3,
+            "position3_10": 1
+          }
+        },
+        {
+          "id": "v2-pool5-2-9-2277",
+          "rank": 7,
+          "weights": {
+            "occurrence20": 3,
+            "transition30": -2,
+            "occurrence45": 3
+          }
+        },
+        {
+          "id": "v2-pool5-1-10-820",
+          "rank": 10,
+          "weights": {
+            "presence30": 4,
+            "position1_10": -4,
+            "presence10": -1
+          }
+        },
+        {
+          "id": "v2-pool5-3-11-362",
+          "rank": 9,
+          "weights": {
+            "last2": 3,
+            "position2_20": -3,
+            "digitParity": -2,
+            "digitCenter": -2,
+            "presence90": 3,
+            "last1": -3,
+            "position3_30": 1,
+            "presence120": -4
+          }
+        },
+        {
+          "id": "v2-pool5-1-12-54",
+          "rank": 7,
+          "weights": {
+            "last1": 4,
+            "position1_60": 4,
+            "presence7": -1,
+            "presence60": -1,
+            "last2": 3,
+            "presence120": 1,
+            "occurrence5": -3
+          }
+        },
+        {
+          "id": "v2-pool5-0-13-1689",
+          "rank": 1,
+          "weights": {
+            "position3_10": 4,
+            "presence45": -3,
+            "occurrence20": 1
+          }
+        },
+        {
+          "id": "v2-pool5-2-14-0",
+          "rank": 9,
+          "weights": {
+            "presence45": 2,
+            "occurrence90": -3,
+            "position3_20": -3
+          }
+        },
+        {
+          "id": "v2-pool5-0-15-449",
+          "rank": 3,
+          "weights": {
+            "presence10": -3,
+            "gap": 4,
+            "transition60": 3
+          }
+        },
+        {
+          "id": "v2-pool5-0-16-2213",
+          "rank": 3,
+          "weights": {
+            "presence3": -4,
+            "occurrence30": 4,
+            "presence20": -2,
+            "presence7": 2,
+            "last1": 1,
+            "occurrence60": -2,
+            "occurrence90": 2
+          }
+        },
+        {
+          "id": "v2-pool5-1-17-326",
+          "rank": 10,
+          "weights": {
+            "position2_10": -4,
+            "occurrence5": -2,
+            "occurrence14": -3
+          }
+        },
+        {
+          "id": "v2-pool5-1-18-15",
+          "rank": 8,
+          "weights": {
+            "last2": 3,
+            "occurrence30": 1,
+            "position3_30": 4,
+            "position2_10": 3,
+            "occurrence7": -4,
+            "presence90": 4,
+            "position3_60": 2
+          }
+        },
+        {
+          "id": "v2-pool5-0-19-1243",
+          "rank": 8,
+          "weights": {
+            "gap": 4,
+            "occurrence10": -2,
+            "last1": 3
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-22-77",
+          "rank": 9,
+          "weights": {
+            "last2": -3,
+            "occurrence120": -2,
+            "occurrence10": 2,
+            "presence14": -2,
+            "presence30": -1
+          }
+        },
+        {
+          "id": "v2-pool5-0-23-865",
+          "rank": 6,
+          "weights": {
+            "position3_30": -2,
+            "occurrence5": -1,
+            "presence20": 2,
             "transition30": 3,
+            "occurrence60": 4
+          }
+        },
+        {
+          "id": "v2-pool5-0-24-584",
+          "rank": 1,
+          "weights": {
+            "occurrence3": 1,
+            "position3_20": -5,
+            "last3": 3,
+            "position2_60": 3,
+            "position3_10": -3,
+            "gap": 1,
+            "transition120": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-25-378",
+          "rank": 1,
+          "weights": {
+            "occurrence10": -1,
+            "occurrence20": 1,
+            "position1_20": 2,
+            "position1_10": -2
+          }
+        },
+        {
+          "id": "v2-pool5-0-26-1701",
+          "rank": 4,
+          "weights": {
+            "position2_30": -3,
+            "position1_20": 2,
+            "position2_60": -2,
+            "position2_20": 4,
             "presence120": 1
           }
         },
         {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
+          "id": "v2-pool5-0-27-8",
+          "rank": 5,
           "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
+            "last3": -1,
+            "occurrence120": -5,
+            "position3_60": -3
           }
         },
         {
@@ -606,6 +884,15 @@
           }
         },
         {
+          "id": "v2-pool5-0-29-558",
+          "rank": 7,
+          "weights": {
+            "position3_30": -2,
+            "position3_10": -4,
+            "presence3": 3
+          }
+        },
+        {
           "id": "v2-baseline-pool5",
           "rank": 1,
           "weights": {
@@ -615,86 +902,32 @@
           }
         },
         {
-          "id": "v2-pool5-0-4-1970",
-          "rank": 4,
+          "id": "v2-pool5-0-31-14",
+          "rank": 7,
           "weights": {
-            "position3_10": -6,
-            "occurrence30": 4
+            "occurrence3": 1,
+            "occurrence5": -4,
+            "position1_20": 1,
+            "presence120": -3,
+            "position2_30": 6,
+            "position1_10": 2
           }
         },
         {
-          "id": "v2-pool5-2-5-511",
-          "rank": 10,
+          "id": "v2-baseline-pool5",
+          "rank": 1,
           "weights": {
-            "position1_60": 3,
-            "position2_60": -5,
-            "occurrence20": 3,
-            "occurrence45": -2,
-            "presence120": 3,
-            "position3_30": 2,
-            "occurrence10": 2
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
           }
         },
         {
-          "id": "v2-pool5-0-6-3444",
-          "rank": 2,
-          "weights": {
-            "last1": 4,
-            "presence90": 4,
-            "position1_10": 3,
-            "presence3": -3,
-            "occurrence5": -3,
-            "last3": 2,
-            "presence7": -3
-          }
-        },
-        {
-          "id": "v2-pool5-0-7-385",
-          "rank": 6,
-          "weights": {
-            "position1_10": 4,
-            "digitCenter": -2,
-            "position2_60": -3,
-            "gap": -4,
-            "occurrence120": 3
-          }
-        },
-        {
-          "id": "v2-pool5-1-8-1196",
+          "id": "v2-pool5-0-33-6",
           "rank": 8,
           "weights": {
-            "position3_20": 3,
-            "presence5": 4,
-            "presence20": -2,
-            "last2": 1,
-            "occurrence20": 2
-          }
-        },
-        {
-          "id": "v2-pool5-0-9-404",
-          "rank": 3,
-          "weights": {
-            "presence60": 3,
-            "position2_20": -1,
-            "presence45": 4,
-            "last2": 2,
-            "occurrence45": -4,
-            "last1": -3,
-            "occurrence5": -4
-          }
-        },
-        {
-          "id": "v2-pool5-1-10-3",
-          "rank": 10,
-          "weights": {
-            "position2_30": 1,
-            "last3": 4,
-            "last2": -1,
-            "position3_10": 2,
-            "position1_30": 3,
-            "occurrence3": 1,
-            "last1": -4,
-            "position2_60": -2
+            "position2_60": 2,
+            "occurrence30": 1
           }
         },
         {
@@ -707,284 +940,53 @@
           }
         },
         {
-          "id": "v2-pool5-1-12-1066",
-          "rank": 10,
+          "id": "v2-pool5-0-35-7",
+          "rank": 8,
           "weights": {
-            "gap": 3,
-            "occurrence10": 2,
-            "transition120": 2
+            "presence3": -4,
+            "occurrence30": 3,
+            "position2_30": 2,
+            "position3_30": 3
           }
         },
         {
-          "id": "v2-pool5-0-13-564",
-          "rank": 9,
+          "id": "v2-baseline-pool5",
+          "rank": 1,
           "weights": {
-            "position3_60": 3,
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-38-26",
+          "rank": 5,
+          "weights": {
+            "last1": 1,
+            "transition30": 1,
+            "occurrence60": -2
+          }
+        },
+        {
+          "id": "v2-pool5-0-39-35",
+          "rank": 4,
+          "weights": {
+            "occurrence10": 1,
             "position1_30": -3,
-            "presence90": -4,
-            "position1_20": 4,
-            "last2": -4
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-15-212",
-          "rank": 3,
-          "weights": {
-            "occurrence90": -3,
-            "position2_60": -2,
-            "last3": -6,
-            "position2_30": 2,
-            "occurrence120": -2
-          }
-        },
-        {
-          "id": "v2-pool5-1-16-11",
-          "rank": 4,
-          "weights": {
-            "presence20": 3,
-            "presence3": -1,
-            "presence14": 1,
-            "transition60": 2,
-            "presence10": 4,
-            "position3_60": -4
-          }
-        },
-        {
-          "id": "v2-pool5-0-17-1728",
-          "rank": 4,
-          "weights": {
-            "occurrence60": 1,
-            "position3_10": -2
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-19-2141",
-          "rank": 5,
-          "weights": {
-            "presence7": -2,
-            "position1_60": -4,
-            "occurrence20": 1,
-            "presence45": 4
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-22-93",
-          "rank": 7,
-          "weights": {
-            "position2_10": 3,
-            "presence3": 1,
-            "presence7": -3,
-            "occurrence5": -8,
-            "digitParity": -2,
-            "transition60": 2,
-            "position2_60": -2
-          }
-        },
-        {
-          "id": "v2-pool5-0-23-565",
-          "rank": 5,
-          "weights": {
-            "transition30": 3,
-            "occurrence120": 1,
-            "presence20": 3,
-            "presence60": 4
-          }
-        },
-        {
-          "id": "v2-pool5-0-24-69",
-          "rank": 6,
-          "weights": {
-            "position2_30": 2,
-            "position3_20": -8,
-            "presence14": 3,
-            "occurrence3": -1
-          }
-        },
-        {
-          "id": "v2-pool5-0-25-2097",
-          "rank": 5,
-          "weights": {
-            "occurrence30": 1,
-            "last3": -2,
-            "position2_60": -1,
-            "presence7": -3,
-            "digitParity": 4,
-            "position2_20": 2,
-            "position3_10": 2
-          }
-        },
-        {
-          "id": "v2-pool5-0-26-562",
-          "rank": 2,
-          "weights": {
-            "occurrence20": 1,
-            "last3": 4,
-            "position1_10": 1,
-            "position2_30": -3,
-            "occurrence5": -2
-          }
-        },
-        {
-          "id": "v2-pool5-0-27-2",
-          "rank": 3,
-          "weights": {
-            "digitCenter": 3,
-            "last2": 4,
-            "occurrence7": -4
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-29-7",
-          "rank": 5,
-          "weights": {
-            "presence14": -3,
-            "occurrence20": -2,
-            "occurrence3": 3,
-            "position1_10": -3
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-31-11",
-          "rank": 7,
-          "weights": {
-            "position3_10": -3,
-            "occurrence10": -1
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-33-26",
-          "rank": 3,
-          "weights": {
-            "occurrence14": 1,
-            "transition60": -4
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-35-1",
-          "rank": 2,
-          "weights": {
+            "presence3": -3,
             "presence45": -2,
-            "presence14": -1,
-            "position3_60": -2,
-            "presence3": 2,
-            "presence7": 1,
-            "last3": 4,
-            "position3_20": 4
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool5",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool5-0-38-8",
-          "rank": 4,
-          "weights": {
-            "position3_30": -4,
-            "presence20": 1,
-            "last1": 3,
-            "occurrence5": 6,
-            "position1_10": -1,
-            "position1_60": 1,
-            "presence120": -3
-          }
-        },
-        {
-          "id": "v2-pool5-0-39-6",
-          "rank": 10,
-          "weights": {
-            "transition60": -3,
-            "last3": -2,
-            "gap": -4,
-            "last1": 4,
-            "occurrence20": -2,
-            "digitParity": -4
+            "occurrence30": 3,
+            "position2_60": 3,
+            "occurrence5": 2
           }
         },
         {
@@ -1181,195 +1183,149 @@
           }
         },
         {
-          "id": "v2-pool6-0-1-1520",
+          "id": "v2-baseline-pool6",
           "rank": 1,
           "weights": {
-            "presence60": 2,
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-1-4-4036",
+          "rank": 3,
+          "weights": {
+            "digitCenter": 4,
+            "occurrence90": 4,
+            "occurrence7": 4,
+            "presence20": -1,
+            "occurrence3": -3
+          }
+        },
+        {
+          "id": "v2-pool6-3-5-2596",
+          "rank": 7,
+          "weights": {
+            "transition60": 4,
+            "occurrence120": 2,
+            "position1_20": 1,
+            "occurrence5": -1,
+            "position3_10": -2
+          }
+        },
+        {
+          "id": "v2-pool6-1-6-561",
+          "rank": 6,
+          "weights": {
+            "transition120": -3,
+            "position1_10": 3,
+            "occurrence14": 4,
+            "digitCenter": -1
+          }
+        },
+        {
+          "id": "v2-pool6-4-7-893",
+          "rank": 3,
+          "weights": {
+            "presence20": -4,
+            "digitParity": 3,
+            "occurrence60": -1
+          }
+        },
+        {
+          "id": "v2-pool6-0-8-1877",
+          "rank": 4,
+          "weights": {
+            "presence30": 2,
+            "position3_20": -2,
+            "presence14": -1,
             "position1_30": 1
           }
         },
         {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
+          "id": "v2-pool6-1-9-10",
+          "rank": 2,
           "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
+            "occurrence30": -7,
+            "position3_10": -4,
+            "occurrence3": -3,
+            "presence10": 4,
+            "presence90": 4,
+            "position3_20": 2,
+            "occurrence5": 4
           }
         },
         {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
+          "id": "v2-pool6-2-10-35",
+          "rank": 7,
           "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool6-0-5-1371",
-          "rank": 5,
-          "weights": {
-            "last3": 2,
-            "digitParity": -4,
-            "presence20": 3
-          }
-        },
-        {
-          "id": "v2-pool6-hard-0-6-32349",
-          "rank": 5,
-          "weights": {
-            "presence120": -1,
-            "position3_60": -3,
-            "occurrence60": -3,
-            "presence10": 6,
+            "last1": 3,
+            "presence3": -1,
+            "position2_60": -3,
             "presence20": 2
           }
         },
         {
-          "id": "v2-pool6-0-7-2014",
-          "rank": 9,
-          "weights": {
-            "position1_60": 1,
-            "presence90": -3,
-            "last2": 2,
-            "position3_20": -3,
-            "digitCenter": 2,
-            "occurrence20": 4
-          }
-        },
-        {
-          "id": "v2-pool6-0-8-1637",
-          "rank": 4,
-          "weights": {
-            "presence14": 4,
-            "position1_30": -2,
-            "last2": -2,
-            "position3_30": 2,
-            "presence120": 2,
-            "position3_10": -1
-          }
-        },
-        {
-          "id": "v2-pool6-0-9-13",
-          "rank": 3,
-          "weights": {
-            "occurrence120": -3,
-            "occurrence30": 3,
-            "position2_30": -1,
-            "occurrence20": -1,
-            "position1_20": 1,
-            "presence5": -3
-          }
-        },
-        {
-          "id": "v2-pool6-0-10-2326",
-          "rank": 10,
-          "weights": {
-            "transition60": 2,
-            "last1": -1
-          }
-        },
-        {
-          "id": "v2-pool6-0-11-2197",
-          "rank": 6,
-          "weights": {
-            "presence90": 2,
-            "occurrence45": -1,
-            "digitCenter": -4,
-            "digitParity": 2,
-            "last2": 3,
-            "occurrence3": -4
-          }
-        },
-        {
-          "id": "v2-pool6-0-12-18",
+          "id": "v2-pool6-0-11-569",
           "rank": 7,
           "weights": {
-            "transition60": 1,
-            "presence3": -3,
-            "gap": 1,
-            "position1_20": 1,
-            "position1_60": 1
+            "presence120": -1,
+            "gap": -2,
+            "presence5": -1,
+            "occurrence90": 4
           }
         },
         {
-          "id": "v2-pool6-0-13-3004",
-          "rank": 1,
+          "id": "v2-pool6-0-12-34",
+          "rank": 2,
           "weights": {
-            "presence30": 2,
+            "position3_10": -1,
+            "position1_30": 4,
+            "position1_60": 3,
+            "transition120": 2,
+            "position1_10": -3
+          }
+        },
+        {
+          "id": "v2-pool6-0-13-3536",
+          "rank": 10,
+          "weights": {
+            "presence14": -1,
+            "position3_60": 2,
             "occurrence60": 2,
-            "position1_20": 1,
-            "occurrence10": -3,
-            "transition30": -1
+            "presence120": -1,
+            "transition60": -1,
+            "digitParity": -1
           }
         },
         {
-          "id": "v2-pool6-0-14-170",
-          "rank": 2,
+          "id": "v2-pool6-0-14-0",
+          "rank": 7,
           "weights": {
-            "position2_10": -2,
-            "presence5": 3
-          }
-        },
-        {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool6",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool6-0-18-15",
-          "rank": 8,
-          "weights": {
-            "position3_60": -2,
-            "transition30": 2,
-            "position2_20": -1,
-            "occurrence120": -1,
-            "occurrence60": 3
-          }
-        },
-        {
-          "id": "v2-pool6-0-19-43",
-          "rank": 9,
-          "weights": {
+            "presence5": 2,
+            "gap": -2,
+            "occurrence10": -2,
             "position1_30": -4,
-            "transition30": 2,
-            "position2_30": 3,
-            "presence60": 1,
-            "occurrence5": -3,
-            "position1_20": 2,
-            "occurrence20": 2
+            "occurrence3": 3,
+            "position2_20": -1
           }
         },
         {
@@ -1391,28 +1347,72 @@
           }
         },
         {
-          "id": "v2-pool6-0-22-27",
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-18-55",
+          "rank": 6,
+          "weights": {
+            "last1": -3,
+            "position2_20": -4,
+            "occurrence10": 3,
+            "transition30": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-19-4790",
+          "rank": 3,
+          "weights": {
+            "occurrence30": -4,
+            "position3_60": 5,
+            "occurrence60": -3,
+            "digitCenter": -2,
+            "presence3": 1,
+            "occurrence7": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-22-79",
           "rank": 8,
           "weights": {
-            "position1_30": 1,
-            "occurrence5": -4,
-            "presence3": 1,
-            "last3": -4,
-            "presence14": 2,
-            "presence20": -2,
-            "occurrence90": 1
+            "presence5": -4,
+            "gap": -1
           }
         },
         {
-          "id": "v2-pool6-0-23-320",
-          "rank": 2,
+          "id": "v2-pool6-0-23-41",
+          "rank": 3,
           "weights": {
-            "digitParity": -4,
-            "last3": 4,
-            "occurrence30": -4,
-            "position2_20": 4,
-            "digitCenter": -2,
-            "last2": -4
+            "last1": -1,
+            "presence120": 1,
+            "position3_10": -3,
+            "presence90": -2,
+            "occurrence7": -1,
+            "occurrence3": 4
           }
         },
         {
@@ -1753,101 +1753,92 @@
           }
         },
         {
-          "id": "v2-baseline-pool7",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-baseline-pool7",
-          "rank": 1,
-          "weights": {
-            "presence5": -1,
-            "presence7": 1,
-            "presence45": 1
-          }
-        },
-        {
-          "id": "v2-pool7-0-3-3084",
-          "rank": 6,
-          "weights": {
-            "occurrence5": 3,
-            "transition120": -3
-          }
-        },
-        {
-          "id": "v2-pool7-1-4-2857",
-          "rank": 2,
-          "weights": {
-            "presence10": 4,
-            "presence3": -1,
-            "presence7": -4,
-            "occurrence14": 1,
-            "position2_20": -1,
-            "transition120": 2,
-            "position2_30": -1
-          }
-        },
-        {
-          "id": "v2-pool7-hard-1-5-38432",
-          "rank": 3,
-          "weights": {
-            "position1_10": 4,
-            "position1_20": -2,
-            "transition120": -3,
-            "presence90": 4,
-            "position3_20": -1,
-            "position2_60": 3,
-            "position3_30": -3,
-            "presence20": 1
-          }
-        },
-        {
-          "id": "v2-pool7-0-6-62",
-          "rank": 4,
-          "weights": {
-            "position1_30": -1,
-            "presence30": -1,
-            "digitParity": -4,
-            "occurrence10": -4,
-            "presence14": 1,
-            "position2_10": -1
-          }
-        },
-        {
-          "id": "v2-pool7-2-7-33",
+          "id": "v2-pool7-0-1-897",
           "rank": 5,
           "weights": {
-            "presence30": -1,
-            "presence60": 1,
-            "position3_10": -3,
-            "occurrence20": -3,
-            "digitCenter": 4
+            "position1_10": -2,
+            "occurrence30": 1,
+            "position1_60": 3
           }
         },
         {
-          "id": "v2-pool7-1-8-73",
-          "rank": 9,
-          "weights": {
-            "position3_60": -2,
-            "occurrence120": -1,
-            "digitCenter": -4,
-            "position3_10": 3,
-            "last3": 4,
-            "position3_20": 3
-          }
-        },
-        {
-          "id": "v2-pool7-0-9-161",
+          "id": "v2-baseline-pool7",
           "rank": 1,
           "weights": {
-            "position2_20": -2,
-            "position1_60": -1,
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool7-0-3-2647",
+          "rank": 2,
+          "weights": {
+            "transition120": -4,
+            "occurrence30": 4,
+            "last1": 1,
+            "presence20": 4
+          }
+        },
+        {
+          "id": "v2-pool7-0-4-4206",
+          "rank": 4,
+          "weights": {
+            "last1": -2,
+            "occurrence14": -3
+          }
+        },
+        {
+          "id": "v2-pool7-hard-0-5-84851",
+          "rank": 10,
+          "weights": {
+            "occurrence5": -2,
+            "last3": 4,
+            "transition120": -1,
+            "occurrence30": 4,
+            "presence90": -1,
+            "position2_30": 4
+          }
+        },
+        {
+          "id": "v2-pool7-1-6-586",
+          "rank": 6,
+          "weights": {
             "digitParity": 1,
-            "presence45": 2,
+            "presence60": -4,
+            "occurrence120": 4,
+            "occurrence30": -1,
+            "occurrence3": -3,
+            "last1": 4,
+            "position3_30": 4
+          }
+        },
+        {
+          "id": "v2-pool7-0-7-1918",
+          "rank": 7,
+          "weights": {
+            "position1_10": -2,
+            "digitCenter": -2,
+            "position2_60": -3,
+            "presence30": -1,
+            "occurrence14": 4
+          }
+        },
+        {
+          "id": "v2-pool7-0-8-140",
+          "rank": 8,
+          "weights": {
+            "digitParity": -4,
+            "last2": -3,
+            "presence7": 2,
+            "presence120": -3
+          }
+        },
+        {
+          "id": "v2-pool7-0-9-1199",
+          "rank": 7,
+          "weights": {
+            "gap": 1,
             "position2_10": -4
           }
         },
@@ -1879,34 +1870,36 @@
           }
         },
         {
-          "id": "v2-pool7-0-13-3",
-          "rank": 8,
+          "id": "v2-pool7-0-13-0",
+          "rank": 1,
           "weights": {
-            "presence14": -2,
-            "position3_60": 4,
-            "position2_30": 3,
-            "transition30": 4
+            "position3_60": -2,
+            "occurrence5": 3,
+            "presence45": 3,
+            "presence30": 4,
+            "position1_20": -3
           }
         },
         {
-          "id": "v2-pool7-0-14-2",
-          "rank": 8,
+          "id": "v2-pool7-0-14-0",
+          "rank": 4,
           "weights": {
-            "position2_10": -4,
-            "presence120": -2,
-            "presence90": 4,
-            "digitParity": 4,
-            "gap": -1,
-            "position3_60": -2
+            "last1": 1,
+            "position2_30": 2,
+            "occurrence120": -1,
+            "presence5": 4,
+            "position3_30": 4,
+            "presence45": -2,
+            "position3_60": -1,
+            "presence120": -3
           }
         },
         {
-          "id": "v2-pool7-0-15-8",
-          "rank": 7,
+          "id": "v2-pool7-0-15-2",
+          "rank": 1,
           "weights": {
-            "occurrence20": -1,
-            "position3_30": -2,
-            "position2_20": -3
+            "occurrence3": -1,
+            "occurrence14": -3
           }
         },
         {

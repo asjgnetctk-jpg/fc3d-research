@@ -328,7 +328,7 @@ export default function Home() {
           <strong>V7</strong><span>当前算法</span>
         </Link>
         <Link href="/v2.html">
-          <strong>V2</strong><span>一年训练</span>
+          <strong>V2</strong>
         </Link>
         <Link href="/v5.html">
           <strong>V5</strong><span>历史算法</span>

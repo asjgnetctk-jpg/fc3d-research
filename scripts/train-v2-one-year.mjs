@@ -21,10 +21,18 @@ const FEATURES = [
 ];
 const PLAYS = ["dan", "pool5", "pool6", "pool7"];
 const METHOD_COUNT = 60;
-const SEARCH_PER_BUCKET = 3500;
-const KEEP_PER_BUCKET = 48;
-const PASSES = 3;
-const SEED = 2026073002;
+const SEARCH_PER_BUCKET = Number(process.env.V2_SEARCH_PER_BUCKET ?? 3500);
+const KEEP_PER_BUCKET = Number(process.env.V2_KEEP_PER_BUCKET ?? 48);
+const PASSES = Number(process.env.V2_PASSES ?? 3);
+const HARD_SEARCH_POOL = Number(process.env.V2_HARD_SEARCH_POOL ?? 40_000);
+const HARD_SEARCH_DAN = Number(process.env.V2_HARD_SEARCH_DAN ?? 60_000);
+const HARD_PASSES = Number(process.env.V2_HARD_PASSES ?? 5);
+const SEED = Number(process.env.V2_SEED ?? 2026073002);
+const CONFIG_OUTPUT =
+  process.env.V2_CONFIG_OUTPUT ?? "lib/v2-one-year-config.json";
+const REPORT_OUTPUT =
+  process.env.V2_REPORT_OUTPUT ??
+  "scripts/results/v2-one-year-training.json";
 const HARD_TARGETS = {
   dan: 5,
   pool5: 10,
@@ -316,7 +324,7 @@ async function main() {
 
     const hardTarget = HARD_TARGETS[play];
     if (hardTarget !== undefined) {
-      for (let hardPass = 0; hardPass < 5; hardPass += 1) {
+      for (let hardPass = 0; hardPass < HARD_PASSES; hardPass += 1) {
         const beforeHardPass = replay(rows, vectors, methods, play);
         if (beforeHardPass.metrics.maxMiss <= hardTarget) break;
         for (const bucket of [
@@ -332,7 +340,7 @@ async function main() {
             bucket,
             random,
             `hard-${hardPass}`,
-            play === "dan" ? 60_000 : 40_000,
+            play === "dan" ? HARD_SEARCH_DAN : HARD_SEARCH_POOL,
             160,
           );
           methods = searched.methods;
@@ -376,12 +384,12 @@ async function main() {
   }
 
   await writeFile(
-    "lib/v2-one-year-config.json",
+    CONFIG_OUTPUT,
     `${JSON.stringify(config, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "scripts/results/v2-one-year-training.json",
+    REPORT_OUTPUT,
     `${JSON.stringify(report, null, 2)}\n`,
     "utf8",
   );
