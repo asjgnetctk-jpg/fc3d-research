@@ -6,8 +6,11 @@ import config from "../lib/v7-robust-config.json" with { type: "json" };
 import pool56Config from "../lib/pool56-config.json" with { type: "json" };
 import group3Config from "../lib/group3-online-config.json" with { type: "json" };
 import v5Config from "../lib/v5-config.json" with { type: "json" };
+import v2Config from "../lib/v2-one-year-config.json" with { type: "json" };
 import {
   actualShape,
+  featureColumns,
+  rankDigits,
   recommendPool,
   recommendV5,
 } from "../lib/v5-model.js";
@@ -306,6 +309,90 @@ function legacyReplay(draws, modelConfig) {
     });
   }
   return { rows, danMissStreak, pool7MissStreak };
+}
+
+function v2OneYearReplay(draws, modelConfig) {
+  const plays = ["dan", "pool5", "pool6", "pool7"];
+  const missStreaks = Object.fromEntries(plays.map((play) => [play, 0]));
+  const rows = [];
+
+  for (let index = 120; index < draws.length; index += 1) {
+    const row = draws[index];
+    if (row.date < modelConfig.trainingStart) continue;
+    const history = draws.slice(Math.max(0, index - 365), index);
+    const columns = featureColumns(history);
+    const recommendations = {};
+    const hits = {};
+    const group3Covered = {};
+    const actual = [...new Set(row.digits)];
+
+    for (const play of plays) {
+      const methods = modelConfig.plays[play].methods;
+      const method = methods[Math.min(missStreaks[play], methods.length - 1)];
+      const ranking = rankDigits(columns, method);
+      if (play === "dan") {
+        recommendations.dan = ranking[method.rank - 1].digit;
+        hits.dan = actual.includes(recommendations.dan);
+      } else {
+        const size = Number(play.slice(-1));
+        const pool = ranking
+          .slice(0, size)
+          .map((item) => item.digit)
+          .sort((left, right) => left - right);
+        recommendations[play] = pool.join("");
+        hits[play] =
+          actual.length === 3 && actual.every((digit) => pool.includes(digit));
+        group3Covered[play] =
+          actual.length === 2 && actual.every((digit) => pool.includes(digit));
+      }
+      missStreaks[play] = hits[play] ? 0 : missStreaks[play] + 1;
+    }
+
+    rows.push({
+      issue: row.issue,
+      date: row.date,
+      draw: row.draw,
+      shape: actualShape(row.digits),
+      dan: recommendations.dan,
+      pool5: recommendations.pool5,
+      pool6: recommendations.pool6,
+      pool7: recommendations.pool7,
+      danHit: hits.dan,
+      pool5Hit: hits.pool5,
+      pool6Hit: hits.pool6,
+      pool7Hit: hits.pool7,
+      pool5Group3Covered: group3Covered.pool5,
+      pool6Group3Covered: group3Covered.pool6,
+      pool7Group3Covered: group3Covered.pool7,
+      danMissStreak: missStreaks.dan,
+      pool5MissStreak: missStreaks.pool5,
+      pool6MissStreak: missStreaks.pool6,
+      pool7MissStreak: missStreaks.pool7,
+      phase:
+        row.date <= modelConfig.trainingEnd
+          ? "one-year-training"
+          : "forward-locked",
+    });
+  }
+
+  const columns = featureColumns(draws.slice(-365));
+  const recommendation = {};
+  for (const play of plays) {
+    const methods = modelConfig.plays[play].methods;
+    const method = methods[Math.min(missStreaks[play], methods.length - 1)];
+    const ranking = rankDigits(columns, method);
+    if (play === "dan") {
+      recommendation.dan = ranking[method.rank - 1].digit;
+    } else {
+      const size = Number(play.slice(-1));
+      recommendation[play] = ranking
+        .slice(0, size)
+        .map((item) => item.digit)
+        .sort((left, right) => left - right)
+        .join("");
+    }
+  }
+  return { rows, missStreaks, recommendation };
 }
 
 async function fetchCwlOfficialCurrent() {
@@ -621,6 +708,7 @@ async function main() {
     v5Track.pool7MissStreak,
     v5Config,
   );
+  const v2Track = v2OneYearReplay(draws, v2Config);
   const generatedAt = new Date().toISOString();
   const recentOneYearStart = dateYearsAgo(latest.date, 1);
   const recentThreeYearStart = dateYearsAgo(latest.date, 3);
@@ -710,10 +798,53 @@ async function main() {
       shape: metrics(v5Track.rows, "shapeHit"),
     },
   };
+  const v2TrainingRows = v2Track.rows.filter(
+    (row) => row.date <= v2Config.trainingEnd,
+  );
+  const v2ForwardRows = v2Track.rows.filter(
+    (row) => row.date > v2Config.trainingEnd,
+  );
+  const v2Metric = (play, rows = v2TrainingRows) =>
+    periodMetrics(rows, `${play}Hit`, rows[0]?.date ?? v2Config.trainingStart);
+  const v2Payload = {
+    generatedAt,
+    sourceUpdatedThrough: payload.sourceUpdatedThrough,
+    formulaVersion: v2Config.version,
+    trainingMode: v2Config.trainingMode,
+    trainingStart: v2Config.trainingStart,
+    trainingEnd: v2Config.trainingEnd,
+    trainingStartIssue: v2Config.trainingStartIssue,
+    trainingEndIssue: v2Config.trainingEndIssue,
+    trainingPeriods: v2TrainingRows.length,
+    futureGuarantee: false,
+    danHardTrainingTarget: v2Config.danHardTrainingTarget,
+    dataSha256: canonicalSha256,
+    recommendation: {
+      targetIssue: incrementIssue(latest.issue),
+      basedOnIssue: latest.issue,
+      basedOnDate: latest.date,
+      ...v2Track.recommendation,
+    },
+    rows: v2Track.rows,
+    metrics: {
+      dan: v2Metric("dan"),
+      pool5: v2Metric("pool5"),
+      pool6: v2Metric("pool6"),
+      pool7: v2Metric("pool7"),
+    },
+    forwardMetrics: {
+      count: v2ForwardRows.length,
+      dan: v2ForwardRows.length ? v2Metric("dan", v2ForwardRows) : null,
+      pool5: v2ForwardRows.length ? v2Metric("pool5", v2ForwardRows) : null,
+      pool6: v2ForwardRows.length ? v2Metric("pool6", v2ForwardRows) : null,
+      pool7: v2ForwardRows.length ? v2Metric("pool7", v2ForwardRows) : null,
+    },
+  };
 
   await mkdir(path.join(root, "pages"), { recursive: true });
   await mkdir(path.join(root, "pages", "audit"), { recursive: true });
   await mkdir(path.join(root, "public", "audit"), { recursive: true });
+  await mkdir(path.join(root, "public", "assets"), { recursive: true });
   await writeFile(
     path.join(root, "pages", "data.json"),
     `${JSON.stringify(payload)}\n`,
@@ -729,12 +860,50 @@ async function main() {
     `${JSON.stringify(v5Payload)}\n`,
     "utf8",
   );
+  await writeFile(
+    path.join(root, "pages", "v2-data.json"),
+    `${JSON.stringify(v2Payload)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(root, "public", "v2-data.json"),
+    `${JSON.stringify(v2Payload)}\n`,
+    "utf8",
+  );
+  for (const [source, destination] of [
+    ["styles.css", "styles.css"],
+    ["v2.html", "v2.html"],
+    ["v5.html", "v5.html"],
+    [path.join("assets", "v2.js"), path.join("assets", "v2.js")],
+    [path.join("assets", "v5.js"), path.join("assets", "v5.js")],
+  ]) {
+    await copyFile(
+      path.join(root, "pages", source),
+      path.join(root, "public", destination),
+    );
+  }
   for (const [source, output] of [
     ["full-history-integrity.json", "full-history-integrity.json"],
     ["full-history-training.json", "full-history-training.json"],
   ]) {
     await copyAudit(source, output);
   }
+  await copyFile(
+    path.join(root, "lib", "v2-one-year-config.json"),
+    path.join(root, "pages", "audit", "v2-one-year-config.json"),
+  );
+  await copyFile(
+    path.join(root, "lib", "v2-one-year-config.json"),
+    path.join(root, "public", "audit", "v2-one-year-config.json"),
+  );
+  await copyFile(
+    path.join(root, "scripts", "results", "v2-one-year-training.json"),
+    path.join(root, "pages", "audit", "v2-one-year-training.json"),
+  );
+  await copyFile(
+    path.join(root, "scripts", "results", "v2-one-year-training.json"),
+    path.join(root, "public", "audit", "v2-one-year-training.json"),
+  );
   for (const [source, output] of [
     ["v7-robust-config.json", "v7-locked-config.json"],
     ["pool56-config.json", "pool56-config.json"],

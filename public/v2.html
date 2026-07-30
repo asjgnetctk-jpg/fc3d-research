@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta name="description" content="福彩3D V2一年训练模型的独胆、5码、6码、7码推荐与逐期训练记录。" />
+    <title>福彩3D · V2一年训练模型</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./assets/v2.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">福彩3D · 独立模型</p>
+          <h1>V2一年训练</h1>
+        </div>
+        <button id="v2-refresh" class="refresh-button" type="button">刷新</button>
+      </header>
+
+      <nav class="version-switch three-versions" aria-label="切换算法版本">
+        <a href="./"><strong>V7</strong><span>全历史</span></a>
+        <a class="is-active" href="./v2.html" aria-current="page">
+          <strong>V2</strong><span>一年训练</span>
+        </a>
+        <a href="./v5.html"><strong>V5</strong><span>历史档案</span></a>
+      </nav>
+
+      <div id="v2-loading" class="notice">正在读取V2一年训练结果…</div>
+      <div id="v2-error" class="notice error" hidden></div>
+
+      <div id="v2-content" hidden>
+        <section class="status-strip">
+          <span class="status-dot"></span>
+          <span id="v2-version"></span>
+          <span>·</span>
+          <span id="v2-training-range"></span>
+        </section>
+
+        <section class="section-block integrity-block">
+          <p class="section-note">
+            本页只用标注的一年结果筛选公式。每一期特征只读取该期开奖前的数据，但公式最终由同一训练年的结果挑选，因此属于训练内回放，不是独立盲测；“胆码最长5期”只说明训练区间达标，不能保证未来仍不超过5期。
+          </p>
+          <div class="audit-links">
+            <a href="./audit/v2-one-year-training.json">查看完整训练报告</a>
+            <a href="./audit/v2-one-year-config.json">查看锁定模型参数</a>
+          </div>
+        </section>
+
+        <nav class="play-tabs four-plays" aria-label="切换V2研究项目">
+          <button class="is-active" data-play="dan">独胆</button>
+          <button data-play="pool5">5码</button>
+          <button data-play="pool6">6码</button>
+          <button data-play="pool7">7码</button>
+        </nav>
+
+        <section class="hero-card play-hero">
+          <div class="hero-meta">
+            <span id="v2-target-issue"></span>
+            <span id="v2-based-on"></span>
+          </div>
+          <div id="v2-current-play"></div>
+          <div id="v2-source-line" class="source-line"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">一年训练总结果</p>
+              <h2>四项最长连断</h2>
+            </div>
+            <span id="v2-periods" class="backfit-chip"></span>
+          </div>
+          <div id="v2-all-metrics" class="metrics-grid v2-metrics"></div>
+          <p class="section-note warning-note">
+            训练目标优先压低最长连断，再比较命中数。缩短训练内连断可能带来过拟合，未来实盘只能从训练截止后的新期开奖开始单独记录。
+          </p>
+        </section>
+
+        <section class="section-block history-section">
+          <div class="section-heading">
+            <div>
+              <p id="v2-history-eyebrow" class="eyebrow"></p>
+              <h2>每日推荐与实际开奖号</h2>
+            </div>
+          </div>
+          <div class="history-search">
+            <input
+              id="v2-search"
+              type="search"
+              placeholder="搜索期号、日期、开奖号或推荐号码"
+              aria-label="搜索V2一年训练记录"
+            />
+            <span id="v2-search-count"></span>
+          </div>
+          <div id="v2-history" class="history-list"></div>
+          <button id="v2-toggle-history" class="secondary-button" type="button"></button>
+        </section>
+
+        <footer>
+          <strong>一年训练结果不等于未来保证</strong>
+          <p>彩票开奖结果具有随机性。不要追损、翻倍、借钱或超预算投注。</p>
+          <span id="v2-generated-at"></span>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

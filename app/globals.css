@@ -60,6 +60,10 @@ button {
   background: rgba(22, 63, 49, 0.08);
 }
 
+.version-switch.three-versions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .version-switch a {
   display: flex;
   align-items: baseline;
@@ -141,6 +145,29 @@ button {
   background: var(--forest);
   color: white;
   box-shadow: 0 6px 14px rgba(22, 63, 49, 0.18);
+}
+
+.play-tabs.four-plays {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.v2-metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.metric-card em {
+  color: var(--muted);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.metric-card em.target-pass {
+  color: #25724b;
+}
+
+.metric-card em.target-fail {
+  color: #b3261e;
 }
 
 .eyebrow {

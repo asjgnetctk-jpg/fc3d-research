@@ -323,9 +323,12 @@ export default function Home() {
 
       <BeijingClock />
 
-      <nav className="version-switch" aria-label="切换算法版本">
+      <nav className="version-switch three-versions" aria-label="切换算法版本">
         <Link className="is-active" href="/" aria-current="page">
           <strong>V7</strong><span>当前算法</span>
+        </Link>
+        <Link href="/v2.html">
+          <strong>V2</strong><span>一年训练</span>
         </Link>
         <Link href="/v5.html">
           <strong>V5</strong><span>历史算法</span>
