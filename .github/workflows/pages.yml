@@ -2,7 +2,9 @@ name: 更新福彩3D数据并发布
 
 on:
   schedule:
-    - cron: "30 14 * * *"
+    # 北京时间22:17至次日02:17每小时重试一次，08:17再补一次。
+    - cron: "17 14-18 * * *"
+    - cron: "17 0 * * *"
   workflow_dispatch:
   push:
     branches: ["main"]
@@ -25,6 +27,8 @@ jobs:
         with:
           node-version: "22"
       - name: 读取官方开奖并生成静态数据
+        env:
+          REQUIRE_OFFICIAL_REFRESH: "1"
         run: node scripts/generate-v7-static-data.mjs
       - uses: actions/configure-pages@v5
         with:

@@ -105,6 +105,12 @@ function dateYearsAgo(dateText, years) {
   return date.toISOString().slice(0, 10);
 }
 
+function dateDaysAgo(dateText, days) {
+  const date = new Date(`${dateText}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() - days);
+  return date.toISOString().slice(0, 10);
+}
+
 function omissionMetric(draws, digit, position = null) {
   const runs = [];
   let currentRun = [];
@@ -293,25 +299,59 @@ function legacyReplay(draws, modelConfig) {
 }
 
 async function fetchOfficialCurrent() {
-  const url =
-    "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
-    `?name=3d&dayStart=2013-01-01&dayEnd=${shanghaiDate()}` +
-    "&pageNo=1&pageSize=10000&systemType=PC";
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
-      "User-Agent": "Mozilla/5.0 (compatible; FC3DResearch/full-history)",
-    },
-  });
-  if (!response.ok) throw new Error(`official-data-${response.status}`);
-  const payload = await response.json();
-  return (payload.result ?? []).map((item) => ({
-    date: item.date.slice(0, 10),
-    issue: String(item.code),
-    digits: item.red.split(",").map(Number),
-    draw: item.red.replaceAll(",", ""),
-  }));
+  const today = shanghaiDate();
+  const recentStart = dateDaysAgo(today, 45);
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const query = new URLSearchParams({
+        name: "3d",
+        dayStart: recentStart,
+        dayEnd: today,
+        pageNo: "1",
+        pageSize: "100",
+        systemType: "PC",
+        _: String(Date.now()),
+      });
+      const url =
+        "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
+        `?${query}`;
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          Referer: "https://www.cwl.gov.cn/ygkj/wqkjgg/3d/",
+          "User-Agent":
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+        },
+        signal: AbortSignal.timeout(20_000),
+      });
+      if (!response.ok) throw new Error(`official-data-${response.status}`);
+      const payload = await response.json();
+      const rows = (payload.result ?? [])
+        .map((item) => ({
+          date: String(item.date).slice(0, 10),
+          issue: String(item.code),
+          digits: String(item.red).split(",").map(Number),
+          draw: String(item.red).replaceAll(",", ""),
+        }))
+        .filter(
+          (row) =>
+            /^\d{7}$/.test(row.issue) &&
+            /^\d{3}$/.test(row.draw) &&
+            row.digits.length === 3 &&
+            row.digits.every((digit) => Number.isInteger(digit)),
+        );
+      if (!rows.length) throw new Error("official-data-empty");
+      return rows;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 1_500));
+      }
+    }
+  }
+  throw lastError ?? new Error("official-data-unavailable");
 }
 
 async function loadDraws() {
@@ -327,13 +367,32 @@ async function loadDraws() {
       },
     ]),
   );
+  let officialRefresh = {
+    succeeded: false,
+    periods: 0,
+    latestIssue: null,
+    latestDate: null,
+  };
   try {
-    for (const row of await fetchOfficialCurrent()) byIssue.set(row.issue, row);
+    const officialRows = await fetchOfficialCurrent();
+    for (const row of officialRows) byIssue.set(row.issue, row);
+    const latestOfficial = officialRows
+      .slice()
+      .sort((left, right) => left.issue.localeCompare(right.issue))
+      .at(-1);
+    officialRefresh = {
+      succeeded: true,
+      periods: officialRows.length,
+      latestIssue: latestOfficial.issue,
+      latestDate: latestOfficial.date,
+    };
   } catch (error) {
+    if (process.env.REQUIRE_OFFICIAL_REFRESH === "1") throw error;
     console.warn(`Official refresh unavailable; using verified snapshot: ${error.message}`);
   }
   return {
     canonicalSha256: snapshot.canonicalSha256,
+    officialRefresh,
     draws: [...byIssue.values()].sort((left, right) =>
       left.issue.localeCompare(right.issue),
     ),
@@ -352,7 +411,7 @@ async function copyAudit(file, outputName = file) {
 }
 
 async function main() {
-  const { draws, canonicalSha256 } = await loadDraws();
+  const { draws, canonicalSha256, officialRefresh } = await loadDraws();
   const rolling = rollingReplay(draws, config.simulationStart, config);
   const group3Track = runGroup3Online(
     buildGroup3Examples(draws),
@@ -425,6 +484,7 @@ async function main() {
       periods: draws.length,
       canonicalSha256,
       report: "./audit/full-history-integrity.json",
+      officialRefresh,
     },
     digitOmissions: digitOmissionReport(draws),
     recommendation: {
