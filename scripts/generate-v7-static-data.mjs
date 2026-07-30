@@ -1,4 +1,5 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import config from "../lib/v7-robust-config.json" with { type: "json" };
@@ -109,6 +110,15 @@ function dateDaysAgo(dateText, days) {
   const date = new Date(`${dateText}T00:00:00Z`);
   date.setUTCDate(date.getUTCDate() - days);
   return date.toISOString().slice(0, 10);
+}
+
+function drawSha256(rows) {
+  return createHash("sha256")
+    .update(
+      rows.map((row) => `${row.issue},${row.date},${row.draw}`).join("\n"),
+      "utf8",
+    )
+    .digest("hex");
 }
 
 function omissionMetric(draws, digit, position = null) {
@@ -298,7 +308,7 @@ function legacyReplay(draws, modelConfig) {
   return { rows, danMissStreak, pool7MissStreak };
 }
 
-async function fetchOfficialCurrent() {
+async function fetchCwlOfficialCurrent() {
   const today = shanghaiDate();
   const recentStart = dateDaysAgo(today, 45);
   let lastError = null;
@@ -354,6 +364,81 @@ async function fetchOfficialCurrent() {
   throw lastError ?? new Error("official-data-unavailable");
 }
 
+async function fetchGdfcPage(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "text/html,application/xhtml+xml",
+      Referer: "https://www.gdfc.org.cn/play_list_game_6.html",
+      "User-Agent":
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+    },
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!response.ok) throw new Error(`gdfc-data-${response.status}`);
+  return new TextDecoder("gbk").decode(await response.arrayBuffer());
+}
+
+async function fetchGdfcOfficialCurrent() {
+  const listHtml = await fetchGdfcPage(
+    `https://www.gdfc.org.cn/play_list_game_6.html?_=${Date.now()}`,
+  );
+  const issues = [
+    ...new Set(
+      [...listHtml.matchAll(/draw_(\d{7})\.html/g)].map((match) => match[1]),
+    ),
+  ].slice(0, 20);
+  if (!issues.length) throw new Error("gdfc-list-empty");
+
+  const rows = (
+    await Promise.all(
+      issues.map(async (issue) => {
+        const html = await fetchGdfcPage(
+          `https://www.gdfc.org.cn/datas/drawinfo/3d/draw_${issue}.html?_=${Date.now()}`,
+        );
+        const drawMatch = html.match(
+          /getD3LenoLuckyNo\("(\d)\s+(\d)\s+(\d)"\)/,
+        );
+        const dateMatch = html.match(
+          /开奖日期：[\s\S]{0,240}?(\d{4})年(\d{2})月(\d{2})日/,
+        );
+        if (!drawMatch || !dateMatch) return null;
+        const draw = `${drawMatch[1]}${drawMatch[2]}${drawMatch[3]}`;
+        return {
+          issue,
+          date: `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`,
+          draw,
+          digits: draw.split("").map(Number),
+        };
+      }),
+    )
+  )
+    .filter(Boolean)
+    .sort((left, right) => left.issue.localeCompare(right.issue));
+  if (!rows.length) throw new Error("gdfc-detail-empty");
+  return rows;
+}
+
+async function fetchOfficialCurrent() {
+  if (process.env.OFFICIAL_SOURCE === "gdfc") {
+    return {
+      source: "广东省福利彩票发行中心",
+      rows: await fetchGdfcOfficialCurrent(),
+    };
+  }
+  try {
+    return {
+      source: "中国福利彩票发行管理中心",
+      rows: await fetchCwlOfficialCurrent(),
+    };
+  } catch (cwlError) {
+    console.warn(`CWL refresh unavailable: ${cwlError.message}`);
+    return {
+      source: "广东省福利彩票发行中心",
+      rows: await fetchGdfcOfficialCurrent(),
+    };
+  }
+}
+
 async function loadDraws() {
   const snapshot = JSON.parse(await readFile(FULL_HISTORY_PATH, "utf8"));
   const byIssue = new Map(
@@ -369,12 +454,14 @@ async function loadDraws() {
   );
   let officialRefresh = {
     succeeded: false,
+    source: null,
     periods: 0,
     latestIssue: null,
     latestDate: null,
   };
   try {
-    const officialRows = await fetchOfficialCurrent();
+    const officialResult = await fetchOfficialCurrent();
+    const officialRows = officialResult.rows;
     for (const row of officialRows) byIssue.set(row.issue, row);
     const latestOfficial = officialRows
       .slice()
@@ -382,6 +469,7 @@ async function loadDraws() {
       .at(-1);
     officialRefresh = {
       succeeded: true,
+      source: officialResult.source,
       periods: officialRows.length,
       latestIssue: latestOfficial.issue,
       latestDate: latestOfficial.date,
@@ -390,13 +478,71 @@ async function loadDraws() {
     if (process.env.REQUIRE_OFFICIAL_REFRESH === "1") throw error;
     console.warn(`Official refresh unavailable; using verified snapshot: ${error.message}`);
   }
+  const draws = [...byIssue.values()].sort((left, right) =>
+    left.issue.localeCompare(right.issue),
+  );
+  const canonicalSha256 = drawSha256(draws);
   return {
-    canonicalSha256: snapshot.canonicalSha256,
+    canonicalSha256,
+    snapshotChanged: canonicalSha256 !== snapshot.canonicalSha256,
     officialRefresh,
-    draws: [...byIssue.values()].sort((left, right) =>
-      left.issue.localeCompare(right.issue),
-    ),
+    draws,
   };
+}
+
+async function persistCanonicalHistory(
+  draws,
+  canonicalSha256,
+  officialRefresh,
+) {
+  const generatedAt = new Date().toISOString();
+  await writeFile(
+    FULL_HISTORY_PATH,
+    `${JSON.stringify(
+      { generatedAt, canonicalSha256, rows: draws },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+
+  const reportPath = path.join(
+    root,
+    "scripts",
+    "results",
+    "full-history-integrity.json",
+  );
+  const report = JSON.parse(await readFile(reportPath, "utf8"));
+  const latest = draws.at(-1);
+  report.generatedAt = generatedAt;
+  report.range = {
+    firstIssue: draws[0].issue,
+    firstDate: draws[0].date,
+    lastIssue: latest.issue,
+    lastDate: latest.date,
+    count: draws.length,
+  };
+  report.sources.liveOfficialRefresh = {
+    source: officialRefresh.source,
+    periods: officialRefresh.periods,
+    latestIssue: officialRefresh.latestIssue,
+    latestDate: officialRefresh.latestDate,
+  };
+  report.checks.liveOfficialRefresh = {
+    passed: officialRefresh.succeeded,
+    source: officialRefresh.source,
+    latestIssue: officialRefresh.latestIssue,
+  };
+  report.canonicalIntegrity = {
+    count: draws.length,
+    first: draws[0],
+    last: latest,
+    duplicateIssues: [],
+    duplicateDates: [],
+    sha256: canonicalSha256,
+  };
+  report.canonicalSha256 = canonicalSha256;
+  await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
 }
 
 async function copyAudit(file, outputName = file) {
@@ -411,7 +557,15 @@ async function copyAudit(file, outputName = file) {
 }
 
 async function main() {
-  const { draws, canonicalSha256, officialRefresh } = await loadDraws();
+  const {
+    draws,
+    canonicalSha256,
+    officialRefresh,
+    snapshotChanged,
+  } = await loadDraws();
+  if (snapshotChanged) {
+    await persistCanonicalHistory(draws, canonicalSha256, officialRefresh);
+  }
   const rolling = rollingReplay(draws, config.simulationStart, config);
   const group3Track = runGroup3Online(
     buildGroup3Examples(draws),
