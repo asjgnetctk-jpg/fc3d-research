@@ -171,6 +171,10 @@ function digitCombinations(size, start = 0, prefix = [], output = []) {
 }
 
 function combinationOmissionRows(draws, size) {
+  const theoreticalHitRate = (size * (size - 1) * (size - 2)) / 1000;
+  const theoreticalHits = Number(
+    (draws.length * theoreticalHitRate).toFixed(1),
+  );
   return digitCombinations(size).map((digits) => {
     const pool = new Set(digits);
     let hits = 0;
@@ -212,6 +216,8 @@ function combinationOmissionRows(draws, size) {
     return {
       combination: digits.join(""),
       hits,
+      theoreticalHits,
+      theoreticalHitRate,
       totalMiss,
       currentMiss,
       maxMiss,
@@ -233,6 +239,8 @@ function combinationOmissionReport(draws) {
           size,
           count: rows.length,
           periods: draws.length,
+          theoreticalHits: rows[0]?.theoreticalHits ?? 0,
+          theoreticalHitRate: rows[0]?.theoreticalHitRate ?? 0,
           hitRule: "开奖号为组六，且三个不同数字全部包含在该组合中",
           rows,
         },

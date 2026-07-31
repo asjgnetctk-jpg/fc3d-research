@@ -36,12 +36,6 @@ function sortedRows() {
         left.combination.localeCompare(right.combination)
       );
     }
-    if (sortMode === "total") {
-      return (
-        right.totalMiss - left.totalMiss ||
-        left.combination.localeCompare(right.combination)
-      );
-    }
     if (sortMode === "hits") {
       return (
         right.hits - left.hits ||
@@ -90,8 +84,8 @@ function combinationRow(row) {
         <div class="is-current"><span>当前遗漏</span><strong>${row.currentMiss}</strong><small>期</small></div>
         <div class="is-previous"><span>上期遗漏</span><strong>${previousMiss}</strong><small>${previousMissUnit}</small></div>
         <div><span>历史最大</span><strong>${row.maxMiss}</strong><small>期</small></div>
-        <div><span>累计未中</span><strong>${row.totalMiss}</strong><small>期</small></div>
-        <div><span>历史命中</span><strong>${row.hits}</strong><small>次</small></div>
+        <div><span>理论命中</span><strong>${row.theoreticalHits.toFixed(1)}</strong><small>次</small></div>
+        <div><span>实际命中</span><strong>${row.hits}</strong><small>次</small></div>
       </div>
       <div class="combination-recent">
         <span>最近命中</span>
@@ -104,8 +98,6 @@ function renderSummary() {
   const pool = activePool();
   const maximumCurrent = Math.max(...pool.rows.map((row) => row.currentMiss));
   const maximumHistorical = Math.max(...pool.rows.map((row) => row.maxMiss));
-  const totalHits = pool.rows.reduce((sum, row) => sum + row.hits, 0);
-
   $("#combination-eyebrow").textContent = `${activeSize}码组合遗漏`;
   $("#combination-count-chip").textContent = `${pool.count}种组合`;
   $("#combination-list-title").textContent = `${activeSize}码全部组合明细`;
@@ -113,7 +105,11 @@ function renderSummary() {
     summaryCard("组合数量", pool.count, `C(10,${activeSize})`),
     summaryCard("当前最大遗漏", `${maximumCurrent}期`, "该位数所有组合中的最高值"),
     summaryCard("历史最大遗漏", `${maximumHistorical}期`, "全部统计期内的最高值"),
-    summaryCard("组合累计命中", `${totalHits}次`, "同一期可能命中多个大号码池"),
+    summaryCard(
+      "理论命中",
+      `${pool.theoreticalHits.toFixed(1)}次`,
+      `单组合理论率 ${(pool.theoreticalHitRate * 100).toFixed(1)}%`,
+    ),
   ].join("");
 }
 

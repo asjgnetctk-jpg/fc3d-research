@@ -27,6 +27,13 @@ test("combination omissions exactly replay the canonical draw history", async ()
     const pool = data.pools[key];
     assert.equal(pool.count, expectedCount);
     assert.equal(pool.rows.length, expectedCount);
+    const size = Number(key.replace("pool", ""));
+    const theoreticalHitRate = (size * (size - 1) * (size - 2)) / 1000;
+    const theoreticalHits = Number(
+      (snapshot.rows.length * theoreticalHitRate).toFixed(1),
+    );
+    assert.equal(pool.theoreticalHitRate, theoreticalHitRate);
+    assert.equal(pool.theoreticalHits, theoreticalHits);
 
     for (const row of pool.rows) {
       const digits = new Set([...row.combination].map(Number));
@@ -65,6 +72,16 @@ test("combination omissions exactly replay the canonical draw history", async ()
       }
 
       assert.equal(row.hits, hits, `${key} ${row.combination} hits`);
+      assert.equal(
+        row.theoreticalHitRate,
+        theoreticalHitRate,
+        `${key} ${row.combination} theoreticalHitRate`,
+      );
+      assert.equal(
+        row.theoreticalHits,
+        theoreticalHits,
+        `${key} ${row.combination} theoreticalHits`,
+      );
       assert.equal(
         row.totalMiss,
         data.periods - hits,

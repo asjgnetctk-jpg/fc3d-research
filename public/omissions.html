@@ -8,7 +8,7 @@
     <title>福彩3D · 组合遗漏</title>
     <link rel="stylesheet" href="./styles.css?v=20260731-previous-miss" />
     <script src="./assets/game-switch.js?v=20260731-pl3" defer></script>
-    <script src="./assets/omissions.js?v=20260731-pl3" defer></script>
+    <script src="./assets/omissions.js?v=20260731-hit-labels" defer></script>
   </head>
   <body>
     <main class="app-shell">
@@ -69,7 +69,7 @@
           </div>
           <div id="combination-summary-cards" class="metrics-grid three-metrics"></div>
           <p class="section-note">
-            “累计未中”是该组合在全部统计期中没有命中的总期数；“历史最大遗漏”是最长连续未中期数；“当前遗漏”从最近一次命中后计算至最新一期；“上期遗漏”是最近一次命中前连续未中的日历天数，并同时标出对应未中期数。
+            “理论命中”按随机模型计算：统计期数 × C(码数,3) × 6 ÷ 1000；“实际命中”是历史开奖中按本页统一口径真正命中的次数。“历史最大遗漏”是最长连续未中期数；“当前遗漏”从最近一次命中后计算至最新一期；“上期遗漏”是最近一次命中前连续未中的日历天数，并同时标出对应未中期数。
           </p>
         </section>
 
@@ -91,8 +91,7 @@
             <select id="combination-sort" aria-label="组合排序方式">
               <option value="current">当前遗漏从高到低</option>
               <option value="max">历史最大遗漏从高到低</option>
-              <option value="total">累计未中从高到低</option>
-              <option value="hits">命中次数从高到低</option>
+              <option value="hits">实际命中从高到低</option>
               <option value="combination">组合号码从小到大</option>
             </select>
           </div>
