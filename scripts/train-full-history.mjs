@@ -1,7 +1,5 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import oldV7 from "../lib/v7-robust-config.json" with { type: "json" };
-import oldPools from "../lib/pool56-config.json" with { type: "json" };
 import { featureColumns } from "../lib/v5-model.js";
 import { buildGroup3Examples, runGroup3Online } from "../lib/group3-online.js";
 
@@ -22,9 +20,9 @@ const REPORT_OUTPUT =
   "scripts/results/full-history-training.json";
 const SEED = Number(process.env.TRAIN_SEED ?? 2026072901);
 const RANDOM_METHODS = Number(process.env.TRAIN_RANDOM_METHODS ?? 24000);
-const KEEP_PER_PLAY = 300;
+const KEEP_PER_PLAY = Number(process.env.TRAIN_KEEP_PER_PLAY ?? 300);
 const POLICY_TRIALS = Number(process.env.TRAIN_POLICY_TRIALS ?? 8000);
-const STREAK_STATES = 10;
+const STREAK_STATES = Number(process.env.TRAIN_STREAK_STATES ?? 10);
 const RECENT_THREE_YEAR_START =
   process.env.TRAIN_RECENT_THREE_YEAR_START ?? "2023-07-28";
 const MIN_HISTORY = 120;
@@ -146,7 +144,7 @@ function randomMethod(random, id) {
   };
 }
 
-function seedMethods() {
+function seedMethods(oldV7, oldPools) {
   const seeded = [];
   for (const method of oldV7.dan.methods) seeded.push(method);
   for (const method of oldV7.pool7.methods) seeded.push(method);
@@ -247,11 +245,11 @@ function evaluateMethod(rows, vector, method) {
   return hits;
 }
 
-function searchLibraries(rows, vector) {
+function searchLibraries(rows, vector, oldV7, oldPools) {
   const random = randomGenerator(SEED);
   const libraries = Object.fromEntries(PLAYS.map((play) => [play, []]));
   const methods = [
-    ...seedMethods(),
+    ...seedMethods(oldV7, oldPools),
     ...Array.from({ length: RANDOM_METHODS }, (_, index) =>
       randomMethod(random, index),
     ),
@@ -388,6 +386,22 @@ function configHash(config) {
 
 async function main() {
   const data = JSON.parse(await readFile(DATA_PATH, "utf8"));
+  const oldV7 = JSON.parse(
+    await readFile(
+      process.env.TRAIN_SEED_V7 ??
+        (GAME === "pl3" ? "lib/pl3-v7-config.json" : "lib/v7-robust-config.json"),
+      "utf8",
+    ),
+  );
+  const oldPools = JSON.parse(
+    await readFile(
+      process.env.TRAIN_SEED_POOLS ??
+        (GAME === "pl3"
+          ? "lib/pl3-pool56-config.json"
+          : "lib/pool56-config.json"),
+      "utf8",
+    ),
+  );
   if (GAME === "fc3d") {
     const integrityReport = JSON.parse(await readFile(INTEGRITY_PATH, "utf8"));
     if (!integrityReport.passed) throw new Error("integrity-gate-not-passed");
@@ -400,7 +414,12 @@ async function main() {
     `Training rows: ${draws.length}, ${draws[0].issue}-${draws.at(-1).issue}`,
   );
   const { rows, vector } = buildVectors(draws);
-  const { libraries, searched } = searchLibraries(rows, vector);
+  const { libraries, searched } = searchLibraries(
+    rows,
+    vector,
+    oldV7,
+    oldPools,
+  );
   const random = randomGenerator(SEED + 99);
   const policies = {};
   for (const play of PLAYS) {
@@ -480,7 +499,7 @@ async function main() {
     search: {
       seed: SEED,
       randomRankingMethods: RANDOM_METHODS,
-      seededRankingMethods: seedMethods().length,
+      seededRankingMethods: seedMethods(oldV7, oldPools).length,
       totalRankingMethods: searched,
       keptPerPlay: KEEP_PER_PLAY,
       policyTrialsPerPlay: POLICY_TRIALS,

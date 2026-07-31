@@ -1,0 +1,1004 @@
+{
+  "version": "pl3-group3-knn-optimization-2",
+  "generatedAt": "2026-07-31T07:58:56.708Z",
+  "warning": "Hyperparameters were selected only on the two development intervals. The 2024+ test interval was not used for selection.",
+  "data": {
+    "count": 7676,
+    "first": {
+      "date": "2004-11-14",
+      "issue": "04001",
+      "digits": [
+        1,
+        9,
+        2
+      ],
+      "draw": "192"
+    },
+    "last": {
+      "date": "2026-07-30",
+      "issue": "26201",
+      "digits": [
+        8,
+        6,
+        2
+      ],
+      "draw": "862"
+    },
+    "canonicalSha256": "54e03ff08cdd62968ec8518a94601cdcd4c62c4cadb4653b7a3ac50870d59755"
+  },
+  "isolation": {
+    "initialTrainingEnd": "2018-12-31",
+    "developmentOne": [
+      "2019-01-01",
+      "2021-07-27"
+    ],
+    "developmentTwo": [
+      "2021-07-28",
+      "2023-12-31"
+    ],
+    "untouchedTest": [
+      "2024-01-01",
+      "2026-07-30"
+    ]
+  },
+  "searched": {
+    "featureSets": [
+      "compact",
+      "rates",
+      "full"
+    ],
+    "neighbors": [
+      30,
+      50,
+      100,
+      200
+    ],
+    "priorStrengths": [
+      10,
+      30,
+      50
+    ],
+    "highQuantiles": [
+      0.75,
+      0.8,
+      0.85,
+      0.9
+    ],
+    "candidates": 144,
+    "minimumDevelopmentHighCalls": [
+      80,
+      70
+    ]
+  },
+  "selected": {
+    "config": {
+      "method": "knn",
+      "featureSet": "compact",
+      "neighbors": 30,
+      "priorStrength": 10,
+      "onlineStart": "2019-01-01",
+      "highQuantile": 0.9
+    },
+    "validation": {
+      "count": 861,
+      "baseRate": 0.2880371660859466,
+      "highCalls": 84,
+      "highHits": 28,
+      "highRate": 0.3333333333333333,
+      "highMaxMiss": 6,
+      "lowCalls": 166,
+      "lowRate": 0.3192771084337349,
+      "separation": 0.014056224899598402,
+      "brier": 0.2113987561931331
+    },
+    "developmentTwo": {
+      "count": 855,
+      "baseRate": 0.29473684210526313,
+      "highCalls": 94,
+      "highHits": 33,
+      "highRate": 0.35106382978723405,
+      "highMaxMiss": 7,
+      "lowCalls": 168,
+      "lowRate": 0.2976190476190476,
+      "separation": 0.05344478216818643,
+      "brier": 0.21368761742760126
+    },
+    "development": {
+      "count": 1716,
+      "baseRate": 0.2913752913752914,
+      "highCalls": 178,
+      "highHits": 61,
+      "highRate": 0.34269662921348315,
+      "highMaxMiss": 7,
+      "lowCalls": 334,
+      "lowRate": 0.3083832335329341,
+      "separation": 0.03431339568054903,
+      "brier": 0.21253918530471283
+    },
+    "test": {
+      "count": 904,
+      "baseRate": 0.2831858407079646,
+      "highCalls": 100,
+      "highHits": 28,
+      "highRate": 0.28,
+      "highMaxMiss": 8,
+      "lowCalls": 188,
+      "lowRate": 0.26063829787234044,
+      "separation": 0.019361702127659586,
+      "brier": 0.20783801726894288
+    },
+    "fullReplay": {
+      "count": 2620,
+      "baseRate": 0.2885496183206107,
+      "highCalls": 278,
+      "highHits": 89,
+      "highRate": 0.32014388489208634,
+      "highMaxMiss": 8,
+      "lowCalls": 522,
+      "lowRate": 0.29118773946360155,
+      "separation": 0.028956145428484792,
+      "brier": 0.2109171028984775
+    }
+  },
+  "leaders": [
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 10,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 84,
+        "highHits": 28,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 6,
+        "lowCalls": 166,
+        "lowRate": 0.3192771084337349,
+        "separation": 0.014056224899598402,
+        "brier": 0.2113987561931331
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 94,
+        "highHits": 33,
+        "highRate": 0.35106382978723405,
+        "highMaxMiss": 7,
+        "lowCalls": 168,
+        "lowRate": 0.2976190476190476,
+        "separation": 0.05344478216818643,
+        "brier": 0.21368761742760126
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 178,
+        "highHits": 61,
+        "highRate": 0.34269662921348315,
+        "highMaxMiss": 7,
+        "lowCalls": 334,
+        "lowRate": 0.3083832335329341,
+        "separation": 0.03431339568054903,
+        "brier": 0.21253918530471283
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 100,
+        "highHits": 28,
+        "highRate": 0.28,
+        "highMaxMiss": 8,
+        "lowCalls": 188,
+        "lowRate": 0.26063829787234044,
+        "separation": 0.019361702127659586,
+        "brier": 0.20783801726894288
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 278,
+        "highHits": 89,
+        "highRate": 0.32014388489208634,
+        "highMaxMiss": 8,
+        "lowCalls": 522,
+        "lowRate": 0.29118773946360155,
+        "separation": 0.028956145428484792,
+        "brier": 0.2109171028984775
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 30,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 84,
+        "highHits": 28,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 6,
+        "lowCalls": 163,
+        "lowRate": 0.31901840490797545,
+        "separation": 0.014314928425357865,
+        "brier": 0.21067985659140645
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 92,
+        "highHits": 32,
+        "highRate": 0.34782608695652173,
+        "highMaxMiss": 7,
+        "lowCalls": 168,
+        "lowRate": 0.2976190476190476,
+        "separation": 0.05020703933747411,
+        "brier": 0.21304189685707225
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 176,
+        "highHits": 60,
+        "highRate": 0.3409090909090909,
+        "highMaxMiss": 7,
+        "lowCalls": 331,
+        "lowRate": 0.3081570996978852,
+        "separation": 0.0327519912112057,
+        "brier": 0.21185674728321532
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 98,
+        "highHits": 27,
+        "highRate": 0.2755102040816326,
+        "highMaxMiss": 15,
+        "lowCalls": 187,
+        "lowRate": 0.26737967914438504,
+        "separation": 0.008130524937247585,
+        "brier": 0.20724204221577242
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 274,
+        "highHits": 87,
+        "highRate": 0.3175182481751825,
+        "highMaxMiss": 15,
+        "lowCalls": 518,
+        "lowRate": 0.29343629343629346,
+        "separation": 0.024081954738889022,
+        "brier": 0.21026449790116652
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 30,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 119,
+        "highHits": 40,
+        "highRate": 0.33613445378151263,
+        "highMaxMiss": 7,
+        "lowCalls": 178,
+        "lowRate": 0.2696629213483146,
+        "separation": 0.06647153243319803,
+        "brier": 0.20608519879106543
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 84,
+        "highHits": 28,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 10,
+        "lowCalls": 176,
+        "lowRate": 0.32386363636363635,
+        "separation": 0.009469696969696961,
+        "brier": 0.20932166016574594
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 203,
+        "highHits": 68,
+        "highRate": 0.33497536945812806,
+        "highMaxMiss": 10,
+        "lowCalls": 354,
+        "lowRate": 0.2966101694915254,
+        "separation": 0.03836519996660265,
+        "brier": 0.20769777132914907
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 98,
+        "highHits": 31,
+        "highRate": 0.3163265306122449,
+        "highMaxMiss": 8,
+        "lowCalls": 181,
+        "lowRate": 0.3425414364640884,
+        "separation": -0.026214905851843495,
+        "brier": 0.20483543206561797
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 301,
+        "highHits": 99,
+        "highRate": 0.3289036544850498,
+        "highMaxMiss": 10,
+        "lowCalls": 535,
+        "lowRate": 0.3121495327102804,
+        "separation": 0.016754121774769426,
+        "brier": 0.2067101550336402
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 10,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 120,
+        "highHits": 40,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 8,
+        "lowCalls": 178,
+        "lowRate": 0.2752808988764045,
+        "separation": 0.058052434456928814,
+        "brier": 0.2061874868971471
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 84,
+        "highHits": 28,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 10,
+        "lowCalls": 176,
+        "lowRate": 0.32386363636363635,
+        "separation": 0.009469696969696961,
+        "brier": 0.20941426069870178
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 204,
+        "highHits": 68,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 10,
+        "lowCalls": 354,
+        "lowRate": 0.2994350282485876,
+        "separation": 0.03389830508474573,
+        "brier": 0.20779523258498442
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 97,
+        "highHits": 31,
+        "highRate": 0.31958762886597936,
+        "highMaxMiss": 8,
+        "lowCalls": 181,
+        "lowRate": 0.3425414364640884,
+        "separation": -0.022953807598109055,
+        "brier": 0.20494970119841532
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 301,
+        "highHits": 99,
+        "highRate": 0.3289036544850498,
+        "highMaxMiss": 10,
+        "lowCalls": 535,
+        "lowRate": 0.31401869158878504,
+        "separation": 0.014884962896264786,
+        "brier": 0.2068134156485496
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 30,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.85
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 131,
+        "highHits": 44,
+        "highRate": 0.33587786259541985,
+        "highMaxMiss": 8,
+        "lowCalls": 163,
+        "lowRate": 0.31901840490797545,
+        "separation": 0.0168594576874444,
+        "brier": 0.21067985659140645
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 136,
+        "highHits": 45,
+        "highRate": 0.33088235294117646,
+        "highMaxMiss": 11,
+        "lowCalls": 168,
+        "lowRate": 0.2976190476190476,
+        "separation": 0.033263305322128844,
+        "brier": 0.21304189685707225
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 267,
+        "highHits": 89,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 11,
+        "lowCalls": 331,
+        "lowRate": 0.3081570996978852,
+        "separation": 0.02517623363544813,
+        "brier": 0.21185674728321532
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 143,
+        "highHits": 42,
+        "highRate": 0.2937062937062937,
+        "highMaxMiss": 10,
+        "lowCalls": 187,
+        "lowRate": 0.26737967914438504,
+        "separation": 0.026326614561908657,
+        "brier": 0.20724204221577242
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 410,
+        "highHits": 131,
+        "highRate": 0.3195121951219512,
+        "highMaxMiss": 11,
+        "lowCalls": 518,
+        "lowRate": 0.29343629343629346,
+        "separation": 0.026075901685657765,
+        "brier": 0.21026449790116652
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 50,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 87,
+        "highHits": 28,
+        "highRate": 0.3218390804597701,
+        "highMaxMiss": 7,
+        "lowCalls": 161,
+        "lowRate": 0.3167701863354037,
+        "separation": 0.0050688941243663965,
+        "brier": 0.2100845239166174
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 92,
+        "highHits": 32,
+        "highRate": 0.34782608695652173,
+        "highMaxMiss": 7,
+        "lowCalls": 169,
+        "lowRate": 0.2958579881656805,
+        "separation": 0.051968098790841244,
+        "brier": 0.2125037943648664
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 179,
+        "highHits": 60,
+        "highRate": 0.33519553072625696,
+        "highMaxMiss": 7,
+        "lowCalls": 330,
+        "lowRate": 0.30606060606060603,
+        "separation": 0.02913492466565093,
+        "brier": 0.21128992964695076
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 98,
+        "highHits": 26,
+        "highRate": 0.2653061224489796,
+        "highMaxMiss": 15,
+        "lowCalls": 186,
+        "lowRate": 0.26344086021505375,
+        "separation": 0.0018652622339258573,
+        "brier": 0.206749205745799
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 277,
+        "highHits": 86,
+        "highRate": 0.3104693140794224,
+        "highMaxMiss": 15,
+        "lowCalls": 516,
+        "lowRate": 0.29069767441860467,
+        "separation": 0.01977163966081774,
+        "brier": 0.2097232065909811
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 50,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.85
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 134,
+        "highHits": 45,
+        "highRate": 0.3358208955223881,
+        "highMaxMiss": 8,
+        "lowCalls": 161,
+        "lowRate": 0.3167701863354037,
+        "separation": 0.01905070918698437,
+        "brier": 0.2100845239166174
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 135,
+        "highHits": 44,
+        "highRate": 0.32592592592592595,
+        "highMaxMiss": 11,
+        "lowCalls": 169,
+        "lowRate": 0.2958579881656805,
+        "separation": 0.030067937760245467,
+        "brier": 0.2125037943648664
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 269,
+        "highHits": 89,
+        "highRate": 0.3308550185873606,
+        "highMaxMiss": 11,
+        "lowCalls": 330,
+        "lowRate": 0.30606060606060603,
+        "separation": 0.024794412526754572,
+        "brier": 0.21128992964695076
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 142,
+        "highHits": 41,
+        "highRate": 0.2887323943661972,
+        "highMaxMiss": 10,
+        "lowCalls": 186,
+        "lowRate": 0.26344086021505375,
+        "separation": 0.025291534151143436,
+        "brier": 0.206749205745799
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 411,
+        "highHits": 130,
+        "highRate": 0.31630170316301703,
+        "highMaxMiss": 11,
+        "lowCalls": 516,
+        "lowRate": 0.29069767441860467,
+        "separation": 0.025604028744412366,
+        "brier": 0.2097232065909811
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 30,
+        "priorStrength": 10,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.85
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 132,
+        "highHits": 45,
+        "highRate": 0.3409090909090909,
+        "highMaxMiss": 8,
+        "lowCalls": 166,
+        "lowRate": 0.3192771084337349,
+        "separation": 0.02163198247535597,
+        "brier": 0.2113987561931331
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 136,
+        "highHits": 44,
+        "highRate": 0.3235294117647059,
+        "highMaxMiss": 11,
+        "lowCalls": 168,
+        "lowRate": 0.2976190476190476,
+        "separation": 0.025910364145658282,
+        "brier": 0.21368761742760126
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 268,
+        "highHits": 89,
+        "highRate": 0.332089552238806,
+        "highMaxMiss": 11,
+        "lowCalls": 334,
+        "lowRate": 0.3083832335329341,
+        "separation": 0.023706318705871865,
+        "brier": 0.21253918530471283
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 142,
+        "highHits": 41,
+        "highRate": 0.2887323943661972,
+        "highMaxMiss": 10,
+        "lowCalls": 188,
+        "lowRate": 0.26063829787234044,
+        "separation": 0.028094096493856746,
+        "brier": 0.20783801726894288
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 410,
+        "highHits": 130,
+        "highRate": 0.3170731707317073,
+        "highMaxMiss": 11,
+        "lowCalls": 522,
+        "lowRate": 0.29118773946360155,
+        "separation": 0.025885431268105774,
+        "brier": 0.2109171028984775
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 50,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 120,
+        "highHits": 40,
+        "highRate": 0.3333333333333333,
+        "highMaxMiss": 7,
+        "lowCalls": 178,
+        "lowRate": 0.2696629213483146,
+        "separation": 0.06367041198501872,
+        "brier": 0.20600056650104584
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 84,
+        "highHits": 27,
+        "highRate": 0.32142857142857145,
+        "highMaxMiss": 10,
+        "lowCalls": 174,
+        "lowRate": 0.3275862068965517,
+        "separation": -0.00615763546798026,
+        "brier": 0.2092429879372527
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 204,
+        "highHits": 67,
+        "highRate": 0.3284313725490196,
+        "highMaxMiss": 10,
+        "lowCalls": 352,
+        "lowRate": 0.29829545454545453,
+        "separation": 0.030135918003565076,
+        "brier": 0.20761610865020483
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 97,
+        "highHits": 31,
+        "highRate": 0.31958762886597936,
+        "highMaxMiss": 9,
+        "lowCalls": 182,
+        "lowRate": 0.34615384615384615,
+        "separation": -0.02656621728786679,
+        "brier": 0.2047347583014959
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 301,
+        "highHits": 98,
+        "highRate": 0.32558139534883723,
+        "highMaxMiss": 10,
+        "lowCalls": 534,
+        "lowRate": 0.3146067415730337,
+        "separation": 0.010974653775803533,
+        "brier": 0.20662193280469585
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "compact",
+        "neighbors": 50,
+        "priorStrength": 10,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.9
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 94,
+        "highHits": 29,
+        "highRate": 0.30851063829787234,
+        "highMaxMiss": 11,
+        "lowCalls": 171,
+        "lowRate": 0.3216374269005848,
+        "separation": -0.013126788602712436,
+        "brier": 0.2089958034947568
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 93,
+        "highHits": 37,
+        "highRate": 0.3978494623655914,
+        "highMaxMiss": 7,
+        "lowCalls": 158,
+        "lowRate": 0.310126582278481,
+        "separation": 0.08772288008711038,
+        "brier": 0.21114354023206733
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 187,
+        "highHits": 66,
+        "highRate": 0.35294117647058826,
+        "highMaxMiss": 11,
+        "lowCalls": 329,
+        "lowRate": 0.3161094224924012,
+        "separation": 0.036831753978187054,
+        "brier": 0.21006591707890618
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 96,
+        "highHits": 28,
+        "highRate": 0.2916666666666667,
+        "highMaxMiss": 10,
+        "lowCalls": 185,
+        "lowRate": 0.25405405405405407,
+        "separation": 0.03761261261261262,
+        "brier": 0.20514593892827568
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 283,
+        "highHits": 94,
+        "highRate": 0.3321554770318021,
+        "highMaxMiss": 11,
+        "lowCalls": 514,
+        "lowRate": 0.29377431906614787,
+        "separation": 0.03838115796565422,
+        "brier": 0.2083683368315132
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 50,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.85
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 150,
+        "highHits": 47,
+        "highRate": 0.31333333333333335,
+        "highMaxMiss": 9,
+        "lowCalls": 178,
+        "lowRate": 0.2696629213483146,
+        "separation": 0.04367041198501875,
+        "brier": 0.20600056650104584
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 124,
+        "highHits": 39,
+        "highRate": 0.31451612903225806,
+        "highMaxMiss": 13,
+        "lowCalls": 174,
+        "lowRate": 0.3275862068965517,
+        "separation": -0.01307007786429365,
+        "brier": 0.2092429879372527
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 274,
+        "highHits": 86,
+        "highRate": 0.31386861313868614,
+        "highMaxMiss": 13,
+        "lowCalls": 352,
+        "lowRate": 0.29829545454545453,
+        "separation": 0.015573158593231606,
+        "brier": 0.20761610865020483
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 140,
+        "highHits": 43,
+        "highRate": 0.30714285714285716,
+        "highMaxMiss": 12,
+        "lowCalls": 182,
+        "lowRate": 0.34615384615384615,
+        "separation": -0.03901098901098898,
+        "brier": 0.2047347583014959
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 414,
+        "highHits": 129,
+        "highRate": 0.3115942028985507,
+        "highMaxMiss": 13,
+        "lowCalls": 534,
+        "lowRate": 0.3146067415730337,
+        "separation": -0.0030125386744829785,
+        "brier": 0.20662193280469585
+      }
+    },
+    {
+      "config": {
+        "method": "knn",
+        "featureSet": "full",
+        "neighbors": 200,
+        "priorStrength": 30,
+        "onlineStart": "2019-01-01",
+        "highQuantile": 0.85
+      },
+      "validation": {
+        "count": 861,
+        "baseRate": 0.2880371660859466,
+        "highCalls": 150,
+        "highHits": 47,
+        "highRate": 0.31333333333333335,
+        "highMaxMiss": 9,
+        "lowCalls": 178,
+        "lowRate": 0.2696629213483146,
+        "separation": 0.04367041198501875,
+        "brier": 0.20608519879106543
+      },
+      "developmentTwo": {
+        "count": 855,
+        "baseRate": 0.29473684210526313,
+        "highCalls": 124,
+        "highHits": 39,
+        "highRate": 0.31451612903225806,
+        "highMaxMiss": 13,
+        "lowCalls": 176,
+        "lowRate": 0.32386363636363635,
+        "separation": -0.00934750733137829,
+        "brier": 0.20932166016574594
+      },
+      "development": {
+        "count": 1716,
+        "baseRate": 0.2913752913752914,
+        "highCalls": 274,
+        "highHits": 86,
+        "highRate": 0.31386861313868614,
+        "highMaxMiss": 13,
+        "lowCalls": 354,
+        "lowRate": 0.2966101694915254,
+        "separation": 0.017258443647160726,
+        "brier": 0.20769777132914907
+      },
+      "test": {
+        "count": 904,
+        "baseRate": 0.2831858407079646,
+        "highCalls": 141,
+        "highHits": 43,
+        "highRate": 0.3049645390070922,
+        "highMaxMiss": 12,
+        "lowCalls": 181,
+        "lowRate": 0.3425414364640884,
+        "separation": -0.03757689745699622,
+        "brier": 0.20483543206561797
+      },
+      "fullReplay": {
+        "count": 2620,
+        "baseRate": 0.2885496183206107,
+        "highCalls": 415,
+        "highHits": 129,
+        "highRate": 0.3108433734939759,
+        "highMaxMiss": 13,
+        "lowCalls": 535,
+        "lowRate": 0.3121495327102804,
+        "separation": -0.0013061592163045033,
+        "brier": 0.2067101550336402
+      }
+    }
+  ],
+  "config": {
+    "version": "pl3-group3-knn-validated-2",
+    "trainedAt": "2026-07-31T07:58:56.708Z",
+    "trainingMode": "expanding-window-knn-validation-selected",
+    "trainingDataStart": "2004-11-14",
+    "trainingDataCutoff": "2026-07-30",
+    "trainingIssueCutoff": "26201",
+    "forwardStartIssue": "26202",
+    "simulationStart": "2019-01-01",
+    "simulationEnd": "2026-07-30",
+    "canonicalDataSha256": "54e03ff08cdd62968ec8518a94601cdcd4c62c4cadb4653b7a3ac50870d59755",
+    "method": "knn",
+    "featureSet": "compact",
+    "neighbors": 30,
+    "priorStrength": 10,
+    "onlineStart": "2019-01-01",
+    "highQuantile": 0.9
+  },
+  "configSha256": "91367fd4438b424fdb7b51a52ce43aeda733ce7e40f9b55fb3fabb3c7226992c"
+}

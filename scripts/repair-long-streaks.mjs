@@ -45,6 +45,9 @@ const VERSION =
   process.env.REPAIR_VERSION ?? "V7.5-streak-repair";
 const TARGET_MAX_MISS = Number(process.env.REPAIR_TARGET_MAX_MISS ?? 0);
 const METHOD_STATES = Number(process.env.REPAIR_METHOD_STATES ?? 10);
+const MAX_ACTIVE_FEATURES = Number(
+  process.env.REPAIR_MAX_ACTIVE_FEATURES ?? 8,
+);
 
 function randomGenerator(seed) {
   return () => {
@@ -56,9 +59,16 @@ function randomGenerator(seed) {
   };
 }
 
+function bucketsForPlay(play) {
+  const value = process.env[`REPAIR_BUCKETS_${play.toUpperCase()}`];
+  if (!value) return REPAIR_BUCKETS;
+  return value.split(",").map(Number).filter(Number.isFinite);
+}
+
 function randomMethod(random, id) {
   const weights = {};
-  const active = 2 + Math.floor(random() * 7);
+  const active =
+    2 + Math.floor(random() * Math.max(1, MAX_ACTIVE_FEATURES - 1));
   for (let index = 0; index < active; index += 1) {
     const feature = FEATURES[Math.floor(random() * FEATURES.length)];
     const weight = [-4, -3, -2, -1, 1, 2, 3, 4][
@@ -133,10 +143,10 @@ function compareRepair(left, right) {
   const rightProfile = streakProfile(right.hits);
   return (
     left.summary.overall.maxMiss - right.summary.overall.maxMiss ||
-    leftProfile.overTargetPenalty - rightProfile.overTargetPenalty ||
-    leftProfile.overTargetRuns - rightProfile.overTargetRuns ||
     left.summary.recentThreeYears.maxMiss -
       right.summary.recentThreeYears.maxMiss ||
+    leftProfile.overTargetPenalty - rightProfile.overTargetPenalty ||
+    leftProfile.overTargetRuns - rightProfile.overTargetRuns ||
     right.summary.overall.rate - left.summary.overall.rate
   );
 }
@@ -295,7 +305,8 @@ async function main() {
     let methods = methodsByPlay[play];
     const before = replay(rows, vector, methods, play).summary;
     const steps = [];
-    for (const bucket of REPAIR_BUCKETS) {
+    const playBuckets = bucketsForPlay(play);
+    for (const bucket of playBuckets) {
       const repaired = searchRepair(
         rows,
         vector,
@@ -345,8 +356,10 @@ async function main() {
     await readFile(REPORT_PATH, "utf8"),
   );
   report.streakRepair = {
-    candidatesPerBucket: CANDIDATES_PER_BUCKET,
-    repairedBuckets: REPAIR_BUCKETS,
+      candidatesPerBucket: CANDIDATES_PER_BUCKET,
+    repairedBuckets: Object.fromEntries(
+      PLAYS.map((play) => [play, bucketsForPlay(play)]),
+    ),
     audit,
   };
   for (const play of PLAYS) {

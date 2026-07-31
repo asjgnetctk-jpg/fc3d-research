@@ -12,6 +12,8 @@ import {
 import {
   buildGroup3Examples,
   forecastNextGroup3,
+  forecastNextGroup3Knn,
+  runGroup3Knn,
   runGroup3Online,
 } from "../lib/group3-online.js";
 
@@ -780,7 +782,13 @@ async function main() {
     await persistCanonicalHistory(draws, canonicalSha256, officialRefresh);
   }
   const rolling = rollingReplay(draws, config.simulationStart, config);
-  const group3Track = runGroup3Online(
+  const group3Runner =
+    group3Config.method === "knn" ? runGroup3Knn : runGroup3Online;
+  const group3Forecaster =
+    group3Config.method === "knn"
+      ? forecastNextGroup3Knn
+      : forecastNextGroup3;
+  const group3Track = group3Runner(
     buildGroup3Examples(draws),
     group3Config,
     group3Config.onlineStart,
@@ -826,7 +834,7 @@ async function main() {
     pool56Config.pool5.methods,
     5,
   );
-  const upcomingGroup3 = forecastNextGroup3(draws, group3Config);
+  const upcomingGroup3 = group3Forecaster(draws, group3Config);
   const v5Track = legacyReplay(draws, v5Config);
   const upcomingV5 = recommendV5(
     draws,
@@ -1048,6 +1056,10 @@ async function main() {
     [
       outputName("full-history-training.json"),
       outputName("full-history-training.json"),
+    ],
+    [
+      outputName("group3-knn-optimization.json"),
+      outputName("group3-knn-optimization.json"),
     ],
   ]) {
     await copyAudit(source, output);
