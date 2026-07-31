@@ -2,7 +2,28 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = process.cwd();
-const candidateDirectory = path.join(root, "work", "v2-candidates");
+const candidateDirectory = path.join(
+  root,
+  process.env.V2_CANDIDATE_DIRECTORY ?? "work/v2-candidates",
+);
+const currentConfigPath = path.join(
+  root,
+  process.env.V2_CURRENT_CONFIG ?? "lib/v2-one-year-config.json",
+);
+const currentReportPath = path.join(
+  root,
+  process.env.V2_CURRENT_REPORT ??
+    "scripts/results/v2-one-year-training.json",
+);
+const outputConfigPath = path.join(
+  root,
+  process.env.V2_SELECTED_CONFIG ?? "lib/v2-one-year-config.json",
+);
+const outputReportPath = path.join(
+  root,
+  process.env.V2_SELECTED_REPORT ??
+    "scripts/results/v2-one-year-training.json",
+);
 const plays = ["dan", "pool5", "pool6", "pool7"];
 
 async function readJson(file) {
@@ -20,10 +41,8 @@ function compare(left, right) {
 const candidates = [
   {
     label: "current",
-    config: await readJson(path.join(root, "lib", "v2-one-year-config.json")),
-    report: await readJson(
-      path.join(root, "scripts", "results", "v2-one-year-training.json"),
-    ),
+    config: await readJson(currentConfigPath),
+    report: await readJson(currentReportPath),
   },
 ];
 
@@ -81,12 +100,12 @@ const report = {
 };
 
 await writeFile(
-  path.join(root, "lib", "v2-one-year-config.json"),
+  outputConfigPath,
   `${JSON.stringify(config, null, 2)}\n`,
   "utf8",
 );
 await writeFile(
-  path.join(root, "scripts", "results", "v2-one-year-training.json"),
+  outputReportPath,
   `${JSON.stringify(report, null, 2)}\n`,
   "utf8",
 );

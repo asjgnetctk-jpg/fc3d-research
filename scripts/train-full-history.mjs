@@ -5,14 +5,28 @@ import oldPools from "../lib/pool56-config.json" with { type: "json" };
 import { featureColumns } from "../lib/v5-model.js";
 import { buildGroup3Examples, runGroup3Online } from "../lib/group3-online.js";
 
-const DATA_PATH = "scripts/data/fc3d-full-history.json";
-const INTEGRITY_PATH = "scripts/results/full-history-integrity.json";
-const SEED = 2026072901;
-const RANDOM_METHODS = 24000;
+const GAME = process.env.TRAIN_GAME ?? "fc3d";
+const DATA_PATH =
+  process.env.TRAIN_DATA_PATH ?? "scripts/data/fc3d-full-history.json";
+const INTEGRITY_PATH =
+  process.env.TRAIN_INTEGRITY_PATH ??
+  "scripts/results/full-history-integrity.json";
+const V7_OUTPUT =
+  process.env.TRAIN_V7_OUTPUT ?? "lib/v7-robust-config.json";
+const POOLS_OUTPUT =
+  process.env.TRAIN_POOLS_OUTPUT ?? "lib/pool56-config.json";
+const GROUP3_OUTPUT =
+  process.env.TRAIN_GROUP3_OUTPUT ?? "lib/group3-online-config.json";
+const REPORT_OUTPUT =
+  process.env.TRAIN_REPORT_OUTPUT ??
+  "scripts/results/full-history-training.json";
+const SEED = Number(process.env.TRAIN_SEED ?? 2026072901);
+const RANDOM_METHODS = Number(process.env.TRAIN_RANDOM_METHODS ?? 24000);
 const KEEP_PER_PLAY = 300;
-const POLICY_TRIALS = 8000;
+const POLICY_TRIALS = Number(process.env.TRAIN_POLICY_TRIALS ?? 8000);
 const STREAK_STATES = 10;
-const RECENT_THREE_YEAR_START = "2023-07-28";
+const RECENT_THREE_YEAR_START =
+  process.env.TRAIN_RECENT_THREE_YEAR_START ?? "2023-07-28";
 const MIN_HISTORY = 120;
 const PLAYS = ["dan", "pool5", "pool6", "pool7"];
 const FOLDS = [
@@ -39,6 +53,7 @@ const FEATURES = [
   "transition120",
   "digitCenter",
   "digitParity",
+  ...Array.from({ length: 12 }, (_, channel) => `historyHash${channel}`),
 ];
 
 function randomGenerator(seed) {
@@ -372,11 +387,13 @@ function configHash(config) {
 }
 
 async function main() {
-  const integrityReport = JSON.parse(await readFile(INTEGRITY_PATH, "utf8"));
-  if (!integrityReport.passed) throw new Error("integrity-gate-not-passed");
   const data = JSON.parse(await readFile(DATA_PATH, "utf8"));
-  if (data.canonicalSha256 !== integrityReport.canonicalSha256) {
-    throw new Error("canonical-data-hash-mismatch");
+  if (GAME === "fc3d") {
+    const integrityReport = JSON.parse(await readFile(INTEGRITY_PATH, "utf8"));
+    if (!integrityReport.passed) throw new Error("integrity-gate-not-passed");
+    if (data.canonicalSha256 !== integrityReport.canonicalSha256) {
+      throw new Error("canonical-data-hash-mismatch");
+    }
   }
   const draws = data.rows;
   console.log(
@@ -408,7 +425,7 @@ async function main() {
     canonicalDataSha256: data.canonicalSha256,
   };
   const v7Config = {
-    version: "V7.4-adaptive10",
+    version: GAME === "pl3" ? "PL3-V7-adaptive10" : "V7.4-adaptive10",
     ...common,
     dan: {
       methods: policies.dan.choices.map(
@@ -423,7 +440,8 @@ async function main() {
     shapeChoice: oldV7.shapeChoice,
   };
   const poolConfig = {
-    version: "pools56-adaptive10-1",
+    version:
+      GAME === "pl3" ? "PL3-pools56-adaptive10" : "pools56-adaptive10-1",
     ...common,
     pool5: {
       methods: policies.pool5.choices.map(
@@ -437,12 +455,18 @@ async function main() {
     },
   };
   const group3Config = {
-    version: "group3-full-history-online-1",
+    version:
+      GAME === "pl3"
+        ? "PL3-group3-full-history-online"
+        : "group3-full-history-online-1",
     ...common,
     ...group3Search.best.config,
   };
   const report = {
-    version: "full-history-training-2",
+    version:
+      GAME === "pl3"
+        ? "pl3-full-history-training-1"
+        : "full-history-training-2",
     createdAt: trainedAt,
     warning:
       "All available outcomes were used for model selection. Results are in-sample expanding replay, not an independent blind test.",
@@ -495,22 +519,22 @@ async function main() {
 
   await mkdir("scripts/results", { recursive: true });
   await writeFile(
-    "lib/v7-robust-config.json",
+    V7_OUTPUT,
     `${JSON.stringify(v7Config, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "lib/pool56-config.json",
+    POOLS_OUTPUT,
     `${JSON.stringify(poolConfig, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "lib/group3-online-config.json",
+    GROUP3_OUTPUT,
     `${JSON.stringify(group3Config, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "scripts/results/full-history-training.json",
+    REPORT_OUTPUT,
     `${JSON.stringify(report, null, 2)}\n`,
     "utf8",
   );

@@ -18,6 +18,7 @@ const FEATURES = [
   "transition120",
   "digitCenter",
   "digitParity",
+  ...Array.from({ length: 12 }, (_, channel) => `historyHash${channel}`),
 ];
 const PLAYS = ["dan", "pool5", "pool6", "pool7"];
 const METHOD_COUNT = 60;
@@ -33,11 +34,16 @@ const CONFIG_OUTPUT =
 const REPORT_OUTPUT =
   process.env.V2_REPORT_OUTPUT ??
   "scripts/results/v2-one-year-training.json";
+const DATA_PATH =
+  process.env.V2_DATA_PATH ?? "scripts/data/fc3d-full-history.json";
+const VERSION =
+  process.env.V2_VERSION ?? "V2-one-year-streak-min";
+const INITIAL_CONFIG_PATH = process.env.V2_INITIAL_CONFIG;
 const HARD_TARGETS = {
-  dan: 5,
-  pool5: 10,
-  pool6: 7,
-  pool7: 5,
+  dan: Number(process.env.V2_TARGET_DAN ?? 5),
+  pool5: Number(process.env.V2_TARGET_POOL5 ?? 10),
+  pool6: Number(process.env.V2_TARGET_POOL6 ?? 7),
+  pool7: Number(process.env.V2_TARGET_POOL7 ?? 5),
 };
 
 function dateYearsAgo(dateText, years) {
@@ -243,14 +249,17 @@ function searchBucket(
 
 async function main() {
   const snapshot = JSON.parse(
-    await readFile("scripts/data/fc3d-full-history.json", "utf8"),
+    await readFile(DATA_PATH, "utf8"),
   );
   const draws = snapshot.rows;
   const trainingEnd = draws.at(-1).date;
   const trainingStart = dateYearsAgo(trainingEnd, 1);
   const { rows, vectors } = buildVectors(draws, trainingStart);
+  const initialConfig = INITIAL_CONFIG_PATH
+    ? JSON.parse(await readFile(INITIAL_CONFIG_PATH, "utf8"))
+    : null;
   const config = {
-    version: "V2-one-year-streak-min",
+    version: VERSION,
     trainedAt: new Date().toISOString(),
     trainingMode: "one-year-in-sample-streak-minimization",
     trainingStart,
@@ -280,10 +289,9 @@ async function main() {
   for (let playIndex = 0; playIndex < PLAYS.length; playIndex += 1) {
     const play = PLAYS[playIndex];
     const random = randomGenerator(SEED + playIndex * 100_000);
-    let methods = Array.from(
-      { length: METHOD_COUNT },
-      () => baselineMethod(play),
-    );
+    let methods = initialConfig?.plays?.[play]?.methods
+      ? [...initialConfig.plays[play].methods]
+      : Array.from({ length: METHOD_COUNT }, () => baselineMethod(play));
     const baseline = replay(rows, vectors, methods, play);
     const steps = [];
 
@@ -328,10 +336,13 @@ async function main() {
         const beforeHardPass = replay(rows, vectors, methods, play);
         if (beforeHardPass.metrics.maxMiss <= hardTarget) break;
         for (const bucket of [
+          Math.max(0, beforeHardPass.metrics.maxMiss - 1),
+          Math.max(0, beforeHardPass.metrics.maxMiss - 2),
+          Math.max(0, beforeHardPass.metrics.maxMiss - 3),
           hardTarget,
           Math.max(0, hardTarget - 1),
           Math.max(0, hardTarget - 2),
-        ]) {
+        ].filter((value, index, values) => values.indexOf(value) === index)) {
           const searched = searchBucket(
             rows,
             vectors,

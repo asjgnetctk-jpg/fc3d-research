@@ -2,11 +2,6 @@ import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import config from "../lib/v7-robust-config.json" with { type: "json" };
-import pool56Config from "../lib/pool56-config.json" with { type: "json" };
-import group3Config from "../lib/group3-online-config.json" with { type: "json" };
-import v5Config from "../lib/v5-config.json" with { type: "json" };
-import v2Config from "../lib/v2-one-year-config.json" with { type: "json" };
 import {
   actualShape,
   featureColumns,
@@ -21,12 +16,48 @@ import {
 } from "../lib/group3-online.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const GAME = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
+const IS_PL3 = GAME === "pl3";
+const config = JSON.parse(
+  await readFile(
+    path.join(root, "lib", IS_PL3 ? "pl3-v7-config.json" : "v7-robust-config.json"),
+    "utf8",
+  ),
+);
+const pool56Config = JSON.parse(
+  await readFile(
+    path.join(root, "lib", IS_PL3 ? "pl3-pool56-config.json" : "pool56-config.json"),
+    "utf8",
+  ),
+);
+const group3Config = JSON.parse(
+  await readFile(
+    path.join(root, "lib", IS_PL3 ? "pl3-group3-config.json" : "group3-online-config.json"),
+    "utf8",
+  ),
+);
+const v5Config = JSON.parse(
+  await readFile(
+    path.join(root, "lib", IS_PL3 ? "pl3-v5-config.json" : "v5-config.json"),
+    "utf8",
+  ),
+);
+const v2Config = JSON.parse(
+  await readFile(
+    path.join(root, "lib", IS_PL3 ? "pl3-v2-config.json" : "v2-one-year-config.json"),
+    "utf8",
+  ),
+);
 const FULL_HISTORY_PATH = path.join(
   root,
   "scripts",
   "data",
-  "fc3d-full-history.json",
+  IS_PL3 ? "pl3-full-history.json" : "fc3d-full-history.json",
 );
+
+function outputName(name) {
+  return IS_PL3 ? `pl3-${name}` : name;
+}
 
 function shanghaiDate(date = new Date()) {
   return new Intl.DateTimeFormat("sv-SE", {
@@ -624,13 +655,24 @@ async function loadDraws() {
     ]),
   );
   let officialRefresh = {
-    succeeded: false,
-    source: null,
-    periods: 0,
-    latestIssue: null,
-    latestDate: null,
+    succeeded: IS_PL3,
+    source: IS_PL3 ? snapshot.source : null,
+    periods: IS_PL3 ? snapshot.rows.length : 0,
+    latestIssue: IS_PL3 ? snapshot.rows.at(-1).issue : null,
+    latestDate: IS_PL3 ? snapshot.rows.at(-1).date : null,
   };
   try {
+    if (IS_PL3) {
+      const draws = [...byIssue.values()].sort((left, right) =>
+        left.issue.localeCompare(right.issue),
+      );
+      return {
+        canonicalSha256: drawSha256(draws),
+        snapshotChanged: false,
+        officialRefresh,
+        draws,
+      };
+    }
     const officialResult = await fetchOfficialCurrent();
     const officialRows = officialResult.rows;
     for (const row of officialRows) byIssue.set(row.issue, row);
@@ -810,7 +852,7 @@ async function main() {
     dataIntegrity: {
       periods: draws.length,
       canonicalSha256,
-      report: "./audit/full-history-integrity.json",
+      report: `./audit/${outputName("full-history-integrity.json")}`,
       officialRefresh,
     },
     digitOmissions: digitOmissionReport(draws),
@@ -941,47 +983,53 @@ async function main() {
   await mkdir(path.join(root, "public", "audit"), { recursive: true });
   await mkdir(path.join(root, "public", "assets"), { recursive: true });
   await writeFile(
-    path.join(root, "pages", "data.json"),
+    path.join(root, "pages", outputName("data.json")),
     `${JSON.stringify(payload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "pages", "v5-data.json"),
+    path.join(root, "pages", outputName("v5-data.json")),
     `${JSON.stringify(v5Payload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "public", "v5-data.json"),
+    path.join(root, "public", outputName("v5-data.json")),
     `${JSON.stringify(v5Payload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "pages", "omissions-data.json"),
+    path.join(root, "pages", outputName("omissions-data.json")),
     `${JSON.stringify(omissionPayload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "public", "omissions-data.json"),
+    path.join(root, "public", outputName("omissions-data.json")),
     `${JSON.stringify(omissionPayload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "pages", "v2-data.json"),
+    path.join(root, "pages", outputName("v2-data.json")),
     `${JSON.stringify(v2Payload)}\n`,
     "utf8",
   );
   await writeFile(
-    path.join(root, "public", "v2-data.json"),
+    path.join(root, "public", outputName("v2-data.json")),
     `${JSON.stringify(v2Payload)}\n`,
     "utf8",
   );
-  for (const [source, destination] of [
+  if (!IS_PL3) for (const [source, destination] of [
     ["styles.css", "styles.css"],
+    ["index.html", "index.html"],
     ["v2.html", "v2.html"],
     ["v5.html", "v5.html"],
     ["omissions.html", "omissions.html"],
     [path.join("assets", "v2.js"), path.join("assets", "v2.js")],
+    [path.join("assets", "app.js"), path.join("assets", "app.js")],
     [path.join("assets", "v5.js"), path.join("assets", "v5.js")],
+    [
+      path.join("assets", "game-switch.js"),
+      path.join("assets", "game-switch.js"),
+    ],
     [
       path.join("assets", "omissions.js"),
       path.join("assets", "omissions.js"),
@@ -993,10 +1041,48 @@ async function main() {
     );
   }
   for (const [source, output] of [
-    ["full-history-integrity.json", "full-history-integrity.json"],
-    ["full-history-training.json", "full-history-training.json"],
+    [
+      outputName("full-history-integrity.json"),
+      outputName("full-history-integrity.json"),
+    ],
+    [
+      outputName("full-history-training.json"),
+      outputName("full-history-training.json"),
+    ],
   ]) {
     await copyAudit(source, output);
+  }
+  if (IS_PL3) {
+    for (const [source, output] of [
+      ["pl3-v7-config.json", "pl3-v7-locked-config.json"],
+      ["pl3-pool56-config.json", "pl3-pool56-config.json"],
+      ["pl3-group3-config.json", "pl3-group3-config.json"],
+      ["pl3-v2-config.json", "pl3-v2-config.json"],
+      ["pl3-v5-config.json", "pl3-v5-config.json"],
+    ]) {
+      await copyFile(
+        path.join(root, "lib", source),
+        path.join(root, "pages", "audit", output),
+      );
+      await copyFile(
+        path.join(root, "pages", "audit", output),
+        path.join(root, "public", "audit", output),
+      );
+    }
+    await copyFile(
+      path.join(root, "scripts", "results", "pl3-v2-training.json"),
+      path.join(root, "pages", "audit", "pl3-v2-training.json"),
+    );
+    await copyFile(
+      path.join(root, "scripts", "results", "pl3-v2-training.json"),
+      path.join(root, "public", "audit", "pl3-v2-training.json"),
+    );
+  }
+  if (IS_PL3) {
+    console.log(
+      `Generated ${config.version}: ${latest.issue} -> dan ${upcoming.dan}, pool5 ${upcomingPool5.join("")}, pool6 ${upcomingPool6.join("")}, pool7 ${upcoming.pool7.join("")}, group3 ${(upcomingGroup3.probability * 100).toFixed(1)}%`,
+    );
+    return;
   }
   await copyFile(
     path.join(root, "lib", "v2-one-year-config.json"),

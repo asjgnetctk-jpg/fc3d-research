@@ -1,0 +1,123 @@
+{
+  "version": "PL3-V5-three-year-streak-min",
+  "lockDate": "2026-07-30",
+  "backfitStart": "2023-07-30",
+  "backfitEnd": "2026-07-30",
+  "canonicalDataSha256": "4b3232a40eaed571232916ffd6bf7853386bdcf10a44fa887335c151cdee88e9",
+  "selectionPriority": "lowest maxMiss, then highest hit rate",
+  "dan": {
+    "methods": [
+      {
+        "id": "pl3-v5-57501",
+        "rank": 1,
+        "weights": {
+          "presence45": 3,
+          "presence60": -1,
+          "occurrence90": 1,
+          "position2_30": 2
+        }
+      },
+      {
+        "id": "pl3-v5-63498",
+        "rank": 6,
+        "weights": {
+          "presence30": -3,
+          "occurrence14": 3,
+          "occurrence30": -2,
+          "position2_30": -1,
+          "position1_60": 1,
+          "position2_60": 2,
+          "last3": 1,
+          "digitParity": -1
+        }
+      },
+      {
+        "id": "pl3-v5-36111",
+        "rank": 6,
+        "weights": {
+          "presence20": 2,
+          "presence30": 1,
+          "presence120": -2,
+          "occurrence5": -1,
+          "position1_20": 2,
+          "position2_60": -1,
+          "transition60": -2
+        }
+      },
+      {
+        "id": "pl3-v5-63498",
+        "rank": 6,
+        "weights": {
+          "presence30": -3,
+          "occurrence14": 3,
+          "occurrence30": -2,
+          "position2_30": -1,
+          "position1_60": 1,
+          "position2_60": 2,
+          "last3": 1,
+          "digitParity": -1
+        }
+      }
+    ]
+  },
+  "pool7": {
+    "methods": [
+      {
+        "id": "pl3-v5-15268",
+        "rank": 6,
+        "weights": {
+          "presence5": -2,
+          "presence7": 3,
+          "presence45": 3
+        }
+      },
+      {
+        "id": "pl3-v5-33438",
+        "rank": 2,
+        "weights": {
+          "presence3": 3,
+          "presence45": 1,
+          "occurrence90": 2,
+          "position2_10": -3,
+          "position2_20": -1,
+          "position3_20": -1,
+          "position1_60": 2,
+          "digitCenter": -3
+        }
+      },
+      {
+        "id": "pl3-v5-28711",
+        "rank": 4,
+        "weights": {
+          "presence14": 3,
+          "last1": -3,
+          "transition120": -3
+        }
+      },
+      {
+        "id": "pl3-v5-53586",
+        "rank": 4,
+        "weights": {
+          "presence20": -1,
+          "presence60": 2,
+          "presence120": 2,
+          "position1_20": 1,
+          "position3_30": 3,
+          "position2_60": -2,
+          "last3": -3,
+          "transition120": 1,
+          "digitCenter": 1
+        }
+      }
+    ]
+  },
+  "shapeChoice": {
+    "threshold": -2.322222222222222,
+    "weights": {
+      "group6Rate3": -4,
+      "recentSpan10": 2,
+      "recentSpan30": -1,
+      "recentSum10": -3
+    }
+  }
+}

@@ -148,7 +148,8 @@ function render(data) {
 async function load() {
   $("#v2-refresh").disabled = true;
   try {
-    const response = await fetch(`./v2-data.json?t=${Date.now()}`, {
+    const dataFile = window.LotteryGame?.file("v2-data.json") ?? "v2-data.json";
+    const response = await fetch(`./${dataFile}?t=${Date.now()}`, {
       cache: "no-store",
     });
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);

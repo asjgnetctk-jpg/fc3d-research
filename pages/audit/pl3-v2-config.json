@@ -1,0 +1,2360 @@
+{
+  "version": "PL3-V2-one-year-streak-bounded",
+  "trainedAt": "2026-07-31T06:38:37.672Z",
+  "trainingMode": "one-year-in-sample-streak-minimization",
+  "trainingStart": "2025-07-30",
+  "trainingEnd": "2026-07-30",
+  "trainingStartIssue": "25201",
+  "trainingEndIssue": "26201",
+  "trainingPeriods": 352,
+  "dataSha256": "54e03ff08cdd62968ec8518a94601cdcd4c62c4cadb4653b7a3ac50870d59755",
+  "futureGuarantee": false,
+  "danHardTrainingTarget": 5,
+  "search": {
+    "seed": 20260731271,
+    "methodsPerBucket": 0,
+    "methodBuckets": 60,
+    "passes": 0
+  },
+  "plays": {
+    "dan": {
+      "methods": [
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-dan-2-2-3369",
+          "rank": 10,
+          "weights": {
+            "occurrence14": 3,
+            "presence5": 3,
+            "position2_10": 3
+          }
+        },
+        {
+          "id": "v2-dan-0-3-1169",
+          "rank": 8,
+          "weights": {
+            "transition60": 4,
+            "digitCenter": -2,
+            "position2_60": -2,
+            "position1_60": 3,
+            "last3": 2,
+            "position2_30": 2,
+            "presence120": 4
+          }
+        },
+        {
+          "id": "v2-dan-1-4-1816",
+          "rank": 9,
+          "weights": {
+            "occurrence120": 2,
+            "position1_30": -2,
+            "digitParity": -2,
+            "position3_60": -4,
+            "position1_20": 1,
+            "position3_30": 3,
+            "presence120": -2,
+            "last1": 4
+          }
+        },
+        {
+          "id": "v2-dan-hard-0-5-9285",
+          "rank": 6,
+          "weights": {
+            "position3_10": -3,
+            "digitParity": -2,
+            "position2_10": -1,
+            "presence10": -2,
+            "position1_10": 3,
+            "position1_60": -1,
+            "occurrence60": 4,
+            "occurrence14": -4
+          }
+        },
+        {
+          "id": "v2-dan-1-6-31",
+          "rank": 4,
+          "weights": {
+            "occurrence5": -1,
+            "presence10": -1,
+            "occurrence7": 3,
+            "position1_20": -2,
+            "position1_30": 4,
+            "position3_10": -2,
+            "position2_30": -1,
+            "occurrence90": 1
+          }
+        },
+        {
+          "id": "v2-dan-0-7-67",
+          "rank": 7,
+          "weights": {
+            "position1_20": 3,
+            "presence120": 4,
+            "digitCenter": -1
+          }
+        },
+        {
+          "id": "v2-dan-0-8-4557",
+          "rank": 3,
+          "weights": {
+            "presence10": 1,
+            "position3_20": -2,
+            "position2_10": 2
+          }
+        },
+        {
+          "id": "v2-dan-0-9-92",
+          "rank": 4,
+          "weights": {
+            "presence120": -4,
+            "presence20": 1,
+            "last1": 2,
+            "occurrence10": 3,
+            "occurrence45": 3,
+            "position1_10": -3
+          }
+        },
+        {
+          "id": "v2-dan-0-10-31",
+          "rank": 6,
+          "weights": {
+            "presence60": -1,
+            "transition60": 1,
+            "position2_20": -4,
+            "last1": 2,
+            "position3_20": -1,
+            "gap": 1,
+            "presence45": -2
+          }
+        },
+        {
+          "id": "v2-dan-0-11-0",
+          "rank": 6,
+          "weights": {
+            "presence30": 2,
+            "position3_10": 1,
+            "digitCenter": 2
+          }
+        },
+        {
+          "id": "v2-dan-0-12-4",
+          "rank": 10,
+          "weights": {
+            "last3": 3,
+            "presence60": 2,
+            "occurrence7": 4,
+            "transition120": -2,
+            "presence3": 4,
+            "position2_30": -1
+          }
+        },
+        {
+          "id": "v2-dan-0-13-0",
+          "rank": 9,
+          "weights": {
+            "occurrence5": 2,
+            "transition60": 2,
+            "presence45": 3,
+            "presence60": -4,
+            "occurrence7": 1,
+            "transition120": -4
+          }
+        },
+        {
+          "id": "v2-dan-0-14-0",
+          "rank": 9,
+          "weights": {
+            "occurrence120": -2,
+            "presence45": -1,
+            "gap": 3,
+            "occurrence3": 1,
+            "occurrence20": -1,
+            "position3_60": -3,
+            "transition60": -1
+          }
+        },
+        {
+          "id": "v2-dan-0-15-1",
+          "rank": 4,
+          "weights": {
+            "occurrence90": 3,
+            "position2_60": -3
+          }
+        },
+        {
+          "id": "v2-dan-0-16-1",
+          "rank": 8,
+          "weights": {
+            "transition60": 1,
+            "occurrence90": 3,
+            "position1_20": 3,
+            "presence20": 2,
+            "last1": -4,
+            "presence120": 3
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        },
+        {
+          "id": "v2-baseline-dan",
+          "rank": 4,
+          "weights": {
+            "presence7": -2,
+            "occurrence10": 1,
+            "gap": -1
+          }
+        }
+      ]
+    },
+    "pool5": {
+      "methods": [
+        {
+          "id": "v2-pool5-2-0-1578",
+          "rank": 2,
+          "weights": {
+            "gap": 1,
+            "presence3": -4,
+            "occurrence90": -3,
+            "presence60": 3,
+            "presence5": -1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-3-2-4119",
+          "rank": 5,
+          "weights": {
+            "presence10": -2,
+            "presence20": 1,
+            "presence60": 4,
+            "position2_30": 2
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-5-5-346",
+          "rank": 3,
+          "weights": {
+            "presence30": 1,
+            "presence5": 3,
+            "presence7": -2,
+            "presence60": -3,
+            "transition60": -2
+          }
+        },
+        {
+          "id": "v2-pool5-5-6-2362",
+          "rank": 10,
+          "weights": {
+            "position1_10": -1,
+            "presence60": -4,
+            "presence5": 1,
+            "last2": 3,
+            "occurrence10": -1,
+            "occurrence14": 1,
+            "occurrence60": -4
+          }
+        },
+        {
+          "id": "v2-pool5-3-7-2120",
+          "rank": 10,
+          "weights": {
+            "gap": 2,
+            "presence45": 1,
+            "position2_20": -3,
+            "last1": -2
+          }
+        },
+        {
+          "id": "v2-pool5-hard-0-8-68230",
+          "rank": 1,
+          "weights": {
+            "position3_60": -3,
+            "position1_10": 3,
+            "position3_30": 1,
+            "position2_30": -2,
+            "occurrence45": 1,
+            "position1_20": -3,
+            "position2_60": -2
+          }
+        },
+        {
+          "id": "v2-pool5-4-9-1615",
+          "rank": 9,
+          "weights": {
+            "occurrence60": 2,
+            "presence120": -2,
+            "presence3": -4,
+            "digitParity": -2,
+            "presence30": 2,
+            "position2_10": 4,
+            "presence7": -2
+          }
+        },
+        {
+          "id": "v2-pool5-hard-1-10-71644",
+          "rank": 3,
+          "weights": {
+            "last1": 3,
+            "transition30": 4,
+            "presence60": -4,
+            "presence30": -4,
+            "presence14": 3
+          }
+        },
+        {
+          "id": "v2-pool5-hard-0-11-7300",
+          "rank": 8,
+          "weights": {
+            "occurrence7": -4,
+            "presence10": 1,
+            "position1_10": 1,
+            "occurrence30": 4
+          }
+        },
+        {
+          "id": "v2-pool5-1-12-4714",
+          "rank": 6,
+          "weights": {
+            "occurrence45": -2,
+            "presence90": 1,
+            "position3_30": -4,
+            "occurrence7": -2,
+            "occurrence90": 4,
+            "last2": -4,
+            "occurrence5": 4,
+            "presence120": -3
+          }
+        },
+        {
+          "id": "v2-pool5-1-13-2897",
+          "rank": 1,
+          "weights": {
+            "presence45": 4,
+            "presence5": -4,
+            "position2_60": -2,
+            "transition60": -4,
+            "occurrence60": 3
+          }
+        },
+        {
+          "id": "v2-pool5-2-14-1658",
+          "rank": 2,
+          "weights": {
+            "occurrence30": -2,
+            "position1_60": -3,
+            "position3_10": -3,
+            "position2_30": 4,
+            "occurrence90": 5,
+            "presence30": -1
+          }
+        },
+        {
+          "id": "v2-pool5-2-15-1304",
+          "rank": 3,
+          "weights": {
+            "position2_10": -3,
+            "occurrence120": -4,
+            "presence90": -3,
+            "presence10": -2,
+            "transition30": 4
+          }
+        },
+        {
+          "id": "v2-pool5-2-16-97",
+          "rank": 5,
+          "weights": {
+            "position3_10": -2,
+            "position2_60": -4,
+            "position1_10": 3,
+            "occurrence3": -4,
+            "presence7": 6,
+            "presence30": -2,
+            "transition120": -1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-1-18-0",
+          "rank": 9,
+          "weights": {
+            "presence60": 1,
+            "digitParity": -3
+          }
+        },
+        {
+          "id": "v2-pool5-0-19-1234",
+          "rank": 10,
+          "weights": {
+            "position2_30": 1,
+            "occurrence120": -2,
+            "last2": 4,
+            "presence120": -1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-21-4",
+          "rank": 7,
+          "weights": {
+            "digitParity": 2,
+            "presence45": 3,
+            "position1_30": -4,
+            "occurrence5": -1,
+            "presence3": 3
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-23-1220",
+          "rank": 10,
+          "weights": {
+            "presence14": 4,
+            "occurrence10": 3,
+            "presence5": -3,
+            "transition120": -2
+          }
+        },
+        {
+          "id": "v2-pool5-0-24-232",
+          "rank": 1,
+          "weights": {
+            "position3_60": -2,
+            "position3_10": 2,
+            "occurrence20": -3,
+            "position1_30": 2
+          }
+        },
+        {
+          "id": "v2-pool5-0-25-3591",
+          "rank": 5,
+          "weights": {
+            "last3": -2,
+            "occurrence10": 3,
+            "presence14": -3,
+            "occurrence7": 3
+          }
+        },
+        {
+          "id": "v2-pool5-0-26-1125",
+          "rank": 5,
+          "weights": {
+            "presence3": 5,
+            "occurrence10": 3,
+            "position2_20": 4,
+            "position3_10": -3,
+            "position3_60": 2,
+            "occurrence90": -1,
+            "transition30": -1
+          }
+        },
+        {
+          "id": "v2-pool5-0-27-18",
+          "rank": 1,
+          "weights": {
+            "occurrence90": -4,
+            "position2_20": 4
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-33-285",
+          "rank": 4,
+          "weights": {
+            "presence14": 3,
+            "position1_60": -2,
+            "transition60": 1,
+            "occurrence30": -4,
+            "digitCenter": -2
+          }
+        },
+        {
+          "id": "v2-pool5-0-34-158",
+          "rank": 5,
+          "weights": {
+            "position2_20": -2,
+            "occurrence60": -1,
+            "presence3": 1,
+            "last1": 3
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-36-44",
+          "rank": 4,
+          "weights": {
+            "position1_10": -3,
+            "occurrence7": -1,
+            "presence45": 1,
+            "position3_10": -3
+          }
+        },
+        {
+          "id": "v2-pool5-0-37-73",
+          "rank": 4,
+          "weights": {
+            "presence7": -3,
+            "presence60": -2,
+            "presence30": -4,
+            "gap": 2,
+            "occurrence20": 4,
+            "occurrence14": -1,
+            "digitParity": 1,
+            "presence3": -2
+          }
+        },
+        {
+          "id": "v2-pool5-0-38-28",
+          "rank": 1,
+          "weights": {
+            "position2_60": -2,
+            "position2_20": 2,
+            "occurrence7": -1,
+            "position3_60": -4,
+            "position2_30": -4,
+            "position3_30": 2
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-40-37",
+          "rank": 2,
+          "weights": {
+            "last1": 3,
+            "position1_60": 1,
+            "gap": -2,
+            "position3_20": -3
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-42-244",
+          "rank": 1,
+          "weights": {
+            "position3_20": 1,
+            "position1_30": -2,
+            "occurrence14": -4,
+            "last1": 4,
+            "position2_60": 4,
+            "digitParity": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-48-1347",
+          "rank": 5,
+          "weights": {
+            "occurrence3": 4,
+            "presence5": 1,
+            "occurrence14": 2,
+            "position3_20": -4
+          }
+        },
+        {
+          "id": "v2-pool5-0-49-158",
+          "rank": 6,
+          "weights": {
+            "position3_20": -6,
+            "last1": 3,
+            "presence60": -2,
+            "occurrence20": 2
+          }
+        },
+        {
+          "id": "v2-pool5-0-50-242",
+          "rank": 5,
+          "weights": {
+            "position1_10": 4,
+            "presence90": -3,
+            "position3_60": -4,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool5-0-51-75",
+          "rank": 4,
+          "weights": {
+            "position2_60": 3,
+            "presence7": 4,
+            "presence14": -2
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool5",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        }
+      ]
+    },
+    "pool6": {
+      "methods": [
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-1-1-7651",
+          "rank": 6,
+          "weights": {
+            "position3_30": 1,
+            "presence30": -4,
+            "occurrence45": -2,
+            "occurrence10": -4,
+            "position1_10": 1,
+            "position1_20": 4,
+            "last2": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-3-1454",
+          "rank": 10,
+          "weights": {
+            "position3_60": -1,
+            "position2_10": -3
+          }
+        },
+        {
+          "id": "v2-pool6-0-4-1619",
+          "rank": 1,
+          "weights": {
+            "position1_30": -4,
+            "position1_10": 2,
+            "occurrence20": 4
+          }
+        },
+        {
+          "id": "v2-pool6-2-5-5483",
+          "rank": 4,
+          "weights": {
+            "position3_60": 1,
+            "gap": 3,
+            "position1_10": 4,
+            "position2_20": -2,
+            "position3_20": -3,
+            "digitParity": -2,
+            "digitCenter": -1,
+            "position2_10": 1
+          }
+        },
+        {
+          "id": "v2-pool6-1-6-3146",
+          "rank": 8,
+          "weights": {
+            "presence45": 3,
+            "transition30": 2,
+            "presence20": -3,
+            "last1": 1,
+            "position3_10": -4,
+            "presence10": -2,
+            "occurrence45": 2
+          }
+        },
+        {
+          "id": "v2-pool6-hard-0-7-100939",
+          "rank": 1,
+          "weights": {
+            "last2": 2,
+            "presence5": -1,
+            "position2_20": -1,
+            "position1_20": -1,
+            "position2_60": -1
+          }
+        },
+        {
+          "id": "v2-pool6-2-8-821",
+          "rank": 8,
+          "weights": {
+            "position3_10": -4,
+            "presence60": -3,
+            "position1_30": -1,
+            "occurrence120": 1,
+            "presence14": 3,
+            "presence7": -1
+          }
+        },
+        {
+          "id": "v2-pool6-1-9-387",
+          "rank": 3,
+          "weights": {
+            "presence10": 1,
+            "occurrence10": -2,
+            "position2_10": -1
+          }
+        },
+        {
+          "id": "v2-pool6-0-10-4701",
+          "rank": 1,
+          "weights": {
+            "occurrence30": 1,
+            "occurrence60": -3,
+            "presence45": 4
+          }
+        },
+        {
+          "id": "v2-pool6-1-11-633",
+          "rank": 2,
+          "weights": {
+            "occurrence20": -4,
+            "occurrence90": 2,
+            "presence10": -3
+          }
+        },
+        {
+          "id": "v2-pool6-0-12-2687",
+          "rank": 4,
+          "weights": {
+            "position1_20": -1,
+            "occurrence30": 3,
+            "transition120": -4,
+            "occurrence45": 3,
+            "position2_30": 2,
+            "presence20": -1
+          }
+        },
+        {
+          "id": "v2-pool6-0-13-258",
+          "rank": 2,
+          "weights": {
+            "position3_20": -1,
+            "position2_30": 3,
+            "occurrence5": 1,
+            "presence20": 3,
+            "occurrence90": 1,
+            "position2_10": -4,
+            "digitParity": 2
+          }
+        },
+        {
+          "id": "v2-pool6-0-14-5037",
+          "rank": 6,
+          "weights": {
+            "occurrence30": 3,
+            "presence7": -3
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-16-813",
+          "rank": 5,
+          "weights": {
+            "occurrence10": -1,
+            "last1": 1,
+            "position2_60": 4,
+            "position1_20": -2,
+            "presence90": -2,
+            "presence45": 1,
+            "presence5": -2
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-21-9",
+          "rank": 2,
+          "weights": {
+            "transition30": 2,
+            "presence7": -2,
+            "position2_60": -1,
+            "position1_10": 4,
+            "occurrence5": 2,
+            "occurrence20": -3,
+            "last3": -3
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-23-12",
+          "rank": 5,
+          "weights": {
+            "digitCenter": -4,
+            "last1": 1,
+            "position2_60": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool6-0-25-11",
+          "rank": 4,
+          "weights": {
+            "last3": 3,
+            "position3_10": 3,
+            "occurrence20": -2,
+            "last2": 1,
+            "presence5": -3,
+            "presence120": -4,
+            "occurrence30": -3,
+            "position1_60": 4
+          }
+        },
+        {
+          "id": "v2-pool6-0-26-0",
+          "rank": 1,
+          "weights": {
+            "digitCenter": -4,
+            "occurrence120": 4,
+            "occurrence3": -4,
+            "presence90": -1,
+            "position2_60": 3,
+            "position3_10": 3
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool6",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        }
+      ]
+    },
+    "pool7": {
+      "methods": [
+        {
+          "id": "v2-pool7-0-0-5296",
+          "rank": 6,
+          "weights": {
+            "position2_20": -2,
+            "transition30": -3,
+            "position3_20": 3,
+            "gap": -2,
+            "last3": -2,
+            "occurrence30": -3,
+            "presence120": 3
+          }
+        },
+        {
+          "id": "v2-pool7-0-1-1571",
+          "rank": 2,
+          "weights": {
+            "occurrence120": 2,
+            "transition30": 4,
+            "occurrence30": 3,
+            "occurrence10": -3,
+            "last1": -2
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool7-hard-1-3-102786",
+          "rank": 1,
+          "weights": {
+            "historyHash2": 3,
+            "presence20": 1,
+            "historyHash7": 1,
+            "occurrence20": -2,
+            "occurrence45": -3,
+            "presence45": -2,
+            "historyHash3": -1
+          }
+        },
+        {
+          "id": "v2-pool7-hard-1-4-32540",
+          "rank": 1,
+          "weights": {
+            "transition120": 2,
+            "historyHash6": 3,
+            "historyHash11": 3,
+            "position1_30": 2,
+            "occurrence45": 4
+          }
+        },
+        {
+          "id": "v2-pool7-hard-1-5-88474",
+          "rank": 2,
+          "weights": {
+            "position1_10": 3,
+            "position1_30": 2,
+            "presence5": -1,
+            "presence120": -4,
+            "occurrence20": -2
+          }
+        },
+        {
+          "id": "v2-pool7-hard-0-6-1177",
+          "rank": 5,
+          "weights": {
+            "occurrence7": 3,
+            "presence20": -2,
+            "historyHash11": 4
+          }
+        },
+        {
+          "id": "v2-pool7-1-7-4670",
+          "rank": 3,
+          "weights": {
+            "occurrence20": 2,
+            "occurrence45": -1,
+            "transition120": -2,
+            "position2_30": 1,
+            "position2_60": 2,
+            "presence10": -1,
+            "occurrence90": 3
+          }
+        },
+        {
+          "id": "v2-pool7-2-8-2",
+          "rank": 8,
+          "weights": {
+            "presence90": 3,
+            "gap": 3,
+            "presence14": -2
+          }
+        },
+        {
+          "id": "v2-pool7-0-9-694",
+          "rank": 2,
+          "weights": {
+            "transition120": 2,
+            "presence10": -4
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-pool7-0-11-2042",
+          "rank": 1,
+          "weights": {
+            "position2_20": -3,
+            "transition60": 3
+          }
+        },
+        {
+          "id": "v2-pool7-0-12-119",
+          "rank": 8,
+          "weights": {
+            "transition120": 2,
+            "position1_10": 4,
+            "gap": 4,
+            "occurrence90": 2
+          }
+        },
+        {
+          "id": "v2-pool7-0-13-14",
+          "rank": 3,
+          "weights": {
+            "position3_20": 4,
+            "presence5": 2,
+            "position1_60": 4,
+            "occurrence90": 3,
+            "presence45": 3,
+            "position2_20": -4,
+            "transition60": 2,
+            "occurrence120": 4
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        },
+        {
+          "id": "v2-baseline-pool7",
+          "rank": 1,
+          "weights": {
+            "presence5": -1,
+            "presence7": 1,
+            "presence45": 1
+          }
+        }
+      ]
+    }
+  }
+}

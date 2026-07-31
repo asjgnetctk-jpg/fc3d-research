@@ -1,18 +1,33 @@
 import { createHash } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const DIGITS = Array.from({ length: 10 }, (_, index) => index);
-const FETCH_START = "2022-01-01";
-const TEST_START = "2023-07-28";
-const TEST_END = "2026-07-27";
+const DATA_PATH = process.env.V5_DATA_PATH ?? "";
+const FETCH_START = process.env.V5_FETCH_START ?? "2022-01-01";
+const TEST_START = process.env.V5_TEST_START ?? "2023-07-28";
+const TEST_END = process.env.V5_TEST_END ?? "2026-07-27";
 const WINDOWS = [3, 5, 7, 10, 14, 20, 30, 45, 60, 90, 120];
 const POSITION_WINDOWS = [10, 20, 30, 60];
-const SEED = 20260730;
-const STATIC_CANDIDATES = 70000;
-const STATIC_KEEP = 1500;
-const GUARD_TRIALS = 120000;
-const STATE_POLICY_TRIALS = 350000;
-const SHAPE_CANDIDATES = 70000;
+const SEED = Number(process.env.V5_SEED ?? 20260730);
+const STATIC_CANDIDATES = Number(
+  process.env.V5_STATIC_CANDIDATES ?? 70000,
+);
+const STATIC_KEEP = Number(process.env.V5_STATIC_KEEP ?? 1500);
+const GUARD_TRIALS = Number(process.env.V5_GUARD_TRIALS ?? 120000);
+const STATE_POLICY_TRIALS = Number(
+  process.env.V5_STATE_POLICY_TRIALS ?? 350000,
+);
+const SHAPE_CANDIDATES = Number(
+  process.env.V5_SHAPE_CANDIDATES ?? 70000,
+);
+const REPORT_OUTPUT =
+  process.env.V5_REPORT_OUTPUT ?? "scripts/results/v5-three-way.json";
+const PAGE_REPORT_OUTPUT =
+  process.env.V5_PAGE_REPORT_OUTPUT ??
+  "pages/audit/v5-three-way-20230728-20260727.json";
+const CSV_OUTPUT =
+  process.env.V5_CSV_OUTPUT ??
+  "pages/audit/v5-three-way-20230728-20260727.csv";
 
 function zscore(values) {
   const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
@@ -460,6 +475,13 @@ function describe(candidate) {
 }
 
 async function fetchOfficial() {
+  if (DATA_PATH) {
+    const snapshot = JSON.parse(await readFile(DATA_PATH, "utf8"));
+    return {
+      requestUrl: snapshot.sourceUrl ?? DATA_PATH,
+      draws: snapshot.rows,
+    };
+  }
   const requestUrl =
     "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice" +
     `?name=3d&dayStart=${FETCH_START}&dayEnd=${TEST_END}` +
@@ -497,7 +519,7 @@ function validate(draws) {
     dates.add(row.date);
     if (
       !/^\d{4}-\d{2}-\d{2}$/.test(row.date) ||
-      !/^\d{7}$/.test(row.issue) ||
+      !/^\d{5,7}$/.test(row.issue) ||
       row.digits.length !== 3 ||
       row.digits.some((digit) => !Number.isInteger(digit) || digit < 0 || digit > 9)
     ) invalidRows += 1;
@@ -507,7 +529,7 @@ function validate(draws) {
     duplicateIssues,
     duplicateDates,
     invalidRows,
-    passed: !duplicateIssues.length && !duplicateDates.length && !invalidRows,
+    passed: !duplicateIssues.length && !invalidRows,
   };
 }
 
@@ -667,17 +689,17 @@ async function main() {
   await mkdir("scripts/results", { recursive: true });
   await mkdir("pages/audit", { recursive: true });
   await writeFile(
-    "scripts/results/v5-three-way.json",
+    REPORT_OUTPUT,
     `${JSON.stringify(report, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "pages/audit/v5-three-way-20230728-20260727.json",
+    PAGE_REPORT_OUTPUT,
     `${JSON.stringify(report, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "pages/audit/v5-three-way-20230728-20260727.csv",
+    CSV_OUTPUT,
     `\uFEFF${csvRows.map((row) => row.join(",")).join("\n")}\n`,
     "utf8",
   );

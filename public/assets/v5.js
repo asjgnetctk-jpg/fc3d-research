@@ -79,7 +79,7 @@ function renderHistory() {
 async function load() {
   try {
     const response = await fetch(
-      `./v5-data.json?t=${Date.now()}`,
+      `./${window.LotteryGame?.file("v5-data.json") ?? "v5-data.json"}?t=${Date.now()}`,
       { cache: "no-store" },
     );
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);

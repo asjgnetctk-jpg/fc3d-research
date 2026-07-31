@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 type PlayKey = "dan" | "pool5" | "pool6" | "pool7" | "group3";
+type LotteryGame = "fc3d" | "pl3";
 type LongestRun = {
   length: number;
   startIssue: string;
@@ -241,6 +242,8 @@ export default function Home() {
   const [data, setData] = useState<ApiPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [game, setGame] = useState<LotteryGame>("fc3d");
+  const [gameReady, setGameReady] = useState(false);
   const [activePlay, setActivePlay] = useState<PlayKey>("dan");
   const [showFormula, setShowFormula] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -250,7 +253,9 @@ export default function Home() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/recommend", { cache: "no-store" });
+      const response = await fetch(`/api/recommend?game=${game}`, {
+        cache: "no-store",
+      });
       if (!response.ok) throw new Error("暂时无法读取最新开奖");
       setData((await response.json()) as ApiPayload);
     } catch (reason) {
@@ -258,12 +263,40 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  }, [game]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      const requested = new URLSearchParams(window.location.search).get("game");
+      const stored = window.localStorage.getItem("lottery-game");
+      setGame(
+        requested === "pl3" || (!requested && stored === "pl3")
+          ? "pl3"
+          : "fc3d",
+      );
+      setGameReady(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
+    if (!gameReady) return;
     const frame = requestAnimationFrame(() => void load());
     return () => cancelAnimationFrame(frame);
-  }, [load]);
+  }, [gameReady, load]);
+
+  const switchGame = (nextGame: LotteryGame) => {
+    if (nextGame === game) return;
+    setData(null);
+    setError("");
+    setLoading(true);
+    setGame(nextGame);
+    window.localStorage.setItem("lottery-game", nextGame);
+    const url = new URL(window.location.href);
+    if (nextGame === "pl3") url.searchParams.set("game", "pl3");
+    else url.searchParams.delete("game");
+    window.history.replaceState({}, "", url);
+  };
 
   const filteredRows = useMemo(
     () =>
@@ -296,6 +329,10 @@ export default function Home() {
   }
   if (!data) return null;
 
+  const isPl3 = game === "pl3";
+  const gameName = isPl3 ? "体彩排列3" : "福彩3D";
+  const gameQuery = isPl3 ? "?game=pl3" : "";
+  const auditPrefix = isPl3 ? "pl3-" : "";
   const metric = metricFor(data, activePlay);
   const recommendation = data.recommendation;
   const pool =
@@ -309,7 +346,7 @@ export default function Home() {
     <main className="app-shell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">福彩3D · 私人研究台</p>
+          <p className="eyebrow">{gameName} · 私人研究台</p>
           <h1>五项滚动研究</h1>
         </div>
         <button
@@ -323,17 +360,32 @@ export default function Home() {
 
       <BeijingClock />
 
+      <nav className="game-switch" aria-label="切换彩票类型">
+        <button
+          className={game === "fc3d" ? "is-active" : ""}
+          onClick={() => switchGame("fc3d")}
+        >
+          <strong>福彩3D</strong><span>独立数据</span>
+        </button>
+        <button
+          className={game === "pl3" ? "is-active" : ""}
+          onClick={() => switchGame("pl3")}
+        >
+          <strong>体彩排列3</strong><span>独立模型</span>
+        </button>
+      </nav>
+
       <nav className="version-switch four-versions" aria-label="切换研究页面">
-        <Link className="is-active" href="/" aria-current="page">
+        <Link className="is-active" href={`/${gameQuery}`} aria-current="page">
           <strong>V7</strong><span>当前算法</span>
         </Link>
-        <Link href="/v2.html">
+        <Link href={`/v2.html${gameQuery}`}>
           <strong>V2</strong>
         </Link>
-        <Link href="/v5.html">
+        <Link href={`/v5.html${gameQuery}`}>
           <strong>V5</strong><span>历史算法</span>
         </Link>
-        <Link href="/omissions.html">
+        <Link href={`/omissions.html${gameQuery}`}>
           <strong>遗漏</strong><span>组合</span>
         </Link>
       </nav>
@@ -348,8 +400,8 @@ export default function Home() {
       <section className="section-block integrity-block">
         <p className="section-note">{data.evaluationNotice}</p>
         <div className="audit-links">
-          <a href="/audit/full-history-integrity.json">查看7706期数据真实性报告</a>
-          <a href="/audit/full-history-training.json">查看全历史训练与回放报告</a>
+          <a href={`/audit/${auditPrefix}full-history-integrity.json`}>查看数据真实性报告</a>
+          <a href={`/audit/${auditPrefix}full-history-training.json`}>查看全历史训练与回放报告</a>
         </div>
         <small>
           数据范围 {data.trainingDataStart}—{data.trainingUpdatedThrough} ·
@@ -620,11 +672,11 @@ export default function Home() {
             <p>{formulaText(activePlay)}</p>
             <div className="audit-links">
               {activePlay === "group3" ? (
-                <a href="/audit/full-history-training.json">查看组三全历史训练报告</a>
+                <a href={`/audit/${auditPrefix}full-history-training.json`}>查看组三全历史训练报告</a>
               ) : activePlay === "pool5" || activePlay === "pool6" ? (
-                <a href="/audit/full-history-training.json">查看5/6码全历史训练报告</a>
+                <a href={`/audit/${auditPrefix}full-history-training.json`}>查看5/6码全历史训练报告</a>
               ) : (
-                <a href="/audit/full-history-training.json">查看全历史训练报告</a>
+                <a href={`/audit/${auditPrefix}full-history-training.json`}>查看全历史训练报告</a>
               )}
             </div>
           </div>

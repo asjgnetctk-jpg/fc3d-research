@@ -154,6 +154,11 @@ footer span { font-size: 9px; }
 .beijing-clock { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; padding:10px 14px; border-radius:14px; background:rgba(22,63,49,.08); color:var(--forest); }
 .beijing-clock span { font-size:11px; font-weight:800; }
 .beijing-clock strong { font-family:Georgia,"Microsoft YaHei",sans-serif; font-size:14px; }
+.game-switch { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0 0 10px; padding:5px; border-radius:18px; background:rgba(22,63,49,.08); }
+.game-switch button { display:flex; align-items:baseline; justify-content:center; gap:7px; border:0; border-radius:14px; background:transparent; color:var(--muted); padding:11px 12px; cursor:pointer; }
+.game-switch button.is-active { background:var(--forest); color:#fff; box-shadow:0 6px 16px rgba(22,63,49,.18); }
+.game-switch strong { font-size:16px; }
+.game-switch span { font-size:10px; font-weight:800; }
 .play-tabs { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:6px; margin-bottom:12px; padding:5px; border-radius:17px; background:rgba(22,63,49,.08); }
 .play-tabs button { padding:10px 4px; border:0; border-radius:12px; background:transparent; color:var(--muted); cursor:pointer; font-size:12px; font-weight:900; }
 .play-tabs button.is-active { background:var(--forest); color:#fff; box-shadow:0 6px 14px rgba(22,63,49,.18); }

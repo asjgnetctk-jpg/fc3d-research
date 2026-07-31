@@ -26,17 +26,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: 更新体彩排列3官方历史数据
+        run: node scripts/fetch-pl3-history.mjs
       - name: 读取官方开奖并生成静态数据
         env:
           REQUIRE_OFFICIAL_REFRESH: "1"
         run: node scripts/generate-v7-static-data.mjs
+      - name: 生成体彩排列3独立页面数据
+        env:
+          LOTTERY_GAME: "pl3"
+        run: node scripts/generate-v7-static-data.mjs
       - name: 保存验证后的最新开奖
         run: |
-          if ! git diff --quiet -- scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json; then
+          if ! git diff --quiet -- scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json; then
             git config user.name "fc3d-data-bot"
             git config user.email "actions@users.noreply.github.com"
-            git add scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json
-            git commit -m "Update verified FC3D draw data [skip ci]"
+            git add scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json
+            git commit -m "Update verified 3-digit draw data [skip ci]"
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5

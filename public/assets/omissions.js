@@ -159,7 +159,9 @@ function render(data) {
 async function load() {
   $("#omission-refresh").disabled = true;
   try {
-    const response = await fetch(`./omissions-data.json?t=${Date.now()}`, {
+    const dataFile =
+      window.LotteryGame?.file("omissions-data.json") ?? "omissions-data.json";
+    const response = await fetch(`./${dataFile}?t=${Date.now()}`, {
       cache: "no-store",
     });
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);

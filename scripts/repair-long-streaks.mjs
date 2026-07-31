@@ -18,12 +18,33 @@ const FEATURES = [
   "transition120",
   "digitCenter",
   "digitParity",
+  ...Array.from({ length: 12 }, (_, channel) => `historyHash${channel}`),
 ];
-const RECENT_START = "2023-07-28";
-const CANDIDATES_PER_BUCKET = 12000;
-const KEEP = 80;
-const REPAIR_BUCKETS = [9, 8, 7];
-const PLAYS = ["dan", "pool5", "pool6", "pool7"];
+const RECENT_START = process.env.REPAIR_RECENT_START ?? "2023-07-28";
+const CANDIDATES_PER_BUCKET = Number(
+  process.env.REPAIR_CANDIDATES_PER_BUCKET ?? 12000,
+);
+const KEEP = Number(process.env.REPAIR_KEEP ?? 80);
+const REPAIR_BUCKETS = (process.env.REPAIR_BUCKETS ?? "9,8,7")
+  .split(",")
+  .map(Number)
+  .filter(Number.isFinite);
+const PLAYS = (process.env.REPAIR_PLAYS ?? "dan,pool5,pool6,pool7")
+  .split(",")
+  .filter(Boolean);
+const DATA_PATH =
+  process.env.REPAIR_DATA_PATH ?? "scripts/data/fc3d-full-history.json";
+const V7_PATH = process.env.REPAIR_V7_PATH ?? "lib/v7-robust-config.json";
+const POOLS_PATH =
+  process.env.REPAIR_POOLS_PATH ?? "lib/pool56-config.json";
+const REPORT_PATH =
+  process.env.REPAIR_REPORT_PATH ??
+  "scripts/results/full-history-training.json";
+const SEED = Number(process.env.REPAIR_SEED ?? 2026073000);
+const VERSION =
+  process.env.REPAIR_VERSION ?? "V7.5-streak-repair";
+const TARGET_MAX_MISS = Number(process.env.REPAIR_TARGET_MAX_MISS ?? 0);
+const METHOD_STATES = Number(process.env.REPAIR_METHOD_STATES ?? 10);
 
 function randomGenerator(seed) {
   return () => {
@@ -88,17 +109,46 @@ function summary(rows, hits) {
   };
 }
 
-function compare(left, right) {
+function streakProfile(hits) {
+  let current = 0;
+  let overTargetRuns = 0;
+  let overTargetPenalty = 0;
+  for (let index = 0; index <= hits.length; index += 1) {
+    if (index < hits.length && !hits[index]) {
+      current += 1;
+      continue;
+    }
+    if (TARGET_MAX_MISS > 0 && current > TARGET_MAX_MISS) {
+      overTargetRuns += 1;
+      const excess = current - TARGET_MAX_MISS;
+      overTargetPenalty += excess * excess;
+    }
+    current = 0;
+  }
+  return { overTargetRuns, overTargetPenalty };
+}
+
+function compareRepair(left, right) {
+  const leftProfile = streakProfile(left.hits);
+  const rightProfile = streakProfile(right.hits);
   return (
-    left.overall.maxMiss - right.overall.maxMiss ||
-    left.recentThreeYears.maxMiss - right.recentThreeYears.maxMiss ||
-    right.overall.rate - left.overall.rate
+    left.summary.overall.maxMiss - right.summary.overall.maxMiss ||
+    leftProfile.overTargetPenalty - rightProfile.overTargetPenalty ||
+    leftProfile.overTargetRuns - rightProfile.overTargetRuns ||
+    left.summary.recentThreeYears.maxMiss -
+      right.summary.recentThreeYears.maxMiss ||
+    right.summary.overall.rate - left.summary.overall.rate
   );
 }
 
 function expandMethods(methods) {
-  if (methods.length > 4) return [...methods];
-  return Array.from({ length: 10 }, (_, streak) => {
+  if (methods.length > 4) {
+    return Array.from(
+      { length: Math.max(METHOD_STATES, methods.length) },
+      (_, streak) => methods[Math.min(streak, methods.length - 1)],
+    );
+  }
+  return Array.from({ length: METHOD_STATES }, (_, streak) => {
     const oldBucket = streak < 3 ? 0 : streak < 5 ? 1 : streak < 7 ? 2 : 3;
     return methods[oldBucket];
   });
@@ -164,7 +214,10 @@ function criticalIndices(track, bucket) {
   return runs
     .filter((run) => run.length >= threshold)
     .flat()
-    .filter((index) => Math.min(track.missBefore[index], 9) === bucket);
+    .filter(
+      (index) =>
+        Math.min(track.missBefore[index], METHOD_STATES - 1) === bucket,
+    );
 }
 
 function buildVectors(draws) {
@@ -211,7 +264,7 @@ function searchRepair(rows, vector, methods, play, bucket, random) {
     const candidateMethods = [...methods];
     candidateMethods[bucket] = candidate.method;
     const result = replay(rows, vector, candidateMethods, play);
-    if (compare(result.summary, best.result.summary) < 0) {
+    if (compareRepair(result, best.result) < 0) {
       best = { methods: candidateMethods, result };
     }
   }
@@ -224,10 +277,10 @@ function searchRepair(rows, vector, methods, play, bucket, random) {
 
 async function main() {
   const draws = JSON.parse(
-    await readFile("scripts/data/fc3d-full-history.json", "utf8"),
+    await readFile(DATA_PATH, "utf8"),
   ).rows;
-  const v7 = JSON.parse(await readFile("lib/v7-robust-config.json", "utf8"));
-  const pools = JSON.parse(await readFile("lib/pool56-config.json", "utf8"));
+  const v7 = JSON.parse(await readFile(V7_PATH, "utf8"));
+  const pools = JSON.parse(await readFile(POOLS_PATH, "utf8"));
   const { rows, vector } = buildVectors(draws);
   const methodsByPlay = {
     dan: expandMethods(v7.dan.methods),
@@ -238,7 +291,7 @@ async function main() {
   const audit = {};
   for (let playIndex = 0; playIndex < PLAYS.length; playIndex += 1) {
     const play = PLAYS[playIndex];
-    const random = randomGenerator(2026073000 + playIndex);
+    const random = randomGenerator(SEED + playIndex);
     let methods = methodsByPlay[play];
     const before = replay(rows, vector, methods, play).summary;
     const steps = [];
@@ -260,41 +313,60 @@ async function main() {
       });
     }
     const after = replay(rows, vector, methods, play).summary;
-    methodsByPlay[play] = compare(after, before) < 0 ? methods : methodsByPlay[play];
+    const originalResult = replay(
+      rows,
+      vector,
+      methodsByPlay[play],
+      play,
+    );
+    const repairedResult = replay(rows, vector, methods, play);
+    const accepted = compareRepair(repairedResult, originalResult) < 0;
+    methodsByPlay[play] = accepted ? methods : methodsByPlay[play];
     audit[play] = {
       before,
-      after: compare(after, before) < 0 ? after : before,
-      accepted: compare(after, before) < 0,
+      after: accepted ? after : before,
+      accepted,
+      targetMaxMiss: TARGET_MAX_MISS || null,
+      beforeProfile: streakProfile(originalResult.hits),
+      afterProfile: streakProfile(
+        accepted ? repairedResult.hits : originalResult.hits,
+      ),
       steps,
     };
     console.log(`${play}: ${JSON.stringify(audit[play])}`);
   }
-  v7.version = "V7.5-streak-repair";
+  v7.version = VERSION;
   v7.dan.methods = methodsByPlay.dan;
   v7.pool7.methods = methodsByPlay.pool7;
   pools.version = "pools56-streak-repair-1";
   pools.pool5.methods = methodsByPlay.pool5;
   pools.pool6.methods = methodsByPlay.pool6;
   const report = JSON.parse(
-    await readFile("scripts/results/full-history-training.json", "utf8"),
+    await readFile(REPORT_PATH, "utf8"),
   );
   report.streakRepair = {
     candidatesPerBucket: CANDIDATES_PER_BUCKET,
     repairedBuckets: REPAIR_BUCKETS,
     audit,
   };
+  for (const play of PLAYS) {
+    if (!report.results?.[play]) continue;
+    report.results[play].metrics = audit[play].after;
+    report.results[play].methods = methodsByPlay[play];
+    report.results[play].repaired = true;
+  }
   await writeFile(
-    "lib/v7-robust-config.json",
+    V7_PATH,
     `${JSON.stringify(v7, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "lib/pool56-config.json",
+    POOLS_PATH,
     `${JSON.stringify(pools, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
-    "scripts/results/full-history-training.json",
+    REPORT_PATH,
     `${JSON.stringify(report, null, 2)}\n`,
     "utf8",
   );
