@@ -33,16 +33,29 @@ test("combination omissions exactly replay the canonical draw history", async ()
       let hits = 0;
       let currentMiss = 0;
       let maxMiss = 0;
+      let previousMiss = null;
+      let previousMissDays = null;
+      let lastHitIndex = null;
       let lastHitIssue = null;
       let lastHitDate = null;
 
-      for (const draw of snapshot.rows) {
+      for (const [index, draw] of snapshot.rows.entries()) {
         const actual = [...new Set(draw.digits)];
         const hit =
           actual.length === 3 && actual.every((digit) => digits.has(digit));
         if (hit) {
+          if (lastHitIndex !== null) {
+            previousMiss = index - lastHitIndex - 1;
+            const elapsedDays = Math.round(
+              (Date.parse(`${draw.date}T00:00:00Z`) -
+                Date.parse(`${lastHitDate}T00:00:00Z`)) /
+                86_400_000,
+            );
+            previousMissDays = Math.max(0, elapsedDays - 1);
+          }
           hits += 1;
           currentMiss = 0;
+          lastHitIndex = index;
           lastHitIssue = draw.issue;
           lastHitDate = draw.date;
         } else {
@@ -63,6 +76,16 @@ test("combination omissions exactly replay the canonical draw history", async ()
         `${key} ${row.combination} currentMiss`,
       );
       assert.equal(row.maxMiss, maxMiss, `${key} ${row.combination} maxMiss`);
+      assert.equal(
+        row.previousMiss,
+        previousMiss,
+        `${key} ${row.combination} previousMiss`,
+      );
+      assert.equal(
+        row.previousMissDays,
+        previousMissDays,
+        `${key} ${row.combination} previousMissDays`,
+      );
       assert.equal(
         row.lastHitIssue,
         lastHitIssue,

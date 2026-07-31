@@ -197,13 +197,15 @@ footer span { font-size: 9px; }
 .combination-number { display:flex; min-width:0; flex-direction:column; gap:4px; }
 .combination-number span,.combination-metrics span,.combination-recent span { color:var(--muted); font-size:9px; font-weight:800; }
 .combination-number strong { overflow:visible; color:var(--forest); font-family:Georgia,"Times New Roman",serif; font-size:clamp(21px,3.5vw,25px); letter-spacing:.01em; text-overflow:clip; white-space:nowrap; }
-.combination-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; }
+.combination-metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:6px; }
 .combination-metrics > div { display:flex; min-width:0; flex-wrap:wrap; align-items:baseline; gap:3px; padding:8px 7px; border-radius:12px; background:rgba(255,255,255,.72); }
 .combination-metrics > div span { width:100%; }
 .combination-metrics strong { color:var(--forest); font-family:Georgia,"Times New Roman",serif; font-size:18px; }
 .combination-metrics small { color:var(--muted); font-size:9px; }
 .combination-metrics .is-current { background:#fff2e9; }
 .combination-metrics .is-current strong { color:#a6471c; }
+.combination-metrics .is-previous { background:#eef5e7; }
+.combination-metrics .is-previous strong { font-size:16px; }
 .combination-recent { display:flex; min-width:0; flex-direction:column; gap:5px; text-align:right; }
 .combination-recent strong { color:var(--ink); font-size:10px; line-height:1.45; }
 @media (max-width:430px) {

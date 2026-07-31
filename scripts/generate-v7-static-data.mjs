@@ -144,16 +144,29 @@ function combinationOmissionRows(draws, size) {
     let totalMiss = 0;
     let currentMiss = 0;
     let maxMiss = 0;
+    let previousMiss = null;
+    let previousMissDays = null;
+    let lastHitIndex = null;
     let lastHitIssue = null;
     let lastHitDate = null;
 
-    for (const draw of draws) {
+    for (const [index, draw] of draws.entries()) {
       const actual = [...new Set(draw.digits)];
       const hit =
         actual.length === 3 && actual.every((digit) => pool.has(digit));
       if (hit) {
+        if (lastHitIndex !== null) {
+          previousMiss = index - lastHitIndex - 1;
+          const elapsedDays = Math.round(
+            (Date.parse(`${draw.date}T00:00:00Z`) -
+              Date.parse(`${lastHitDate}T00:00:00Z`)) /
+              86_400_000,
+          );
+          previousMissDays = Math.max(0, elapsedDays - 1);
+        }
         hits += 1;
         currentMiss = 0;
+        lastHitIndex = index;
         lastHitIssue = draw.issue;
         lastHitDate = draw.date;
       } else {
@@ -169,6 +182,8 @@ function combinationOmissionRows(draws, size) {
       totalMiss,
       currentMiss,
       maxMiss,
+      previousMiss,
+      previousMissDays,
       lastHitIssue,
       lastHitDate,
     };

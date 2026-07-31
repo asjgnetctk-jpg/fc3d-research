@@ -72,6 +72,14 @@ function combinationRow(row) {
   const recent = row.lastHitIssue
     ? `${row.lastHitIssue}期 · ${row.lastHitDate}`
     : "全历史尚未命中";
+  const previousMiss =
+    row.previousMiss === null || row.previousMissDays === null
+      ? "—"
+      : `${row.previousMissDays}天`;
+  const previousMissUnit =
+    row.previousMiss === null || row.previousMissDays === null
+      ? "无上次记录"
+      : `${row.previousMiss}期`;
   return `
     <article class="combination-row">
       <div class="combination-number">
@@ -80,6 +88,7 @@ function combinationRow(row) {
       </div>
       <div class="combination-metrics">
         <div class="is-current"><span>当前遗漏</span><strong>${row.currentMiss}</strong><small>期</small></div>
+        <div class="is-previous"><span>上期遗漏</span><strong>${previousMiss}</strong><small>${previousMissUnit}</small></div>
         <div><span>历史最大</span><strong>${row.maxMiss}</strong><small>期</small></div>
         <div><span>累计未中</span><strong>${row.totalMiss}</strong><small>期</small></div>
         <div><span>历史命中</span><strong>${row.hits}</strong><small>次</small></div>
