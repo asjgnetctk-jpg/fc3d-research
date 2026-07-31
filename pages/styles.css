@@ -25,6 +25,8 @@ button { font: inherit; }
 .topbar, .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
 .version-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 8px; padding: 5px; border-radius: 18px; background: rgba(22,63,49,.08); }
 .version-switch.three-versions { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.version-switch.four-versions { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.version-switch.four-versions a { gap:4px; padding-right:7px; padding-left:7px; }
 .version-switch a { display: flex; align-items: baseline; justify-content: center; gap: 7px; padding: 11px 12px; border-radius: 14px; color: var(--muted); text-decoration: none; }
 .version-switch a.is-active { background: var(--forest); color: #fff; box-shadow: 0 6px 16px rgba(22,63,49,.18); }
 .version-switch strong { font-size: 17px; }
@@ -132,6 +134,7 @@ footer p { margin: 8px auto; font-size: 11px; line-height: 1.6; }
 footer span { font-size: 9px; }
 @media (max-width: 430px) {
   .app-shell { padding-right: 12px; padding-left: 12px; }
+  .version-switch.four-versions span { display:none; }
   .hero-card { padding: 16px; }
   .hero-meta { flex-direction: column; gap: 3px; }
   .recommendation-grid { grid-template-columns: .66fr 1.34fr; gap: 8px; }
@@ -181,9 +184,38 @@ footer span { font-size: 9px; }
 .recent-metric b { color:#875c13; font-size:13px; }
 .history-result.single-result { grid-template-columns:1fr; min-width:58px; }
 .hit-badge.is-skip { min-width:48px; background:#e7ebe3; color:var(--muted); }
+.combination-tabs { margin-top:14px; }
+.combination-summary .metrics-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.combination-controls { display:grid; grid-template-columns:minmax(0,1fr) 190px; gap:9px; margin-top:16px; }
+.combination-controls input,.combination-controls select { min-width:0; border:1px solid rgba(22,63,49,.18); border-radius:14px; background:#fff; color:var(--ink); padding:12px 13px; font:inherit; outline:none; }
+.combination-controls input:focus,.combination-controls select:focus { border-color:var(--forest); box-shadow:0 0 0 3px rgba(22,63,49,.1); }
+.combination-result-line { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; color:var(--muted); }
+.combination-result-line span { font-size:12px; font-weight:900; }
+.combination-result-line small { font-size:10px; text-align:right; }
+.combination-list { display:grid; gap:9px; margin-top:14px; }
+.combination-row { display:grid; grid-template-columns:112px minmax(0,1fr) 126px; align-items:center; gap:12px; padding:14px; border-radius:18px; background:#f3f5ef; }
+.combination-number { display:flex; min-width:0; flex-direction:column; gap:4px; }
+.combination-number span,.combination-metrics span,.combination-recent span { color:var(--muted); font-size:9px; font-weight:800; }
+.combination-number strong { overflow:hidden; color:var(--forest); font-family:Georgia,"Times New Roman",serif; font-size:25px; letter-spacing:.05em; text-overflow:ellipsis; }
+.combination-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; }
+.combination-metrics > div { display:flex; min-width:0; flex-wrap:wrap; align-items:baseline; gap:3px; padding:8px 7px; border-radius:12px; background:rgba(255,255,255,.72); }
+.combination-metrics > div span { width:100%; }
+.combination-metrics strong { color:var(--forest); font-family:Georgia,"Times New Roman",serif; font-size:18px; }
+.combination-metrics small { color:var(--muted); font-size:9px; }
+.combination-metrics .is-current { background:#fff2e9; }
+.combination-metrics .is-current strong { color:#a6471c; }
+.combination-recent { display:flex; min-width:0; flex-direction:column; gap:5px; text-align:right; }
+.combination-recent strong { color:var(--ink); font-size:10px; line-height:1.45; }
 @media (max-width:430px) {
   .single-pool .number-pills { gap:5px; }
   .single-pool .number-pills span { font-size:20px; }
   .single-dan strong { font-size:108px; }
   .single-group3 b { font-size:52px; }
+  .combination-controls { grid-template-columns:1fr; }
+  .combination-result-line small { display:none; }
+  .combination-row { grid-template-columns:1fr; gap:9px; padding:12px; }
+  .combination-number { flex-direction:row; align-items:baseline; justify-content:space-between; }
+  .combination-number strong { font-size:27px; }
+  .combination-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .combination-recent { flex-direction:row; justify-content:space-between; text-align:left; }
 }

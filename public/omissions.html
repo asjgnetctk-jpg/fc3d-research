@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta name="description" content="福彩3D全历史3码、4码、5码、6码、7码组合遗漏查询。" />
+    <title>福彩3D · 组合遗漏</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./assets/omissions.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">福彩3D · 全历史查询</p>
+          <h1>组合遗漏</h1>
+        </div>
+        <button id="omission-refresh" class="refresh-button" type="button">刷新</button>
+      </header>
+
+      <div class="beijing-clock">
+        <span>北京时间</span>
+        <strong id="beijing-time">正在校时</strong>
+      </div>
+
+      <nav class="version-switch four-versions" aria-label="切换研究页面">
+        <a href="./"><strong>V7</strong><span>当前</span></a>
+        <a href="./v2.html"><strong>V2</strong></a>
+        <a href="./v5.html"><strong>V5</strong><span>历史</span></a>
+        <a class="is-active" href="./omissions.html" aria-current="page">
+          <strong>遗漏</strong><span>组合</span>
+        </a>
+      </nav>
+
+      <div id="omission-loading" class="notice">正在读取全历史组合遗漏…</div>
+      <div id="omission-error" class="notice error" hidden></div>
+
+      <div id="omission-content" hidden>
+        <section class="status-strip">
+          <span class="status-dot"></span>
+          <span id="omission-range"></span>
+          <span>·</span>
+          <span id="omission-source"></span>
+        </section>
+
+        <section class="section-block integrity-block">
+          <p class="section-note">
+            本页统计每一种数字组合。命中规则统一为：开奖号必须是组六，且三个不同数字全部包含在该组合中。组三和豹子不计组合命中，避免与现有号码池口径混淆。
+          </p>
+        </section>
+
+        <nav class="play-tabs combination-tabs" aria-label="切换组合位数">
+          <button class="is-active" data-size="3">3码</button>
+          <button data-size="4">4码</button>
+          <button data-size="5">5码</button>
+          <button data-size="6">6码</button>
+          <button data-size="7">7码</button>
+        </nav>
+
+        <section class="section-block combination-summary">
+          <div class="section-heading">
+            <div>
+              <p id="combination-eyebrow" class="eyebrow"></p>
+              <h2>历史遗漏总览</h2>
+            </div>
+            <span id="combination-count-chip" class="backfit-chip"></span>
+          </div>
+          <div id="combination-summary-cards" class="metrics-grid three-metrics"></div>
+          <p class="section-note">
+            “累计未中”是该组合在全部统计期中没有命中的总期数；“历史最大遗漏”是最长连续未中期数；“当前遗漏”从最近一次命中后计算至最新一期。
+          </p>
+        </section>
+
+        <section class="section-block combination-list-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">全部组合</p>
+              <h2 id="combination-list-title"></h2>
+            </div>
+          </div>
+          <div class="combination-controls">
+            <input
+              id="combination-search"
+              type="search"
+              inputmode="numeric"
+              placeholder="搜索组合，例如 012"
+              aria-label="搜索数字组合"
+            />
+            <select id="combination-sort" aria-label="组合排序方式">
+              <option value="current">当前遗漏从高到低</option>
+              <option value="max">历史最大遗漏从高到低</option>
+              <option value="total">累计未中从高到低</option>
+              <option value="hits">命中次数从高到低</option>
+              <option value="combination">组合号码从小到大</option>
+            </select>
+          </div>
+          <div class="combination-result-line">
+            <span id="combination-result-count"></span>
+            <small>点击上方按钮切换3码、4码、5码、6码、7码</small>
+          </div>
+          <div id="combination-list" class="combination-list"></div>
+          <button id="combination-toggle" class="secondary-button" type="button"></button>
+        </section>
+
+        <footer>
+          <strong>遗漏只描述历史，不预测下一期</strong>
+          <p>彩票开奖具有随机性。不要因为某个组合遗漏较久就认定它下一期必然出现。</p>
+          <span id="omission-generated-at"></span>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

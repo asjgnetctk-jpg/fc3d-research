@@ -124,6 +124,75 @@ function drawSha256(rows) {
     .digest("hex");
 }
 
+function digitCombinations(size, start = 0, prefix = [], output = []) {
+  if (prefix.length === size) {
+    output.push([...prefix]);
+    return output;
+  }
+  for (let digit = start; digit <= 10 - (size - prefix.length); digit += 1) {
+    prefix.push(digit);
+    digitCombinations(size, digit + 1, prefix, output);
+    prefix.pop();
+  }
+  return output;
+}
+
+function combinationOmissionRows(draws, size) {
+  return digitCombinations(size).map((digits) => {
+    const pool = new Set(digits);
+    let hits = 0;
+    let totalMiss = 0;
+    let currentMiss = 0;
+    let maxMiss = 0;
+    let lastHitIssue = null;
+    let lastHitDate = null;
+
+    for (const draw of draws) {
+      const actual = [...new Set(draw.digits)];
+      const hit =
+        actual.length === 3 && actual.every((digit) => pool.has(digit));
+      if (hit) {
+        hits += 1;
+        currentMiss = 0;
+        lastHitIssue = draw.issue;
+        lastHitDate = draw.date;
+      } else {
+        totalMiss += 1;
+        currentMiss += 1;
+        maxMiss = Math.max(maxMiss, currentMiss);
+      }
+    }
+
+    return {
+      combination: digits.join(""),
+      hits,
+      totalMiss,
+      currentMiss,
+      maxMiss,
+      lastHitIssue,
+      lastHitDate,
+    };
+  });
+}
+
+function combinationOmissionReport(draws) {
+  return Object.fromEntries(
+    [3, 4, 5, 6, 7].map((size) => {
+      const rows = combinationOmissionRows(draws, size);
+      return [
+        `pool${size}`,
+        {
+          size,
+          count: rows.length,
+          periods: draws.length,
+          hitRule: "开奖号为组六，且三个不同数字全部包含在该组合中",
+          rows,
+        },
+      ];
+    }),
+  );
+}
+
 function omissionMetric(draws, digit, position = null) {
   const runs = [];
   let currentRun = [];
@@ -710,6 +779,7 @@ async function main() {
   );
   const v2Track = v2OneYearReplay(draws, v2Config);
   const generatedAt = new Date().toISOString();
+  const combinationOmissions = combinationOmissionReport(draws);
   const recentOneYearStart = dateYearsAgo(latest.date, 1);
   const recentThreeYearStart = dateYearsAgo(latest.date, 3);
   const payload = {
@@ -798,6 +868,16 @@ async function main() {
       shape: metrics(v5Track.rows, "shapeHit"),
     },
   };
+  const omissionPayload = {
+    generatedAt,
+    sourceUpdatedThrough: payload.sourceUpdatedThrough,
+    dataStart: draws[0].date,
+    dataEnd: latest.date,
+    periods: draws.length,
+    canonicalSha256,
+    hitRule: "开奖号为组六，且三个不同数字全部包含在所选组合中",
+    pools: combinationOmissions,
+  };
   const v2TrainingRows = v2Track.rows.filter(
     (row) => row.date <= v2Config.trainingEnd,
   );
@@ -861,6 +941,16 @@ async function main() {
     "utf8",
   );
   await writeFile(
+    path.join(root, "pages", "omissions-data.json"),
+    `${JSON.stringify(omissionPayload)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(root, "public", "omissions-data.json"),
+    `${JSON.stringify(omissionPayload)}\n`,
+    "utf8",
+  );
+  await writeFile(
     path.join(root, "pages", "v2-data.json"),
     `${JSON.stringify(v2Payload)}\n`,
     "utf8",
@@ -874,8 +964,13 @@ async function main() {
     ["styles.css", "styles.css"],
     ["v2.html", "v2.html"],
     ["v5.html", "v5.html"],
+    ["omissions.html", "omissions.html"],
     [path.join("assets", "v2.js"), path.join("assets", "v2.js")],
     [path.join("assets", "v5.js"), path.join("assets", "v5.js")],
+    [
+      path.join("assets", "omissions.js"),
+      path.join("assets", "omissions.js"),
+    ],
   ]) {
     await copyFile(
       path.join(root, "pages", source),
