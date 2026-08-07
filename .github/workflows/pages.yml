@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -36,13 +36,13 @@ jobs:
         env:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-v7-static-data.mjs
-      - name: 保存验证后的最新开奖
+      - name: 保存验证后的最新开奖和页面数据
         run: |
-          if ! git diff --quiet -- scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json; then
+          if ! git diff --quiet -- scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json pages public; then
             git config user.name "fc3d-data-bot"
             git config user.email "actions@users.noreply.github.com"
-            git add scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json
-            git commit -m "Update verified 3-digit draw data [skip ci]"
+            git add scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json pages public
+            git commit -m "Update verified 3-digit draw data and pages [skip ci]"
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
