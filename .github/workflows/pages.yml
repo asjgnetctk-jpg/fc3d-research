@@ -29,8 +29,6 @@ jobs:
       - name: 更新体彩排列3官方历史数据
         run: node scripts/fetch-pl3-history.mjs
       - name: 读取官方开奖并生成静态数据
-        env:
-          REQUIRE_OFFICIAL_REFRESH: "1"
         run: node scripts/generate-v7-static-data.mjs
       - name: 生成体彩排列3独立页面数据
         env:
