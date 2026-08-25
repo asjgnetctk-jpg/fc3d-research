@@ -84,6 +84,11 @@ test("PL3 published streak metrics match displayed replay rows", async () => {
   }
   for (const play of ["dan", "pool5", "pool6", "pool7"]) {
     assert.equal(
+      pl3V2.actualMetrics[play].maxMiss,
+      maxMissFromFlags(pl3V2.rows, `${play}Hit`),
+      `V2 total ${play}`,
+    );
+    assert.equal(
       pl3V2.metrics[play].maxMiss,
       maxMissFromFlags(
         pl3V2.rows.filter((row) => row.date <= pl3V2.trainingEnd),

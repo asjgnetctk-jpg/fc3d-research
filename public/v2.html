@@ -69,14 +69,14 @@
         <section class="section-block">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">V2总结果</p>
-              <h2>四项最长连断</h2>
+              <p class="eyebrow">V2总记录</p>
+              <h2>实际最长连断与训练成绩</h2>
             </div>
             <span id="v2-periods" class="backfit-chip"></span>
           </div>
           <div id="v2-all-metrics" class="metrics-grid v2-metrics"></div>
           <p class="section-note warning-note">
-            训练目标优先压低最长连断，再比较命中数。缩短训练内连断可能带来过拟合，未来实盘只能从训练截止后的新期开奖开始单独记录。
+            “总最长”按训练期与训练截止后的全部实际记录连续计算，会随新开奖刷新；“训练内”只用于说明模型筛选时的历史成绩；“训练后独立段”从训练截止日后另起算，因此跨越训练截止日的连断以“总最长”和“当前连断”为准。
           </p>
         </section>
 

@@ -10,14 +10,15 @@ let activePlay = "dan";
 let showAll = false;
 let searchQuery = "";
 
-function metricCard(play, metric) {
+function metricCard(play, trainingMetric, actualMetric, forwardMetric, currentMiss) {
   const target = play === "dan" ? 5 : null;
-  const passed = target === null || metric.maxMiss <= target;
+  const passed = target === null || trainingMetric.maxMiss <= target;
   return `
     <div class="metric-card${passed ? "" : " failed"}">
       <span>${labels[play]}</span>
-      <strong>${metric.hits}/${metric.count}</strong>
-      <small>命中率${(metric.rate * 100).toFixed(1)}% · 最长连断${metric.maxMiss}期</small>
+      <strong>总最长 ${actualMetric.maxMiss}期</strong>
+      <small>总记录 ${actualMetric.hits}/${actualMetric.count} · 当前连断${currentMiss}期</small>
+      <small>训练内最长${trainingMetric.maxMiss}期 · 训练后独立段最长${forwardMetric?.maxMiss ?? 0}期</small>
       ${target === null ? "" : `<em class="${passed ? "target-pass" : "target-fail"}">训练硬门槛≤${target}期：${passed ? "达标" : "未达标"}</em>`}
     </div>`;
 }
@@ -99,12 +100,15 @@ function renderHistory() {
 
 function renderCurrent() {
   const recommendation = payload.recommendation;
+  const currentMiss = playStreak(payload.rows.at(-1), activePlay);
+  const trainingMax = payload.metrics[activePlay].maxMiss;
+  const actualMax = payload.actualMetrics[activePlay].maxMiss;
   if (activePlay === "dan") {
     $("#v2-current-play").innerHTML = `
       <div class="single-dan">
         <p>V2独胆推荐</p>
         <strong>${recommendation.dan}</strong>
-        <small>历史训练内最长连断5期；未来不作同等保证</small>
+        <small>训练内最长${trainingMax}期 · 总记录最长${actualMax}期 · 当前连断${currentMiss}期</small>
       </div>`;
   } else {
     const pool = recommendation[activePlay];
@@ -114,7 +118,7 @@ function renderCurrent() {
         <div class="number-pills pool-${pool.length}">
           ${pool.split("").map((digit) => `<span>${digit}</span>`).join("")}
         </div>
-        <small>组六全覆盖计命中；组三覆盖单独标记</small>
+        <small>总记录最长${actualMax}期 · 当前连断${currentMiss}期；组六全覆盖计命中，组三覆盖单独标记</small>
       </div>`;
   }
   renderHistory();
@@ -130,9 +134,17 @@ function render(data) {
     `基于${data.recommendation.basedOnIssue}期及此前数据`;
   $("#v2-source-line").textContent =
     `官方数据更新至${data.sourceUpdatedThrough}`;
-  $("#v2-periods").textContent = `${data.trainingPeriods}期`;
+  $("#v2-periods").textContent = `训练${data.trainingPeriods}期 · 总记录${data.rows.length}期`;
   $("#v2-all-metrics").innerHTML = ["dan", "pool5", "pool6", "pool7"]
-    .map((play) => metricCard(play, data.metrics[play]))
+    .map((play) =>
+      metricCard(
+        play,
+        data.metrics[play],
+        data.actualMetrics[play],
+        data.forwardMetrics[play],
+        playStreak(data.rows.at(-1), play),
+      ),
+    )
     .join("");
   $("#v2-generated-at").textContent =
     `页面生成于${new Date(data.generatedAt).toLocaleString("zh-CN", {

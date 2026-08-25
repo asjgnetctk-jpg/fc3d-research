@@ -959,6 +959,12 @@ async function main() {
   );
   const v2Metric = (play, rows = v2TrainingRows) =>
     periodMetrics(rows, `${play}Hit`, rows[0]?.date ?? v2Config.trainingStart);
+  const v2ActualMetric = (play) =>
+    periodMetrics(
+      v2Track.rows,
+      `${play}Hit`,
+      v2Track.rows[0]?.date ?? v2Config.trainingStart,
+    );
   const v2Payload = {
     generatedAt,
     sourceUpdatedThrough: payload.sourceUpdatedThrough,
@@ -984,6 +990,12 @@ async function main() {
       pool5: v2Metric("pool5"),
       pool6: v2Metric("pool6"),
       pool7: v2Metric("pool7"),
+    },
+    actualMetrics: {
+      dan: v2ActualMetric("dan"),
+      pool5: v2ActualMetric("pool5"),
+      pool6: v2ActualMetric("pool6"),
+      pool7: v2ActualMetric("pool7"),
     },
     forwardMetrics: {
       count: v2ForwardRows.length,
