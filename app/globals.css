@@ -1167,3 +1167,147 @@ footer span {
     }
   }
 }
+
+/* Quant terminal skin: shared with the static mobile research pages. */
+:root {
+  color-scheme: dark;
+  --ink: #f1f5f9;
+  --muted: #8d9aa8;
+  --paper: #080a0e;
+  --card: #10151d;
+  --forest: #eff4f8;
+  --forest-2: #a9b5c2;
+  --lime: #c8ff48;
+  --orange: #ffab4c;
+  --line: rgba(219, 232, 245, 0.1);
+  --shadow: none;
+}
+
+html, body { background: var(--paper); }
+body {
+  background:
+    radial-gradient(circle at 84% -8%, rgba(115, 143, 173, 0.16), transparent 24rem),
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+    var(--paper);
+  background-size: auto, 24px 24px, 24px 24px, auto;
+  font-family: Inter, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.app-shell { width: min(100%, 760px); padding: 16px 14px 42px; }
+.topbar { align-items: center; padding: 14px 2px 16px; border-bottom: 1px solid var(--line); }
+.eyebrow { color: #8797a8; font-size: 10px; letter-spacing: 0.16em; }
+h1, h2, .formula-toggle strong { font-family: Inter, "PingFang SC", sans-serif; letter-spacing: -0.035em; }
+h1 { font-size: clamp(29px, 7vw, 42px); font-weight: 760; }
+h2 { font-size: 19px; }
+
+.refresh-button, .primary-button, .secondary-button {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #151c25;
+  color: var(--ink);
+  box-shadow: none;
+}
+.refresh-button:hover, .secondary-button:hover { border-color: rgba(200,255,72,.6); color: var(--lime); }
+.beijing-clock, .status-strip {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(16,21,29,.82);
+  color: #c7d1db;
+}
+.status-dot { background: var(--lime); box-shadow: 0 0 0 4px rgba(200,255,72,.1); }
+
+.game-switch, .version-switch, .play-tabs {
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #0e131a;
+}
+.game-switch button, .version-switch a, .play-tabs button { border-radius: 8px; color: #8190a0; }
+.game-switch button.is-active, .version-switch a.is-active, .play-tabs button.is-active {
+  background: var(--lime);
+  color: #091009;
+  box-shadow: none;
+}
+.version-switch strong, .game-switch strong { font-size: 14px; }
+.version-switch span, .game-switch span { font-size: 9px; }
+
+.hero-card {
+  position: relative;
+  border: 1px solid rgba(200,255,72,.28);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(200,255,72,.07), transparent 38%),
+    #111821;
+  box-shadow: 0 18px 50px rgba(0,0,0,.28);
+}
+.hero-card::after {
+  position: absolute; inset: 0; pointer-events: none; content: "";
+  background: linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.8), transparent 72%);
+}
+.hero-card > * { position: relative; z-index: 1; }
+.hero-meta, .source-line { color: #8998a8; }
+.source-line { border-top: 1px solid var(--line); background: rgba(0,0,0,.18); }
+.dan-panel, .pool-panel, .group3-panel {
+  border-color: rgba(219,232,245,.12);
+  border-radius: 10px;
+  background: rgba(5,8,12,.36);
+}
+.dan-panel strong, .single-dan strong, .group3-panel strong, .single-group3 strong { color: var(--lime); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.number-pills span {
+  border: 1px solid rgba(200,255,72,.52);
+  border-radius: 8px;
+  background: rgba(200,255,72,.09);
+  color: var(--lime);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.section-block {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(16,21,29,.88);
+  box-shadow: none;
+}
+.integrity-block, .omission-section { border-left: 1px solid var(--line); border-top: 2px solid rgba(200,255,72,.42); }
+.metric-card, .recent-metric, .history-row, .combination-row {
+  border: 1px solid rgba(219,232,245,.075);
+  border-radius: 10px;
+  background: #131a23;
+}
+.metric-card strong, .recent-metric strong, .combination-metrics strong, .combination-number strong {
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.metric-card small, .recent-metric span, .recent-metric small { color: var(--muted); }
+.recent-metric.one-year, .recent-metric.three-year { border-color: rgba(219,232,245,.075); background: #131a23; }
+.recent-metric b, .warning-note { color: var(--orange); }
+.backfit-chip, .lock-chip { border: 1px solid rgba(200,255,72,.28); background: rgba(200,255,72,.08); color: var(--lime); }
+.audit-links a { border: 1px solid var(--line); border-radius: 8px; background: #131a23; color: #c9d4de; }
+.audit-links a:hover { border-color: rgba(200,255,72,.55); color: var(--lime); }
+
+.history-section { padding-right: 12px; padding-left: 12px; }
+.history-row { border-radius: 9px; background: #111821; }
+.history-date em { border-radius: 4px; background: #202a35; color: #9dacba; }
+.history-data strong { color: #e9eef4; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.hit-badge { border-radius: 5px; background: #242c36; color: #9aa8b6; }
+.hit-badge.is-hit { background: var(--lime); color: #0a110a; }
+.hit-badge.group3 { background: #192842; color: #a9c7ff; }
+.hit-badge.group3.is-covered { background: #203b62; color: #c4dcff; }
+.history-search input, .combination-controls input, .combination-controls select {
+  border-color: var(--line); border-radius: 9px; background: #0c1117; color: var(--ink);
+}
+.history-search input:focus, .combination-controls input:focus, .combination-controls select:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(200,255,72,.1); }
+
+.omission-table tbody th, .omission-table tbody td { background: #111821; }
+.omission-table tbody th b { border-radius: 7px; background: #202a35; color: var(--lime); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.omission-current { color: var(--orange); }
+.omission-max { color: #cbd6df; }
+.formula-content code { border: 1px solid rgba(200,255,72,.25); border-radius: 9px; background: #080c11; color: var(--lime); }
+footer strong { color: #c5d0da; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-card, .section-block { animation: none; }
+}
