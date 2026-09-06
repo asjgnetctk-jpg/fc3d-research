@@ -35,7 +35,6 @@ function renderCurrent() {
   $("#v9-periods").textContent = `${metric.all.count}期`;
   $("#v9-score").textContent = `${metric.all.hits}/${metric.all.count}`;
   $("#v9-detail").textContent = `命中率 ${(metric.all.rate * 100).toFixed(2)}% · 未命中 ${metric.all.misses}期 · 最长连续未中 ${metric.all.maxMiss}期`;
-  $("#v9-group3").innerHTML = `<span>组三覆盖（不计入组六命中）</span><strong>${metric.group3.all.covered}/${metric.group3.all.count} · ${(metric.group3.all.rate * 100).toFixed(2)}%</strong><b>开奖号为组三，两个不同数字均在组合内</b>`;
   const validationLabel = isOneYearVariant ? "近1年独立检验" : `${payload.validation.startDate.slice(0, 4)}年至今独立验证`;
   $("#v9-validation").innerHTML = `<span>${validationLabel}</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
   $("#v9-one-year").innerHTML = `<span>近1年实际结果</span><strong>${metric.recentOneYear.hits}/${metric.recentOneYear.count} · ${(metric.recentOneYear.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.recentOneYear.maxMiss}期</b>`;
