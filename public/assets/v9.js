@@ -21,19 +21,20 @@ function badge(hit) {
 }
 
 function methodText(method) {
-  if (method.family === "fixed") return `训练段固定低命中组合 ${method.pool.join("")}`;
-  return `读取此前${method.window}期，按出现频率、覆盖频率、定位集中度、遗漏和上期重号五项加权排序，取综合分最低的号码。锁定权重为 ${method.occurrence}/${method.presence}/${method.spread}/${method.gap}/${method.last}。`;
+  if (method.family === "fixed") return `训练段固定组合 ${method.pool.join("")}`;
+  return `读取此前${method.window}期，按出现频率、覆盖频率、定位集中度、遗漏、上期重号与历史转移特征加权排序，取综合分最低的号码。所有权重在验证期开始前锁定。`;
 }
 
 function renderCurrent() {
   const pool = payload.recommendation[activePlay];
-  $("#v9-current").innerHTML = `<div class="single-pool"><p>${labels[activePlay]}低命中组合</p><div class="number-pills pool-${pool.length}">${pool.split("").map((digit) => `<span>${digit}</span>`).join("")}</div><small>仅组六三个不同数字全部入池才计为命中</small></div>`;
+  $("#v9-current").innerHTML = `<div class="single-pool"><p>${labels[activePlay]}组合</p><div class="number-pills pool-${pool.length}">${pool.split("").map((digit) => `<span>${digit}</span>`).join("")}</div><small>仅组六三个不同数字全部入池才计为命中</small></div>`;
   const metric = payload.metrics[activePlay];
-  $("#v9-metric-title").textContent = `${labels[activePlay]}低命中战绩`;
+  $("#v9-metric-title").textContent = `${labels[activePlay]}滚动战绩`;
   $("#v9-periods").textContent = `${metric.all.count}期`;
   $("#v9-score").textContent = `${metric.all.hits}/${metric.all.count}`;
   $("#v9-detail").textContent = `命中率 ${(metric.all.rate * 100).toFixed(2)}% · 未命中 ${metric.all.misses}期 · 最长连续未中 ${metric.all.maxMiss}期`;
-  $("#v9-validation").innerHTML = `<span>2019年至今独立验证</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
+  $("#v9-group3").innerHTML = `<span>组三覆盖（不计入组六命中）</span><strong>${metric.group3.all.covered}/${metric.group3.all.count} · ${(metric.group3.all.rate * 100).toFixed(2)}%</strong><b>开奖号为组三，两个不同数字均在组合内</b>`;
+  $("#v9-validation").innerHTML = `<span>2024年至今独立验证</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
   $("#v9-one-year").innerHTML = `<span>近1年实际结果</span><strong>${metric.recentOneYear.hits}/${metric.recentOneYear.count} · ${(metric.recentOneYear.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.recentOneYear.maxMiss}期</b>`;
   $("#v9-formula-text").textContent = `${methodText(payload.methods[activePlay])} 同码数随机组合的理论命中率约为${(payload.randomBaselines[activePlay] * 100).toFixed(1)}%；历史差异不能证明未来概率已改变。`;
   renderHistory();
@@ -46,7 +47,8 @@ function matches(row) {
 }
 
 function historyRow(row) {
-  return `<article class="history-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>滚动</em></div><div class="history-data"><div><span>组合</span><strong>${row[activePlay]}</strong></div><div><span>开奖</span><strong>${row.draw}</strong></div></div><div class="history-result single-result"><div><span>${labels[activePlay]}</span>${badge(row[`${activePlay}Hit`])}<small>断${row[`${activePlay}MissStreak`]}</small></div></div></article>`;
+  const group3Mark = row[`${activePlay}Group3Covered`] ? `<span class="hit-badge group3 is-covered">组三覆盖</span>` : "";
+  return `<article class="history-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>滚动</em></div><div class="history-data"><div><span>组合</span><strong>${row[activePlay]}</strong></div><div><span>开奖</span><strong>${row.draw}</strong></div></div><div class="history-result single-result"><div><span>${labels[activePlay]}</span>${badge(row[`${activePlay}Hit`])}${group3Mark}<small>断${row[`${activePlay}MissStreak`]}</small></div></div></article>`;
 }
 
 function renderHistory() {

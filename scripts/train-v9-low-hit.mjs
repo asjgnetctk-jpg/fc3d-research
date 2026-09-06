@@ -7,8 +7,9 @@ const data = JSON.parse(
   await readFile(path.join(root, "scripts", "data", "fc3d-full-history.json"), "utf8"),
 );
 const rows = data.rows.map((row) => ({ ...row, digits: row.draw.split("").map(Number) }));
-const TRAIN_END = "2018-12-31";
+const TRAIN_END = process.env.V9_TRAIN_END ?? "2023-12-31";
 const START_INDEX = 120;
+const RANDOM_SAMPLES = Number(process.env.V9_RANDOM_SAMPLES ?? 2400);
 const WINDOWS = [7, 14, 21, 30, 50, 80, 120, 200, 365, 730, 1200];
 
 function combinations(values, size, start = 0, prefix = [], output = []) {
@@ -34,6 +35,12 @@ function featureTable(index, window) {
   const occurrence = Array(10).fill(0);
   const presence = Array(10).fill(0);
   const positional = Array.from({ length: 10 }, () => [0, 0, 0]);
+  const transition = Array(10).fill(0);
+  const sumTransition = Array(10).fill(0);
+  const exactTransition = Array(10).fill(0);
+  let transitionWeight = 0;
+  let sumTransitionCount = 0;
+  let exactTransitionCount = 0;
   for (const row of slice) {
     const seen = new Set();
     row.digits.forEach((digit, position) => {
@@ -50,6 +57,27 @@ function featureTable(index, window) {
       if (gap[digit] === slice.length + 1) gap[digit] = distance;
     }
   }
+  const previousDigits = index > 0 ? rows[index - 1].digits : [];
+  const previousSet = new Set(previousDigits);
+  const previousSumClass = previousDigits.reduce((sum, digit) => sum + digit, 0) % 10;
+  const previousSignature = [...previousDigits].sort((a, b) => a - b).join("");
+  for (let cursor = Math.max(1, start); cursor < index; cursor += 1) {
+    const source = rows[cursor - 1];
+    const overlap = [...new Set(source.digits)].filter((digit) => previousSet.has(digit)).length;
+    const nextDigits = new Set(rows[cursor].digits);
+    if (overlap) {
+      transitionWeight += overlap;
+      for (const digit of nextDigits) transition[digit] += overlap;
+    }
+    if (source.digits.reduce((sum, digit) => sum + digit, 0) % 10 === previousSumClass) {
+      sumTransitionCount += 1;
+      for (const digit of nextDigits) sumTransition[digit] += 1;
+    }
+    if ([...source.digits].sort((a, b) => a - b).join("") === previousSignature) {
+      exactTransitionCount += 1;
+      for (const digit of nextDigits) exactTransition[digit] += 1;
+    }
+  }
   const result = Array.from({ length: 10 }, (_, digit) => ({
     digit,
     occurrence: occurrence[digit] / Math.max(1, slice.length * 3),
@@ -58,6 +86,10 @@ function featureTable(index, window) {
       Math.max(...positional[digit]) / Math.max(1, slice.length),
     gap: gap[digit] / Math.max(1, slice.length),
     last: index > 0 && rows[index - 1].digits.includes(digit) ? 1 : 0,
+    transition: transition[digit] / Math.max(1, transitionWeight),
+    sumTransition: sumTransition[digit] / Math.max(1, sumTransitionCount),
+    exactTransition: exactTransition[digit] / Math.max(1, exactTransitionCount),
+    neighbor: previousDigits.some((value) => Math.abs(value - digit) === 1) ? 1 : 0,
   }));
   featureCache.set(cacheKey, result);
   return result;
@@ -73,7 +105,11 @@ function rankPool(index, size, candidate) {
       candidate.presence * item.presence +
       candidate.spread * item.positionalSpread +
       candidate.gap * item.gap +
-      candidate.last * item.last,
+      candidate.last * item.last +
+      (candidate.transition ?? 0) * item.transition +
+      (candidate.sumTransition ?? 0) * item.sumTransition +
+      (candidate.exactTransition ?? 0) * item.exactTransition +
+      (candidate.neighbor ?? 0) * item.neighbor,
   }));
   scored.sort((left, right) => left.score - right.score || left.digit - right.digit);
   return scored.slice(0, size).map((item) => item.digit).sort((a, b) => a - b);
@@ -114,7 +150,7 @@ function candidateSet(size) {
     return (state >>> 0) / 4294967296;
   };
   const pickWeight = () => [-3, -2, -1, 0, 1, 2, 3][Math.floor(random() * 7)];
-  for (let sample = 0; sample < 480; sample += 1) {
+  for (let sample = 0; sample < RANDOM_SAMPLES; sample += 1) {
     const occurrence = pickWeight();
     const presence = pickWeight();
     const gap = pickWeight();
@@ -127,6 +163,10 @@ function candidateSet(size) {
       spread: pickWeight(),
       gap,
       last,
+      transition: pickWeight(),
+      sumTransition: pickWeight(),
+      exactTransition: pickWeight(),
+      neighbor: pickWeight(),
     });
   }
   return candidates;

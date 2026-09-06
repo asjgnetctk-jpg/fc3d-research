@@ -20,6 +20,12 @@ function featureTable(index, window) {
   const occurrence = Array(10).fill(0);
   const presence = Array(10).fill(0);
   const positional = Array.from({ length: 10 }, () => [0, 0, 0]);
+  const transition = Array(10).fill(0);
+  const sumTransition = Array(10).fill(0);
+  const exactTransition = Array(10).fill(0);
+  let transitionWeight = 0;
+  let sumTransitionCount = 0;
+  let exactTransitionCount = 0;
   for (const row of slice) {
     const seen = new Set();
     row.digits.forEach((digit, position) => {
@@ -36,6 +42,27 @@ function featureTable(index, window) {
       if (gap[digit] === slice.length + 1) gap[digit] = distance;
     }
   }
+  const previousDigits = index > 0 ? draws[index - 1].digits : [];
+  const previousSet = new Set(previousDigits);
+  const previousSumClass = previousDigits.reduce((sum, digit) => sum + digit, 0) % 10;
+  const previousSignature = [...previousDigits].sort((a, b) => a - b).join("");
+  for (let cursor = Math.max(1, start); cursor < index; cursor += 1) {
+    const source = draws[cursor - 1];
+    const overlap = [...new Set(source.digits)].filter((digit) => previousSet.has(digit)).length;
+    const nextDigits = new Set(draws[cursor].digits);
+    if (overlap) {
+      transitionWeight += overlap;
+      for (const digit of nextDigits) transition[digit] += overlap;
+    }
+    if (source.digits.reduce((sum, digit) => sum + digit, 0) % 10 === previousSumClass) {
+      sumTransitionCount += 1;
+      for (const digit of nextDigits) sumTransition[digit] += 1;
+    }
+    if ([...source.digits].sort((a, b) => a - b).join("") === previousSignature) {
+      exactTransitionCount += 1;
+      for (const digit of nextDigits) exactTransition[digit] += 1;
+    }
+  }
   return Array.from({ length: 10 }, (_, digit) => ({
     digit,
     occurrence: occurrence[digit] / Math.max(1, slice.length * 3),
@@ -43,6 +70,10 @@ function featureTable(index, window) {
     positionalSpread: Math.max(...positional[digit]) / Math.max(1, slice.length),
     gap: gap[digit] / Math.max(1, slice.length),
     last: index > 0 && draws[index - 1].digits.includes(digit) ? 1 : 0,
+    transition: transition[digit] / Math.max(1, transitionWeight),
+    sumTransition: sumTransition[digit] / Math.max(1, sumTransitionCount),
+    exactTransition: exactTransition[digit] / Math.max(1, exactTransitionCount),
+    neighbor: previousDigits.some((value) => Math.abs(value - digit) === 1) ? 1 : 0,
   }));
 }
 
@@ -56,7 +87,11 @@ function recommend(index, size, candidate) {
         candidate.presence * item.presence +
         candidate.spread * item.positionalSpread +
         candidate.gap * item.gap +
-        candidate.last * item.last,
+        candidate.last * item.last +
+        (candidate.transition ?? 0) * item.transition +
+        (candidate.sumTransition ?? 0) * item.sumTransition +
+        (candidate.exactTransition ?? 0) * item.exactTransition +
+        (candidate.neighbor ?? 0) * item.neighbor,
     }))
     .sort((left, right) => left.score - right.score || left.digit - right.digit)
     .slice(0, size)
@@ -67,6 +102,11 @@ function recommend(index, size, candidate) {
 function hit(draw, pool) {
   const unique = [...new Set(draw.digits)];
   return unique.length === 3 && unique.every((digit) => pool.includes(digit));
+}
+
+function group3Covered(draw, pool) {
+  const unique = [...new Set(draw.digits)];
+  return unique.length === 2 && unique.every((digit) => pool.includes(digit));
 }
 
 function incrementIssue(issue) {
@@ -98,6 +138,16 @@ function metric(rows, key) {
   };
 }
 
+function group3Metric(rows, key) {
+  const group3Rows = rows.filter((row) => new Set(row.draw).size === 2);
+  const covered = group3Rows.filter((row) => row[key]).length;
+  return {
+    count: group3Rows.length,
+    covered,
+    rate: covered / Math.max(1, group3Rows.length),
+  };
+}
+
 const startIndex = draws.findIndex((row) => row.issue === config.training.startIssue);
 const missStreak = { pool5: 0, pool6: 0, pool7: 0, pool8: 0 };
 const history = [];
@@ -108,9 +158,11 @@ for (let index = startIndex; index < draws.length; index += 1) {
     const key = `pool${size}`;
     const pool = recommend(index, size, config.selected[key].candidate);
     const isHit = hit(draw, pool);
+    const isGroup3Covered = group3Covered(draw, pool);
     missStreak[key] = isHit ? 0 : missStreak[key] + 1;
     output[key] = pool.join("");
     output[`${key}Hit`] = isHit;
+    output[`${key}Group3Covered`] = isGroup3Covered;
     output[`${key}MissStreak`] = missStreak[key];
   }
   history.push(output);
@@ -133,6 +185,11 @@ for (const size of [5, 6, 7, 8]) {
     all: metric(history, `${key}Hit`),
     validation: metric(validationRows, `${key}Hit`),
     recentOneYear: metric(recentRows, `${key}Hit`),
+    group3: {
+      all: group3Metric(history, `${key}Group3Covered`),
+      validation: group3Metric(validationRows, `${key}Group3Covered`),
+      recentOneYear: group3Metric(recentRows, `${key}Group3Covered`),
+    },
   };
 }
 

@@ -402,7 +402,7 @@ export default function Home() {
           <strong>V5</strong><span>历史算法</span>
         </Link>
         <Link href={`/v9.html${gameQuery}`}>
-          <strong>V9</strong><span>低命中</span>
+          <strong>V9</strong>
         </Link>
         <Link href={`/omissions.html${gameQuery}`}>
           <strong>遗漏</strong><span>组合</span>

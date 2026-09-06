@@ -33,7 +33,7 @@ jobs:
         env:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-v7-static-data.mjs
-      - name: 生成福彩3D V9低命中实验数据
+      - name: 生成福彩3D V9实验数据
         run: node scripts/generate-v9-static-data.mjs
       - name: 保存验证后的最新开奖和页面数据
         run: |

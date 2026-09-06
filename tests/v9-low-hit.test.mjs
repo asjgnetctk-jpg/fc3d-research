@@ -30,7 +30,19 @@ test("V9 hit flags exactly match the published pools and draws", () => {
       assert.equal(new Set(row[key]).size, size);
       const expected = unique.length === 3 && unique.every((digit) => row[key].includes(digit));
       assert.equal(row[`${key}Hit`], expected, `${row.issue} ${key}`);
+      const expectedGroup3 = unique.length === 2 && unique.every((digit) => row[key].includes(digit));
+      assert.equal(row[`${key}Group3Covered`], expectedGroup3, `${row.issue} ${key} group3`);
     }
+  }
+});
+
+test("V9 group3 coverage totals exactly replay from daily evidence", () => {
+  for (const size of [5, 6, 7, 8]) {
+    const key = `pool${size}`;
+    const group3Rows = data.history.filter((row) => new Set(row.draw).size === 2);
+    const covered = group3Rows.filter((row) => row[`${key}Group3Covered`]).length;
+    assert.equal(data.metrics[key].group3.all.count, group3Rows.length);
+    assert.equal(data.metrics[key].group3.all.covered, covered);
   }
 });
 

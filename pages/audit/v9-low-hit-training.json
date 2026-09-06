@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T12:15:30.045Z",
+  "generatedAt": "2026-09-06T12:32:41.834Z",
   "version": "V9-low-hit-locked",
   "objective": "minimize full-coverage hit rate",
   "hitRule": "开奖号为组六，且三个不同数字全部包含在所选组合中",
@@ -7,74 +7,77 @@
   "training": {
     "startIssue": "2005046",
     "startDate": "2005-02-22",
-    "endIssue": "2018358",
-    "endDate": "2018-12-31",
-    "count": 4967
+    "endIssue": "2023351",
+    "endDate": "2023-12-31",
+    "count": 6684
   },
   "validation": {
-    "startIssue": "2019001",
-    "startDate": "2019-01-01",
+    "startIssue": "2024001",
+    "startDate": "2024-01-01",
     "endIssue": "2026238",
     "endDate": "2026-09-05",
-    "count": 2658
+    "count": 941
   },
   "selected": {
     "pool5": {
       "candidate": {
-        "family": "rolling-rank",
-        "window": 1200,
-        "occurrence": 2,
-        "presence": 2,
-        "spread": 1,
-        "gap": 3,
-        "last": -3
+        "family": "fixed",
+        "pool": [
+          0,
+          1,
+          2,
+          5,
+          7
+        ]
       },
       "training": {
-        "count": 4967,
-        "hits": 253,
-        "rate": 0.050936178779947654,
-        "maxMiss": 81
+        "count": 6684,
+        "hits": 348,
+        "rate": 0.05206463195691203,
+        "maxMiss": 105
       },
       "validation": {
-        "count": 2658,
-        "hits": 170,
-        "rate": 0.06395786305492852,
-        "maxMiss": 82
+        "count": 941,
+        "hits": 56,
+        "rate": 0.05951115834218916,
+        "maxMiss": 81
       },
       "all": {
         "count": 7625,
-        "hits": 423,
-        "rate": 0.055475409836065574,
-        "maxMiss": 82
+        "hits": 404,
+        "rate": 0.05298360655737705,
+        "maxMiss": 105
       }
     },
     "pool6": {
       "candidate": {
-        "family": "rolling-rank",
-        "window": 50,
-        "occurrence": -3,
-        "presence": -3,
-        "spread": -3,
-        "gap": 2,
-        "last": -2
+        "family": "fixed",
+        "pool": [
+          0,
+          1,
+          2,
+          5,
+          7,
+          9
+        ]
       },
       "training": {
-        "count": 4967,
-        "hits": 539,
-        "rate": 0.10851620696597544,
-        "maxMiss": 56
+        "count": 6684,
+        "hits": 729,
+        "rate": 0.10906642728904847,
+        "maxMiss": 66
       },
       "validation": {
-        "count": 2658,
-        "hits": 341,
-        "rate": 0.12829194883370956,
-        "maxMiss": 38
+        "count": 941,
+        "hits": 109,
+        "rate": 0.11583421891604676,
+        "maxMiss": 53
       },
       "all": {
         "count": 7625,
-        "hits": 880,
-        "rate": 0.11540983606557377,
-        "maxMiss": 56
+        "hits": 838,
+        "rate": 0.1099016393442623,
+        "maxMiss": 66
       }
     },
     "pool7": {
@@ -88,16 +91,16 @@
         "last": 1
       },
       "training": {
-        "count": 4967,
-        "hits": 976,
-        "rate": 0.19649687940406685,
+        "count": 6684,
+        "hits": 1309,
+        "rate": 0.19584081388390184,
         "maxMiss": 51
       },
       "validation": {
-        "count": 2658,
-        "hits": 537,
-        "rate": 0.2020316027088036,
-        "maxMiss": 26
+        "count": 941,
+        "hits": 204,
+        "rate": 0.21679064824654623,
+        "maxMiss": 19
       },
       "all": {
         "count": 7625,
@@ -109,29 +112,29 @@
     "pool8": {
       "candidate": {
         "family": "rolling-rank",
-        "window": 50,
-        "occurrence": -3,
+        "window": 14,
+        "occurrence": -1,
         "presence": -3,
-        "spread": 0,
-        "gap": -2,
-        "last": -3
+        "spread": 1,
+        "gap": 1,
+        "last": -1
       },
       "training": {
-        "count": 4967,
-        "hits": 1617,
-        "rate": 0.3255486208979263,
-        "maxMiss": 17
+        "count": 6684,
+        "hits": 2163,
+        "rate": 0.3236086175942549,
+        "maxMiss": 19
       },
       "validation": {
-        "count": 2658,
-        "hits": 897,
-        "rate": 0.33747178329571104,
-        "maxMiss": 19
+        "count": 941,
+        "hits": 323,
+        "rate": 0.3432518597236982,
+        "maxMiss": 13
       },
       "all": {
         "count": 7625,
-        "hits": 2514,
-        "rate": 0.3297049180327869,
+        "hits": 2486,
+        "rate": 0.3260327868852459,
         "maxMiss": 19
       }
     }
