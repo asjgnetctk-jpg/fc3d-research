@@ -126,6 +126,9 @@ const PLAYS: Array<{ key: PlayKey; label: string }> = [
   { key: "group3", label: "组三" },
 ];
 
+const LEGACY_SITE_HOST = "fc3d-research-20260728.asjgne-tctk.chatgpt.site";
+const CURRENT_SITE_ORIGIN = "https://fc3d-terminal-20260906.asjgne-tctk.chatgpt.site";
+
 function BeijingClock() {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
@@ -248,6 +251,13 @@ export default function Home() {
   const [showFormula, setShowFormula] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (window.location.hostname !== LEGACY_SITE_HOST) return;
+    window.location.replace(
+      `${CURRENT_SITE_ORIGIN}${window.location.pathname}${window.location.search}${window.location.hash}`,
+    );
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
