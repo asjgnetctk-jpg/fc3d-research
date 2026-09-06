@@ -3,11 +3,18 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const VARIANT = process.env.V9_VARIANT ?? "v9";
+const CONFIG_NAME = process.env.V9_CONFIG_NAME ?? "v9-low-hit-config.json";
+const RESULT_NAME = process.env.V9_RESULT_NAME ?? "v9-low-hit-training.json";
+const DATA_NAME = `${VARIANT}-data.json`;
+const PAGE_NAME = `${VARIANT}.html`;
+const AUDIT_NAME = process.env.V9_AUDIT_NAME ??
+  (VARIANT === "v9" ? "v9-low-hit-training.json" : `${VARIANT}-training.json`);
 const snapshot = JSON.parse(
   await readFile(path.join(root, "scripts", "data", "fc3d-full-history.json"), "utf8"),
 );
 const config = JSON.parse(
-  await readFile(path.join(root, "lib", "v9-low-hit-config.json"), "utf8"),
+  await readFile(path.join(root, "lib", CONFIG_NAME), "utf8"),
 );
 const draws = snapshot.rows.map((row) => ({
   ...row,
@@ -148,7 +155,8 @@ function group3Metric(rows, key) {
   };
 }
 
-const startIndex = draws.findIndex((row) => row.issue === config.training.startIssue);
+const historyStartDate = config.historyStartDate ?? config.training.startDate;
+const startIndex = draws.findIndex((row) => row.date >= historyStartDate);
 const missStreak = { pool5: 0, pool6: 0, pool7: 0, pool8: 0 };
 const history = [];
 for (let index = startIndex; index < draws.length; index += 1) {
@@ -204,6 +212,7 @@ const payload = {
   hitRule: config.hitRule,
   training: config.training,
   validation: config.validation,
+  historyStartDate,
   dataSha256: snapshot.canonicalSha256,
   methods: Object.fromEntries(
     [5, 6, 7, 8].map((size) => [
@@ -222,26 +231,26 @@ await mkdir(path.join(root, "public", "audit"), { recursive: true });
 await mkdir(path.join(root, "public", "assets"), { recursive: true });
 for (const folder of ["pages", "public"]) {
   await writeFile(
-    path.join(root, folder, "v9-data.json"),
+    path.join(root, folder, DATA_NAME),
     `${JSON.stringify(payload)}\n`,
     "utf8",
   );
 }
 await copyFile(
-  path.join(root, "scripts", "results", "v9-low-hit-training.json"),
-  path.join(root, "pages", "audit", "v9-low-hit-training.json"),
+  path.join(root, "scripts", "results", RESULT_NAME),
+  path.join(root, "pages", "audit", AUDIT_NAME),
 );
 await copyFile(
-  path.join(root, "pages", "audit", "v9-low-hit-training.json"),
-  path.join(root, "public", "audit", "v9-low-hit-training.json"),
+  path.join(root, "pages", "audit", AUDIT_NAME),
+  path.join(root, "public", "audit", AUDIT_NAME),
 );
-await copyFile(path.join(root, "pages", "v9.html"), path.join(root, "public", "v9.html"));
+await copyFile(path.join(root, "pages", PAGE_NAME), path.join(root, "public", PAGE_NAME));
 await copyFile(
   path.join(root, "pages", "assets", "v9.js"),
   path.join(root, "public", "assets", "v9.js"),
 );
 
 console.log(
-  `Generated V9 for ${latest.issue}: ` +
+  `Generated ${config.version} for ${latest.issue}: ` +
     [5, 6, 7, 8].map((size) => `${size}码 ${upcoming[`pool${size}`]}`).join(" · "),
 );

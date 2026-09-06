@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-09-06T12:54:27.422Z",
+  "version": "V9.2-one-year-locked",
+  "objective": "minimize full-coverage hit rate",
+  "hitRule": "开奖号为组六，且三个不同数字全部包含在所选组合中",
+  "noCurrentAnswerLeakage": true,
+  "historyStartDate": "2025-09-05",
+  "training": {
+    "startIssue": "2005046",
+    "startDate": "2005-02-22",
+    "endIssue": "2025237",
+    "endDate": "2025-09-04",
+    "count": 7273
+  },
+  "validation": {
+    "startIssue": "2025238",
+    "startDate": "2025-09-05",
+    "endIssue": "2026238",
+    "endDate": "2026-09-05",
+    "count": 352
+  },
+  "selected": {
+    "pool5": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 30,
+        "occurrence": 2,
+        "presence": -3,
+        "spread": -3,
+        "gap": -2,
+        "last": 1,
+        "transition": 1,
+        "sumTransition": 1,
+        "exactTransition": 1,
+        "neighbor": 1
+      },
+      "training": {
+        "count": 7273,
+        "hits": 384,
+        "rate": 0.052798020074247214,
+        "maxMiss": 124
+      },
+      "validation": {
+        "count": 352,
+        "hits": 20,
+        "rate": 0.056818181818181816,
+        "maxMiss": 37
+      },
+      "all": {
+        "count": 7625,
+        "hits": 404,
+        "rate": 0.05298360655737705,
+        "maxMiss": 124
+      }
+    },
+    "pool6": {
+      "candidate": {
+        "family": "fixed",
+        "pool": [
+          0,
+          1,
+          2,
+          5,
+          7,
+          9
+        ]
+      },
+      "training": {
+        "count": 7273,
+        "hits": 798,
+        "rate": 0.109720885466795,
+        "maxMiss": 66
+      },
+      "validation": {
+        "count": 352,
+        "hits": 40,
+        "rate": 0.11363636363636363,
+        "maxMiss": 43
+      },
+      "all": {
+        "count": 7625,
+        "hits": 838,
+        "rate": 0.1099016393442623,
+        "maxMiss": 66
+      }
+    },
+    "pool7": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 7,
+        "occurrence": -3,
+        "presence": -2,
+        "spread": -1,
+        "gap": 2,
+        "last": 2,
+        "transition": -3,
+        "sumTransition": 1,
+        "exactTransition": -1,
+        "neighbor": 2
+      },
+      "training": {
+        "count": 7273,
+        "hits": 1437,
+        "rate": 0.197580090746597,
+        "maxMiss": 44
+      },
+      "validation": {
+        "count": 352,
+        "hits": 71,
+        "rate": 0.20170454545454544,
+        "maxMiss": 19
+      },
+      "all": {
+        "count": 7625,
+        "hits": 1508,
+        "rate": 0.1977704918032787,
+        "maxMiss": 44
+      }
+    },
+    "pool8": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 14,
+        "occurrence": -2,
+        "presence": -2,
+        "spread": -1,
+        "gap": 2,
+        "last": -1,
+        "transition": 0,
+        "sumTransition": -3,
+        "exactTransition": -3,
+        "neighbor": 0
+      },
+      "training": {
+        "count": 7273,
+        "hits": 2331,
+        "rate": 0.3205004812319538,
+        "maxMiss": 18
+      },
+      "validation": {
+        "count": 352,
+        "hits": 124,
+        "rate": 0.3522727272727273,
+        "maxMiss": 7
+      },
+      "all": {
+        "count": 7625,
+        "hits": 2455,
+        "rate": 0.3219672131147541,
+        "maxMiss": 18
+      }
+    }
+  }
+}

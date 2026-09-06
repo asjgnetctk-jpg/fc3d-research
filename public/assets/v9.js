@@ -1,11 +1,13 @@
 const $ = (selector) => document.querySelector(selector);
 const VERIFIED_DATA_ROOT =
   "https://raw.githubusercontent.com/asjgnetctk-jpg/fc3d-research/main/pages";
+const DATA_FILE = document.body.dataset.v9Data || "v9-data.json";
 const labels = { pool5: "5码", pool6: "6码", pool7: "7码", pool8: "8码" };
 let payload;
 let activePlay = "pool5";
 let showAll = false;
 let searchQuery = "";
+const isOneYearVariant = DATA_FILE === "v9-2-data.json";
 
 function updateBeijingTime() {
   $("#v9-beijing-time").textContent = new Date().toLocaleString("zh-CN", {
@@ -34,8 +36,10 @@ function renderCurrent() {
   $("#v9-score").textContent = `${metric.all.hits}/${metric.all.count}`;
   $("#v9-detail").textContent = `命中率 ${(metric.all.rate * 100).toFixed(2)}% · 未命中 ${metric.all.misses}期 · 最长连续未中 ${metric.all.maxMiss}期`;
   $("#v9-group3").innerHTML = `<span>组三覆盖（不计入组六命中）</span><strong>${metric.group3.all.covered}/${metric.group3.all.count} · ${(metric.group3.all.rate * 100).toFixed(2)}%</strong><b>开奖号为组三，两个不同数字均在组合内</b>`;
-  $("#v9-validation").innerHTML = `<span>2024年至今独立验证</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
+  const validationLabel = isOneYearVariant ? "近1年独立检验" : `${payload.validation.startDate.slice(0, 4)}年至今独立验证`;
+  $("#v9-validation").innerHTML = `<span>${validationLabel}</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
   $("#v9-one-year").innerHTML = `<span>近1年实际结果</span><strong>${metric.recentOneYear.hits}/${metric.recentOneYear.count} · ${(metric.recentOneYear.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.recentOneYear.maxMiss}期</b>`;
+  $("#v9-one-year").hidden = isOneYearVariant;
   $("#v9-formula-text").textContent = `${methodText(payload.methods[activePlay])} 同码数随机组合的理论命中率约为${(payload.randomBaselines[activePlay] * 100).toFixed(1)}%；历史差异不能证明未来概率已改变。`;
   renderHistory();
 }
@@ -62,7 +66,7 @@ function renderHistory() {
 function render(data) {
   payload = data;
   $("#v9-version").textContent = data.formulaVersion;
-  $("#v9-range").textContent = `${data.training.startDate}—${data.sourceUpdatedThrough}`;
+  $("#v9-range").textContent = `${data.historyStartDate || data.training.startDate}—${data.sourceUpdatedThrough}`;
   $("#v9-target").textContent = `第${data.targetIssue}期`;
   $("#v9-based-on").textContent = `基于${data.basedOnIssue}期及此前数据`;
   $("#v9-source").textContent = `官方数据更新至 ${data.sourceUpdatedThrough}`;
@@ -75,7 +79,7 @@ function render(data) {
 async function load() {
   $("#v9-refresh").disabled = true;
   try {
-    const response = await fetch(`${VERIFIED_DATA_ROOT}/v9-data.json?t=${Date.now()}`, { cache: "no-store" });
+    const response = await fetch(`${VERIFIED_DATA_ROOT}/${DATA_FILE}?t=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);
     render(await response.json());
   } catch (error) {

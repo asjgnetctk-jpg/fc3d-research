@@ -10,6 +10,10 @@ const rows = data.rows.map((row) => ({ ...row, digits: row.draw.split("").map(Nu
 const TRAIN_END = process.env.V9_TRAIN_END ?? "2023-12-31";
 const START_INDEX = 120;
 const RANDOM_SAMPLES = Number(process.env.V9_RANDOM_SAMPLES ?? 2400);
+const VERSION = process.env.V9_VERSION ?? "V9-low-hit-locked";
+const CONFIG_NAME = process.env.V9_CONFIG_NAME ?? "v9-low-hit-config.json";
+const RESULT_NAME = process.env.V9_RESULT_NAME ?? "v9-low-hit-training.json";
+const HISTORY_START_DATE = process.env.V9_HISTORY_START_DATE ?? null;
 const WINDOWS = [7, 14, 21, 30, 50, 80, 120, 200, 365, 730, 1200];
 
 function combinations(values, size, start = 0, prefix = [], output = []) {
@@ -198,10 +202,11 @@ for (const size of [5, 6, 7, 8]) {
 
 const report = {
   generatedAt: new Date().toISOString(),
-  version: "V9-low-hit-locked",
+  version: VERSION,
   objective: "minimize full-coverage hit rate",
   hitRule: "开奖号为组六，且三个不同数字全部包含在所选组合中",
   noCurrentAnswerLeakage: true,
+  historyStartDate: HISTORY_START_DATE,
   training: {
     startIssue: rows[START_INDEX].issue,
     startDate: rows[START_INDEX].date,
@@ -220,12 +225,12 @@ const report = {
 };
 
 await writeFile(
-  path.join(root, "lib", "v9-low-hit-config.json"),
+  path.join(root, "lib", CONFIG_NAME),
   `${JSON.stringify(report, null, 2)}\n`,
   "utf8",
 );
 await writeFile(
-  path.join(root, "scripts", "results", "v9-low-hit-training.json"),
+  path.join(root, "scripts", "results", RESULT_NAME),
   `${JSON.stringify(report, null, 2)}\n`,
   "utf8",
 );

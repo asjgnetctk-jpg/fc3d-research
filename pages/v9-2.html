@@ -9,17 +9,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#163f31" />
-    <meta name="description" content="福彩3D V9滚动实验：5码、6码、7码、8码逐期证据。" />
-    <title>福彩3D · V9</title>
+    <meta name="description" content="福彩3D V9.2近一年独立滚动实验：5码、6码、7码、8码逐期证据。" />
+    <title>福彩3D · V9.2</title>
     <link rel="stylesheet" href="./styles.css?v=20260906-v9-2" />
     <script src="./assets/v9.js?v=20260906-v9-2" defer></script>
   </head>
-  <body>
+  <body data-v9-data="v9-2-data.json">
     <main class="app-shell terminal-shell">
       <header class="topbar">
         <div class="terminal-brand">
-          <span class="brand-sigil" aria-hidden="true">V9</span>
-          <div><p class="eyebrow">福彩3D · 反向滚动实验</p><h1>V9</h1></div>
+          <span class="brand-sigil" aria-hidden="true">9.2</span>
+          <div><p class="eyebrow">福彩3D · 近一年独立回放</p><h1>V9.2</h1></div>
         </div>
         <div class="terminal-actions"><button id="v9-refresh" class="refresh-button" type="button">刷新</button></div>
       </header>
@@ -30,12 +30,12 @@
         <a href="./"><strong>V7</strong></a>
         <a href="./v2.html"><strong>V2</strong></a>
         <a href="./v5.html"><strong>V5</strong></a>
-        <a class="is-active" href="./v9.html" aria-current="page"><strong>V9</strong></a>
-        <a href="./v9-2.html"><strong>V9.2</strong></a>
+        <a href="./v9.html"><strong>V9</strong></a>
+        <a class="is-active" href="./v9-2.html" aria-current="page"><strong>V9.2</strong></a>
         <a href="./omissions.html"><strong>遗漏</strong></a>
       </nav>
 
-      <div id="v9-loading" class="notice">正在读取V9逐期结果…</div>
+      <div id="v9-loading" class="notice">正在读取V9.2逐期结果…</div>
       <div id="v9-error" class="notice error" hidden></div>
       <div id="v9-content" hidden>
         <section class="status-strip">
@@ -43,11 +43,11 @@
         </section>
 
         <section class="section-block integrity-block">
-          <p class="section-note">本页用于检验历史数据中的反向表现。每期推荐只读取该期开奖前的数据；参数使用2005—2023年训练，2024年至今单列验证。历史结果不代表未来能够稳定避开开奖号。</p>
-          <div class="audit-links"><a href="./audit/v9-low-hit-training.json">查看V9训练参数与完整结果</a></div>
+          <p class="section-note">本页只统计最近1年的逐期结果。参数在这一年开始前完成训练并锁定，最近1年不参与反选；每期组合只读取该期开奖前的数据。历史结果不能证明未来概率改变。</p>
+          <div class="audit-links"><a href="./audit/v9-2-training.json">查看V9.2训练参数与完整结果</a></div>
         </section>
 
-        <nav class="play-tabs four-plays" aria-label="切换V9组合">
+        <nav class="play-tabs four-plays" aria-label="切换V9.2组合">
           <button class="is-active" data-play="pool5">5码</button>
           <button data-play="pool6">6码</button>
           <button data-play="pool7">7码</button>
@@ -61,8 +61,8 @@
         </section>
 
         <section class="section-block total-result">
-          <div class="section-heading"><div><p class="eyebrow">20多年逐期滚动结果</p><h2 id="v9-metric-title"></h2></div><span id="v9-periods" class="backfit-chip"></span></div>
-          <div class="metric-card"><span>全部历史命中</span><strong id="v9-score"></strong><small id="v9-detail"></small></div>
+          <div class="section-heading"><div><p class="eyebrow">最近1年逐期滚动结果</p><h2 id="v9-metric-title"></h2></div><span id="v9-periods" class="backfit-chip"></span></div>
+          <div class="metric-card"><span>近一年实际命中</span><strong id="v9-score"></strong><small id="v9-detail"></small></div>
           <div id="v9-group3" class="recent-metric"></div>
           <div id="v9-validation" class="recent-metric three-year"></div>
           <div id="v9-one-year" class="recent-metric one-year"></div>
@@ -76,7 +76,7 @@
         </section>
 
         <section class="section-block formula-block">
-          <button id="v9-toggle-formula" class="formula-toggle" type="button" aria-expanded="false"><span><small>V9计算规则</small><strong>这项每天怎么选？</strong></span><b>+</b></button>
+          <button id="v9-toggle-formula" class="formula-toggle" type="button" aria-expanded="false"><span><small>V9.2计算规则</small><strong>这项每天怎么选？</strong></span><b>+</b></button>
           <div id="v9-formula" class="formula-content" hidden><p id="v9-formula-text"></p></div>
         </section>
 
