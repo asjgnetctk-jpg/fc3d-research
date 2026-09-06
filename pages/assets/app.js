@@ -1,4 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
+const VERIFIED_DATA_ROOT =
+  "https://raw.githubusercontent.com/asjgnetctk-jpg/fc3d-research/main/pages";
 const labels = { dan: "独胆", pool5: "5码", pool6: "6码", pool7: "7码", group3: "组三" };
 const auditPrefix = window.LotteryGame?.id === "pl3" ? "pl3-" : "";
 let payload;
@@ -246,7 +248,7 @@ async function load() {
   $("#refresh").disabled = true;
   try {
     const dataFile = window.LotteryGame?.file("data.json") ?? "data.json";
-    const response = await fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" });
+    const response = await fetch(`${VERIFIED_DATA_ROOT}/${dataFile}?t=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);
     render(await response.json());
   } catch (error) {

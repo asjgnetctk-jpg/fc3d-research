@@ -1,4 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
+const VERIFIED_DATA_ROOT =
+  "https://raw.githubusercontent.com/asjgnetctk-jpg/fc3d-research/main/pages";
 
 let payload;
 let activeSize = 3;
@@ -157,7 +159,7 @@ async function load() {
   try {
     const dataFile =
       window.LotteryGame?.file("omissions-data.json") ?? "omissions-data.json";
-    const response = await fetch(`./${dataFile}?t=${Date.now()}`, {
+    const response = await fetch(`${VERIFIED_DATA_ROOT}/${dataFile}?t=${Date.now()}`, {
       cache: "no-store",
     });
     if (!response.ok) throw new Error(`数据请求失败：HTTP ${response.status}`);
