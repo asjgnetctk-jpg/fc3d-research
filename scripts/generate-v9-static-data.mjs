@@ -201,6 +201,38 @@ for (const size of [5, 6, 7, 8]) {
   };
 }
 
+async function versionComparison(fileName) {
+  try {
+    const source = JSON.parse(
+      await readFile(path.join(root, "pages", fileName), "utf8"),
+    );
+    const rows = source.rows.filter(
+      (row) => row.date >= historyStartDate && row.date <= latest.date,
+    );
+    return Object.fromEntries(
+      [5, 6, 7, 8].map((size) => {
+        const key = `pool${size}Hit`;
+        const eligible = rows.filter((row) => Object.hasOwn(row, key));
+        if (!eligible.length) return [`pool${size}`, null];
+        const hits = eligible.filter((row) => row[key]).length;
+        return [
+          `pool${size}`,
+          { count: eligible.length, hits, rate: hits / eligible.length },
+        ];
+      }),
+    );
+  } catch {
+    return null;
+  }
+}
+
+const comparisons = VARIANT === "v9-2"
+  ? {
+      V2: await versionComparison("v2-data.json"),
+      V5: await versionComparison("v5-data.json"),
+    }
+  : null;
+
 const payload = {
   generatedAt: new Date().toISOString(),
   formulaVersion: config.version,
@@ -224,6 +256,7 @@ const payload = {
   recommendation: upcoming,
   history,
   metrics,
+  comparisons,
 };
 
 await mkdir(path.join(root, "pages", "audit"), { recursive: true });

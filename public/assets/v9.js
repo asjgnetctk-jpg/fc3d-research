@@ -40,7 +40,24 @@ function renderCurrent() {
   $("#v9-one-year").innerHTML = `<span>近1年实际结果</span><strong>${metric.recentOneYear.hits}/${metric.recentOneYear.count} · ${(metric.recentOneYear.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.recentOneYear.maxMiss}期</b>`;
   $("#v9-one-year").hidden = isOneYearVariant;
   $("#v9-formula-text").textContent = `${methodText(payload.methods[activePlay])} 同码数随机组合的理论命中率约为${(payload.randomBaselines[activePlay] * 100).toFixed(1)}%；历史差异不能证明未来概率已改变。`;
+  renderComparison();
   renderHistory();
+}
+
+function renderComparison() {
+  const section = $("#v9-comparison-section");
+  const grid = $("#v9-comparison-grid");
+  if (!section || !grid || !payload.comparisons) return;
+  const entries = [
+    ["V9.2", payload.metrics[activePlay].all],
+    ["V2", payload.comparisons.V2?.[activePlay]],
+    ["V5", payload.comparisons.V5?.[activePlay]],
+  ];
+  grid.innerHTML = entries.map(([name, item]) => {
+    if (!item) return `<div class="benchmark-card is-empty"><span>${name}</span><strong>无此玩法</strong></div>`;
+    return `<div class="benchmark-card"><span>${name}</span><strong>${(item.rate * 100).toFixed(2)}%</strong><small>${item.hits}/${item.count}期</small></div>`;
+  }).join("");
+  section.hidden = false;
 }
 
 function matches(row) {

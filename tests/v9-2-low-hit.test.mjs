@@ -3,6 +3,8 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/v9-2-data.json", import.meta.url), "utf8"));
+const v2 = JSON.parse(await readFile(new URL("../pages/v2-data.json", import.meta.url), "utf8"));
+const v5 = JSON.parse(await readFile(new URL("../pages/v5-data.json", import.meta.url), "utf8"));
 
 test("V9.2 only publishes the locked one-year replay", () => {
   assert.ok(data.history.length >= 300 && data.history.length <= 370);
@@ -29,5 +31,22 @@ test("V9.2 summary exactly matches its published one-year rows", () => {
     assert.equal(data.metrics[key].all.hits, hits);
     assert.equal(data.metrics[key].group3.all.count, group3Rows.length);
     assert.equal(data.metrics[key].group3.all.covered, covered);
+  }
+});
+
+test("V9.2 V2/V5 comparisons use the identical one-year date range", () => {
+  for (const [name, source] of [["V2", v2], ["V5", v5]]) {
+    const rows = source.rows.filter((row) => row.date >= data.historyStartDate && row.date <= data.basedOnDate);
+    for (const size of [5, 6, 7, 8]) {
+      const key = `pool${size}Hit`;
+      const eligible = rows.filter((row) => Object.hasOwn(row, key));
+      const published = data.comparisons[name][`pool${size}`];
+      if (!eligible.length) {
+        assert.equal(published, null);
+        continue;
+      }
+      assert.equal(published.count, eligible.length);
+      assert.equal(published.hits, eligible.filter((row) => row[key]).length);
+    }
   }
 });
