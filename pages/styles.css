@@ -526,3 +526,9 @@ body { background:var(--paper); font-family:"PingFang SC","Microsoft YaHei",sans
 .terminal-shell .omission-table tbody th,.terminal-shell .omission-table tbody td { background:#f5f7f1; }
 @media (min-width:940px) { .terminal-shell { display:block; } .terminal-shell > #content:not([hidden]),.terminal-shell > #v2-content:not([hidden]),.terminal-shell > #v5-content:not([hidden]),.terminal-shell > #omission-content:not([hidden]) { display:block; } }
 @media (max-width:560px) { .terminal-shell { padding:14px 12px 36px; } .terminal-shell .hero-card { min-height:280px; } .terminal-shell .single-dan strong { font-size:108px; } }
+
+/* Improve omission contrast without making non-hit states feel harsh. */
+.terminal-shell .omission-max { color:#426452; }
+.terminal-shell .omission-max b { color:#163f31; }
+.terminal-shell .hit-badge:not(.is-hit):not(.group3):not(.is-skip) { background:#e6e4dd; color:#59615b; }
+.terminal-shell .hit-badge.is-skip { background:#ecefe9; color:#657067; }
