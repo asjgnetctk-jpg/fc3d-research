@@ -26,7 +26,9 @@ button { font: inherit; }
 .version-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 8px; padding: 5px; border-radius: 18px; background: rgba(22,63,49,.08); }
 .version-switch.three-versions { grid-template-columns:repeat(3,minmax(0,1fr)); }
 .version-switch.four-versions { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.version-switch.five-versions { grid-template-columns:repeat(5,minmax(0,1fr)); }
 .version-switch.four-versions a { gap:4px; padding-right:7px; padding-left:7px; }
+.version-switch.five-versions a { gap:3px; padding-right:6px; padding-left:6px; }
 .version-switch a { display: flex; align-items: baseline; justify-content: center; gap: 7px; padding: 11px 12px; border-radius: 14px; color: var(--muted); text-decoration: none; }
 .version-switch a.is-active { background: var(--forest); color: #fff; box-shadow: 0 6px 16px rgba(22,63,49,.18); }
 .version-switch strong { font-size: 17px; }
@@ -134,7 +136,7 @@ footer p { margin: 8px auto; font-size: 11px; line-height: 1.6; }
 footer span { font-size: 9px; }
 @media (max-width: 430px) {
   .app-shell { padding-right: 12px; padding-left: 12px; }
-  .version-switch.four-versions span { display:none; }
+  .version-switch.four-versions span,.version-switch.five-versions span { display:none; }
   .hero-card { padding: 16px; }
   .hero-meta { flex-direction: column; gap: 3px; }
   .recommendation-grid { grid-template-columns: .66fr 1.34fr; gap: 8px; }

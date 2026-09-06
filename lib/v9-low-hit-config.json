@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-09-06T12:15:30.045Z",
+  "version": "V9-low-hit-locked",
+  "objective": "minimize full-coverage hit rate",
+  "hitRule": "开奖号为组六，且三个不同数字全部包含在所选组合中",
+  "noCurrentAnswerLeakage": true,
+  "training": {
+    "startIssue": "2005046",
+    "startDate": "2005-02-22",
+    "endIssue": "2018358",
+    "endDate": "2018-12-31",
+    "count": 4967
+  },
+  "validation": {
+    "startIssue": "2019001",
+    "startDate": "2019-01-01",
+    "endIssue": "2026238",
+    "endDate": "2026-09-05",
+    "count": 2658
+  },
+  "selected": {
+    "pool5": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 1200,
+        "occurrence": 2,
+        "presence": 2,
+        "spread": 1,
+        "gap": 3,
+        "last": -3
+      },
+      "training": {
+        "count": 4967,
+        "hits": 253,
+        "rate": 0.050936178779947654,
+        "maxMiss": 81
+      },
+      "validation": {
+        "count": 2658,
+        "hits": 170,
+        "rate": 0.06395786305492852,
+        "maxMiss": 82
+      },
+      "all": {
+        "count": 7625,
+        "hits": 423,
+        "rate": 0.055475409836065574,
+        "maxMiss": 82
+      }
+    },
+    "pool6": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 50,
+        "occurrence": -3,
+        "presence": -3,
+        "spread": -3,
+        "gap": 2,
+        "last": -2
+      },
+      "training": {
+        "count": 4967,
+        "hits": 539,
+        "rate": 0.10851620696597544,
+        "maxMiss": 56
+      },
+      "validation": {
+        "count": 2658,
+        "hits": 341,
+        "rate": 0.12829194883370956,
+        "maxMiss": 38
+      },
+      "all": {
+        "count": 7625,
+        "hits": 880,
+        "rate": 0.11540983606557377,
+        "maxMiss": 56
+      }
+    },
+    "pool7": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 7,
+        "occurrence": 0,
+        "presence": -3,
+        "spread": -3,
+        "gap": 1,
+        "last": 1
+      },
+      "training": {
+        "count": 4967,
+        "hits": 976,
+        "rate": 0.19649687940406685,
+        "maxMiss": 51
+      },
+      "validation": {
+        "count": 2658,
+        "hits": 537,
+        "rate": 0.2020316027088036,
+        "maxMiss": 26
+      },
+      "all": {
+        "count": 7625,
+        "hits": 1513,
+        "rate": 0.19842622950819672,
+        "maxMiss": 51
+      }
+    },
+    "pool8": {
+      "candidate": {
+        "family": "rolling-rank",
+        "window": 50,
+        "occurrence": -3,
+        "presence": -3,
+        "spread": 0,
+        "gap": -2,
+        "last": -3
+      },
+      "training": {
+        "count": 4967,
+        "hits": 1617,
+        "rate": 0.3255486208979263,
+        "maxMiss": 17
+      },
+      "validation": {
+        "count": 2658,
+        "hits": 897,
+        "rate": 0.33747178329571104,
+        "maxMiss": 19
+      },
+      "all": {
+        "count": 7625,
+        "hits": 2514,
+        "rate": 0.3297049180327869,
+        "maxMiss": 19
+      }
+    }
+  }
+}

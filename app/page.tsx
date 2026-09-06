@@ -391,7 +391,7 @@ export default function Home() {
         </button>
       </nav>
 
-      <nav className="version-switch four-versions" aria-label="切换研究页面">
+      <nav className="version-switch five-versions" aria-label="切换研究页面">
         <Link className="is-active" href={`/${gameQuery}`} aria-current="page">
           <strong>V7</strong><span>当前算法</span>
         </Link>
@@ -400,6 +400,9 @@ export default function Home() {
         </Link>
         <Link href={`/v5.html${gameQuery}`}>
           <strong>V5</strong><span>历史算法</span>
+        </Link>
+        <Link href={`/v9.html${gameQuery}`}>
+          <strong>V9</strong><span>低命中</span>
         </Link>
         <Link href={`/omissions.html${gameQuery}`}>
           <strong>遗漏</strong><span>组合</span>

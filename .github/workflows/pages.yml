@@ -33,6 +33,8 @@ jobs:
         env:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-v7-static-data.mjs
+      - name: 生成福彩3D V9低命中实验数据
+        run: node scripts/generate-v9-static-data.mjs
       - name: 保存验证后的最新开奖和页面数据
         run: |
           if ! git diff --quiet -- scripts/data/fc3d-full-history.json scripts/results/full-history-integrity.json scripts/data/pl3-full-history.json scripts/results/pl3-full-history-integrity.json pages public; then
