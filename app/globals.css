@@ -1311,3 +1311,78 @@ footer strong { color: #c5d0da; }
 @media (prefers-reduced-motion: no-preference) {
   .hero-card, .section-block { animation: none; }
 }
+
+/* Terminal layout v2: a structural dashboard treatment, not only a palette swap. */
+.terminal-shell {
+  width: min(100%, 1180px);
+  padding: 22px 20px 64px;
+  isolation: isolate;
+}
+.terminal-shell .topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  min-height: 92px;
+  margin: 0 0 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(210, 231, 246, .16);
+  border-radius: 3px;
+  background: linear-gradient(105deg, #121a24, #0c1016 72%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 18px 44px rgba(0,0,0,.22);
+}
+.terminal-shell .topbar::before { position:absolute; top:-1px; left:18px; width:92px; height:2px; content:""; background:var(--lime); box-shadow:120px 0 0 rgba(200,255,72,.24); }
+.terminal-brand { display:flex; min-width:0; align-items:center; gap:13px; }
+.brand-sigil { display:grid; width:48px; height:48px; flex:0 0 48px; place-items:center; border:1px solid rgba(200,255,72,.72); border-radius:2px; background:linear-gradient(135deg, rgba(200,255,72,.2), rgba(200,255,72,.02)); color:var(--lime); font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:13px; font-weight:900; letter-spacing:.04em; }
+.terminal-shell .topbar .eyebrow { margin:0 0 3px; color:#98a7b6; letter-spacing:.2em; }
+.terminal-shell .topbar h1 { margin:0; color:#f7fafc; font-size:clamp(27px, 4vw, 38px); line-height:1.02; letter-spacing:-.055em; }
+.terminal-actions { display:flex; align-items:center; align-self:center; gap:9px; }
+.live-readout { color:#aab7c4; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:9px; font-weight:800; letter-spacing:.13em; white-space:nowrap; }
+.live-readout::before { display:inline-block; width:6px; height:6px; margin-right:6px; border-radius:50%; content:""; background:var(--lime); box-shadow:0 0 11px rgba(200,255,72,.85); vertical-align:1px; }
+.terminal-shell .refresh-button { min-height:36px; padding:0 13px; border-radius:2px; background:#171f29; font-size:11px; }
+.terminal-shell .beijing-clock { display:grid; grid-template-columns:1fr auto; margin:0 0 10px; padding:8px 12px; border-radius:2px; background:#0c1118; }
+.terminal-shell .beijing-clock span { color:#7e8d9e; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.1em; }
+.terminal-shell .beijing-clock strong { color:#dce7f0; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.terminal-shell .version-switch,.terminal-shell .game-switch,.terminal-shell .play-tabs { min-height:48px; border-radius:3px; background:#0b1016; box-shadow:inset 0 0 0 1px rgba(210,231,246,.1); }
+.terminal-shell .version-switch { margin-bottom:12px; }
+.terminal-shell .version-switch a,.terminal-shell .game-switch button,.terminal-shell .play-tabs button { border-radius:2px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.02em; }
+.terminal-shell .version-switch a.is-active,.terminal-shell .game-switch button.is-active,.terminal-shell .play-tabs button.is-active { box-shadow:inset 0 -2px 0 #efffb8; }
+.terminal-shell .status-strip { min-height:38px; margin:0 0 12px; padding:0 12px; border-radius:2px; background:#0d131b; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:10px; letter-spacing:.035em; }
+.terminal-shell .section-block { position:relative; overflow:hidden; margin-bottom:12px; padding:18px; border-color:rgba(210,231,246,.12); border-radius:3px; background:linear-gradient(135deg, rgba(20,28,38,.98), rgba(12,17,24,.98)); }
+.terminal-shell .section-block::before { position:absolute; top:0; left:0; width:3px; height:100%; content:""; background:#506274; }
+.terminal-shell .integrity-block::before,.terminal-shell .omission-section::before,.terminal-shell .total-result::before { background:var(--lime); }
+.terminal-shell .section-heading { margin-bottom:15px; padding-bottom:12px; border-bottom:1px solid rgba(210,231,246,.1); }
+.terminal-shell .section-heading .eyebrow { color:#77899a; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; }
+.terminal-shell .section-heading h2 { color:#edf4fa; font-size:20px; letter-spacing:-.04em; }
+.terminal-shell .backfit-chip { border-radius:2px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:10px; letter-spacing:.04em; }
+.terminal-shell .hero-card { min-height:330px; margin-bottom:12px; padding:22px; border-radius:3px; background:radial-gradient(circle at 86% 16%, rgba(200,255,72,.16), transparent 25%), linear-gradient(135deg, #182433, #0c1118 68%); }
+.terminal-shell .hero-card::before { position:absolute; top:18px; right:20px; z-index:1; content:"RECOMMENDATION / TODAY"; color:rgba(220,235,245,.38); font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:9px; letter-spacing:.12em; }
+.terminal-shell .hero-meta { display:flex; gap:10px; margin-right:0; padding-right:0; color:#a1b1c0; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:11px; }
+.terminal-shell .single-dan,.terminal-shell .single-pool,.terminal-shell .single-group3 { min-height:224px; padding:32px 0 0; }
+.terminal-shell .single-dan strong { color:#dcff78; font-size:clamp(126px,22vw,188px); text-shadow:0 0 26px rgba(200,255,72,.1); }
+.terminal-shell .single-pool .number-pills { max-width:560px; margin-top:20px; }
+.terminal-shell .number-pills span { min-height:58px; border-radius:2px; font-size:26px; }
+.terminal-shell .single-group3 b { color:#f4f8fb; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.terminal-shell .source-line { margin:14px -22px -22px; padding:12px 22px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:10px; }
+.terminal-shell .metric-card { min-height:150px; padding:18px; border-radius:2px; background:#0a0f15; }
+.terminal-shell .metric-card strong { color:#f4f8fb; font-size:clamp(35px,5vw,54px); letter-spacing:-.06em; }
+.terminal-shell .metric-card::after { display:block; width:100%; height:2px; margin-top:15px; content:""; background:linear-gradient(90deg, var(--lime), transparent 56%); }
+.terminal-shell .recent-metric { position:relative; min-height:74px; padding:14px 16px; border-radius:2px; background:#101720; }
+.terminal-shell .recent-metric::after { position:absolute; top:0; right:0; bottom:0; width:3px; content:""; background:#496071; }
+.terminal-shell .recent-metric.one-year::after { background:var(--lime); }
+.terminal-shell .history-section { padding-right:18px; padding-left:18px; }
+.terminal-shell .history-search { margin:0 0 13px; }
+.terminal-shell .history-search input { min-height:44px; border-radius:2px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.terminal-shell .history-list { gap:0; overflow:hidden; border:1px solid rgba(210,231,246,.1); border-radius:2px; }
+.terminal-shell .history-row { min-height:76px; margin:0; padding:10px 12px; border:0; border-bottom:1px solid rgba(210,231,246,.08); border-radius:0; background:#0d131b; }
+.terminal-shell .history-row:nth-child(even) { background:#111923; }
+.terminal-shell .history-row:last-child { border-bottom:0; }
+.terminal-shell .history-date { border-right:1px solid rgba(210,231,246,.09); }
+.terminal-shell .history-date strong,.terminal-shell .history-data strong { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.terminal-shell .hit-badge { border-radius:2px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:10px; }
+.terminal-shell .secondary-button { min-height:42px; margin-top:13px; border-radius:2px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.terminal-shell .omission-table-wrap { border:1px solid rgba(210,231,246,.1); border-radius:2px; }
+.terminal-shell .omission-table tbody th,.terminal-shell .omission-table tbody td { background:#0d131b; }
+.terminal-shell .formula-toggle { border-radius:2px; }
+.terminal-shell footer { padding:18px 2px 0; border-top:1px solid rgba(210,231,246,.1); font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+@media (min-width:940px) { .terminal-shell { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(300px,.78fr); gap:0 14px; } .terminal-shell > .topbar,.terminal-shell > .beijing-clock,.terminal-shell > .game-switch,.terminal-shell > .version-switch,.terminal-shell > .version-note,.terminal-shell > .notice,.terminal-shell > .status-strip,.terminal-shell > .integrity-block,.terminal-shell > .omission-section,.terminal-shell > .play-tabs,.terminal-shell > .history-section,.terminal-shell > .formula-block,.terminal-shell > footer { grid-column:1 / -1; } .terminal-shell > .play-hero { grid-column:1; } .terminal-shell > .total-result { grid-column:2; align-self:stretch; } .terminal-shell > .total-result .metric-card { min-height:166px; } }
+@media (max-width:560px) { .terminal-shell { padding:10px 10px 40px; } .terminal-shell .topbar { min-height:76px; gap:10px; padding:12px; } .brand-sigil { width:38px; height:38px; flex-basis:38px; font-size:10px; } .terminal-shell .topbar h1 { font-size:25px; } .terminal-actions { gap:5px; } .live-readout { display:none; } .terminal-shell .refresh-button { padding:0 9px; } .terminal-shell .hero-card { min-height:294px; padding:16px; } .terminal-shell .hero-card::before { top:15px; right:16px; font-size:8px; } .terminal-shell .single-dan,.terminal-shell .single-pool,.terminal-shell .single-group3 { min-height:204px; padding-top:34px; } .terminal-shell .single-dan strong { font-size:132px; } .terminal-shell .number-pills span { min-height:46px; font-size:22px; } .terminal-shell .source-line { margin:12px -16px -16px; padding:10px 16px; } .terminal-shell .section-block { padding:15px; } .terminal-shell .history-section { padding-right:12px; padding-left:12px; } }

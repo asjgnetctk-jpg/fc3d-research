@@ -11,13 +11,19 @@
     <script src="./assets/v2.js?v=20260731-pl3" defer></script>
   </head>
   <body>
-    <main class="app-shell">
+    <main class="app-shell terminal-shell">
       <header class="topbar">
-        <div>
+        <div class="terminal-brand">
+          <span class="brand-sigil" aria-hidden="true">V2</span>
+          <div>
           <p class="eyebrow">福彩3D · 独立模型</p>
           <h1>V2</h1>
+          </div>
         </div>
-        <button id="v2-refresh" class="refresh-button" type="button">刷新</button>
+        <div class="terminal-actions">
+          <span class="live-readout">MODEL / 02</span>
+          <button id="v2-refresh" class="refresh-button" type="button">刷新</button>
+        </div>
       </header>
 
       <nav class="version-switch four-versions" aria-label="切换研究页面">

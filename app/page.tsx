@@ -343,19 +343,25 @@ export default function Home() {
         : recommendation.pool7;
 
   return (
-    <main className="app-shell">
+    <main className="app-shell terminal-shell">
       <header className="topbar">
-        <div>
+        <div className="terminal-brand">
+          <span className="brand-sigil" aria-hidden="true">3D</span>
+          <div>
           <p className="eyebrow">{gameName} · 私人研究台</p>
           <h1>五项滚动研究</h1>
+          </div>
         </div>
-        <button
-          className="refresh-button"
-          onClick={() => void load()}
-          disabled={loading}
-        >
-          {loading ? "刷新中" : "刷新"}
-        </button>
+        <div className="terminal-actions">
+          <span className="live-readout">LIVE / DATA</span>
+          <button
+            className="refresh-button"
+            onClick={() => void load()}
+            disabled={loading}
+          >
+            {loading ? "刷新中" : "刷新"}
+          </button>
+        </div>
       </header>
 
       <BeijingClock />

@@ -4,7 +4,7 @@ export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const STATIC_DATA_ROOT =
-  "https://asjgnetctk-jpg.github.io/fc3d-research";
+  "https://raw.githubusercontent.com/asjgnetctk-jpg/fc3d-research/main/pages";
 
 export async function GET(request: Request) {
   try {

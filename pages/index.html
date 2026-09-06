@@ -11,13 +11,19 @@
     <script src="./assets/app.js?v=20260731-pl3" defer></script>
   </head>
   <body>
-    <main class="app-shell">
+    <main class="app-shell terminal-shell">
       <header class="topbar">
-        <div>
+        <div class="terminal-brand">
+          <span class="brand-sigil" aria-hidden="true">3D</span>
+          <div>
           <p class="eyebrow">福彩3D · 私人研究台</p>
           <h1>五项滚动研究</h1>
+          </div>
         </div>
-        <button id="refresh" class="refresh-button" type="button">刷新</button>
+        <div class="terminal-actions">
+          <span class="live-readout">LIVE / DATA</span>
+          <button id="refresh" class="refresh-button" type="button">刷新</button>
+        </div>
       </header>
 
       <div class="beijing-clock">
