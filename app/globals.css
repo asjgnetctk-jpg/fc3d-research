@@ -1403,3 +1403,9 @@ body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; }
 .terminal-shell .omission-max b { color:#163f31; }
 .terminal-shell .hit-badge:not(.is-hit):not(.group3):not(.is-skip) { background:#e6e4dd; color:#59615b; }
 .terminal-shell .hit-badge.is-skip { background:#ecefe9; color:#657067; }
+
+/* Mobile readability: restore the data colors overridden by the retired dark theme. */
+.terminal-shell .history-data strong,.terminal-shell .history-result strong { color:#173f31; }
+.terminal-shell .history-data span,.terminal-shell .history-result span,.terminal-shell .history-data small,.terminal-shell .history-result small { color:#55645b; }
+.terminal-shell .omission-table tbody th b { background:#31493d; color:#edf5c8; }
+.terminal-shell .status-dot { background:#5f923d; box-shadow:0 0 0 4px rgba(95,146,61,.18); }
