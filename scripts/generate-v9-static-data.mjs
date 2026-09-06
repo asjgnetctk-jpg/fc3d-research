@@ -211,6 +211,7 @@ const payload = {
   objective: "在不读取当期开奖的前提下，尽量降低组六全覆盖命中率",
   hitRule: config.hitRule,
   training: config.training,
+  selection: config.selection ?? null,
   validation: config.validation,
   historyStartDate,
   dataSha256: snapshot.canonicalSha256,

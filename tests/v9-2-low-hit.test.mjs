@@ -3,6 +3,17 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/v9-2-data.json", import.meta.url), "utf8"));
+const audit = JSON.parse(await readFile(new URL("../pages/audit/v9-2-training.json", import.meta.url), "utf8"));
+
+test("V9.2 locks candidates before the one-year holdout", () => {
+  assert.equal(audit.noCurrentAnswerLeakage, true);
+  assert.equal(audit.version, "V9.2-nested-holdout-locked");
+  assert.equal(audit.selection.randomCandidateCount, 20000);
+  assert.equal(audit.selection.shortlistSize, 100);
+  assert.ok(audit.selection.searchEndDate < audit.selection.developmentStartDate);
+  assert.ok(audit.selection.developmentEndDate < audit.validation.startDate);
+  assert.equal(data.selection.developmentEndDate, audit.selection.developmentEndDate);
+});
 
 test("V9.2 only publishes the locked one-year replay", () => {
   assert.ok(data.history.length >= 300 && data.history.length <= 370);

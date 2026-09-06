@@ -14,6 +14,9 @@ const VERSION = process.env.V9_VERSION ?? "V9-low-hit-locked";
 const CONFIG_NAME = process.env.V9_CONFIG_NAME ?? "v9-low-hit-config.json";
 const RESULT_NAME = process.env.V9_RESULT_NAME ?? "v9-low-hit-training.json";
 const HISTORY_START_DATE = process.env.V9_HISTORY_START_DATE ?? null;
+const SEARCH_START_DATE = process.env.V9_SEARCH_START_DATE ?? null;
+const FINAL_START_DATE = process.env.V9_FINAL_START_DATE ?? null;
+const SHORTLIST_SIZE = Number(process.env.V9_SHORTLIST_SIZE ?? 80);
 const WINDOWS = [7, 14, 21, 30, 50, 80, 120, 200, 365, 730, 1200];
 
 function combinations(values, size, start = 0, prefix = [], output = []) {
@@ -177,21 +180,47 @@ function candidateSet(size) {
 }
 
 const trainEndIndex = rows.findIndex((row) => row.date > TRAIN_END);
+const finalStartIndex = FINAL_START_DATE
+  ? rows.findIndex((row) => row.date >= FINAL_START_DATE)
+  : trainEndIndex;
+const searchStartIndex = SEARCH_START_DATE
+  ? rows.findIndex((row) => row.date >= SEARCH_START_DATE)
+  : START_INDEX;
+if (searchStartIndex < START_INDEX || searchStartIndex >= trainEndIndex) {
+  throw new Error("V9_SEARCH_START_DATE must fall inside the training range");
+}
+if (finalStartIndex < trainEndIndex || finalStartIndex >= rows.length) {
+  throw new Error("V9_FINAL_START_DATE must be after the search range and before the latest draw");
+}
 const selected = {};
 for (const size of [5, 6, 7, 8]) {
-  let best = null;
+  const shortlist = [];
   const candidates = candidateSet(size);
   for (const candidate of candidates) {
-    const result = metrics(candidate, size, START_INDEX, trainEndIndex);
-    if (
-      !best ||
-      result.rate < best.training.rate ||
-      (result.rate === best.training.rate && result.maxMiss > best.training.maxMiss)
-    ) {
-      best = { candidate, training: result };
-    }
+    const result = metrics(candidate, size, searchStartIndex, trainEndIndex);
+    shortlist.push({ candidate, search: result });
+    shortlist.sort((left, right) =>
+      left.search.rate - right.search.rate || right.search.maxMiss - left.search.maxMiss,
+    );
+    if (shortlist.length > SHORTLIST_SIZE) shortlist.pop();
   }
-  best.validation = metrics(best.candidate, size, trainEndIndex, rows.length);
+  let best = shortlist[0];
+  if (FINAL_START_DATE) {
+    for (const item of shortlist) {
+      item.selection = metrics(item.candidate, size, trainEndIndex, finalStartIndex);
+      if (
+        !best.selection ||
+        item.selection.rate < best.selection.rate ||
+        (item.selection.rate === best.selection.rate && item.selection.maxMiss > best.selection.maxMiss)
+      ) {
+        best = item;
+      }
+    }
+  } else {
+    best.selection = best.search;
+  }
+  best.training = metrics(best.candidate, size, START_INDEX, finalStartIndex);
+  best.validation = metrics(best.candidate, size, finalStartIndex, rows.length);
   best.all = metrics(best.candidate, size, START_INDEX, rows.length);
   selected[`pool${size}`] = best;
   console.log(
@@ -207,19 +236,31 @@ const report = {
   hitRule: "开奖号为组六，且三个不同数字全部包含在所选组合中",
   noCurrentAnswerLeakage: true,
   historyStartDate: HISTORY_START_DATE,
+  selection: {
+    searchStartIssue: rows[searchStartIndex].issue,
+    searchStartDate: rows[searchStartIndex].date,
+    searchEndIssue: rows[trainEndIndex - 1].issue,
+    searchEndDate: rows[trainEndIndex - 1].date,
+    developmentStartIssue: rows[trainEndIndex].issue,
+    developmentStartDate: rows[trainEndIndex].date,
+    developmentEndIssue: rows[finalStartIndex - 1].issue,
+    developmentEndDate: rows[finalStartIndex - 1].date,
+    randomCandidateCount: RANDOM_SAMPLES,
+    shortlistSize: SHORTLIST_SIZE,
+  },
   training: {
     startIssue: rows[START_INDEX].issue,
     startDate: rows[START_INDEX].date,
-    endIssue: rows[trainEndIndex - 1].issue,
-    endDate: rows[trainEndIndex - 1].date,
-    count: trainEndIndex - START_INDEX,
+    endIssue: rows[finalStartIndex - 1].issue,
+    endDate: rows[finalStartIndex - 1].date,
+    count: finalStartIndex - START_INDEX,
   },
   validation: {
-    startIssue: rows[trainEndIndex].issue,
-    startDate: rows[trainEndIndex].date,
+    startIssue: rows[finalStartIndex].issue,
+    startDate: rows[finalStartIndex].date,
     endIssue: rows.at(-1).issue,
     endDate: rows.at(-1).date,
-    count: rows.length - trainEndIndex,
+    count: rows.length - finalStartIndex,
   },
   selected,
 };

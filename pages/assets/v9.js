@@ -39,7 +39,10 @@ function renderCurrent() {
   $("#v9-validation").innerHTML = `<span>${validationLabel}</span><strong>${metric.validation.hits}/${metric.validation.count} · ${(metric.validation.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.validation.maxMiss}期</b>`;
   $("#v9-one-year").innerHTML = `<span>近1年实际结果</span><strong>${metric.recentOneYear.hits}/${metric.recentOneYear.count} · ${(metric.recentOneYear.rate * 100).toFixed(2)}%</strong><b>最长未中 ${metric.recentOneYear.maxMiss}期</b>`;
   $("#v9-one-year").hidden = isOneYearVariant;
-  $("#v9-formula-text").textContent = `${methodText(payload.methods[activePlay])} 同码数随机组合的理论命中率约为${(payload.randomBaselines[activePlay] * 100).toFixed(1)}%；历史差异不能证明未来概率已改变。`;
+  const selectionText = isOneYearVariant && payload.selection
+    ? ` 公式先在${payload.selection.searchStartDate}—${payload.selection.searchEndDate}的开发前段搜索${payload.selection.randomCandidateCount}组候选，保留${payload.selection.shortlistSize}组，再用${payload.selection.developmentStartDate}—${payload.selection.developmentEndDate}选择最终公式；${payload.validation.startDate}之后的数据只用于留出检验。`
+    : "";
+  $("#v9-formula-text").textContent = `${methodText(payload.methods[activePlay])}${selectionText} 同码数随机组合的理论命中率约为${(payload.randomBaselines[activePlay] * 100).toFixed(1)}%；历史差异不能证明未来概率已改变。`;
   renderHistory();
 }
 
