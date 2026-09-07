@@ -100,6 +100,19 @@ test("V7, V2 and V5 published hit flags exactly replay", async () => {
   const v2 = await readJson("pages/v2-data.json");
   const v5 = await readJson("pages/v5-data.json");
   assert.equal(v7.dataIntegrity.canonicalSha256, canonical.canonicalSha256);
+  assert.equal(v7.trainingEndIssue, "2026199");
+  assert.equal(v7.trainingUpdatedThrough, "2026-07-28");
+  assert.equal(v7.forwardStartIssue, "2026200");
+  assert.equal(v7.forwardStartDate, "2026-07-29");
+  for (const row of v7.history) {
+    assert.equal(
+      row.phase,
+      row.issue < v7.forwardStartIssue
+        ? "full-history-training-replay"
+        : "forward-locked",
+      `V7 phase mismatch at ${row.issue}`,
+    );
+  }
   assert.equal(v2.dataSha256, canonical.canonicalSha256);
   assert.equal(v5.dataSha256, canonical.canonicalSha256);
   assert.equal(v5.trainingEnd, "2026-07-27");

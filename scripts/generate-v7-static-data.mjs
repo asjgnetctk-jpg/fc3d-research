@@ -379,7 +379,10 @@ function rollingReplay(draws, startDate, modelConfig) {
       pool7MissStreak,
       pool6MissStreak,
       pool5MissStreak,
-      phase: "full-history-training-replay",
+      phase:
+        row.issue < modelConfig.forwardStartIssue
+          ? "full-history-training-replay"
+          : "forward-locked",
     });
   }
   return {
@@ -958,6 +961,12 @@ async function main() {
   });
 
   const latest = draws.at(-1);
+  const trainingEnd = draws
+    .filter((row) => row.issue < config.forwardStartIssue)
+    .at(-1);
+  const forwardStart = draws.find(
+    (row) => row.issue === config.forwardStartIssue,
+  );
   const upcoming = recommendV5(
     draws,
     rolling.danMissStreak,
@@ -994,11 +1003,14 @@ async function main() {
     sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
     formulaVersion: config.version,
     trainingMode: "full-history-expanding-replay",
-    trainingUpdatedThrough: latest.date,
+    trainingUpdatedThrough: trainingEnd.date,
+    trainingEndIssue: trainingEnd.issue,
     trainingDataStart: draws[0].date,
     forwardStartIssue: config.forwardStartIssue,
+    forwardStartDate: forwardStart?.date ?? null,
     evaluationNotice:
-      "全量结果参与了模型选择；以下为训练回放，不是独立盲测。真实前瞻从下一期开奖开始另计。",
+      `${draws[0].date}至${trainingEnd.date}（第${trainingEnd.issue}期）参与参数筛选，属于训练回放；` +
+      `${forwardStart?.date ?? "待开奖"}起（第${config.forwardStartIssue}期）为参数锁定后的前瞻记录。每期推荐只读取当期开奖之前的数据。`,
     dataIntegrity: {
       periods: draws.length,
       canonicalSha256,

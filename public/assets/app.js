@@ -130,12 +130,12 @@ function renderHistory() {
 
 function formulaText(play) {
   if (play === "dan") {
-    return "先把每期开奖前可见的近期频率、定位频率、转移频率、遗漏、奇偶、中心距离及历史签名转成特征，再按当前连续未中状态切换对应评分公式，对0—9排序后取一个独胆。公式由完整历史结果参与筛选，因此页面全历史战绩属于训练回放，不是独立盲测。";
+    return "先把每期开奖前可见的近期频率、定位频率、转移频率、遗漏、奇偶、中心距离及历史签名转成特征，再按当前连续未中状态切换对应评分公式，对0—9排序后取一个独胆。训练截止期以前属于参数筛选回放；前瞻起始期以后参数锁定，每期只使用当期开奖前的数据。";
   }
   if (play === "group3") {
     return "采用扩展窗口近邻概率模型：每期只使用当期之前的历史样本，以历史组三频率、遗漏及近期形态寻找相似阶段。概率进入最近365期预测值前10%时才明确推荐组三；其他期只显示概率，不计推荐成败。参数用2019—2023年开发段筛选，2024年至今只作后段检验；历史结果不代表未来。";
   }
-  return `${labels[play]}使用独立公式。模型先进行大规模排名公式搜索，再针对高连断状态追加每档20,000—30,000套候选修复公式；按全历史最长连断、近三年最长连断、超限惩罚和命中率依次比较。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。全历史结果属于训练回放。`;
+  return `${labels[play]}使用独立公式。模型先进行大规模排名公式搜索，再针对高连断状态追加每档20,000—30,000套候选修复公式；按训练段最长连断、近三年最长连断、超限惩罚和命中率依次比较。开奖号必须为组六且三个不同数字全部入池才算命中，组三只单独标记覆盖。训练截止期以前属于参数筛选回放；前瞻起始期以后参数锁定。`;
 }
 
 function renderCurrent() {
@@ -203,11 +203,11 @@ function renderCurrent() {
 function render(data) {
   payload = data;
   $("#formula-version").textContent = `${data.formulaVersion} 逐期滚动`;
-  $("#training-date").textContent = `数据更新至 ${data.trainingUpdatedThrough}`;
+  $("#training-date").textContent = `训练截止 ${data.trainingUpdatedThrough}`;
   $("#evaluation-notice").textContent = data.evaluationNotice;
   $("#integrity-summary").textContent =
-    `数据范围 ${data.trainingDataStart}—${data.trainingUpdatedThrough} · ` +
-    `前瞻从第${data.forwardStartIssue}期开始 · SHA-256 ` +
+    `训练范围 ${data.trainingDataStart}—${data.trainingUpdatedThrough} · ` +
+    `锁定前瞻从第${data.forwardStartIssue}期（${data.forwardStartDate ?? "待开奖"}）开始 · SHA-256 ` +
     `${data.dataIntegrity.canonicalSha256.slice(0, 16)}…`;
   $("#target-issue").textContent = `第${data.recommendation.targetIssue}期`;
   $("#based-on").textContent = `基于${data.recommendation.basedOnIssue}期及此前数据`;
