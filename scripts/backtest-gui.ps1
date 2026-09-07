@@ -3,6 +3,7 @@ Add-Type -AssemblyName System.Drawing
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $runnerPath = Join-Path $PSScriptRoot "backtest-easy-runner.ps1"
+$pwshPath = (Get-Process -Id $PID).Path
 $logicalCores = [Environment]::ProcessorCount
 $recommendedWorkers = [Math]::Max(1, $logicalCores - 1)
 
@@ -15,7 +16,7 @@ $form.MaximizeBox = $false
 $form.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 10)
 
 $title = New-Object System.Windows.Forms.Label
-$title.Text = "选择参数后点击“开始回测”"
+$title.Text = '选择参数后点击“开始回测”'
 $title.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 16, [System.Drawing.FontStyle]::Bold)
 $title.AutoSize = $true
 $title.Location = New-Object System.Drawing.Point(28, 22)
@@ -108,7 +109,7 @@ $startButton.Add_Click({
     "-Samples", $selectedSamples,
     "-Workers", $selectedWorkers
   )
-  Start-Process powershell.exe -ArgumentList $arguments
+  Start-Process $pwshPath -ArgumentList $arguments
   $form.Close()
 })
 
