@@ -1060,6 +1060,13 @@ async function main() {
     generatedAt,
     sourceUpdatedThrough: payload.sourceUpdatedThrough,
     formulaVersion: v5Config.version,
+    trainingMode: "three-year-in-sample-selection-then-locked-forward",
+    trainingStart: "2023-07-28",
+    trainingEnd: "2026-07-27",
+    forwardStart: "2026-07-28",
+    evaluationNotice:
+      "2023-07-28至2026-07-27用于参数筛选，属于训练回放；2026-07-28起为参数锁定后的前瞻记录。每期推荐只读取该期开奖之前的数据。",
+    dataSha256: canonicalSha256,
     recommendation: {
       targetIssue: incrementIssue(latest.issue),
       basedOnIssue: latest.issue,
