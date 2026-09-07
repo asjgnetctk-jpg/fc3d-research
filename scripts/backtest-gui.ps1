@@ -5,7 +5,8 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $runnerPath = Join-Path $PSScriptRoot "backtest-easy-runner.ps1"
 $pwshPath = (Get-Process -Id $PID).Path
 $logicalCores = [Environment]::ProcessorCount
-$recommendedWorkers = [Math]::Max(1, $logicalCores - 1)
+$safeWorkerLimit = [Math]::Min(4, $logicalCores)
+$recommendedWorkers = [Math]::Min(2, $safeWorkerLimit)
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "福彩3D本地公式回测器"
@@ -49,7 +50,7 @@ $form.Controls.Add($sizeBox)
 Add-Label "测试公式数量" 32 169
 $sampleBox = New-Object System.Windows.Forms.ComboBox
 $sampleBox.DropDownStyle = "DropDownList"
-$sampleBox.Items.AddRange(@("10万（快速试跑）", "100万（建议）", "1000万（较慢）", "5000万（很慢）"))
+$sampleBox.Items.AddRange(@("1万（安全试跑）", "10万（建议）", "100万（较慢）", "500万（很慢）"))
 $sampleBox.SelectedIndex = 1
 $sampleBox.Location = New-Object System.Drawing.Point(150, 164)
 $sampleBox.Size = New-Object System.Drawing.Size(310, 30)
@@ -58,14 +59,14 @@ $form.Controls.Add($sampleBox)
 Add-Label "CPU线程" 32 220
 $workerBox = New-Object System.Windows.Forms.NumericUpDown
 $workerBox.Minimum = 1
-$workerBox.Maximum = [Math]::Max(1, $logicalCores)
+$workerBox.Maximum = $safeWorkerLimit
 $workerBox.Value = $recommendedWorkers
 $workerBox.Location = New-Object System.Drawing.Point(150, 215)
 $workerBox.Size = New-Object System.Drawing.Size(310, 30)
 $form.Controls.Add($workerBox)
 
 $tip = New-Object System.Windows.Forms.Label
-$tip.Text = "建议先用100万。运行时会弹出黑色进度窗口；完成后自动打开结果文件夹。"
+$tip.Text = "为防止电脑卡死，程序最多使用4线程。建议先用10万，完成后再逐步增加。"
 $tip.AutoSize = $true
 $tip.ForeColor = [System.Drawing.Color]::FromArgb(138, 91, 15)
 $tip.Location = New-Object System.Drawing.Point(31, 269)
@@ -96,7 +97,7 @@ $openButton.Add_Click({
 
 $startButton.Add_Click({
   $sizes = @(5, 6, 7, 8)
-  $sampleValues = @(100000, 1000000, 10000000, 50000000)
+  $sampleValues = @(10000, 100000, 1000000, 5000000)
   $selectedSize = $sizes[$sizeBox.SelectedIndex]
   $selectedSamples = $sampleValues[$sampleBox.SelectedIndex]
   $selectedWorkers = [int]$workerBox.Value

@@ -3,8 +3,8 @@ param(
   [int]$Size = 7,
   [ValidateRange(1000, 1700000000)]
   [int64]$Samples = 1000000,
-  [ValidateRange(1, 256)]
-  [int]$Workers = 1
+  [ValidateRange(1, 4)]
+  [int]$Workers = 2
 )
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
@@ -18,6 +18,7 @@ $relativeOutput = "work/manual-pool$Size-$timestamp.json"
 $absoluteOutput = Join-Path $projectRoot $relativeOutput
 
 Set-Location $projectRoot
+(Get-Process -Id $PID).PriorityClass = "BelowNormal"
 Write-Host ""
 Write-Host "正在回测 $Size 码，共 $($Samples.ToString('N0')) 套公式，使用 $Workers 个CPU线程。" -ForegroundColor Cyan
 Write-Host "运行期间请不要关闭这个窗口。" -ForegroundColor Yellow
