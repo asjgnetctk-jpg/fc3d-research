@@ -2,8 +2,9 @@ name: 更新福彩3D数据并发布
 
 on:
   schedule:
-    # 每两小时持续补抓一次：官方开奖若延迟发布，后续任务会自动补上。
-    - cron: "17 */2 * * *"
+    # 北京时间 08:17—20:17 每两小时巡检；开奖时段 21:00—01:45 每15分钟补抓。
+    - cron: "17 0-12/2 * * *"
+    - cron: "*/15 13-17 * * *"
   workflow_dispatch:
   push:
     branches: ["main"]
@@ -25,10 +26,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 更新体彩排列3官方历史数据
-        run: node scripts/fetch-pl3-history.mjs
-      - name: 读取官方开奖并生成静态数据
+      - name: 优先读取福彩官方开奖并生成静态数据
+        timeout-minutes: 8
         run: node scripts/generate-v7-static-data.mjs
+      - name: 更新体彩排列3官方历史数据
+        timeout-minutes: 8
+        run: node scripts/fetch-pl3-history.mjs
       - name: 生成体彩排列3独立页面数据
         env:
           LOTTERY_GAME: "pl3"

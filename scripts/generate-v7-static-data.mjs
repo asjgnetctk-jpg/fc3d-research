@@ -630,6 +630,110 @@ async function fetchGdfcOfficialCurrent() {
   return rows;
 }
 
+function decodeNumericEntities(html) {
+  return html
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replaceAll("&nbsp;", " ");
+}
+
+function parseJiangsuDetail(html, expectedIssue) {
+  const decoded = decodeNumericEntities(html);
+  const issue =
+    decoded.match(/<th[^>]*>\s*(\d{7})\s*<\/th>/)?.[1] ??
+    decoded.match(/第\s*(\d{7})\s*期/)?.[1];
+  if (issue !== expectedIssue) {
+    throw new Error(`jiangsu-issue-mismatch:${expectedIssue}:${issue}`);
+  }
+
+  const marker = decoded.indexOf("开奖号码");
+  if (marker < 0) throw new Error(`jiangsu-draw-marker-missing:${issue}`);
+  let digits = [
+    ...decoded.slice(marker, marker + 2500).matchAll(/<td[^>]*>\s*([0-9])\s*<\/td>/g),
+  ]
+    .slice(0, 3)
+    .map((match) => match[1]);
+  if (digits.length !== 3) {
+    digits = [
+      ...decoded
+        .slice(marker, marker + 3500)
+        .replace(/<[^>]+>/g, " ")
+        .matchAll(/(?:^|\s)([0-9])(?=\s|$)/g),
+    ]
+      .slice(0, 3)
+      .map((match) => match[1]);
+  }
+  if (digits.length !== 3) throw new Error(`jiangsu-draw-missing:${issue}`);
+  return digits.join("");
+}
+
+async function fetchJiangsuOfficialCurrent() {
+  const base = "https://www.jslottery.com";
+  const listUrl = `${base}/winning_history_a?locale=zh-CN&lottery_type_id=9&periods=`;
+  const listResponse = await fetch(listUrl, {
+    headers: {
+      Accept: "text/html,application/xhtml+xml",
+      Referer: listUrl,
+      "User-Agent":
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+    },
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!listResponse.ok) throw new Error(`jiangsu-list-${listResponse.status}`);
+  const listHtml = await listResponse.text();
+  const entries = [
+    ...listHtml.matchAll(
+      /winning_detail\?id=(\d+)&amp;locale=zh-CN">[^<]*?(\d{7})[\s\S]*?<span class="articleDate"[^>]*>\s*(\d{4}-\d{2}-\d{2})\s*<\/span>/g,
+    ),
+  ].map((match) => ({ id: match[1], issue: match[2], date: match[3] }));
+  if (!entries.length) throw new Error("jiangsu-list-empty");
+
+  const settled = await Promise.allSettled(
+    entries.slice(0, 20).map(async ({ id, issue, date }) => {
+      const url = `${base}/winning_detail?id=${id}&locale=zh-CN`;
+      const response = await fetch(url, {
+        headers: {
+          Accept: "text/html,application/xhtml+xml",
+          Referer: listUrl,
+          "User-Agent":
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+        },
+        signal: AbortSignal.timeout(20_000),
+      });
+      if (!response.ok) throw new Error(`jiangsu-detail-${response.status}`);
+      const draw = parseJiangsuDetail(await response.text(), issue);
+      return { issue, date, draw, digits: draw.split("").map(Number) };
+    }),
+  );
+  const rows = settled
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value);
+  const rejected = settled.filter((result) => result.status === "rejected");
+  if (rejected.length) {
+    console.warn(`Jiangsu skipped ${rejected.length} unparseable notice(s)`);
+  }
+  if (!rows.length) throw new Error("jiangsu-detail-empty");
+  return rows.sort((left, right) => left.issue.localeCompare(right.issue));
+}
+
+function mergeOfficialSources(sources) {
+  const byIssue = new Map();
+  for (const source of sources) {
+    for (const row of source.rows) {
+      const existing = byIssue.get(row.issue);
+      if (existing && existing.draw !== row.draw) {
+        throw new Error(
+          `official-source-conflict:${row.issue}:${existing.draw}:${row.draw}`,
+        );
+      }
+      // 同期开奖数字一致时保留优先级更高的全国中心日期口径。
+      if (!existing) byIssue.set(row.issue, row);
+    }
+  }
+  return [...byIssue.values()].sort((left, right) =>
+    left.issue.localeCompare(right.issue),
+  );
+}
+
 async function fetchOfficialCurrent() {
   if (process.env.OFFICIAL_SOURCE === "gdfc") {
     return {
@@ -637,18 +741,39 @@ async function fetchOfficialCurrent() {
       rows: await fetchGdfcOfficialCurrent(),
     };
   }
-  try {
+  if (process.env.OFFICIAL_SOURCE === "jiangsu") {
     return {
-      source: "中国福利彩票发行管理中心",
-      rows: await fetchCwlOfficialCurrent(),
-    };
-  } catch (cwlError) {
-    console.warn(`CWL refresh unavailable: ${cwlError.message}`);
-    return {
-      source: "广东省福利彩票发行中心",
-      rows: await fetchGdfcOfficialCurrent(),
+      source: "江苏省福利彩票发行中心",
+      rows: await fetchJiangsuOfficialCurrent(),
     };
   }
+  const attempts = await Promise.allSettled([
+    fetchCwlOfficialCurrent(),
+    fetchJiangsuOfficialCurrent(),
+  ]);
+  const sources = [];
+  if (attempts[0].status === "fulfilled") {
+    sources.push({ source: "中国福利彩票发行管理中心", rows: attempts[0].value });
+  } else {
+    console.warn(`CWL refresh unavailable: ${attempts[0].reason.message}`);
+  }
+  if (attempts[1].status === "fulfilled") {
+    sources.push({ source: "江苏省福利彩票发行中心", rows: attempts[1].value });
+  } else {
+    console.warn(`Jiangsu refresh unavailable: ${attempts[1].reason.message}`);
+  }
+  if (sources.length) {
+    return {
+      source: sources.map((item) => item.source).join(" + "),
+      rows: mergeOfficialSources(sources),
+    };
+  }
+
+  // 保留旧省级源作为最后一级回退；只有解析、格式校验全部通过才会采用。
+  return {
+    source: "广东省福利彩票发行中心",
+    rows: await fetchGdfcOfficialCurrent(),
+  };
 }
 
 async function loadDraws() {
@@ -685,7 +810,16 @@ async function loadDraws() {
     }
     const officialResult = await fetchOfficialCurrent();
     const officialRows = officialResult.rows;
-    for (const row of officialRows) byIssue.set(row.issue, row);
+    for (const row of officialRows) {
+      const existing = byIssue.get(row.issue);
+      if (existing && existing.draw !== row.draw) {
+        throw new Error(
+          `canonical-official-conflict:${row.issue}:${existing.draw}:${row.draw}`,
+        );
+      }
+      // 已验证历史保持原日期口径；官方刷新只追加新期，绝不静默改写旧期开奖。
+      if (!existing) byIssue.set(row.issue, row);
+    }
     const latestOfficial = officialRows
       .slice()
       .sort((left, right) => left.issue.localeCompare(right.issue))
