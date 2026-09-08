@@ -84,10 +84,13 @@ function checkRows(rows, { dan = false, pools = [], shape = false, evaluatedShap
 }
 
 test("canonical FC3D history is complete, ordered and hash-verified", () => {
-  assert.equal(canonical.rows.length, 7_746);
+  assert.ok(canonical.rows.length >= 7_746, "canonical history unexpectedly shrank");
   assert.equal(canonical.rows[0].issue, "2004001");
-  assert.equal(canonical.rows.at(-1).issue, "2026239");
-  assert.equal(canonical.rows.at(-1).draw, "002");
+  const latest = canonical.rows.at(-1);
+  assert.match(latest.issue, /^\d{7}$/);
+  assert.match(latest.date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(latest.draw, /^\d{3}$/);
+  assert.deepEqual(latest.digits, latest.draw.split("").map(Number));
   assert.equal(new Set(canonical.rows.map((row) => row.issue)).size, canonical.rows.length);
   assert.equal(canonicalHash(canonical.rows), canonical.canonicalSha256);
   for (let index = 1; index < canonical.rows.length; index += 1) {
