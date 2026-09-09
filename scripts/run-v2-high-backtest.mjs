@@ -60,8 +60,21 @@ if (!(ranges.searchStart < ranges.searchEnd && ranges.searchEnd <= ranges.develo
   throw new Error("Search, development, and test ranges must be ordered and non-overlapping");
 }
 
-function runWorker(start, count) {
+const workerProgress = [];
+let lastShownPercent = -1;
+function showProgress(workerIndex, processed) {
+  workerProgress[workerIndex] = processed;
+  const totalProcessed = workerProgress.reduce((sum, value) => sum + (value ?? 0), 0);
+  const percent = Math.min(100, Math.floor((totalProcessed / samples) * 100));
+  if (percent !== lastShownPercent && (percent >= lastShownPercent + 5 || percent === 100)) {
+    lastShownPercent = percent;
+    console.log(`进度 ${percent}%（${totalProcessed.toLocaleString()}/${samples.toLocaleString()}）`);
+  }
+}
+
+function runWorker(start, count, workerIndex) {
   return new Promise((resolve, reject) => {
+    workerProgress[workerIndex] = 0;
     const worker = new Worker(new URL("./backtest-worker.mjs", import.meta.url), {
       workerData: {
         dataPath,
@@ -72,11 +85,20 @@ function runWorker(start, count) {
         play,
         objective: "high",
         keep,
+        progressEvery: Math.max(1, Math.floor(count / 20)),
         searchStart: ranges.searchStart,
         searchEnd: ranges.searchEnd,
       },
     });
-    worker.once("message", resolve);
+    worker.on("message", (message) => {
+      if (message.type === "progress") {
+        showProgress(workerIndex, message.processed);
+      } else {
+        workerProgress[workerIndex] = message.processed;
+        showProgress(workerIndex, message.processed);
+        resolve(message);
+      }
+    });
     worker.once("error", reject);
     worker.once("exit", (code) => code && reject(new Error(`Worker exited ${code}`)));
   });
@@ -87,7 +109,7 @@ let remaining = samples;
 let cursor = startSample;
 for (let worker = 0; worker < workers && remaining > 0; worker += 1) {
   const count = Math.ceil(remaining / (workers - worker));
-  tasks.push(runWorker(cursor, count));
+  tasks.push(runWorker(cursor, count, worker));
   cursor += count;
   remaining -= count;
 }

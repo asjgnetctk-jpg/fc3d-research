@@ -25,8 +25,14 @@ for (let offset = 0; offset < workerData.count; offset += 1) {
     best.sort(compare);
     best.length = workerData.keep;
   }
+  if (
+    workerData.progressEvery &&
+    ((offset + 1) % workerData.progressEvery === 0 || offset + 1 === workerData.count)
+  ) {
+    parentPort.postMessage({ type: "progress", processed: offset + 1 });
+  }
 }
 
 best.sort(compare);
 best.length = Math.min(best.length, workerData.keep);
-parentPort.postMessage({ best, processed: workerData.count });
+parentPort.postMessage({ type: "done", best, processed: workerData.count });
