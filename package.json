@@ -12,6 +12,7 @@
     "test": "npm run build && node --test tests/*.test.mjs",
     "pages:data": "node scripts/generate-v7-static-data.mjs",
     "backtest": "node scripts/run-backtest.mjs",
+    "backtest:v2-high": "node scripts/run-v2-high-backtest.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
