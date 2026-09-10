@@ -14,14 +14,14 @@ $form.MaximizeBox = $false
 $form.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 10)
 
 $title = New-Object System.Windows.Forms.Label
-$title.Text = "每批固定测试500万套公式"
+$title.Text = "V2自适应 · 每批500万次评估"
 $title.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 16, [System.Drawing.FontStyle]::Bold)
 $title.AutoSize = $true
 $title.Location = New-Object System.Drawing.Point(30, 24)
 $form.Controls.Add($title)
 
 $notice = New-Object System.Windows.Forms.Label
-$notice.Text = "默认4线程、低优先级运行。新批次会接着旧50万结果继续，不重复。"
+$notice.Text = "默认4线程。按连续未中状态切换60套方法，旧V2成绩作为晋级线。"
 $notice.AutoSize = $true
 $notice.ForeColor = [System.Drawing.Color]::FromArgb(64, 78, 74)
 $notice.Location = New-Object System.Drawing.Point(32, 68)
@@ -59,7 +59,7 @@ function Set-NextBatch {
   $plays = @("dan", "pool5", "pool6", "pool7")
   $play = $plays[$playBox.SelectedIndex]
   $completed = @(
-    Get-ChildItem -LiteralPath $workPath -Filter "v2-high5m-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
+    Get-ChildItem -LiteralPath $workPath -Filter "v2-adaptive5m-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
       ForEach-Object {
         if ($_.Name -match "batch-(\d+)") { [int]$Matches[1] }
       }
@@ -72,7 +72,7 @@ $playBox.Add_SelectedIndexChanged({ Set-NextBatch })
 Set-NextBatch
 
 $tip = New-Object System.Windows.Forms.Label
-$tip.Text = "程序会自动显示下一批；不同批次不重复。每批预计约75—100分钟。"
+$tip.Text = "每批使用不同随机种子；训练达不到旧V2基准就明确判定不合格。"
 $tip.AutoSize = $true
 $tip.ForeColor = [System.Drawing.Color]::FromArgb(145, 89, 10)
 $tip.Location = New-Object System.Drawing.Point(33, 239)

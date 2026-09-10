@@ -20,7 +20,11 @@ const FEATURES = [
   "digitParity",
   ...Array.from({ length: 12 }, (_, channel) => `historyHash${channel}`),
 ];
-const PLAYS = ["dan", "pool5", "pool6", "pool7"];
+const ALL_PLAYS = ["dan", "pool5", "pool6", "pool7"];
+const PLAYS = (process.env.V2_PLAYS ?? ALL_PLAYS.join(","))
+  .split(",")
+  .map((value) => value.trim())
+  .filter((value) => ALL_PLAYS.includes(value));
 const METHOD_COUNT = 60;
 const SEARCH_PER_BUCKET = Number(process.env.V2_SEARCH_PER_BUCKET ?? 3500);
 const KEEP_PER_BUCKET = Number(process.env.V2_KEEP_PER_BUCKET ?? 48);
@@ -39,6 +43,17 @@ const DATA_PATH =
 const VERSION =
   process.env.V2_VERSION ?? "V2-one-year-streak-min";
 const INITIAL_CONFIG_PATH = process.env.V2_INITIAL_CONFIG;
+const OBJECTIVE = process.env.V2_OBJECTIVE ?? "streak-first";
+const MAX_MISS_LIMIT = Number(
+  process.env.V2_MAX_MISS ?? Number.POSITIVE_INFINITY,
+);
+const EXHAUST_BUDGET = process.env.V2_EXHAUST_BUDGET === "true";
+const requestedSearchBudget = Number(
+  process.env.V2_SEARCH_BUDGET ?? Number.POSITIVE_INFINITY,
+);
+let remainingSearchBudget = requestedSearchBudget;
+let testedMethods = 0;
+let lastProgress = 0;
 const HARD_TARGETS = {
   dan: Number(process.env.V2_TARGET_DAN ?? 5),
   pool5: Number(process.env.V2_TARGET_POOL5 ?? 10),
@@ -125,6 +140,16 @@ function metrics(hits) {
 }
 
 function compare(left, right) {
+  if (OBJECTIVE === "hit-rate-first") {
+    const leftWithinLimit = left.maxMiss <= MAX_MISS_LIMIT;
+    const rightWithinLimit = right.maxMiss <= MAX_MISS_LIMIT;
+    if (leftWithinLimit !== rightWithinLimit) return leftWithinLimit ? -1 : 1;
+    return (
+      right.rate - left.rate ||
+      left.maxMiss - right.maxMiss ||
+      right.hits - left.hits
+    );
+  }
   return (
     left.maxMiss - right.maxMiss ||
     right.hits - left.hits ||
@@ -219,8 +244,25 @@ function searchBucket(
   const targets = targetRows(baseline, bucket);
   if (!targets.length) return { methods, result: baseline, targets: 0 };
 
+  const allowedSearchCount = Math.max(
+    0,
+    Math.min(searchCount, remainingSearchBudget),
+  );
+  if (!allowedSearchCount) {
+    return { methods, result: baseline, targets: targets.length };
+  }
+  remainingSearchBudget -= allowedSearchCount;
+  testedMethods += allowedSearchCount;
+  if (process.env.V2_PROGRESS === "true" && Number.isFinite(requestedSearchBudget)) {
+    const progress = Math.floor((testedMethods / requestedSearchBudget) * 20) * 5;
+    if (progress >= lastProgress + 5 || progress === 100) {
+      lastProgress = progress;
+      console.log(`进度 ${Math.min(100, progress)}%（${testedMethods}/${requestedSearchBudget}）`);
+    }
+  }
+
   const kept = [];
-  for (let id = 0; id < searchCount; id += 1) {
+  for (let id = 0; id < allowedSearchCount; id += 1) {
     const method = randomMethod(random, `${play}-${pass}-${bucket}-${id}`);
     let targetHits = 0;
     for (const index of targets) {
@@ -251,9 +293,13 @@ async function main() {
   const snapshot = JSON.parse(
     await readFile(DATA_PATH, "utf8"),
   );
-  const draws = snapshot.rows;
-  const trainingEnd = draws.at(-1).date;
-  const trainingStart = dateYearsAgo(trainingEnd, 1);
+  const requestedTrainingEnd = process.env.V2_TRAINING_END;
+  const draws = requestedTrainingEnd
+    ? snapshot.rows.filter((row) => row.date <= requestedTrainingEnd)
+    : snapshot.rows;
+  const trainingEnd = requestedTrainingEnd ?? draws.at(-1).date;
+  const trainingStart =
+    process.env.V2_TRAINING_START ?? dateYearsAgo(trainingEnd, 1);
   const { rows, vectors } = buildVectors(draws, trainingStart);
   const initialConfig = INITIAL_CONFIG_PATH
     ? JSON.parse(await readFile(INITIAL_CONFIG_PATH, "utf8"))
@@ -276,7 +322,9 @@ async function main() {
       methodBuckets: METHOD_COUNT,
       passes: PASSES,
     },
-    plays: {},
+    plays: initialConfig?.plays
+      ? structuredClone(initialConfig.plays)
+      : {},
   };
   const report = {
     generatedAt: config.trainedAt,
@@ -296,12 +344,14 @@ async function main() {
     const steps = [];
 
     for (let pass = 0; pass < PASSES; pass += 1) {
+      if (remainingSearchBudget <= 0) break;
       const beforePass = replay(rows, vectors, methods, play);
       const highestBucket = Math.min(
         METHOD_COUNT - 1,
         Math.max(0, beforePass.metrics.maxMiss - 1),
       );
       for (let bucket = highestBucket; bucket >= 0; bucket -= 1) {
+        if (remainingSearchBudget <= 0) break;
         const searched = searchBucket(
           rows,
           vectors,
@@ -323,8 +373,9 @@ async function main() {
       }
       const afterPass = replay(rows, vectors, methods, play);
       if (
-        compare(afterPass.metrics, beforePass.metrics) >= 0 ||
-        (play === "dan" && afterPass.metrics.maxMiss <= 5)
+        !EXHAUST_BUDGET &&
+        (compare(afterPass.metrics, beforePass.metrics) >= 0 ||
+          (play === "dan" && afterPass.metrics.maxMiss <= 5))
       ) {
         break;
       }
@@ -333,6 +384,7 @@ async function main() {
     const hardTarget = HARD_TARGETS[play];
     if (hardTarget !== undefined) {
       for (let hardPass = 0; hardPass < HARD_PASSES; hardPass += 1) {
+        if (remainingSearchBudget <= 0) break;
         const beforeHardPass = replay(rows, vectors, methods, play);
         if (beforeHardPass.metrics.maxMiss <= hardTarget) break;
         for (const bucket of [
@@ -343,6 +395,7 @@ async function main() {
           Math.max(0, hardTarget - 1),
           Math.max(0, hardTarget - 2),
         ].filter((value, index, values) => values.indexOf(value) === index)) {
+          if (remainingSearchBudget <= 0) break;
           const searched = searchBucket(
             rows,
             vectors,
@@ -393,6 +446,12 @@ async function main() {
       })}`,
     );
   }
+
+  config.search.objective = OBJECTIVE;
+  config.search.testedMethods = testedMethods;
+  config.search.requestedBudget = Number(
+    process.env.V2_SEARCH_BUDGET ?? testedMethods,
+  );
 
   await writeFile(
     CONFIG_OUTPUT,

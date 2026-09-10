@@ -21,15 +21,15 @@
 
       <section class="status-strip">
         <span class="status-dot"></span>
-        <strong>候选公式回测中，尚未锁定上线模型</strong>
+          <strong>V2自适应模型回测中，尚未锁定上线模型</strong>
       </section>
 
       <section class="hero-card">
-        <div class="hero-meta"><span>严格三段回测</span><span id="latest-source">读取数据中…</span></div>
+        <div class="hero-meta"><span>60段连断状态自适应</span><span id="latest-source">读取数据中…</span></div>
         <div class="single-group3">
           <span>当前状态</span>
           <strong>等待500万批次报告</strong>
-          <small>只有独立测试结果高于旧V2基准，且最长连断没有明显恶化，才进入锁定候选。</small>
+          <small>每批进行500万次候选评估；训练命中率不高于旧V2且最长连断超过5期，直接判定不合格。</small>
         </div>
       </section>
 
@@ -42,9 +42,9 @@
       <section class="section-block">
         <div class="section-heading"><div><p class="eyebrow">回测纪律</p><h2>怎么决定是否升级</h2></div></div>
         <div class="metrics-grid v2-metrics">
-          <div class="metric-card"><span>搜索段</span><strong>2019-09-05—2024-09-04</strong><small>每批筛选500万套公式</small></div>
-          <div class="metric-card"><span>复选段</span><strong>2024-09-05—2025-09-04</strong><small>只按复选成绩选定公式</small></div>
-          <div class="metric-card"><span>独立测试段</span><strong>2025-09-05起</strong><small>锁定后只打开一次，不用答案反选</small></div>
+          <div class="metric-card"><span>训练结构</span><strong>2025-07-29—2026-07-29</strong><small>与旧V2相同的一年训练口径</small></div>
+          <div class="metric-card"><span>模型结构</span><strong>60个连断状态</strong><small>根据当前连续未中次数切换方法</small></div>
+          <div class="metric-card"><span>晋级标准</span><strong>高于旧V2</strong><small>训练命中率高于40.06%，最长连断不超过5期</small></div>
         </div>
       </section>
 
