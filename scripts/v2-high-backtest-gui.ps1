@@ -14,14 +14,14 @@ $form.MaximizeBox = $false
 $form.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 10)
 
 $title = New-Object System.Windows.Forms.Label
-$title.Text = "每批固定测试50万套公式"
+$title.Text = "每批固定测试500万套公式"
 $title.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 16, [System.Drawing.FontStyle]::Bold)
 $title.AutoSize = $true
 $title.Location = New-Object System.Drawing.Point(30, 24)
 $form.Controls.Add($title)
 
 $notice = New-Object System.Windows.Forms.Label
-$notice.Text = "最多2线程、低优先级运行。批次编号不同，测试的公式不会重复。"
+$notice.Text = "默认4线程、低优先级运行。新批次会接着旧50万结果继续，不重复。"
 $notice.AutoSize = $true
 $notice.ForeColor = [System.Drawing.Color]::FromArgb(64, 78, 74)
 $notice.Location = New-Object System.Drawing.Point(32, 68)
@@ -49,7 +49,7 @@ $form.Controls.Add($batchLabel)
 
 $batchBox = New-Object System.Windows.Forms.NumericUpDown
 $batchBox.Minimum = 1
-$batchBox.Maximum = 887
+$batchBox.Maximum = 88
 $batchBox.Value = 1
 $batchBox.Location = New-Object System.Drawing.Point(150, 178)
 $batchBox.Size = New-Object System.Drawing.Size(310, 30)
@@ -59,27 +59,27 @@ function Set-NextBatch {
   $plays = @("dan", "pool5", "pool6", "pool7")
   $play = $plays[$playBox.SelectedIndex]
   $completed = @(
-    Get-ChildItem -LiteralPath $workPath -Filter "v2-high-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
+    Get-ChildItem -LiteralPath $workPath -Filter "v2-high5m-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
       ForEach-Object {
         if ($_.Name -match "batch-(\d+)") { [int]$Matches[1] }
       }
   )
   $next = if ($completed.Count) { ($completed | Measure-Object -Maximum).Maximum + 1 } else { 1 }
-  $batchBox.Value = [Math]::Min(887, $next)
+  $batchBox.Value = [Math]::Min(88, $next)
 }
 
 $playBox.Add_SelectedIndexChanged({ Set-NextBatch })
 Set-NextBatch
 
 $tip = New-Object System.Windows.Forms.Label
-$tip.Text = "程序会自动显示该玩法的下一批；不同批次不重复。运行可能需要十几分钟。"
+$tip.Text = "程序会自动显示下一批；不同批次不重复。每批预计约75—100分钟。"
 $tip.AutoSize = $true
 $tip.ForeColor = [System.Drawing.Color]::FromArgb(145, 89, 10)
 $tip.Location = New-Object System.Drawing.Point(33, 239)
 $form.Controls.Add($tip)
 
 $startButton = New-Object System.Windows.Forms.Button
-$startButton.Text = "开始50万回测"
+$startButton.Text = "开始500万回测"
 $startButton.Size = New-Object System.Drawing.Size(205, 50)
 $startButton.Location = New-Object System.Drawing.Point(32, 292)
 $startButton.BackColor = [System.Drawing.Color]::FromArgb(17, 82, 64)

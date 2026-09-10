@@ -26,20 +26,23 @@ if (!new Set(["dan", "pool5", "pool6", "pool7"]).has(play)) {
   throw new Error("--play must be dan, pool5, pool6, or pool7");
 }
 const batch = Math.max(1, Math.floor(numberArg("batch", 1)));
-const samples = Math.min(numberArg("samples", 500_000), FORMULAS_PER_SIZE);
-const startSample = numberArg("start", (batch - 1) * samples);
+const samples = Math.min(numberArg("samples", 5_000_000), FORMULAS_PER_SIZE);
+// The earlier 500k series already covered indexes 0..499,999. The 5m series
+// starts immediately after it so completed work is not repeated.
+const seriesStartSample = 500_000;
+const startSample = numberArg("start", seriesStartSample + (batch - 1) * samples);
 if (startSample < 0 || startSample + samples > FORMULAS_PER_SIZE) {
   throw new Error(
     `This batch exceeds the ${FORMULAS_PER_SIZE.toLocaleString()} unique-formula space and would repeat formulas.`,
   );
 }
-const workers = Math.max(1, Math.min(numberArg("workers", 2), 2, cpus().length));
+const workers = Math.max(1, Math.min(numberArg("workers", 4), 4, cpus().length));
 const keep = Math.max(50, numberArg("keep", 200));
 const seed = numberArg("seed", 20260909);
 const dataPath = path.resolve(root, textArg("data", "scripts/data/fc3d-full-history.json"));
 const outputPath = path.resolve(
   root,
-  textArg("output", `work/v2-high-${play}-batch-${batch}.json`),
+  textArg("output", `work/v2-high5m-${play}-batch-${batch}.json`),
 );
 const snapshotText = await readFile(dataPath, "utf8");
 const snapshot = JSON.parse(snapshotText);
@@ -164,6 +167,7 @@ const dateRange = (start, end) => ({
 const report = {
   generatedAt: new Date().toISOString(),
   engine: "v2-high-hit-local-backtest-1",
+  series: "v2-high-5m-v1",
   objective: "maximize hit rate, then minimize maximum miss streak",
   warning: "A higher historical rate does not guarantee a higher future rate.",
   noApiCalls: true,
