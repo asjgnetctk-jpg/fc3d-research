@@ -28,6 +28,11 @@ if (!new Set(["dan", "pool5", "pool6", "pool7"]).has(play)) {
 const batch = Math.max(1, Math.floor(numberArg("batch", 1)));
 const samples = Math.min(numberArg("samples", 500_000), FORMULAS_PER_SIZE);
 const startSample = numberArg("start", (batch - 1) * samples);
+if (startSample < 0 || startSample + samples > FORMULAS_PER_SIZE) {
+  throw new Error(
+    `This batch exceeds the ${FORMULAS_PER_SIZE.toLocaleString()} unique-formula space and would repeat formulas.`,
+  );
+}
 const workers = Math.max(1, Math.min(numberArg("workers", 2), 2, cpus().length));
 const keep = Math.max(50, numberArg("keep", 200));
 const seed = numberArg("seed", 20260909);

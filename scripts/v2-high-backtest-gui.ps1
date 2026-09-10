@@ -2,6 +2,8 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $runnerPath = Join-Path $PSScriptRoot "v2-high-backtest-runner.ps1"
+$projectRoot = Split-Path -Parent $PSScriptRoot
+$workPath = Join-Path $projectRoot "work"
 $pwshPath = (Get-Process -Id $PID).Path
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "V2高命中率回测器"
@@ -47,14 +49,30 @@ $form.Controls.Add($batchLabel)
 
 $batchBox = New-Object System.Windows.Forms.NumericUpDown
 $batchBox.Minimum = 1
-$batchBox.Maximum = 1000
+$batchBox.Maximum = 887
 $batchBox.Value = 1
 $batchBox.Location = New-Object System.Drawing.Point(150, 178)
 $batchBox.Size = New-Object System.Drawing.Size(310, 30)
 $form.Controls.Add($batchBox)
 
+function Set-NextBatch {
+  $plays = @("dan", "pool5", "pool6", "pool7")
+  $play = $plays[$playBox.SelectedIndex]
+  $completed = @(
+    Get-ChildItem -LiteralPath $workPath -Filter "v2-high-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
+      ForEach-Object {
+        if ($_.Name -match "batch-(\d+)") { [int]$Matches[1] }
+      }
+  )
+  $next = if ($completed.Count) { ($completed | Measure-Object -Maximum).Maximum + 1 } else { 1 }
+  $batchBox.Value = [Math]::Min(887, $next)
+}
+
+$playBox.Add_SelectedIndexChanged({ Set-NextBatch })
+Set-NextBatch
+
 $tip = New-Object System.Windows.Forms.Label
-$tip.Text = "第一次用第1批；下次同一玩法改成第2批。运行可能需要十几分钟。"
+$tip.Text = "程序会自动显示该玩法的下一批；不同批次不重复。运行可能需要十几分钟。"
 $tip.AutoSize = $true
 $tip.ForeColor = [System.Drawing.Color]::FromArgb(145, 89, 10)
 $tip.Location = New-Object System.Drawing.Point(33, 239)

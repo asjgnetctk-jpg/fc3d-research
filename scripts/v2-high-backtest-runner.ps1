@@ -1,7 +1,7 @@
 param(
   [ValidateSet("dan", "pool5", "pool6", "pool7")]
   [string]$Play = "dan",
-  [ValidateRange(1, 1000)]
+  [ValidateRange(1, 887)]
   [int]$Batch = 1
 )
 
