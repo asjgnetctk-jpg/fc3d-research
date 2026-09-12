@@ -275,7 +275,7 @@ function searchBucket(
     }
   }
   kept.sort((left, right) => right.targetHits - left.targetHits);
-  kept.length = keepCount;
+  kept.length = Math.min(kept.length, keepCount);
 
   let best = { methods, result: baseline };
   for (const candidate of kept) {
