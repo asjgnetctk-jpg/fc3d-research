@@ -64,7 +64,7 @@ $form.Controls.Add($countLabel)
 $countBox = New-Object System.Windows.Forms.NumericUpDown
 $countBox.Minimum = 1
 $countBox.Maximum = 88
-$countBox.Value = 2
+$countBox.Value = 88
 $countBox.Location = New-Object System.Drawing.Point(150, 228)
 $countBox.Size = New-Object System.Drawing.Size(310, 30)
 $form.Controls.Add($countBox)
@@ -80,13 +80,14 @@ function Set-NextBatch {
   )
   $next = if ($completed.Count) { ($completed | Measure-Object -Maximum).Maximum + 1 } else { 1 }
   $batchBox.Value = [Math]::Min(88, $next)
+  $countBox.Value = [Math]::Max(1, 89 - [int]$batchBox.Value)
 }
 
 $playBox.Add_SelectedIndexChanged({ Set-NextBatch })
 Set-NextBatch
 
 $tip = New-Object System.Windows.Forms.Label
-$tip.Text = "一批完成会自动开始下一批；失败即停止，已完成结果不会丢失。"
+$tip.Text = "默认从下一批持续跑到第88批；可手动减少。失败即停止。"
 $tip.AutoSize = $true
 $tip.ForeColor = [System.Drawing.Color]::FromArgb(145, 89, 10)
 $tip.Location = New-Object System.Drawing.Point(33, 292)
