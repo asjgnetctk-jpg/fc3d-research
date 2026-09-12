@@ -545,3 +545,11 @@ body { background:var(--paper); font-family:"PingFang SC","Microsoft YaHei",sans
 
 /* Soften the 5/6/7-number pool chips against the dark recommendation panel. */
 .terminal-shell .number-pills span { background:#c7dba8; color:#163f31; box-shadow:inset 0 0 0 1px rgba(22,63,49,.08); }
+
+/* Keep every field in the dark combination-omission cards readable. */
+.terminal-shell .combination-controls select { color:#e7eef3; }
+.terminal-shell .combination-controls select option { background:#fff; color:#18211b; }
+.terminal-shell .combination-row .combination-number span,
+.terminal-shell .combination-row .combination-recent span { color:#aebdc8; font-size:11px; }
+.terminal-shell .combination-row .combination-number strong { color:#d8f56f; }
+.terminal-shell .combination-row .combination-recent strong { color:#e7eef3; font-size:12px; font-weight:800; }
