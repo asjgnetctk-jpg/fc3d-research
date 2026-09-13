@@ -6,7 +6,7 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $workPath = Join-Path $projectRoot "work"
 $pwshPath = (Get-Process -Id $PID).Path
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "V2高命中率回测器"
+$form.Text = "V2原版方法回测器"
 $form.StartPosition = "CenterScreen"
 $form.ClientSize = New-Object System.Drawing.Size(520, 440)
 $form.FormBorderStyle = "FixedDialog"
@@ -14,14 +14,14 @@ $form.MaximizeBox = $false
 $form.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 10)
 
 $title = New-Object System.Windows.Forms.Label
-$title.Text = "V2自适应 · 每批500万次评估"
+$title.Text = "V2原版方法 · 每批最多500万次评估"
 $title.Font = New-Object System.Drawing.Font("Microsoft YaHei UI", 16, [System.Drawing.FontStyle]::Bold)
 $title.AutoSize = $true
 $title.Location = New-Object System.Drawing.Point(30, 24)
 $form.Controls.Add($title)
 
 $notice = New-Object System.Windows.Forms.Label
-$notice.Text = "默认4线程。按连续未中状态切换60套方法，旧V2成绩作为晋级线。"
+$notice.Text = "默认4线程。60个连断状态，先压最长连断，再比较命中次数。"
 $notice.AutoSize = $true
 $notice.ForeColor = [System.Drawing.Color]::FromArgb(64, 78, 74)
 $notice.Location = New-Object System.Drawing.Point(32, 68)
@@ -73,7 +73,7 @@ function Set-NextBatch {
   $plays = @("dan", "pool5", "pool6", "pool7")
   $play = $plays[$playBox.SelectedIndex]
   $completed = @(
-    Get-ChildItem -LiteralPath $workPath -Filter "v2-adaptive5m-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
+    Get-ChildItem -LiteralPath $workPath -Filter "v2-classic5m-$play-batch-*.json" -File -ErrorAction SilentlyContinue |
       ForEach-Object {
         if ($_.Name -match "batch-(\d+)") { [int]$Matches[1] }
       }

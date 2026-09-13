@@ -26,10 +26,9 @@ const workers = Math.max(1, Math.min(Math.floor(numberArg("workers", 4)), 4, cpu
 const trainingStart = textArg("training-start", "2025-07-29");
 const trainingEnd = textArg("training-end", "2026-07-29");
 const dataPath = path.resolve(root, textArg("data", "scripts/data/fc3d-full-history.json"));
-const initialConfigPath = path.resolve(root, textArg("initial", "lib/v2-one-year-config.json"));
 const outputPath = path.resolve(
   root,
-  textArg("output", `work/v2-adaptive5m-${play}-batch-${batch}.json`),
+  textArg("output", `work/v2-classic5m-${play}-batch-${batch}.json`),
 );
 const tempDirectory = path.resolve(root, "work", `.v2-adaptive-${process.pid}-${Date.now()}`);
 const benchmarks = {
@@ -116,7 +115,7 @@ await mkdir(tempDirectory, { recursive: true });
 const baseBudget = Math.floor(samples / workers);
 const remainder = samples % workers;
 const startedAt = Date.now();
-console.log(`V2自适应 ${play}：第${batch}批，评估${samples.toLocaleString()}个候选，${workers}线程。`);
+console.log(`V2原版方法 ${play}：第${batch}批，最多评估${samples.toLocaleString()}个候选，${workers}线程。`);
 
 try {
   const jobs = Array.from({ length: workers }, async (_, workerIndex) => {
@@ -127,22 +126,22 @@ try {
     const env = {
       ...process.env,
       V2_PLAYS: play,
-      V2_OBJECTIVE: "hit-rate-first",
-      V2_MAX_MISS: String(benchmark.training.maxMiss),
-      V2_EXHAUST_BUDGET: "true",
+      V2_OBJECTIVE: "streak-first",
+      V2_EXHAUST_BUDGET: "false",
       V2_PROGRESS: "true",
       V2_SEARCH_BUDGET: String(budget),
       V2_SEARCH_PER_BUCKET: "5000",
-      V2_KEEP_PER_BUCKET: "96",
-      V2_PASSES: "1000",
-      V2_HARD_PASSES: "0",
+      V2_KEEP_PER_BUCKET: "48",
+      V2_PASSES: "5",
+      V2_HARD_PASSES: "5",
+      V2_HARD_SEARCH_DAN: "60000",
+      V2_HARD_SEARCH_POOL: "40000",
       V2_SEED: String(seed),
       V2_TRAINING_START: trainingStart,
       V2_TRAINING_END: trainingEnd,
-      V2_INITIAL_CONFIG: initialConfigPath,
       V2_CONFIG_OUTPUT: configPath,
       V2_REPORT_OUTPUT: reportPath,
-      V2_VERSION: "V2-adaptive-high-hit-5m",
+      V2_VERSION: "V2-classic-streak-first-5m",
     };
     await runTrainer(env, workerIndex + 1);
     const config = JSON.parse(await readFile(configPath, "utf8"));
@@ -153,17 +152,17 @@ try {
   });
   const candidates = await Promise.all(jobs);
   candidates.sort((left, right) =>
-    right.metric.rate - left.metric.rate ||
     left.metric.maxMiss - right.metric.maxMiss ||
-    right.metric.hits - left.metric.hits);
+    right.metric.hits - left.metric.hits ||
+    right.metric.rate - left.metric.rate);
   const selected = candidates[0];
   const snapshotText = await readFile(dataPath, "utf8");
   const snapshot = JSON.parse(snapshotText);
   const replayMetrics = replay(snapshot, selected.config, play);
   const report = {
     generatedAt: new Date().toISOString(),
-    engine: "v2-adaptive-high-hit-local-backtest-1",
-    methodology: "Old-V2-style 60-state adaptive model. Candidate selection uses the stated one-year training outcomes; later rows are reported only after the model is selected.",
+    engine: "v2-classic-streak-first-local-backtest-1",
+    methodology: "Original V2-style 60-state adaptive model. Each worker starts from the baseline formulas. Training selection minimizes maximum miss streak first, then maximizes hits. Later rows are reported only after selection.",
     warning: "Training rate is in-sample and cannot guarantee the same future rate.",
     play,
     batch,
@@ -172,7 +171,7 @@ try {
       completedCandidateEvaluations: candidates.reduce((sum, item) => sum + item.config.search.testedMethods, 0),
       workers,
       elapsedSeconds: (Date.now() - startedAt) / 1000,
-      objective: "highest training hit rate, then shortest training miss streak",
+      objective: "shortest training miss streak, then highest training hits",
       trainingStart,
       trainingEnd,
       dataSha256: createHash("sha256").update(snapshotText).digest("hex"),
@@ -192,8 +191,9 @@ try {
       exceedsOldV2TrainingRate: replayMetrics.training.rate > benchmark.training.rate,
       exceedsOldV2DisplayedActualRate: replayMetrics.all.rate > benchmark.actual.rate,
       promotionEligible:
-        replayMetrics.training.rate > benchmark.training.rate &&
-        replayMetrics.training.maxMiss <= benchmark.training.maxMiss,
+        replayMetrics.training.maxMiss < benchmark.training.maxMiss ||
+        (replayMetrics.training.maxMiss === benchmark.training.maxMiss &&
+          replayMetrics.training.hits > benchmark.training.hits),
       config: selected.config,
     },
     candidates: candidates.map((item) => ({

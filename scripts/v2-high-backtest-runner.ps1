@@ -31,13 +31,13 @@ $lastOutput = $null
 $failedBatch = $null
 
 Write-Host ""
-Write-Host "V2自适应连续回测：$Play，第${Batch}批到第${lastBatch}批。" -ForegroundColor Cyan
-Write-Host "每批$($Samples.ToString('N0'))次候选评估、${Workers}线程；一批完成后自动开始下一批。" -ForegroundColor Cyan
+Write-Host "V2原版方法连续回测：$Play，第${Batch}批到第${lastBatch}批。" -ForegroundColor Cyan
+Write-Host "每批最多$($Samples.ToString('N0'))次候选评估、${Workers}线程；按最长连断优先，一批完成后自动开始下一批。" -ForegroundColor Cyan
 Write-Host "运行期间可以正常使用电脑，但不要同时启动第二个回测。" -ForegroundColor Yellow
 
 for ($currentBatch = $Batch; $currentBatch -le $lastBatch; $currentBatch++) {
   $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-  $relativeOutput = "work/v2-adaptive5m-$Play-batch-$currentBatch-$timestamp.json"
+  $relativeOutput = "work/v2-classic5m-$Play-batch-$currentBatch-$timestamp.json"
   $absoluteOutput = Join-Path $projectRoot $relativeOutput
   $host.UI.RawUI.WindowTitle = "V2连续回测 - $Play - 第$currentBatch/$lastBatch批"
   Write-Host ""
@@ -53,9 +53,10 @@ for ($currentBatch = $Batch; $currentBatch -le $lastBatch; $currentBatch++) {
   $lastOutput = $absoluteOutput
   $batchReport = Get-Content -LiteralPath $absoluteOutput -Raw | ConvertFrom-Json
   $trainingRate = [Math]::Round($batchReport.selected.training.rate * 100, 2)
-  $promotionText = if ($batchReport.selected.promotionEligible) { "达到晋级线" } else { "未达到晋级线" }
+  $promotionText = if ($batchReport.selected.promotionEligible) { "优于旧V2基准" } else { "未优于旧V2基准" }
   $nextText = if ($currentBatch -lt $lastBatch) { "即将继续下一批" } else { "连续计划已完成" }
-  Write-Host "第${currentBatch}批完成：训练命中率${trainingRate}%，$promotionText。$nextText。" -ForegroundColor Green
+  $trainingMaxMiss = $batchReport.selected.training.maxMiss
+  Write-Host "第${currentBatch}批完成：最长连断${trainingMaxMiss}期，训练命中率${trainingRate}%，$promotionText。$nextText。" -ForegroundColor Green
 }
 
 if ($NonInteractive) {
