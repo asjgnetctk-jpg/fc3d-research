@@ -12,8 +12,11 @@ const source = path.join(
 );
 const payload = JSON.parse(await readFile(source, "utf8"));
 const draws = payload.rows;
-const TRAINING_START = "2005-02-22";
-const TRAINING_END = "2025-09-14";
+const config = JSON.parse(
+  await readFile(path.join(root, "scripts", "config", "fc3d-position-pools.json"), "utf8"),
+);
+const TRAINING_START = config.trainingStart;
+const TRAINING_END = config.trainingEnd;
 const REPLAY_START = TRAINING_START;
 const MIN_HISTORY = 120;
 const positions = ["hundreds", "tens", "units"];
@@ -204,10 +207,6 @@ const replayRows = featureRows.map((rows) =>
   rows.filter((row) => row.date >= REPLAY_START),
 );
 const latest = draws.at(-1);
-const config = JSON.parse(
-  await readFile(path.join(root, "scripts", "config", "fc3d-position-pools.json"), "utf8"),
-);
-
 function buildPoolResult(poolSize, poolConfig) {
   const selected = positions.map((key) => poolConfig.methods[key]);
   const streaks = [0, 0, 0];
@@ -257,23 +256,12 @@ function buildPoolResult(poolSize, poolConfig) {
       forward: metric(fullHistory.filter((row) => row.date >= config.forwardStart), `${key}Hit`),
     };
   }
-  const blindStreaks = { hundreds: 0, tens: 0, units: 0 };
-  const blindHistory = fullHistory
-    .filter((row) => row.date >= config.forwardStart)
-    .map((row) => {
-      const copy = { ...row };
-      for (const key of positions) {
-        blindStreaks[key] = row[`${key}Hit`] ? 0 : blindStreaks[key] + 1;
-        copy[`${key}MissStreak`] = blindStreaks[key];
-      }
-      return copy;
-    });
   return {
     poolSize,
     recommendation,
     methods: poolConfig.methods,
     metrics,
-    history: blindHistory,
+    history: fullHistory,
   };
 }
 
@@ -287,12 +275,13 @@ const output = {
   sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
   dataSha256: payload.canonicalSha256,
   formulaVersion: config.formulaVersion,
+  trainingMode: config.trainingMode,
   trainingStart: TRAINING_START,
   trainingEnd: TRAINING_END,
-  forwardStart: "2025-09-15",
+  forwardStart: config.forwardStart,
   futureGuarantee: false,
   notice:
-    "定位5码、6码、7码使用同一严格口径：只用2025-09-14及以前的历史选参；2025-09-15起的近一年结果完全隔离，锁定公式后按期顺序盲测。",
+    "定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。",
   pools,
 };
 

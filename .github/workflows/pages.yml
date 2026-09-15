@@ -36,8 +36,8 @@ jobs:
         env:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-v7-static-data.mjs
-      - name: 生成福彩定位5/6/7码近三年回看拟合数据
-        run: node scripts/generate-position-pools-3y-fit.mjs
+      - name: 生成福彩定位5/6/7码一年权重训练数据
+        run: node scripts/generate-position-pools-static-data.mjs
       - name: 生成体彩定位7码独立检验数据
         env:
           LOTTERY_GAME: "pl3"
