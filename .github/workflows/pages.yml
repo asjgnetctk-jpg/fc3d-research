@@ -38,10 +38,10 @@ jobs:
         run: node scripts/generate-v7-static-data.mjs
       - name: 生成福彩定位5/6/7码一年权重训练数据
         run: node scripts/generate-position-pools-static-data.mjs
-      - name: 生成体彩定位7码独立检验数据
+      - name: 生成体彩定位5/6/7码一年权重训练数据
         env:
           LOTTERY_GAME: "pl3"
-        run: node scripts/generate-position7-static-data.mjs
+        run: node scripts/generate-position-pools-static-data.mjs
       - name: 生成福彩3D V9实验数据
         run: node scripts/generate-v9-static-data.mjs
       - name: 生成福彩3D V9.2近一年实验数据

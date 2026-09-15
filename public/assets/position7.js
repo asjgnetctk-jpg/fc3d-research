@@ -42,6 +42,9 @@ function selectPool(size) {
 }
 function render(value) {
   payload = value;
+  const prefix = window.LotteryGame?.id === "pl3" ? "pl3-" : "";
+  const audit = $("#audit");
+  if (audit) audit.href = `./audit/${prefix}position7-model.json`;
   $("#version").textContent = value.formulaVersion;
   $("#source").textContent = `数据更新至 ${value.sourceUpdatedThrough}`;
   $("#notice").textContent = value.notice;

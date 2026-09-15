@@ -3,7 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const game = "fc3d";
+const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
+const prefix = game === "pl3" ? "pl3-" : "";
 const source = path.join(
   root,
   "scripts",
@@ -13,7 +14,7 @@ const source = path.join(
 const payload = JSON.parse(await readFile(source, "utf8"));
 const draws = payload.rows;
 const config = JSON.parse(
-  await readFile(path.join(root, "scripts", "config", "fc3d-position-pools.json"), "utf8"),
+  await readFile(path.join(root, "scripts", "config", `${game}-position-pools.json`), "utf8"),
 );
 const TRAINING_START = config.trainingStart;
 const TRAINING_END = config.trainingEnd;
@@ -281,24 +282,26 @@ const output = {
   forwardStart: config.forwardStart,
   futureGuarantee: false,
   notice:
-    "定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。",
+    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。`,
   pools,
 };
 
 await mkdir(path.join(root, "pages", "audit"), { recursive: true });
 await mkdir(path.join(root, "public", "audit"), { recursive: true });
 for (const directory of ["pages", "public"]) {
-  await writeFile(path.join(root, directory, "position7-data.json"), `${JSON.stringify(output)}\n`, "utf8");
+  await writeFile(path.join(root, directory, `${prefix}position7-data.json`), `${JSON.stringify(output)}\n`, "utf8");
   await writeFile(
-    path.join(root, directory, "audit", "position7-model.json"),
+    path.join(root, directory, "audit", `${prefix}position7-model.json`),
     `${JSON.stringify({ ...output, pools: Object.fromEntries(Object.entries(pools).map(([size, item]) => [size, { ...item, history: undefined }])) }, null, 2)}\n`,
     "utf8",
   );
 }
-for (const file of ["position7.html", path.join("assets", "position7.js")]) {
-  await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
+if (game === "fc3d") {
+  for (const file of ["position7.html", path.join("assets", "position7.js")]) {
+    await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
+  }
 }
 
 console.log(
-  `fc3d position pools generated: ${[5, 6, 7].map((size) => `${size}码 ${positions.map((key) => pools[size].metrics[key].forward.maxMiss).join("/")}`).join(", ")}`,
+  `${game} position pools generated: ${[5, 6, 7].map((size) => `${size}码 ${positions.map((key) => pools[size].metrics[key].forward.maxMiss).join("/")}`).join(", ")}`,
 );
