@@ -1,0 +1,172 @@
+{
+  "generatedAt": "2026-09-15T05:20:22.229Z",
+  "game": "fc3d",
+  "sourceUpdatedThrough": "2026-09-14 · 第2026247期",
+  "dataSha256": "bc3833e3e13e895a494ce62f49b1d5c4521dba44b1a49eee80b8103d10ba5443",
+  "formulaVersion": "POSITION-7.1-LOCKED",
+  "trainingStart": "2025-09-15",
+  "trainingEnd": "2026-09-14",
+  "forwardStart": "2026-09-15",
+  "targetMaxMiss": 1,
+  "futureGuarantee": false,
+  "notice": "每个位置独立选7个数字。仅用2025-09-15至2026-09-14近一年数据训练；常态公式先筛高命中候选，上期未中后切换防断公式，最终按最长连断优先、命中数其次锁定。2026-09-15起才计独立前瞻，最长连断1期是训练目标，不是未来保证。",
+  "recommendation": {
+    "targetIssue": "2026248",
+    "basedOnIssue": "2026247",
+    "basedOnDate": "2026-09-14",
+    "hundredsPool": "2356789",
+    "tensPool": "1234679",
+    "unitsPool": "0135678"
+  },
+  "methods": {
+    "hundreds": {
+      "base": {
+        "id": "p7-1446",
+        "longWindow": 120,
+        "shortWindow": 10,
+        "longWeight": 2,
+        "shortWeight": -1,
+        "gapWeight": -1,
+        "lastWeight": 1
+      },
+      "defense": {
+        "id": "p7-801",
+        "longWindow": 30,
+        "shortWindow": 20,
+        "longWeight": 2,
+        "shortWeight": 1,
+        "gapWeight": -1,
+        "lastWeight": 1
+      },
+      "hits": 270,
+      "maxMiss": 2,
+      "currentMiss": 0
+    },
+    "tens": {
+      "base": {
+        "id": "p7-838",
+        "longWindow": 60,
+        "shortWindow": 5,
+        "longWeight": -2,
+        "shortWeight": 0,
+        "gapWeight": 2,
+        "lastWeight": -1
+      },
+      "defense": {
+        "id": "p7-1492",
+        "longWindow": 120,
+        "shortWindow": 20,
+        "longWeight": -2,
+        "shortWeight": -1,
+        "gapWeight": 0,
+        "lastWeight": -1
+      },
+      "hits": 272,
+      "maxMiss": 2,
+      "currentMiss": 0
+    },
+    "units": {
+      "base": {
+        "id": "p7-97",
+        "longWindow": 20,
+        "shortWindow": 5,
+        "longWeight": 2,
+        "shortWeight": -1,
+        "gapWeight": 0,
+        "lastWeight": -1
+      },
+      "defense": {
+        "id": "p7-322",
+        "longWindow": 20,
+        "shortWindow": 20,
+        "longWeight": 1,
+        "shortWeight": -1,
+        "gapWeight": 0,
+        "lastWeight": -1
+      },
+      "hits": 266,
+      "maxMiss": 2,
+      "currentMiss": 0
+    }
+  },
+  "metrics": {
+    "hundreds": {
+      "overall": {
+        "count": 351,
+        "hits": 270,
+        "rate": 0.7692307692307693,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "training": {
+        "count": 351,
+        "hits": 270,
+        "rate": 0.7692307692307693,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "forward": {
+        "count": 0,
+        "hits": 0,
+        "rate": 0,
+        "maxMiss": 0,
+        "currentMiss": 0,
+        "targetMet": false
+      }
+    },
+    "tens": {
+      "overall": {
+        "count": 351,
+        "hits": 272,
+        "rate": 0.7749287749287749,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "training": {
+        "count": 351,
+        "hits": 272,
+        "rate": 0.7749287749287749,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "forward": {
+        "count": 0,
+        "hits": 0,
+        "rate": 0,
+        "maxMiss": 0,
+        "currentMiss": 0,
+        "targetMet": false
+      }
+    },
+    "units": {
+      "overall": {
+        "count": 351,
+        "hits": 266,
+        "rate": 0.7578347578347578,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "training": {
+        "count": 351,
+        "hits": 266,
+        "rate": 0.7578347578347578,
+        "maxMiss": 2,
+        "currentMiss": 0,
+        "targetMet": false
+      },
+      "forward": {
+        "count": 0,
+        "hits": 0,
+        "rate": 0,
+        "maxMiss": 0,
+        "currentMiss": 0,
+        "targetMet": false
+      }
+    }
+  }
+}

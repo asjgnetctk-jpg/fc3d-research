@@ -53,6 +53,18 @@ function decoratePage() {
   updateClock();
   window.setInterval(updateClock, 1000);
   const versionSwitch = document.querySelector(".version-switch");
+  if (versionSwitch && !versionSwitch.querySelector('a[href*="position7"]')) {
+    const link = document.createElement("a");
+    link.href = "./position7.html";
+    link.innerHTML = "<strong>定位7码</strong><span>百十个</span>";
+    if (location.pathname.endsWith("/position7.html")) {
+      versionSwitch.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
+      link.classList.add("is-active");
+      link.setAttribute("aria-current", "page");
+    }
+    versionSwitch.append(link);
+    versionSwitch.classList.add("seven-versions");
+  }
   const anchor = clock;
   if (anchor && !document.querySelector(".game-switch")) {
     const nav = document.createElement("nav");
