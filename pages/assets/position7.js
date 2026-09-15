@@ -10,11 +10,13 @@ function badge(hit) { return `<span class="hit-badge${hit ? " is-hit" : ""}">${h
 function metricCard(key) {
   const item = data.metrics[key], result = item.fit ?? item.forward;
   const label = item.fit ? "近3年回看命中率" : "独立命中率";
-  const detail = item.fit ? "答案参与选参，仅表示拟合成绩" : `历史训练：${item.training.hits}/${item.training.count}，命中率${(item.training.rate * 100).toFixed(1)}%，最长连断${item.training.maxMiss}期`;
+  const detail = item.fit
+    ? (item.forward?.count ? `锁定后实战：${item.forward.hits}/${item.forward.count}，命中率${(item.forward.rate * 100).toFixed(1)}%，最长连断${item.forward.maxMiss}期` : "答案参与选参；锁定后实战尚无样本")
+    : `历史训练：${item.training.hits}/${item.training.count}，命中率${(item.training.rate * 100).toFixed(1)}%，最长连断${item.training.maxMiss}期`;
   return `<article class="position7-metric"><h3>${names[key]}</h3><strong>${result.hits}/${result.count}</strong><span>${label} ${(result.rate * 100).toFixed(1)}%</span><b>最长连断 ${result.maxMiss}期 · 当前${result.currentMiss}期</b><small>${detail}</small></article>`;
 }
 function historyRow(row) {
-  return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${row.phase === "answer-fit" ? "拟合" : "盲测"}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong></div>${Object.keys(names).map((key, index) => `<div class="position7-line"><span>${names[key]}</span><strong>${row[`${key}Pool`]}</strong>${badge(row[`${key}Hit`])}<small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`).join("")}</div></article>`;
+  return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${row.phase === "answer-fit" ? "拟合" : "实战"}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong></div>${Object.keys(names).map((key, index) => `<div class="position7-line"><span>${names[key]}</span><strong>${row[`${key}Pool`]}</strong>${badge(row[`${key}Hit`])}<small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`).join("")}</div></article>`;
 }
 function matches(row) { return !query || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(query); }
 function renderHistory() {
