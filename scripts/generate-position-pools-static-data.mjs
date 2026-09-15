@@ -271,6 +271,7 @@ function buildPoolResult(poolSize, poolConfig) {
   return {
     poolSize,
     recommendation,
+    methods: poolConfig.methods,
     metrics,
     history: blindHistory,
   };
