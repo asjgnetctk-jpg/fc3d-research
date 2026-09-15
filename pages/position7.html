@@ -4,31 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#163f31" />
-    <meta name="description" content="百位、十位、个位各7码定位推荐与逐期检验。" />
-    <title>福彩3D · 定位7码</title>
-    <link rel="stylesheet" href="./styles.css?v=20260915-position7" />
-    <script src="./assets/game-switch.js?v=20260915-position7" defer></script>
-    <script src="./assets/position7.js?v=20260915-position7" defer></script>
+    <meta name="description" content="百位、十位、个位的5码、6码、7码定位推荐与独立盲测。" />
+    <title>福彩3D · 定位码</title>
+    <link rel="stylesheet" href="./styles.css?v=20260915-position-pools" />
+    <script src="./assets/game-switch.js?v=20260915-position-pools" defer></script>
+    <script src="./assets/position7.js?v=20260915-position-pools" defer></script>
   </head>
   <body>
     <main class="app-shell terminal-shell">
       <header class="topbar">
-        <div class="terminal-brand"><span class="brand-sigil">定7</span><div><p class="eyebrow">福彩3D · 定位研究</p><h1>百十个位7码</h1></div></div>
+        <div class="terminal-brand"><span class="brand-sigil">定位</span><div><p class="eyebrow">福彩3D · 定位研究</p><h1>百十个位定位码</h1></div></div>
         <div class="terminal-actions"><span class="live-readout">POSITION / LIVE</span><button id="refresh" class="refresh-button">刷新</button></div>
       </header>
       <div class="beijing-clock"><span>北京时间</span><strong id="beijing-time">正在校时</strong></div>
       <nav class="version-switch six-versions" aria-label="切换研究页面">
         <a href="./"><strong>V7</strong></a><a href="./v2.html"><strong>V2</strong></a><a href="./v5.html"><strong>V5</strong></a><a href="./v9.html"><strong>V9</strong></a><a href="./v9-2.html"><strong>V9.2</strong></a><a href="./omissions.html"><strong>遗漏</strong></a>
       </nav>
-      <div id="loading" class="notice">正在读取定位7码记录…</div><div id="error" class="notice error" hidden></div>
+      <div id="loading" class="notice">正在读取定位码记录…</div><div id="error" class="notice error" hidden></div>
       <div id="content" hidden>
         <section class="status-strip"><span class="status-dot"></span><span id="version"></span><span>·</span><span id="source"></span></section>
         <section class="section-block"><p id="notice" class="section-note"></p></section>
+        <nav id="pool-tabs" class="pool-size-tabs" aria-label="定位码数量"><button data-pool-size="5">5码定位</button><button data-pool-size="6">6码定位</button><button data-pool-size="7" class="is-active">7码定位</button></nav>
         <section class="hero-card position7-hero"><div class="hero-meta"><span id="target"></span><span id="based-on"></span></div><div id="recommendation" class="position7-current"></div></section>
-        <section class="section-block"><div class="section-heading"><div><p class="eyebrow">真实回测结果</p><h2>分位置命中与最长连断</h2></div><span class="backfit-chip">目标≤1期</span></div><div id="metrics" class="position7-metrics"></div></section>
-        <section class="section-block history-section"><div class="section-heading"><div><p class="eyebrow">逐期证据</p><h2>推荐、开奖号与结果</h2></div></div><div class="history-search"><input id="search" type="search" placeholder="搜索期号、日期、开奖号或定位7码"/><span id="count"></span></div><div id="history" class="position7-history"></div><button id="toggle" class="secondary-button"></button></section>
-        <section class="section-block formula-block"><p class="section-note">命中规则：百位、十位、个位分别核对；对应位置的开奖号落入该位置7码池才算该项命中。三个位置不混算。<a id="audit" href="./audit/position7-model.json">查看锁定公式与统计</a></p></section>
-        <footer><strong>历史结果不保证未来</strong><p>7个数字覆盖一个位置的理论概率为70%。连续未中目标只能接受历史检验，不能承诺未来不超过1期。</p><span id="generated"></span></footer>
+        <section class="section-block"><div class="section-heading"><div><p class="eyebrow">近一年独立盲测</p><h2>分位置命中与最长连断</h2></div><span id="pool-label" class="backfit-chip">定位7码</span></div><div id="metrics" class="position7-metrics"></div></section>
+        <section class="section-block history-section"><div class="section-heading"><div><p class="eyebrow">逐期证据</p><h2>推荐、开奖号与结果</h2></div></div><div class="history-search"><input id="search" type="search" placeholder="搜索期号、日期、开奖号或定位码"/><span id="count"></span></div><div id="history" class="position7-history"></div><button id="toggle" class="secondary-button"></button></section>
+        <section class="section-block formula-block"><p class="section-note"><span id="rule"></span> <a id="audit" href="./audit/position7-model.json">查看锁定公式与统计</a></p></section>
+        <footer><strong>历史结果不保证未来</strong><p>近一年数据未参与公式选择，所有推荐按时间顺序生成；连续未中只能如实统计，不能承诺未来上限。</p><span id="generated"></span></footer>
       </div>
     </main>
   </body>

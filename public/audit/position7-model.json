@@ -1,669 +1,214 @@
 {
-  "generatedAt": "2026-09-15T05:37:33.092Z",
+  "generatedAt": "2026-09-15T08:25:18.496Z",
   "game": "fc3d",
   "sourceUpdatedThrough": "2026-09-14 · 第2026247期",
   "dataSha256": "bc3833e3e13e895a494ce62f49b1d5c4521dba44b1a49eee80b8103d10ba5443",
-  "formulaVersion": "POSITION-7.3-TWENTY-STATE-LOCKED",
-  "trainingStart": "2025-09-15",
-  "trainingEnd": "2026-09-14",
-  "forwardStart": "2026-09-15",
-  "targetMaxMiss": 1,
+  "formulaVersion": "POSITION-POOLS-ALL-HISTORY-ONE-YEAR-BLIND-V1",
+  "trainingStart": "2005-02-22",
+  "trainingEnd": "2025-09-14",
+  "forwardStart": "2025-09-15",
   "futureGuarantee": false,
-  "notice": "每个位置独立选7个数字。仅用2025-09-15至2026-09-14近一年数据训练；常态和上期未中后的防断阶段，都按该位置上期实际数字分别切换十种公式，共20种状态。训练筛选以最长连断不超过1期为门槛，再提高命中率。公式选择看过训练段结果，因此训练回放存在过拟合；2026-09-15起才计锁定后的独立前瞻。",
-  "recommendation": {
-    "targetIssue": "2026248",
-    "basedOnIssue": "2026247",
-    "basedOnDate": "2026-09-14",
-    "hundredsPool": "0145689",
-    "tensPool": "2356789",
-    "unitsPool": "0234678"
-  },
-  "methods": {
-    "hundreds": {
-      "normals": [
-        {
-          "id": "p7-395",
-          "longWindow": 20,
-          "shortWindow": 20,
-          "longWeight": 2,
-          "shortWeight": 1,
-          "gapWeight": -1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-900",
-          "longWindow": 60,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": 1,
-          "gapWeight": 2,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-1172",
-          "longWindow": 60,
-          "shortWindow": 20,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-187",
-          "longWindow": 20,
-          "shortWindow": 10,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-575",
-          "longWindow": 30,
-          "shortWindow": 10,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": -1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-267",
-          "longWindow": 20,
-          "shortWindow": 10,
-          "longWeight": 2,
-          "shortWeight": 1,
-          "gapWeight": 1,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-266",
-          "longWindow": 20,
-          "shortWindow": 10,
-          "longWeight": 2,
-          "shortWeight": 1,
-          "gapWeight": 1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-450",
-          "longWindow": 30,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": 2,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-21",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": -1,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-1567",
-          "longWindow": 120,
-          "shortWindow": 20,
-          "longWeight": 1,
-          "shortWeight": 1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        }
-      ],
-      "defenses": [
-        {
-          "id": "p7-38",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": 0,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-10",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-49",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-28",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": 2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-11",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-5",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        }
-      ],
-      "hits": 314,
-      "maxMiss": 1,
-      "currentMiss": 0
-    },
-    "tens": {
-      "normals": [
-        {
-          "id": "p7-1282",
-          "longWindow": 120,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": 0,
-          "gapWeight": 0,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-59",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": 2,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-820",
-          "longWindow": 60,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-4",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1174",
-          "longWindow": 60,
-          "shortWindow": 20,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1450",
-          "longWindow": 120,
-          "shortWindow": 10,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-777",
-          "longWindow": 30,
-          "shortWindow": 20,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-508",
-          "longWindow": 30,
-          "shortWindow": 5,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": 2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1239",
-          "longWindow": 120,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": 0,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-1252",
-          "longWindow": 120,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        }
-      ],
-      "defenses": [
-        {
-          "id": "p7-4",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-3",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-10",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-9",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-4",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-7",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-4",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        }
-      ],
-      "hits": 320,
-      "maxMiss": 1,
-      "currentMiss": 0
-    },
-    "units": {
-      "normals": [
-        {
-          "id": "p7-220",
-          "longWindow": 20,
-          "shortWindow": 10,
-          "longWeight": 1,
-          "shortWeight": 1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-98",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": 2,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-16",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-728",
-          "longWindow": 30,
-          "shortWindow": 20,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-1477",
-          "longWindow": 120,
-          "shortWindow": 10,
-          "longWeight": 2,
-          "shortWeight": 1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-52",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-1224",
-          "longWindow": 120,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-494",
-          "longWindow": 30,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": 1,
-          "gapWeight": 2,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-987",
-          "longWindow": 60,
-          "shortWindow": 10,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": 1,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-85",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": 1,
-          "shortWeight": 1,
-          "gapWeight": 1,
-          "lastWeight": -1
-        }
-      ],
-      "defenses": [
-        {
-          "id": "p7-4",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-39",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 1,
-          "gapWeight": 0,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-17",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": -2,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-728",
-          "longWindow": 30,
-          "shortWindow": 20,
-          "longWeight": 1,
-          "shortWeight": -1,
-          "gapWeight": 0,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-16",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": 0,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-5",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -1,
-          "lastWeight": 0
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-3",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": 1
-        },
-        {
-          "id": "p7-1",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": -1
-        },
-        {
-          "id": "p7-3",
-          "longWindow": 20,
-          "shortWindow": 5,
-          "longWeight": -2,
-          "shortWeight": -1,
-          "gapWeight": -2,
-          "lastWeight": 1
-        }
-      ],
-      "hits": 320,
-      "maxMiss": 1,
-      "currentMiss": 0
-    }
-  },
-  "metrics": {
-    "hundreds": {
-      "overall": {
-        "count": 351,
-        "hits": 314,
-        "rate": 0.8945868945868946,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
+  "notice": "定位5码、6码、7码使用同一严格口径：只用2025-09-14及以前的历史选参；2025-09-15起的近一年结果完全隔离，锁定公式后按期顺序盲测。",
+  "pools": {
+    "5": {
+      "poolSize": 5,
+      "recommendation": {
+        "targetIssue": "2026248",
+        "basedOnIssue": "2026247",
+        "basedOnDate": "2026-09-14",
+        "hundredsPool": "13467",
+        "tensPool": "02367",
+        "unitsPool": "25689"
       },
-      "training": {
-        "count": 351,
-        "hits": 314,
-        "rate": 0.8945868945868946,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
-      },
-      "forward": {
-        "count": 0,
-        "hits": 0,
-        "rate": 0,
-        "maxMiss": 0,
-        "currentMiss": 0,
-        "targetMet": false
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 7283,
+            "hits": 4052,
+            "rate": 0.5563641356583825,
+            "maxMiss": 14,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 168,
+            "rate": 0.47863247863247865,
+            "maxMiss": 9,
+            "currentMiss": 3,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 7283,
+            "hits": 4034,
+            "rate": 0.553892626664836,
+            "maxMiss": 9,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 179,
+            "rate": 0.50997150997151,
+            "maxMiss": 6,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 7283,
+            "hits": 4118,
+            "rate": 0.5654263353013868,
+            "maxMiss": 10,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 188,
+            "rate": 0.5356125356125356,
+            "maxMiss": 7,
+            "currentMiss": 1,
+            "targetMet": false
+          }
+        }
       }
     },
-    "tens": {
-      "overall": {
-        "count": 351,
-        "hits": 320,
-        "rate": 0.9116809116809117,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
+    "6": {
+      "poolSize": 6,
+      "recommendation": {
+        "targetIssue": "2026248",
+        "basedOnIssue": "2026247",
+        "basedOnDate": "2026-09-14",
+        "hundredsPool": "245689",
+        "tensPool": "012367",
+        "unitsPool": "235689"
       },
-      "training": {
-        "count": 351,
-        "hits": 320,
-        "rate": 0.9116809116809117,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
-      },
-      "forward": {
-        "count": 0,
-        "hits": 0,
-        "rate": 0,
-        "maxMiss": 0,
-        "currentMiss": 0,
-        "targetMet": false
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 7283,
+            "hits": 4770,
+            "rate": 0.654949883289853,
+            "maxMiss": 8,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 203,
+            "rate": 0.5783475783475783,
+            "maxMiss": 5,
+            "currentMiss": 2,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 7283,
+            "hits": 4775,
+            "rate": 0.6556364135658382,
+            "maxMiss": 8,
+            "currentMiss": 1,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 202,
+            "rate": 0.5754985754985755,
+            "maxMiss": 6,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 7283,
+            "hits": 4810,
+            "rate": 0.6604421254977344,
+            "maxMiss": 9,
+            "currentMiss": 2,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 213,
+            "rate": 0.6068376068376068,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        }
       }
     },
-    "units": {
-      "overall": {
-        "count": 351,
-        "hits": 320,
-        "rate": 0.9116809116809117,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
+    "7": {
+      "poolSize": 7,
+      "recommendation": {
+        "targetIssue": "2026248",
+        "basedOnIssue": "2026247",
+        "basedOnDate": "2026-09-14",
+        "hundredsPool": "0134678",
+        "tensPool": "0123467",
+        "unitsPool": "2345689"
       },
-      "training": {
-        "count": 351,
-        "hits": 320,
-        "rate": 0.9116809116809117,
-        "maxMiss": 1,
-        "currentMiss": 0,
-        "targetMet": true
-      },
-      "forward": {
-        "count": 0,
-        "hits": 0,
-        "rate": 0,
-        "maxMiss": 0,
-        "currentMiss": 0,
-        "targetMet": false
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 7283,
+            "hits": 5481,
+            "rate": 0.7525744885349444,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 249,
+            "rate": 0.7094017094017094,
+            "maxMiss": 4,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 7283,
+            "hits": 5482,
+            "rate": 0.7527117945901414,
+            "maxMiss": 6,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 243,
+            "rate": 0.6923076923076923,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 7283,
+            "hits": 5498,
+            "rate": 0.754908691473294,
+            "maxMiss": 7,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 351,
+            "hits": 244,
+            "rate": 0.6951566951566952,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        }
       }
     }
   }

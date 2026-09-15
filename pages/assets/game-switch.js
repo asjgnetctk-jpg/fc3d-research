@@ -56,7 +56,7 @@ function decoratePage() {
   if (versionSwitch && !versionSwitch.querySelector('a[href*="position7"]')) {
     const link = document.createElement("a");
     link.href = "./position7.html";
-    link.innerHTML = "<strong>定位7码</strong><span>百十个</span>";
+    link.innerHTML = "<strong>定位码</strong><span>5·6·7码</span>";
     if (location.pathname.endsWith("/position7.html")) {
       versionSwitch.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
       link.classList.add("is-active");

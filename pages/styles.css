@@ -142,7 +142,10 @@ footer span { font-size: 9px; }
 .position7-current { display:grid; gap:12px; margin-top:18px; }
 .position7-current article { padding:14px; border-radius:16px; background:rgba(255,255,255,.08); }
 .position7-current article > span { display:block; margin-bottom:10px; color:#dfe9df; font-weight:800; }
-.position7-pills { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:7px; }
+.position7-pills { display:grid; grid-template-columns:repeat(var(--pool-size,7),minmax(0,1fr)); gap:7px; }
+.pool-size-tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 0 14px; padding:6px; border-radius:18px; background:#e7ebe3; }
+.pool-size-tabs button { padding:12px 8px; border:0; border-radius:13px; background:transparent; color:#52645d; font-weight:800; cursor:pointer; }
+.pool-size-tabs button.is-active { background:#163f31; color:#f4f7ef; box-shadow:0 6px 16px rgba(22,63,49,.18); }
 .position7-pills b { display:grid; place-items:center; min-height:46px; border-radius:999px; background:#c7dba8; color:#163f31; font-family:Georgia,serif; font-size:22px; }
 .position7-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; }
 .position7-metric { display:grid; gap:6px; padding:16px; border-radius:16px; background:#f3f5ef; }
