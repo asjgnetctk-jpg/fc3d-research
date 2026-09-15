@@ -8,11 +8,13 @@ let query = "";
 function pills(value) { return `<div class="position7-pills" style="--pool-size:${value.length}">${[...value].map((digit) => `<b>${digit}</b>`).join("")}</div>`; }
 function badge(hit) { return `<span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span>`; }
 function metricCard(key) {
-  const item = data.metrics[key], forward = item.forward;
-  return `<article class="position7-metric"><h3>${names[key]}</h3><strong>${forward.hits}/${forward.count}</strong><span>独立命中率 ${(forward.rate * 100).toFixed(1)}%</span><b>最长连断 ${forward.maxMiss}期 · 当前${forward.currentMiss}期</b><small>历史训练：${item.training.hits}/${item.training.count}，命中率${(item.training.rate * 100).toFixed(1)}%，最长连断${item.training.maxMiss}期</small></article>`;
+  const item = data.metrics[key], result = item.fit ?? item.forward;
+  const label = item.fit ? "近3年回看命中率" : "独立命中率";
+  const detail = item.fit ? "答案参与选参，仅表示拟合成绩" : `历史训练：${item.training.hits}/${item.training.count}，命中率${(item.training.rate * 100).toFixed(1)}%，最长连断${item.training.maxMiss}期`;
+  return `<article class="position7-metric"><h3>${names[key]}</h3><strong>${result.hits}/${result.count}</strong><span>${label} ${(result.rate * 100).toFixed(1)}%</span><b>最长连断 ${result.maxMiss}期 · 当前${result.currentMiss}期</b><small>${detail}</small></article>`;
 }
 function historyRow(row) {
-  return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>盲测</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong></div>${Object.keys(names).map((key, index) => `<div class="position7-line"><span>${names[key]}</span><strong>${row[`${key}Pool`]}</strong>${badge(row[`${key}Hit`])}<small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`).join("")}</div></article>`;
+  return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${row.phase === "answer-fit" ? "拟合" : "盲测"}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong></div>${Object.keys(names).map((key, index) => `<div class="position7-line"><span>${names[key]}</span><strong>${row[`${key}Pool`]}</strong>${badge(row[`${key}Hit`])}<small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`).join("")}</div></article>`;
 }
 function matches(row) { return !query || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(query); }
 function renderHistory() {
@@ -30,7 +32,7 @@ function selectPool(size) {
   $("#based-on").textContent = `基于${data.recommendation.basedOnIssue}期及此前数据`;
   $("#recommendation").innerHTML = Object.keys(names).map((key) => `<article><span>${names[key]}${size}码</span>${pills(data.recommendation[`${key}Pool`])}</article>`).join("");
   $("#metrics").innerHTML = Object.keys(names).map(metricCard).join("");
-  $("#rule").textContent = `命中规则：百位、十位、个位分别核对；对应位置开奖号落入该位置${size}码池才算命中。单位置理论覆盖率为${size * 10}%，历史统计不保证未来。`;
+  $("#rule").textContent = `命中规则：百位、十位、个位分别核对；对应位置开奖号落入该位置${size}码池才算命中。单位置理论覆盖率为${size * 10}%；当前展示的是答案参与选参后的回看拟合。`;
   showAll = false;
   renderHistory();
 }
