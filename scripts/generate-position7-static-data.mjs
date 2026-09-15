@@ -135,19 +135,19 @@ for (let index = MIN_HISTORY; index < draws.length; index += 1) {
 }
 
 const methods = candidates();
-function evaluateAdaptive(rows, base, defenses, collect = false) {
+function evaluateAdaptive(rows, normals, defenses, collect = false) {
   let hits = 0;
   let streak = 0;
   let maxMiss = 0;
-  let previousActual = null;
   const defenseRows = Array.from({ length: 10 }, () => []);
   for (const row of rows) {
-    if (collect && streak && previousActual !== null) {
-      defenseRows[previousActual].push(row);
+    const stateDigit = row.feature.last;
+    if (collect && streak) {
+      defenseRows[stateDigit].push(row);
     }
     const method = streak
-      ? defenses[previousActual] ?? base
-      : base;
+      ? defenses[stateDigit] ?? normals[stateDigit]
+      : normals[stateDigit];
     const hit = poolFromFeature(row.feature, method).includes(row.actual);
     if (hit) {
       hits += 1;
@@ -156,7 +156,6 @@ function evaluateAdaptive(rows, base, defenses, collect = false) {
       streak += 1;
       maxMiss = Math.max(maxMiss, streak);
     }
-    previousActual = row.actual;
   }
   return { hits, maxMiss, currentMiss: streak, defenseRows };
 }
@@ -179,40 +178,27 @@ function selectMethod(position) {
   const rows = featureRows[position].filter(
     (row) => row.date >= TRAINING_START && row.date <= TRAINING_END,
   );
-  const bases = [];
-  for (const method of methods) {
-    const result = evaluateAdaptive(rows, method, Array(10).fill(method));
-    bases.push({ method, ...result });
-  }
-  bases.sort((a, b) => b.hits - a.hits || a.maxMiss - b.maxMiss);
-  let best = null;
-  for (const base of bases.slice(0, 20)) {
-    const defenses = Array(10).fill(base.method);
-    for (let round = 0; round < 4; round += 1) {
-      const replay = evaluateAdaptive(rows, base.method, defenses, true);
-      for (let previousDigit = 0; previousDigit < 10; previousDigit += 1) {
-        defenses[previousDigit] = bestForRows(
-          replay.defenseRows[previousDigit],
-          defenses[previousDigit],
-        );
-      }
-    }
-    const result = evaluateAdaptive(rows, base.method, defenses);
-    if (
-      !best ||
-      result.maxMiss < best.maxMiss ||
-      (result.maxMiss === best.maxMiss && result.hits > best.hits)
-    ) {
-      best = {
-        base: base.method,
-        defenses: [...defenses],
-        hits: result.hits,
-        maxMiss: result.maxMiss,
-        currentMiss: result.currentMiss,
-      };
+  const normalRows = Array.from({ length: 10 }, () => []);
+  for (const row of rows) normalRows[row.feature.last].push(row);
+  const normals = normalRows.map((bucket) => bestForRows(bucket, methods[0]));
+  const defenses = [...normals];
+  for (let round = 0; round < 6; round += 1) {
+    const replay = evaluateAdaptive(rows, normals, defenses, true);
+    for (let previousDigit = 0; previousDigit < 10; previousDigit += 1) {
+      defenses[previousDigit] = bestForRows(
+        replay.defenseRows[previousDigit],
+        defenses[previousDigit],
+      );
     }
   }
-  return best;
+  const result = evaluateAdaptive(rows, normals, defenses);
+  return {
+    normals,
+    defenses,
+    hits: result.hits,
+    maxMiss: result.maxMiss,
+    currentMiss: result.currentMiss,
+  };
 }
 
 const selected = [0, 1, 2].map(selectMethod);
@@ -231,7 +217,7 @@ const history = replayRows[0].map((base, index) => {
     const row = replayRows[position][index];
     const chosenMethod = streaks[position]
       ? selected[position].defenses[row.feature.last]
-      : selected[position].base;
+      : selected[position].normals[row.feature.last];
     const pool = poolFromFeature(row.feature, chosenMethod);
     const hit = pool.includes(row.actual);
     streaks[position] = hit ? 0 : streaks[position] + 1;
@@ -255,7 +241,7 @@ for (let position = 0; position < 3; position += 1) {
     features(draws, position),
     streaks[position]
       ? selected[position].defenses[draws.at(-1).digits[position]]
-      : selected[position].base,
+      : selected[position].normals[draws.at(-1).digits[position]],
   ).join("");
 }
 
@@ -274,14 +260,14 @@ const output = {
   game,
   sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
   dataSha256: payload.canonicalSha256,
-  formulaVersion: "POSITION-7.2-TEN-STATE-LOCKED",
+  formulaVersion: "POSITION-7.3-TWENTY-STATE-LOCKED",
   trainingStart: TRAINING_START,
   trainingEnd: TRAINING_END,
   forwardStart: "2026-09-15",
   targetMaxMiss: 1,
   futureGuarantee: false,
   notice:
-    "每个位置独立选7个数字。仅用2025-09-15至2026-09-14近一年数据训练；常态公式先筛高命中候选，上期未中后再按该位置上期实际数字切换十种防断公式，最终按最长连断优先、命中数其次锁定。2026-09-15起才计独立前瞻，最长连断1期是训练目标，不是未来保证。",
+    "每个位置独立选7个数字。仅用2025-09-15至2026-09-14近一年数据训练；常态和上期未中后的防断阶段，都按该位置上期实际数字分别切换十种公式，共20种状态。训练筛选以最长连断不超过1期为门槛，再提高命中率。公式选择看过训练段结果，因此训练回放存在过拟合；2026-09-15起才计锁定后的独立前瞻。",
   recommendation,
   methods: Object.fromEntries(
     positions.map((key, index) => [key, selected[index]]),
