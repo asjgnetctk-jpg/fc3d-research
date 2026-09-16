@@ -277,12 +277,15 @@ const output = {
   dataSha256: payload.canonicalSha256,
   formulaVersion: config.formulaVersion,
   trainingMode: config.trainingMode,
+  candidateFormulaCount: config.candidateFormulaCount ?? null,
+  compressionSourceCandidateCount: config.compressionSourceCandidateCount ?? null,
+  compressionValidatedThrough: config.compressionValidatedThrough ?? null,
   trainingStart: TRAINING_START,
   trainingEnd: TRAINING_END,
   forwardStart: config.forwardStart,
   futureGuarantee: false,
   notice:
-    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。`,
+    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
   pools,
 };
 

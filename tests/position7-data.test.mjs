@@ -42,3 +42,18 @@ for (const game of ["fc3d", "pl3"]) {
     );
   });
 }
+
+test("pl3 compressed positioning model contains exactly 71 unique formulas", async () => {
+  const config = await readJson("scripts/config/pl3-position-pools.json");
+  const data = await readJson("pages/pl3-position7-data.json");
+  const ids = new Set();
+  for (const pool of Object.values(config.pools)) {
+    for (const position of ["hundreds", "tens", "units"]) {
+      for (const method of pool.methods[position].normals) ids.add(method.id);
+      for (const method of pool.methods[position].defenses) ids.add(method.id);
+    }
+  }
+  assert.equal(config.candidateFormulaCount, 71);
+  assert.equal(data.candidateFormulaCount, 71);
+  assert.equal(ids.size, 71);
+});
