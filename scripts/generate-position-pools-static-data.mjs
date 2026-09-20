@@ -257,6 +257,11 @@ function buildPoolResult(poolSize, poolConfig) {
       forward: metric(fullHistory.filter((row) => row.date >= config.forwardStart), `${key}Hit`),
     };
   }
+  metrics.all = {
+    overall: metric(fullHistory, "allHit"),
+    training: metric(fullHistory.filter((row) => row.date <= TRAINING_END), "allHit"),
+    forward: metric(fullHistory.filter((row) => row.date >= config.forwardStart), "allHit"),
+  };
   return {
     poolSize,
     recommendation,
@@ -300,7 +305,7 @@ for (const directory of ["pages", "public"]) {
   );
 }
 if (game === "fc3d") {
-  for (const file of ["position7.html", path.join("assets", "position7.js")]) {
+  for (const file of ["position7.html", path.join("assets", "position7.js"), "styles.css"]) {
     await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
   }
 }

@@ -21,20 +21,41 @@ for (const game of ["fc3d", "pl3"]) {
     for (const [sizeText, result] of poolEntries) {
       const size = Number(sizeText);
       const streaks = { hundreds: 0, tens: 0, units: 0 };
+      let combinedHits = 0;
+      let combinedStreak = 0;
+      let combinedMaxMiss = 0;
       for (const row of result.history) {
         const actual = byIssue.get(row.issue);
         assert.ok(actual, `missing source issue ${row.issue}`);
         assert.equal(row.draw, actual.draw);
+        let allHit = true;
         for (const [index, key] of ["hundreds", "tens", "units"].entries()) {
           const pool = String(row[`${key}Pool`]);
           assert.equal(pool.length, size);
           assert.equal(new Set(pool).size, size);
           const hit = pool.includes(String(actual.digits[index]));
+          allHit &&= hit;
           assert.equal(row[`${key}Hit`], hit, `${size}码 ${key} hit mismatch ${row.issue}`);
           streaks[key] = hit ? 0 : streaks[key] + 1;
           assert.equal(row[`${key}MissStreak`], streaks[key]);
         }
+        assert.equal(row.allHit, allHit, `${size}码 combined hit mismatch ${row.issue}`);
+        if (allHit) {
+          combinedHits += 1;
+          combinedStreak = 0;
+        } else {
+          combinedStreak += 1;
+          combinedMaxMiss = Math.max(combinedMaxMiss, combinedStreak);
+        }
       }
+      assert.deepEqual(result.metrics.all.overall, {
+        count: result.history.length,
+        hits: combinedHits,
+        rate: combinedHits / result.history.length,
+        maxMiss: combinedMaxMiss,
+        currentMiss: combinedStreak,
+        targetMet: result.history.length > 0 && combinedMaxMiss <= 1,
+      });
     }
     assert.deepEqual(
       await readJson(`public/${prefix}position7-data.json`),
