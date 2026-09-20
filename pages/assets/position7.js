@@ -4,6 +4,7 @@ const names = { hundreds: "百位", tens: "十位", units: "个位" };
 let payload, data;
 let showAll = false;
 let query = "";
+const showCombinedMetric = false;
 
 function pills(value) { return `<div class="position7-pills" style="--pool-size:${value.length}">${[...value].map((digit) => `<b>${digit}</b>`).join("")}</div>`; }
 function badge(hit) { return `<span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span>`; }
@@ -40,7 +41,7 @@ function selectPool(size) {
   $("#target").textContent = `第${data.recommendation.targetIssue}期`;
   $("#based-on").textContent = `基于${data.recommendation.basedOnIssue}期及此前数据`;
   $("#recommendation").innerHTML = Object.keys(names).map((key) => `<article><span>${names[key]}${size}码</span>${pills(data.recommendation[`${key}Pool`])}</article>`).join("");
-  $("#metrics").innerHTML = Object.keys(names).map(metricCard).join("") + combinedMetricCard();
+  $("#metrics").innerHTML = Object.keys(names).map(metricCard).join("") + (showCombinedMetric ? combinedMetricCard() : "");
   $("#rule").textContent = `命中规则：百位、十位、个位分别核对；对应位置开奖号落入该位置${size}码池才算命中。单位置理论覆盖率为${size * 10}%；当前训练成绩使用一年答案选择权重。`;
   showAll = false;
   renderHistory();
