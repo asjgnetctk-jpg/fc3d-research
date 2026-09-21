@@ -12,11 +12,12 @@ function metricCard(key) {
   const item = data.metrics[key];
   const isWeightTraining = payload.trainingMode?.startsWith("one-year-in-sample-weight-selection");
   const result = item.fit ?? (isWeightTraining ? item.training : item.forward);
+  const currentMiss = item.forward?.count ? item.forward.currentMiss : result.currentMiss;
   const label = item.fit ? "近3年回看命中率" : (isWeightTraining ? "一年权重训练命中率" : "独立命中率");
   const detail = isWeightTraining
     ? (item.forward?.count ? `锁定后实战：${item.forward.hits}/${item.forward.count}，命中率${(item.forward.rate * 100).toFixed(1)}%，最长连断${item.forward.maxMiss}期` : "答案参与选权重；锁定后实战尚无样本")
     : `历史训练：${item.training.hits}/${item.training.count}，命中率${(item.training.rate * 100).toFixed(1)}%，最长连断${item.training.maxMiss}期`;
-  return `<article class="position7-metric"><h3>${names[key]}</h3><strong>${result.hits}/${result.count}</strong><span>${label} ${(result.rate * 100).toFixed(1)}%</span><b>最长连断 ${result.maxMiss}期 · 当前${result.currentMiss}期</b><small>${detail}</small></article>`;
+  return `<article class="position7-metric"><h3>${names[key]}</h3><strong>${result.hits}/${result.count}</strong><span>${label} ${(result.rate * 100).toFixed(1)}%</span><b>最长连断 ${result.maxMiss}期 · 当前${currentMiss}期</b><small>${detail}</small></article>`;
 }
 function combinedMetricCard() {
   const result = data.metrics.all?.overall;
