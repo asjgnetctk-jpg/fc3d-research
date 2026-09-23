@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-09-23T13:26:04.467Z",
+  "game": "fc3d",
+  "sourceUpdatedThrough": "2026-09-20 · 第2026253期",
+  "dataSha256": "227e6a08d815e00acf8c77d81ff070d330b44442384a0cb257819115b16031ca",
+  "formulaVersion": "KILL3-ANNUAL-5Y-LOCKED",
+  "trainingWindowYears": 5,
+  "definition": "每天给出3个建议排除数字；开奖号百、十、个位均未出现这3个数字才算命中，任一位置出现即算未中。",
+  "futureGuarantee": false,
+  "theoreticalRate": 0.343,
+  "notice": "福彩3D采用5年窗口，每年7月30日仅用此前开奖选出历史命中率最高的3个杀码，随后锁定一年。开发段用于选择窗口，2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。",
+  "recommendation": {
+    "targetIssue": "2026254",
+    "basedOnIssue": "2026253",
+    "basedOnDate": "2026-09-20",
+    "kills": "138",
+    "lockedThrough": "2027-07-29"
+  },
+  "metrics": {
+    "rollingAll": {
+      "count": 1756,
+      "hits": 604,
+      "rate": 0.3439635535307517,
+      "maxMiss": 14,
+      "currentMiss": 2
+    },
+    "independent": {
+      "count": 351,
+      "hits": 125,
+      "rate": 0.3561253561253561,
+      "maxMiss": 11,
+      "currentMiss": 2
+    },
+    "live": {
+      "count": 53,
+      "hits": 20,
+      "rate": 0.37735849056603776,
+      "maxMiss": 5,
+      "currentMiss": 1
+    },
+    "currentTraining": {
+      "count": 1756,
+      "hits": 656,
+      "rate": 0.3735763097949886,
+      "maxMiss": 15,
+      "currentMiss": 5
+    }
+  },
+  "locks": [
+    {
+      "cycleStart": "2021-07-30",
+      "cycleEnd": "2022-07-29",
+      "trainingStart": "2016-07-30",
+      "trainingEnd": "2021-07-29",
+      "kills": "249",
+      "metrics": {
+        "count": 1735,
+        "hits": 643,
+        "rate": 0.37060518731988473,
+        "maxMiss": 10,
+        "currentMiss": 1
+      }
+    },
+    {
+      "cycleStart": "2022-07-30",
+      "cycleEnd": "2023-07-29",
+      "trainingStart": "2017-07-30",
+      "trainingEnd": "2022-07-29",
+      "kills": "049",
+      "metrics": {
+        "count": 1728,
+        "hits": 622,
+        "rate": 0.3599537037037037,
+        "maxMiss": 13,
+        "currentMiss": 2
+      }
+    },
+    {
+      "cycleStart": "2023-07-30",
+      "cycleEnd": "2024-07-29",
+      "trainingStart": "2018-07-30",
+      "trainingEnd": "2023-07-29",
+      "kills": "139",
+      "metrics": {
+        "count": 1721,
+        "hits": 625,
+        "rate": 0.3631609529343405,
+        "maxMiss": 16,
+        "currentMiss": 1
+      }
+    },
+    {
+      "cycleStart": "2024-07-30",
+      "cycleEnd": "2025-07-29",
+      "trainingStart": "2019-07-30",
+      "trainingEnd": "2024-07-29",
+      "kills": "123",
+      "metrics": {
+        "count": 1715,
+        "hits": 633,
+        "rate": 0.36909620991253644,
+        "maxMiss": 12,
+        "currentMiss": 5
+      }
+    },
+    {
+      "cycleStart": "2025-07-30",
+      "cycleEnd": "2026-07-29",
+      "trainingStart": "2020-07-30",
+      "trainingEnd": "2025-07-29",
+      "kills": "123",
+      "metrics": {
+        "count": 1756,
+        "hits": 632,
+        "rate": 0.35990888382687924,
+        "maxMiss": 12,
+        "currentMiss": 2
+      }
+    },
+    {
+      "cycleStart": "2026-07-30",
+      "cycleEnd": "2027-07-29",
+      "trainingStart": "2021-07-30",
+      "trainingEnd": "2026-07-29",
+      "kills": "138",
+      "metrics": {
+        "count": 1756,
+        "hits": 656,
+        "rate": 0.3735763097949886,
+        "maxMiss": 15,
+        "currentMiss": 5
+      }
+    }
+  ]
+}

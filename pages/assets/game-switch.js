@@ -65,6 +65,18 @@ function decoratePage() {
     versionSwitch.append(link);
     versionSwitch.classList.add("seven-versions");
   }
+  if (versionSwitch && !versionSwitch.querySelector('a[href*="kill3"]')) {
+    const link = document.createElement("a");
+    link.href = "./kill3.html";
+    link.innerHTML = "<strong>杀码</strong><span>每日3码</span>";
+    if (location.pathname.endsWith("/kill3.html")) {
+      versionSwitch.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
+      link.classList.add("is-active");
+      link.setAttribute("aria-current", "page");
+    }
+    versionSwitch.append(link);
+    versionSwitch.classList.add("eight-versions");
+  }
   const anchor = clock;
   if (anchor && !document.querySelector(".game-switch")) {
     const nav = document.createElement("nav");
