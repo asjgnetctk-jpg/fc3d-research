@@ -15,10 +15,12 @@ test("V9.2 locks candidates before the one-year holdout", () => {
   assert.equal(data.selection.developmentEndDate, audit.selection.developmentEndDate);
 });
 
-test("V9.2 only publishes the locked one-year replay", () => {
-  assert.ok(data.history.length >= 300 && data.history.length <= 370);
+test("V9.2 publishes the locked holdout replay and subsequent live rows", () => {
+  assert.ok(data.validation.count >= 300 && data.validation.count <= 370);
+  assert.ok(data.history.length >= data.validation.count);
   assert.equal(data.history[0].date, data.historyStartDate);
   assert.equal(data.historyStartDate, data.validation.startDate);
+  assert.equal(data.history.filter((row) => row.date <= data.validation.endDate).length, data.validation.count);
   for (const row of data.history) {
     const unique = [...new Set(row.draw.split(""))];
     for (const size of [5, 6, 7, 8]) {
