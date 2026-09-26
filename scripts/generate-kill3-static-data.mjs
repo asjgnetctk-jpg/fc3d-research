@@ -8,6 +8,13 @@ const prefix = game === "pl3" ? "pl3-" : "";
 const windowYears = game === "pl3" ? 3 : 5;
 const dailyWindowYears = 7;
 const streakPolicy = { threshold: 5, windowYears: 7, ranks: [3, 0, 17, 11] };
+const modularFormulas = [
+  [0, 0, 0, 0, 6, 0, 0, 0, 8, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+  [0, 0, 0, 0, 0, 0, 0, 8, 0, 0],
+  [0, 0, 0, 0, 0, 3, 0, 0, 1, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+];
 const source = JSON.parse(await readFile(path.join(root, "scripts", "data", `${game}-full-history.json`), "utf8"));
 const draws = source.rows;
 const combinations = [];
@@ -50,6 +57,18 @@ function chooseStreak(date, missStreak) {
   const training = draws.slice(start, end).map((row) => ({ hit: success(selected.kills, row.digits) }));
   return { kills: selected.kills, metrics: metric(training), trainingStart: draws[start]?.date, trainingEnd: draws[end - 1]?.date, policyRank: rank };
 }
+function chooseModular(index, issue) {
+  const previous = draws[index - 1].digits, previous2 = draws[index - 2].digits;
+  const vector = [...previous, ...previous2, previous.reduce((sum, digit) => sum + digit, 0), Math.max(...previous) - Math.min(...previous), Number(issue.slice(-3)), 1];
+  const kills = [];
+  for (const weights of modularFormulas) {
+    const value = ((weights.reduce((sum, weight, feature) => sum + weight * vector[feature], 0) % 10) + 10) % 10;
+    if (!kills.includes(value)) kills.push(value);
+    if (kills.length === 3) break;
+  }
+  for (let digit = 0; kills.length < 3; digit++) if (!kills.includes(digit)) kills.push(digit);
+  return { kills };
+}
 
 const locks = new Map();
 function lockFor(date) {
@@ -64,26 +83,27 @@ function lockFor(date) {
 
 const history = [];
 let miss = 0;
-for (const row of draws.filter((item) => item.date >= "2021-07-30")) {
-  const model = game === "fc3d" ? chooseStreak(row.date, miss) : lockFor(row.date);
+for (let index = lowerBound("2021-07-30"); index < draws.length; index++) {
+  const row = draws[index];
+  const model = game === "fc3d" ? chooseModular(index, row.issue) : lockFor(row.date);
   const hit = success(model.kills, row.digits);
   miss = hit ? 0 : miss + 1;
-  history.push({ issue: row.issue, date: row.date, draw: row.draw, kills: model.kills.join(""), hit, missStreak: miss, policyRank: game === "fc3d" ? model.policyRank : undefined, phase: row.date >= "2026-07-30" ? "live" : row.date >= "2025-07-30" ? "independent" : "development" });
+  history.push({ issue: row.issue, date: row.date, draw: row.draw, kills: model.kills.join(""), hit, missStreak: miss, phase: row.date >= "2026-07-30" ? "live" : row.date >= "2025-07-30" ? "independent" : "development" });
 }
-const latest = draws.at(-1), currentLock = game === "fc3d" ? chooseStreak(addDays(latest.date, 1), miss) : lockFor(latest.date);
+const latest = draws.at(-1), currentLock = game === "fc3d" ? chooseModular(draws.length, incrementIssue(latest.issue)) : lockFor(latest.date);
 const independent = history.filter((row) => row.date >= "2025-07-30" && row.date <= "2026-07-29");
 const live = history.filter((row) => row.date >= "2026-07-30");
 const output = {
   generatedAt: new Date().toISOString(), game,
   sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`, dataSha256: source.canonicalSha256,
-  formulaVersion: game === "fc3d" ? "KILL3-STREAK-SWITCH-7Y-V1" : `KILL3-ANNUAL-${windowYears}Y-LOCKED`, trainingWindowYears: game === "fc3d" ? dailyWindowYears : windowYears,
+  formulaVersion: game === "fc3d" ? "KILL3-MODULAR-PREV2-V1" : `KILL3-ANNUAL-${windowYears}Y-LOCKED`, trainingWindowYears: game === "fc3d" ? null : windowYears,
   calculationMode: game === "fc3d" ? "daily" : "annual",
   definition: "每天给出3个建议排除数字；开奖号百、十、个位均未出现这3个数字才算命中，任一位置出现即算未中。",
   futureGuarantee: false, theoreticalRate: 0.343,
-  notice: game === "fc3d" ? "福彩3D采用7年滚动窗口。通常选择历史严格命中次数第1名；连续未中达到5期后，按第4、第1、第18、第12名循环切换，命中即复位。切换规则仅由2021-07-30至2025-07-29开发段选定；2025-07-30至2026-07-29为未参与选择的独立确认段。每期只使用开奖前数据，历史表现不保证未来。" : `体彩排列3采用${windowYears}年窗口，每年7月30日仅用此前开奖选出历史命中率最高的3个杀码，随后锁定一年。开发段用于选择窗口，2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。`,
+  notice: game === "fc3d" ? "福彩3D采用锁定的前两期开奖数字与已知目标期号模运算公式，每期计算3个杀码。公式仅由2021-07-30至2025-07-29开发段筛选；2025-07-30至2026-07-29为未参与筛选的独立确认段，之后为实战留出段。逐期计算只使用当期开奖前已知信息；历史表现不保证未来。" : `体彩排列3采用${windowYears}年窗口，每年7月30日仅用此前开奖选出历史命中率最高的3个杀码，随后锁定一年。开发段用于选择窗口，2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。`,
   recommendation: { targetIssue: incrementIssue(latest.issue), basedOnIssue: latest.issue, basedOnDate: latest.date, kills: currentLock.kills.join(""), validFor: game === "fc3d" ? "仅适用于下一期，开奖后重新计算" : `本组参数锁定至 ${currentLock.cycleEnd}` },
-  metrics: { rollingAll: metric(history.filter((row) => row.date <= "2026-07-29")), independent: metric(independent), live: metric(live), currentTraining: currentLock.metrics },
-  streakPolicy: game === "fc3d" ? streakPolicy : undefined,
+  metrics: { rollingAll: metric(history.filter((row) => row.date <= "2026-07-29")), independent: metric(independent), live: metric(live), currentTraining: game === "fc3d" ? metric(history.filter((row) => row.phase === "development")) : currentLock.metrics },
+  modularFormulas: game === "fc3d" ? modularFormulas : undefined,
   locks: game === "fc3d" ? [] : [...locks.values()].map((lock) => ({ ...lock, kills: lock.kills.join("") })), history,
 };
 

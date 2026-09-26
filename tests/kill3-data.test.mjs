@@ -26,3 +26,25 @@ for (const game of ["fc3d", "pl3"]) {
     assert.deepEqual(await readJson(`public/${prefix}kill3-data.json`), data);
   });
 }
+
+test("fc3d modular kill formulas use only the two preceding draws and known issue", async () => {
+  const source = await readJson("scripts/data/fc3d-full-history.json");
+  const data = await readJson("pages/kill3-data.json");
+  const byIssueIndex = new Map(source.rows.map((row, index) => [row.issue, index]));
+  const calculate = (index, issue) => {
+    const previous = source.rows[index - 1].digits;
+    const previous2 = source.rows[index - 2].digits;
+    const vector = [...previous, ...previous2, previous.reduce((sum, digit) => sum + digit, 0), Math.max(...previous) - Math.min(...previous), Number(issue.slice(-3)), 1];
+    const kills = [];
+    for (const weights of data.modularFormulas) {
+      const value = ((weights.reduce((sum, weight, feature) => sum + weight * vector[feature], 0) % 10) + 10) % 10;
+      if (!kills.includes(value)) kills.push(value);
+      if (kills.length === 3) break;
+    }
+    for (let digit = 0; kills.length < 3; digit++) if (!kills.includes(digit)) kills.push(digit);
+    return kills.join("");
+  };
+  for (const row of data.history) assert.equal(row.kills, calculate(byIssueIndex.get(row.issue), row.issue));
+  const nextIssue = data.recommendation.targetIssue;
+  assert.equal(data.recommendation.kills, calculate(source.rows.length, nextIssue));
+});
