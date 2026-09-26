@@ -7,6 +7,7 @@ const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
 const prefix = game === "pl3" ? "pl3-" : "";
 const windowYears = game === "pl3" ? 3 : 5;
 const dailyWindowYears = 7;
+const streakPolicy = { threshold: 5, windowYears: 7, ranks: [3, 0, 17, 11] };
 const source = JSON.parse(await readFile(path.join(root, "scripts", "data", `${game}-full-history.json`), "utf8"));
 const draws = source.rows;
 const combinations = [];
@@ -36,15 +37,18 @@ const prefixes = combinations.map((kills) => {
   for (let i = 0; i < draws.length; i++) values[i + 1] = values[i] + Number(success(kills, draws[i].digits));
   return values;
 });
-function chooseDaily(date, years = dailyWindowYears) {
+function rankDaily(date, years = dailyWindowYears) {
   const start = lowerBound(subtractYears(date, years)), end = lowerBound(date);
-  let best = 0, bestHits = -1;
-  for (let i = 0; i < combinations.length; i++) {
-    const hits = prefixes[i][end] - prefixes[i][start];
-    if (hits > bestHits) { best = i; bestHits = hits; }
-  }
-  const training = draws.slice(start, end).map((row) => ({ hit: success(combinations[best], row.digits) }));
-  return { kills: combinations[best], metrics: metric(training), trainingStart: draws[start]?.date, trainingEnd: draws[end - 1]?.date };
+  const ranking = combinations.map((kills, index) => ({ kills, index, hits: prefixes[index][end] - prefixes[index][start] }))
+    .sort((a, b) => b.hits - a.hits || a.index - b.index);
+  return { ranking, start, end };
+}
+function chooseStreak(date, missStreak) {
+  const { ranking, start, end } = rankDaily(date, streakPolicy.windowYears);
+  const rank = missStreak < streakPolicy.threshold ? 0 : streakPolicy.ranks[(missStreak - streakPolicy.threshold) % streakPolicy.ranks.length];
+  const selected = ranking[rank];
+  const training = draws.slice(start, end).map((row) => ({ hit: success(selected.kills, row.digits) }));
+  return { kills: selected.kills, metrics: metric(training), trainingStart: draws[start]?.date, trainingEnd: draws[end - 1]?.date, policyRank: rank };
 }
 
 const locks = new Map();
@@ -58,25 +62,28 @@ function lockFor(date) {
   return locks.get(start);
 }
 
-const history = draws.filter((row) => row.date >= "2021-07-30").map((row) => {
-  const model = game === "fc3d" ? chooseDaily(row.date) : lockFor(row.date), hit = success(model.kills, row.digits);
-  return { issue: row.issue, date: row.date, draw: row.draw, kills: model.kills.join(""), hit, phase: row.date >= "2026-07-30" ? "live" : row.date >= "2025-07-30" ? "independent" : "development" };
-});
+const history = [];
 let miss = 0;
-for (const row of history) { miss = row.hit ? 0 : miss + 1; row.missStreak = miss; }
-const latest = draws.at(-1), currentLock = game === "fc3d" ? chooseDaily(addDays(latest.date, 1)) : lockFor(latest.date);
+for (const row of draws.filter((item) => item.date >= "2021-07-30")) {
+  const model = game === "fc3d" ? chooseStreak(row.date, miss) : lockFor(row.date);
+  const hit = success(model.kills, row.digits);
+  miss = hit ? 0 : miss + 1;
+  history.push({ issue: row.issue, date: row.date, draw: row.draw, kills: model.kills.join(""), hit, missStreak: miss, policyRank: game === "fc3d" ? model.policyRank : undefined, phase: row.date >= "2026-07-30" ? "live" : row.date >= "2025-07-30" ? "independent" : "development" });
+}
+const latest = draws.at(-1), currentLock = game === "fc3d" ? chooseStreak(addDays(latest.date, 1), miss) : lockFor(latest.date);
 const independent = history.filter((row) => row.date >= "2025-07-30" && row.date <= "2026-07-29");
 const live = history.filter((row) => row.date >= "2026-07-30");
 const output = {
   generatedAt: new Date().toISOString(), game,
   sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`, dataSha256: source.canonicalSha256,
-  formulaVersion: game === "fc3d" ? `KILL3-DAILY-${dailyWindowYears}Y` : `KILL3-ANNUAL-${windowYears}Y-LOCKED`, trainingWindowYears: game === "fc3d" ? dailyWindowYears : windowYears,
+  formulaVersion: game === "fc3d" ? "KILL3-STREAK-SWITCH-7Y-V1" : `KILL3-ANNUAL-${windowYears}Y-LOCKED`, trainingWindowYears: game === "fc3d" ? dailyWindowYears : windowYears,
   calculationMode: game === "fc3d" ? "daily" : "annual",
   definition: "每天给出3个建议排除数字；开奖号百、十、个位均未出现这3个数字才算命中，任一位置出现即算未中。",
   futureGuarantee: false, theoreticalRate: 0.343,
-  notice: game === "fc3d" ? "福彩3D采用7年滚动窗口，每期只使用该期开奖前已经公布的数据，在120种3码组合中重新选择历史严格命中次数最高的一组。2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。" : `体彩排列3采用${windowYears}年窗口，每年7月30日仅用此前开奖选出历史命中率最高的3个杀码，随后锁定一年。开发段用于选择窗口，2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。`,
+  notice: game === "fc3d" ? "福彩3D采用7年滚动窗口。通常选择历史严格命中次数第1名；连续未中达到5期后，按第4、第1、第18、第12名循环切换，命中即复位。切换规则仅由2021-07-30至2025-07-29开发段选定；2025-07-30至2026-07-29为未参与选择的独立确认段。每期只使用开奖前数据，历史表现不保证未来。" : `体彩排列3采用${windowYears}年窗口，每年7月30日仅用此前开奖选出历史命中率最高的3个杀码，随后锁定一年。开发段用于选择窗口，2025-07-30至2026-07-29为未参与窗口选择的独立确认段；历史表现不保证未来。`,
   recommendation: { targetIssue: incrementIssue(latest.issue), basedOnIssue: latest.issue, basedOnDate: latest.date, kills: currentLock.kills.join(""), validFor: game === "fc3d" ? "仅适用于下一期，开奖后重新计算" : `本组参数锁定至 ${currentLock.cycleEnd}` },
   metrics: { rollingAll: metric(history.filter((row) => row.date <= "2026-07-29")), independent: metric(independent), live: metric(live), currentTraining: currentLock.metrics },
+  streakPolicy: game === "fc3d" ? streakPolicy : undefined,
   locks: game === "fc3d" ? [] : [...locks.values()].map((lock) => ({ ...lock, kills: lock.kills.join("") })), history,
 };
 
