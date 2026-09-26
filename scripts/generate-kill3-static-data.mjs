@@ -6,8 +6,6 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
 const prefix = game === "pl3" ? "pl3-" : "";
 const windowYears = game === "pl3" ? 3 : 5;
-const dailyWindowYears = 7;
-const streakPolicy = { threshold: 5, windowYears: 7, ranks: [3, 0, 17, 11] };
 const modularFormulas = [
   [0, 0, 0, 0, 6, 0, 0, 0, 8, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
@@ -29,7 +27,6 @@ for (let a = 0; a < 8; a++) for (let b = a + 1; b < 9; b++) for (let c = b + 1; 
 
 function incrementIssue(issue) { return String(Number(issue) + 1).padStart(issue.length, "0"); }
 function subtractYears(date, years) { return `${Number(date.slice(0, 4)) - years}${date.slice(4)}`; }
-function addDays(date, days) { const value = new Date(`${date}T00:00:00Z`); value.setUTCDate(value.getUTCDate() + days); return value.toISOString().slice(0, 10); }
 function lowerBound(date) { let lo = 0, hi = draws.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (draws[mid].date < date) lo = mid + 1; else hi = mid; } return lo; }
 function cycleStart(date) { const year = Number(date.slice(0, 4)); return `${date.slice(5) >= "07-30" ? year : year - 1}-07-30`; }
 function success(kills, digits) { return digits.every((digit) => !kills.includes(Number(digit))); }
@@ -46,24 +43,6 @@ function chooseKills(start, end) {
   }).sort((a, b) => b.metrics.rate - a.metrics.rate || a.metrics.maxMiss - b.metrics.maxMiss || a.kills.join("").localeCompare(b.kills.join("")))[0];
 }
 
-const prefixes = combinations.map((kills) => {
-  const values = new Uint32Array(draws.length + 1);
-  for (let i = 0; i < draws.length; i++) values[i + 1] = values[i] + Number(success(kills, draws[i].digits));
-  return values;
-});
-function rankDaily(date, years = dailyWindowYears) {
-  const start = lowerBound(subtractYears(date, years)), end = lowerBound(date);
-  const ranking = combinations.map((kills, index) => ({ kills, index, hits: prefixes[index][end] - prefixes[index][start] }))
-    .sort((a, b) => b.hits - a.hits || a.index - b.index);
-  return { ranking, start, end };
-}
-function chooseStreak(date, missStreak) {
-  const { ranking, start, end } = rankDaily(date, streakPolicy.windowYears);
-  const rank = missStreak < streakPolicy.threshold ? 0 : streakPolicy.ranks[(missStreak - streakPolicy.threshold) % streakPolicy.ranks.length];
-  const selected = ranking[rank];
-  const training = draws.slice(start, end).map((row) => ({ hit: success(selected.kills, row.digits) }));
-  return { kills: selected.kills, metrics: metric(training), trainingStart: draws[start]?.date, trainingEnd: draws[end - 1]?.date, policyRank: rank };
-}
 function chooseModular(index, issue, formulas = modularFormulas) {
   const previous = draws[index - 1].digits, previous2 = draws[index - 2].digits;
   const vector = [...previous, ...previous2, previous.reduce((sum, digit) => sum + digit, 0), Math.max(...previous) - Math.min(...previous), Number(issue.slice(-3)), 1];
