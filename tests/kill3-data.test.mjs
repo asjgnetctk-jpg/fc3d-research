@@ -31,12 +31,12 @@ test("fc3d modular kill formulas use only the two preceding draws and known issu
   const source = await readJson("scripts/data/fc3d-full-history.json");
   const data = await readJson("pages/kill3-data.json");
   const byIssueIndex = new Map(source.rows.map((row, index) => [row.issue, index]));
-  const calculate = (index, issue) => {
+  const calculate = (index, issue, formulas) => {
     const previous = source.rows[index - 1].digits;
     const previous2 = source.rows[index - 2].digits;
     const vector = [...previous, ...previous2, previous.reduce((sum, digit) => sum + digit, 0), Math.max(...previous) - Math.min(...previous), Number(issue.slice(-3)), 1];
     const kills = [];
-    for (const weights of data.modularFormulas) {
+    for (const weights of formulas) {
       const value = ((weights.reduce((sum, weight, feature) => sum + weight * vector[feature], 0) % 10) + 10) % 10;
       if (!kills.includes(value)) kills.push(value);
       if (kills.length === 3) break;
@@ -44,7 +44,13 @@ test("fc3d modular kill formulas use only the two preceding draws and known issu
     for (let digit = 0; kills.length < 3; digit++) if (!kills.includes(digit)) kills.push(digit);
     return kills.join("");
   };
-  for (const row of data.history) assert.equal(row.kills, calculate(byIssueIndex.get(row.issue), row.issue));
+  let miss = 0;
+  for (const row of data.history) {
+    const formulas = miss >= data.modularGuardPolicy.threshold ? data.modularGuardFormulas : data.modularFormulas;
+    assert.equal(row.kills, calculate(byIssueIndex.get(row.issue), row.issue, formulas));
+    miss = row.hit ? 0 : miss + 1;
+  }
   const nextIssue = data.recommendation.targetIssue;
-  assert.equal(data.recommendation.kills, calculate(source.rows.length, nextIssue));
+  const nextFormulas = miss >= data.modularGuardPolicy.threshold ? data.modularGuardFormulas : data.modularFormulas;
+  assert.equal(data.recommendation.kills, calculate(source.rows.length, nextIssue, nextFormulas));
 });

@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-09-26T09:44:46.847Z",
+  "generatedAt": "2026-09-26T09:51:58.001Z",
   "game": "fc3d",
   "sourceUpdatedThrough": "2026-09-25 · 第2026258期",
   "dataSha256": "54c3ad7f3127f8465c157f3528a39a0b6e076c95fbe991b2a00f658a08e5b691",
-  "formulaVersion": "KILL3-MODULAR-PREV2-V1",
+  "formulaVersion": "KILL3-MODULAR-GUARD-V1",
   "trainingWindowYears": null,
   "calculationMode": "daily",
   "definition": "每天给出3个建议排除数字；开奖号百、十、个位均未出现这3个数字才算命中，任一位置出现即算未中。",
   "futureGuarantee": false,
   "theoreticalRate": 0.343,
-  "notice": "福彩3D采用锁定的前两期开奖数字与已知目标期号模运算公式，每期计算3个杀码。公式仅由2021-07-30至2025-07-29开发段筛选；2025-07-30至2026-07-29为未参与筛选的独立确认段，之后为实战留出段。逐期计算只使用当期开奖前已知信息；历史表现不保证未来。",
+  "notice": "福彩3D采用锁定的前两期开奖数字与已知目标期号模运算公式：命中后使用高命中公式；未中后切换护栏公式，直至命中再复位。规则仅由2021-07-30至2025-07-29开发段筛选；2025-07-30至2026-07-29为未参与筛选的独立确认段，之后为实战留出段。逐期只使用开奖前已知信息；历史表现不保证未来。",
   "recommendation": {
     "targetIssue": "2026259",
     "basedOnIssue": "2026258",
@@ -22,27 +22,27 @@
       "count": 1756,
       "hits": 685,
       "rate": 0.39009111617312076,
-      "maxMiss": 9,
+      "maxMiss": 8,
       "currentMiss": 0
     },
     "independent": {
       "count": 351,
-      "hits": 137,
-      "rate": 0.3903133903133903,
-      "maxMiss": 9,
+      "hits": 133,
+      "rate": 0.3789173789173789,
+      "maxMiss": 8,
       "currentMiss": 0
     },
     "live": {
       "count": 58,
-      "hits": 26,
-      "rate": 0.4482758620689655,
-      "maxMiss": 4,
+      "hits": 22,
+      "rate": 0.3793103448275862,
+      "maxMiss": 5,
       "currentMiss": 2
     },
     "currentTraining": {
       "count": 1405,
-      "hits": 548,
-      "rate": 0.3900355871886121,
+      "hits": 552,
+      "rate": 0.39288256227758006,
       "maxMiss": 8,
       "currentMiss": 0
     }
@@ -109,5 +109,71 @@
       9
     ]
   ],
+  "modularGuardFormulas": [
+    [
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0,
+      8,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0
+    ],
+    [
+      6,
+      5,
+      0,
+      1,
+      0,
+      3,
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      8,
+      5,
+      4,
+      9,
+      0,
+      9,
+      0,
+      8,
+      7,
+      5
+    ]
+  ],
+  "modularGuardPolicy": {
+    "threshold": 1,
+    "resetOnHit": true
+  },
   "locks": []
 }
