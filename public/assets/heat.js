@@ -14,6 +14,25 @@ function historyRow(row) {
   return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖号 ${row.draw}</em></div><div>${row.rankings.map((values, index) => `<p><span>${labels[index]}</span><b>${values.join(" ")}</b></p>`).join("")}</div></article>`;
 }
 
+function matrixNumber(item) {
+  return `<article class="matrix22-number"><strong>${item.number}</strong><span>${item.shape}</span><small>${item.contributors.join(" · ")}</small></article>`;
+}
+
+function matrixHistoryRow(row) {
+  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em></div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
+}
+
+function renderMatrix(matrix) {
+  const rate = (matrix.replay.rate * 100).toFixed(2);
+  document.querySelector("#matrix22-target").textContent = `第${matrix.targetIssue}期 · 22组直选`;
+  document.querySelector("#matrix22-based").textContent = `基于${matrix.basedOnIssue}期及以前数据`;
+  document.querySelector("#matrix22-numbers").innerHTML = matrix.numbers.map(matrixNumber).join("");
+  document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span>`;
+  document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
+  document.querySelector("#matrix22-method").textContent = matrix.method;
+  document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.slice(0, 20).map(matrixHistoryRow).join("");
+}
+
 async function loadHeat() {
   const loading = document.querySelector("#heat-loading");
   const error = document.querySelector("#heat-error");
@@ -24,6 +43,7 @@ async function loadHeat() {
     document.querySelector("#heat-through").textContent = data.updatedThrough;
     document.querySelector("#heat-count").textContent = `${data.totalRecords}期热度记录`;
     document.querySelector("#heat-notice").textContent = data.notice;
+    renderMatrix(data.matrix22);
     document.querySelector("#heat-issue").textContent = `第${data.latest.issue}期`;
     document.querySelector("#heat-date").textContent = data.latest.date;
     document.querySelector("#heat-rankings").innerHTML = data.latest.rankings.map((values, index) => ranking(labels[index], values)).join("");

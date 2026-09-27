@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#163f31" />
-    <meta name="description" content="福彩3D私人热度数据与顶级矩阵研究模块。" />
-    <title>福彩3D · 私人热度模块</title>
-    <link rel="stylesheet" href="./styles.css?v=20260927-heat" />
-    <script src="./assets/game-switch.js?v=20260927-heat" defer></script>
-    <script src="./assets/heat.js?v=20260927-heat" defer></script>
+    <meta name="description" content="福彩3D九专家融合22组直选矩阵。" />
+    <title>福彩3D · 22组专家矩阵</title>
+    <link rel="stylesheet" href="./styles.css?v=20260927-matrix22" />
+    <script src="./assets/game-switch.js?v=20260927-matrix22" defer></script>
+    <script src="./assets/heat.js?v=20260927-matrix22" defer></script>
   </head>
   <body>
     <div id="heat-lock" class="heat-lock">
       <form id="heat-login" class="heat-login">
         <span class="brand-sigil">密</span>
         <p class="eyebrow">PRIVATE / MATRIX</p>
-        <h1>私人热度模块</h1>
-        <p>请输入访问密码后查看热度排名与历史数据。</p>
+        <h1>私人22组矩阵</h1>
+        <p>请输入访问密码后查看九专家融合推荐。</p>
         <label for="heat-password">访问密码</label>
         <input id="heat-password" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" autofocus />
         <button type="submit" class="refresh-button">解锁模块</button>
@@ -25,7 +25,7 @@
     </div>
     <main id="heat-app" class="app-shell terminal-shell" hidden>
       <header class="topbar">
-        <div class="terminal-brand"><span class="brand-sigil">热</span><div><p class="eyebrow">福彩3D · 私人研究台</p><h1>热度与号码矩阵</h1></div></div>
+        <div class="terminal-brand"><span class="brand-sigil">矩</span><div><p class="eyebrow">福彩3D · 九专家融合</p><h1>22组直选矩阵</h1></div></div>
         <div class="terminal-actions"><span class="live-readout">PRIVATE</span><button id="heat-lock-button" class="refresh-button" type="button">锁定</button></div>
       </header>
       <div class="beijing-clock"><span>北京时间</span><strong data-shanghai-clock>正在校时</strong></div>
@@ -37,9 +37,20 @@
       <div id="heat-content" hidden>
         <section class="status-strip"><span class="status-dot"></span><span id="heat-through"></span><span>·</span><span id="heat-count"></span></section>
         <section class="section-block"><p id="heat-notice" class="section-note"></p></section>
+        <section class="section-block matrix22-section">
+          <div class="section-heading matrix22-heading"><div><p class="eyebrow">下一期直选</p><h2 id="matrix22-target">22组号码矩阵</h2></div><span id="matrix22-based" class="backfit-chip"></span></div>
+          <div id="matrix22-numbers" class="matrix22-numbers"></div>
+          <div id="matrix22-structure" class="matrix22-structure"></div>
+          <div id="matrix22-metrics" class="matrix22-metrics"></div>
+          <details class="matrix22-method"><summary>查看融合办法</summary><p id="matrix22-method"></p></details>
+        </section>
+        <section class="section-block matrix22-evidence">
+          <div class="section-heading"><div><p class="eyebrow">逐期证据</p><h2>22组历史同规则回放</h2></div></div>
+          <div id="matrix22-history" class="matrix22-history"></div>
+        </section>
         <section class="hero-card heat-hero"><div class="hero-meta"><span id="heat-issue"></span><span id="heat-date"></span></div><div id="heat-rankings" class="heat-rankings"></div></section>
         <section class="section-block history-section"><div class="section-heading"><div><p class="eyebrow">最近120期</p><h2>热度排名历史</h2></div></div><div class="history-search"><input id="heat-search" type="search" placeholder="搜索期号、日期或开奖号"/><span id="heat-history-count"></span></div><div id="heat-history" class="heat-history"></div></section>
-        <footer><strong>热度不是开奖概率</strong><p>该模块仅作为顶层模型的一个辅助专家，不能单独据此投注。</p></footer>
+        <footer><strong>22组的理论直选覆盖率为2.2%</strong><p>历史回放不代表未来表现；页面只展示真实规则计算结果，不承诺中奖。</p></footer>
       </div>
     </main>
   </body>
