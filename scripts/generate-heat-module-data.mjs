@@ -52,7 +52,7 @@ function currentSignals(heat) {
   };
 }
 function historicalSignals(heatRow, heatRowIndex, modelVersion) {
-  const result = { date: heatRow.date, heat: modelVersion === "M22.2-native" ? source.rows[Math.max(0, heatRowIndex - 1)] : heatRow };
+  const result = { date: heatRow.date, heat: modelVersion !== "M22.1" ? source.rows[Math.max(0, heatRowIndex - 1)] : heatRow };
   for (const [name, map] of Object.entries(expertRows)) result[name] = map.get(heatRow.date);
   return result;
 }
@@ -89,11 +89,11 @@ function scoreNumber(number, signals, history, modelVersion) {
     "V7": 1.15 * full(number, signals.v7?.pool5) + 0.72 * full(number, signals.v7?.pool6) + 0.42 * full(number, signals.v7?.pool7) + 0.32 * dan(number, signals.v7?.dan),
     "V2": 1.2 * full(number, signals.v2?.pool5) + 0.76 * full(number, signals.v2?.pool6) + 0.45 * full(number, signals.v2?.pool7) + 0.34 * dan(number, signals.v2?.dan),
     "V5": 0.5 * full(number, signals.v5?.pool7) + 0.28 * dan(number, signals.v5?.dan),
-    "定位": modelVersion === "M22.2-native" ? 0 : 0.42 * positionFraction(number, signals.position5) + 0.38 * positionFraction(number, signals.position6) + 0.34 * positionFraction(number, signals.position7),
-    "杀码": (modelVersion === "M22.2-native" ? 2.22 : 0.62) * full(number, safePool),
+    "定位": modelVersion !== "M22.1" ? 0 : 0.42 * positionFraction(number, signals.position5) + 0.38 * positionFraction(number, signals.position6) + 0.34 * positionFraction(number, signals.position7),
+    "杀码": (modelVersion !== "M22.1" ? 2.22 : 0.62) * full(number, safePool),
     "遗漏": 0.26 * omissionScore(number, history),
-    "V9反向": modelVersion === "M22.2-native" ? 0 : -0.34 * full(number, signals.v9?.pool5) - 0.18 * full(number, signals.v9?.pool6) - 0.1 * full(number, signals.v9?.pool7),
-    "V9.2反向": modelVersion === "M22.2-native" ? 0 : -0.32 * full(number, signals.v92?.pool5) - 0.16 * full(number, signals.v92?.pool6) - 0.08 * full(number, signals.v92?.pool7),
+    "V9反向": modelVersion !== "M22.1" ? 0 : -0.34 * full(number, signals.v9?.pool5) - 0.18 * full(number, signals.v9?.pool6) - 0.1 * full(number, signals.v9?.pool7),
+    "V9.2反向": modelVersion !== "M22.1" ? 0 : -0.32 * full(number, signals.v92?.pool5) - 0.16 * full(number, signals.v92?.pool6) - 0.08 * full(number, signals.v92?.pool7),
   };
   const agreement = [signals.v7?.pool7, signals.v2?.pool7, signals.v5?.pool7].filter(Boolean).filter((pool) => full(number, pool)).length;
   parts["专家共识"] = agreement >= 2 ? 0.28 * (agreement - 1) : 0;
@@ -127,9 +127,9 @@ const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
 const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
-const modelVersion = Number(targetIssue) >= 2026261 ? "M22.2-native" : "M22.1";
+const modelVersion = Number(targetIssue) >= 2026261 ? "M22.3-predraw-heat" : "M22.1";
 const evaluationRows = [];
-const replayLength = modelVersion === "M22.2-native" ? 259 : 120;
+const replayLength = modelVersion !== "M22.1" ? 259 : 120;
 for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
   const heatRow = allHeat[index], signals = historicalSignals(heatRow, index, modelVersion);
   if (![signals.v7, signals.v2, signals.v5, signals.kill, signals.v9, signals.v92, signals.position7].every(Boolean)) continue;
@@ -169,7 +169,7 @@ const payload = {
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
-    method: modelVersion === "M22.2-native" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度必须在开奖前20:20—21:10抓取并保存快照后才能参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
+    method: modelVersion !== "M22.1" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度必须在开奖前20:20—21:10抓取并保存快照后才能参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
   }, latest, history: rows.slice().reverse(),
 };
 
