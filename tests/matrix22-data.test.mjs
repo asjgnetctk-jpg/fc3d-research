@@ -39,4 +39,7 @@ test("matrix22 forward ledger is finalized only from official draw rows", () => 
     assert.equal(row.draw, official.get(String(row.issue)).draw);
     assert.equal(row.hit, row.numbers.includes(row.draw));
   }
+  const currentVersionRows = data.matrix22.liveRows.filter((row) => row.version === data.matrix22.modelVersion);
+  assert.equal(data.matrix22.live.count, currentVersionRows.length);
+  assert.equal(data.matrix22.live.hits, currentVersionRows.filter((row) => row.hit).length);
 });

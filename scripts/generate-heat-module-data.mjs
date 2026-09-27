@@ -162,7 +162,7 @@ const payload = {
     status: heatAlreadyHasTarget ? "本期热度页已出现结果，等待福彩官方数据确认后生成下一期；已发布号码保持不变。" : "开奖前锁定",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     numbers: recommendation, structure: { group6: 16, group3: 6, triple: 0 }, theoreticalRate: 0.022,
-    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows), liveRows,
+    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
     method: modelVersion === "M22.2-native" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码只用于强冲突过滤；遗漏按状态特征小幅校准；热度只使用开奖前可获得的上一期排名；V9反向与定位模型未在时间隔离检验中证明增益，暂不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
   }, latest, history: rows.slice().reverse(),
 };

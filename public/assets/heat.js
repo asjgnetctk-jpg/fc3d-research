@@ -19,7 +19,7 @@ function matrixNumber(item) {
 }
 
 function matrixHistoryRow(row) {
-  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em></div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
+  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em>${row.version ? `<em>${row.version}</em>` : ""}</div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
 }
 
 function renderMatrix(matrix) {
@@ -30,7 +30,7 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
-  document.querySelector("#matrix22-live-count").textContent = matrix.live.count ? `${matrix.live.hits}/${matrix.live.count} · 最长断${matrix.live.maxMiss}期` : "等待首期官方开奖";
+  document.querySelector("#matrix22-live-count").textContent = matrix.live.count ? `${matrix.modelVersion}：${matrix.live.hits}/${matrix.live.count} · 最长断${matrix.live.maxMiss}期` : `${matrix.modelVersion}等待首期官方开奖`;
   document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从第2026260期开始，开奖前锁定且不回改。</p>';
   document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
