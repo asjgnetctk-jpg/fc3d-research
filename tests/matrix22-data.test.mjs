@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/heat-data.json", import.meta.url), "utf8"));
+const v7 = JSON.parse(await readFile(new URL("../pages/data.json", import.meta.url), "utf8"));
 const shape = (value) => {
   const unique = new Set(value).size;
   return unique === 3 ? "组六" : unique === 2 ? "组三" : "豹子";
@@ -29,4 +30,13 @@ test("matrix22 structure and replay marks are derived from the listed numbers", 
   }
   assert.equal(data.matrix22.replay.hits, data.matrix22.replayRows.filter((row) => row.hit).length);
   assert.equal(data.matrix22.replay.count, data.matrix22.replayRows.length);
+});
+
+test("matrix22 forward ledger is finalized only from official draw rows", () => {
+  const official = new Map(v7.history.map((row) => [String(row.issue), row]));
+  for (const row of data.matrix22.liveRows) {
+    assert.ok(official.has(String(row.issue)));
+    assert.equal(row.draw, official.get(String(row.issue)).draw);
+    assert.equal(row.hit, row.numbers.includes(row.draw));
+  }
 });

@@ -12,6 +12,8 @@ const position = await readJson("pages/position7-data.json");
 const kill3 = await readJson("pages/kill3-data.json");
 const v9 = await readJson("pages/v9-data.json");
 const v92 = await readJson("pages/v9-2-data.json");
+let previousPayload = null;
+try { previousPayload = await readJson("pages/heat-data.json"); } catch {}
 
 const rows = source.rows.slice(-120);
 const latest = rows.at(-1);
@@ -48,8 +50,8 @@ function currentSignals() {
     v92: v92.recommendation, position5: currentPosition(5), position6: currentPosition(6), position7: currentPosition(7),
   };
 }
-function historicalSignals(heatRow) {
-  const result = { date: heatRow.date, heat: heatRow };
+function historicalSignals(heatRow, heatRowIndex, modelVersion) {
+  const result = { date: heatRow.date, heat: modelVersion === "M22.2-native" ? source.rows[Math.max(0, heatRowIndex - 1)] : heatRow };
   for (const [name, map] of Object.entries(expertRows)) result[name] = map.get(heatRow.date);
   return result;
 }
@@ -79,25 +81,25 @@ function heatScore(number, heatRow) {
     return sum + (rank < 0 ? 0 : (9 - rank) / 9);
   }, 0) / 3;
 }
-function scoreNumber(number, signals, history) {
+function scoreNumber(number, signals, history, modelVersion) {
   const safePool = String(signals.kill?.kills ?? "").split("").reduce((pool, digit) => pool.replace(digit, ""), "0123456789");
   const parts = {
     "热度": 0.72 * heatScore(number, signals.heat),
     "V7": 1.15 * full(number, signals.v7?.pool5) + 0.72 * full(number, signals.v7?.pool6) + 0.42 * full(number, signals.v7?.pool7) + 0.32 * dan(number, signals.v7?.dan),
     "V2": 1.2 * full(number, signals.v2?.pool5) + 0.76 * full(number, signals.v2?.pool6) + 0.45 * full(number, signals.v2?.pool7) + 0.34 * dan(number, signals.v2?.dan),
     "V5": 0.5 * full(number, signals.v5?.pool7) + 0.28 * dan(number, signals.v5?.dan),
-    "定位": 0.42 * positionFraction(number, signals.position5) + 0.38 * positionFraction(number, signals.position6) + 0.34 * positionFraction(number, signals.position7),
-    "杀码": 0.62 * full(number, safePool),
+    "定位": modelVersion === "M22.2-native" ? 0 : 0.42 * positionFraction(number, signals.position5) + 0.38 * positionFraction(number, signals.position6) + 0.34 * positionFraction(number, signals.position7),
+    "杀码": (modelVersion === "M22.2-native" ? 2.22 : 0.62) * full(number, safePool),
     "遗漏": 0.26 * omissionScore(number, history),
-    "V9反向": -0.34 * full(number, signals.v9?.pool5) - 0.18 * full(number, signals.v9?.pool6) - 0.1 * full(number, signals.v9?.pool7),
-    "V9.2反向": -0.32 * full(number, signals.v92?.pool5) - 0.16 * full(number, signals.v92?.pool6) - 0.08 * full(number, signals.v92?.pool7),
+    "V9反向": modelVersion === "M22.2-native" ? 0 : -0.34 * full(number, signals.v9?.pool5) - 0.18 * full(number, signals.v9?.pool6) - 0.1 * full(number, signals.v9?.pool7),
+    "V9.2反向": modelVersion === "M22.2-native" ? 0 : -0.32 * full(number, signals.v92?.pool5) - 0.16 * full(number, signals.v92?.pool6) - 0.08 * full(number, signals.v92?.pool7),
   };
   const agreement = [signals.v7?.pool7, signals.v2?.pool7, signals.v5?.pool7].filter(Boolean).filter((pool) => full(number, pool)).length;
   parts["专家共识"] = agreement >= 2 ? 0.28 * (agreement - 1) : 0;
   return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
 }
-function choose22(signals, history) {
-  const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
+function choose22(signals, history, modelVersion) {
+  const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
   const selected = [], groupCounts = new Map(), shapeCounts = { "组六": 0, "组三": 0, "豹子": 0 };
   const quotas = { "组六": 16, "组三": 6, "豹子": 0 };
   for (const item of ranked) {
@@ -120,25 +122,48 @@ function metrics(history) {
   return { count: history.length, hits, rate: history.length ? hits / history.length : 0, maxMiss, currentMiss: miss };
 }
 
-const evaluationRows = [], allHeat = source.rows;
-for (let index = Math.max(0, allHeat.length - 120); index < allHeat.length; index += 1) {
-  const heatRow = allHeat[index], signals = historicalSignals(heatRow);
+const allHeat = source.rows;
+const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
+const modelVersion = Number(targetIssue) >= 2026261 ? "M22.2-native" : "M22.1";
+const evaluationRows = [];
+const replayLength = modelVersion === "M22.2-native" ? 259 : 120;
+for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
+  const heatRow = allHeat[index], signals = historicalSignals(heatRow, index, modelVersion);
   if (![signals.v7, signals.v2, signals.v5, signals.kill, signals.v9, signals.v92, signals.position7].every(Boolean)) continue;
-  const numbers = choose22(signals, allHeat.slice(0, index)).map((item) => item.number);
+  const numbers = choose22(signals, allHeat.slice(0, index), modelVersion).map((item) => item.number);
   evaluationRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers, hit: numbers.includes(heatRow.draw) });
 }
 
-const recommendation = choose22(currentSignals(), allHeat);
-const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
+const heatAlreadyHasTarget = String(targetIssue).endsWith(String(latest.issue).padStart(3, "0"));
+const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
+const recommendation = heatAlreadyHasTarget && priorSameTarget
+  ? previousPayload.matrix22.numbers
+  : choose22(currentSignals(), allHeat, modelVersion);
+const officialRows = rowList(v7);
+const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
+const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
+  .filter((row) => officialByIssue.has(String(row.issue)))
+  .map((row) => {
+    const official = officialByIssue.get(String(row.issue));
+    return { ...row, date: official.date, draw: official.draw, hit: row.numbers.includes(official.draw) };
+  });
+const priorRecommendation = previousPayload?.matrix22;
+const officialPriorResult = officialByIssue.get(String(priorRecommendation?.targetIssue));
+if (priorRecommendation?.targetIssue && officialPriorResult && !liveRows.some((row) => row.issue === priorRecommendation.targetIssue)) {
+  const priorNumbers = priorRecommendation.numbers.map((item) => item.number ?? item);
+  liveRows.push({ issue: priorRecommendation.targetIssue, date: officialPriorResult.date, draw: officialPriorResult.draw, numbers: priorNumbers, hit: priorNumbers.includes(officialPriorResult.draw), version: priorRecommendation.modelVersion ?? "M22.1" });
+}
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: "22组直选由V2、V5、V7、定位5/6/7码、杀码、遗漏、V9/V9.2反向信号与17500热度共同评分；热度不是官方销量。",
+  notice: modelVersion === "M22.2-native" ? "M22.2按专家原生用途融合：V2/V5/V7产生候选、杀码执行强冲突过滤、遗漏与上一期热度校准；V9反向和定位信号暂在影子评估，不强行加入。" : "22组直选由V2、V5、V7、定位5/6/7码、杀码、遗漏、V9/V9.2反向信号与17500热度共同评分；热度不是官方销量。",
   matrix22: {
+    modelVersion,
+    status: heatAlreadyHasTarget ? "本期热度页已出现结果，等待福彩官方数据确认后生成下一期；已发布号码保持不变。" : "开奖前锁定",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     numbers: recommendation, structure: { group6: 16, group3: 6, triple: 0 }, theoreticalRate: 0.022,
-    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(),
-    method: "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
+    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows), liveRows,
+    method: modelVersion === "M22.2-native" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码只用于强冲突过滤；遗漏按状态特征小幅校准；热度只使用开奖前可获得的上一期排名；V9反向与定位模型未在时间隔离检验中证明增益，暂不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
   }, latest, history: rows.slice().reverse(),
 };
 

@@ -25,11 +25,13 @@ function matrixHistoryRow(row) {
 function renderMatrix(matrix) {
   const rate = (matrix.replay.rate * 100).toFixed(2);
   document.querySelector("#matrix22-target").textContent = `第${matrix.targetIssue}期 · 22组直选`;
-  document.querySelector("#matrix22-based").textContent = `基于${matrix.basedOnIssue}期及以前数据`;
+  document.querySelector("#matrix22-based").textContent = `${matrix.modelVersion} · 基于${matrix.basedOnIssue}期及以前数据`;
   document.querySelector("#matrix22-numbers").innerHTML = matrix.numbers.map(matrixNumber).join("");
-  document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span>`;
+  document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
+  document.querySelector("#matrix22-live-count").textContent = matrix.live.count ? `${matrix.live.hits}/${matrix.live.count} · 最长断${matrix.live.maxMiss}期` : "等待首期官方开奖";
+  document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从第2026260期开始，开奖前锁定且不回改。</p>';
   document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
 
