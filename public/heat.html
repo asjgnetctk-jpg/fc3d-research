@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#163f31" />
+    <meta name="description" content="福彩3D私人热度数据与顶级矩阵研究模块。" />
+    <title>福彩3D · 私人热度模块</title>
+    <link rel="stylesheet" href="./styles.css?v=20260927-heat" />
+    <script src="./assets/game-switch.js?v=20260927-heat" defer></script>
+    <script src="./assets/heat.js?v=20260927-heat" defer></script>
+  </head>
+  <body>
+    <div id="heat-lock" class="heat-lock">
+      <form id="heat-login" class="heat-login">
+        <span class="brand-sigil">密</span>
+        <p class="eyebrow">PRIVATE / MATRIX</p>
+        <h1>私人热度模块</h1>
+        <p>请输入访问密码后查看热度排名与历史数据。</p>
+        <label for="heat-password">访问密码</label>
+        <input id="heat-password" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" autofocus />
+        <button type="submit" class="refresh-button">解锁模块</button>
+        <strong id="heat-login-error" class="heat-login-error" hidden>密码错误，请重新输入</strong>
+      </form>
+    </div>
+    <main id="heat-app" class="app-shell terminal-shell" hidden>
+      <header class="topbar">
+        <div class="terminal-brand"><span class="brand-sigil">热</span><div><p class="eyebrow">福彩3D · 私人研究台</p><h1>热度与号码矩阵</h1></div></div>
+        <div class="terminal-actions"><span class="live-readout">PRIVATE</span><button id="heat-lock-button" class="refresh-button" type="button">锁定</button></div>
+      </header>
+      <div class="beijing-clock"><span>北京时间</span><strong data-shanghai-clock>正在校时</strong></div>
+      <nav class="version-switch six-versions" aria-label="切换研究页面">
+        <a href="./"><strong>V7</strong></a><a href="./v2.html"><strong>V2</strong></a><a href="./v5.html"><strong>V5</strong></a><a href="./v9.html"><strong>V9</strong></a><a href="./v9-2.html"><strong>V9.2</strong></a><a href="./omissions.html"><strong>遗漏</strong></a>
+      </nav>
+      <div id="heat-loading" class="notice">正在读取热度数据…</div>
+      <div id="heat-error" class="notice error" hidden></div>
+      <div id="heat-content" hidden>
+        <section class="status-strip"><span class="status-dot"></span><span id="heat-through"></span><span>·</span><span id="heat-count"></span></section>
+        <section class="section-block"><p id="heat-notice" class="section-note"></p></section>
+        <section class="hero-card heat-hero"><div class="hero-meta"><span id="heat-issue"></span><span id="heat-date"></span></div><div id="heat-rankings" class="heat-rankings"></div></section>
+        <section class="section-block history-section"><div class="section-heading"><div><p class="eyebrow">最近120期</p><h2>热度排名历史</h2></div></div><div class="history-search"><input id="heat-search" type="search" placeholder="搜索期号、日期或开奖号"/><span id="heat-history-count"></span></div><div id="heat-history" class="heat-history"></div></section>
+        <footer><strong>热度不是开奖概率</strong><p>该模块仅作为顶层模型的一个辅助专家，不能单独据此投注。</p></footer>
+      </div>
+    </main>
+  </body>
+</html>

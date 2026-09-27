@@ -77,6 +77,17 @@ function decoratePage() {
     versionSwitch.append(link);
     versionSwitch.classList.add("eight-versions");
   }
+  if (game === "fc3d" && versionSwitch && !versionSwitch.querySelector('a[href*="heat"]')) {
+    const link = document.createElement("a");
+    link.href = "./heat.html";
+    link.innerHTML = "<strong>矩阵</strong><span>加密</span>";
+    if (location.pathname.endsWith("/heat.html")) {
+      versionSwitch.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
+      link.classList.add("is-active");
+      link.setAttribute("aria-current", "page");
+    }
+    versionSwitch.append(link);
+  }
   const anchor = clock;
   if (anchor && !document.querySelector(".game-switch")) {
     const nav = document.createElement("nav");
