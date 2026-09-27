@@ -25,8 +25,13 @@ function matrixHistoryRow(row) {
 function renderMatrix(matrix) {
   const rate = (matrix.replay.rate * 100).toFixed(2);
   document.querySelector("#matrix22-target").textContent = `第${matrix.targetIssue}期 · 22组直选`;
-  document.querySelector("#matrix22-based").textContent = `${matrix.modelVersion} · 基于${matrix.basedOnIssue}期及以前数据`;
-  document.querySelector("#matrix22-numbers").innerHTML = matrix.numbers.map(matrixNumber).join("");
+  const snapshotText = matrix.heatSnapshot?.capturedAtBeijing
+    ? ` · 热度锁定 ${matrix.heatSnapshot.capturedAtBeijing}`
+    : " · 等待当期热度";
+  document.querySelector("#matrix22-based").textContent = `${matrix.modelVersion} · 基于${matrix.basedOnIssue}期及以前数据${snapshotText}`;
+  document.querySelector("#matrix22-numbers").innerHTML = matrix.numbers.length
+    ? matrix.numbers.map(matrixNumber).join("")
+    : '<p class="matrix22-empty">等待北京时间20:20后抓取当期热度。抓取成功后才会生成并锁定22组。</p>';
   document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;

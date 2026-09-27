@@ -5,6 +5,20 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const source = "https://www.17500.cn/chart/3d-xntztablen.html?limit=4000";
 const target = path.join(root, "scripts", "data", "fc3d-17500-heat.json");
+const now = new Date();
+const capturedAt = now.toISOString();
+const beijingParts = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+}).formatToParts(now).reduce((result, part) => ({ ...result, [part.type]: part.value }), {});
+const beijingDate = `${beijingParts.year}-${beijingParts.month}-${beijingParts.day}`;
+const beijingMinute = Number(beijingParts.hour) * 60 + Number(beijingParts.minute);
+const insidePreDrawCaptureWindow = beijingMinute >= 20 * 60 + 20 && beijingMinute <= 21 * 60 + 10;
 
 function clean(value) {
   return value
@@ -44,32 +58,56 @@ for (const match of html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
   const validRankings = rankings.every(
     (ranking) => ranking.length === 10 && [...ranking].sort((a, b) => a - b).join("") === "0123456789",
   );
-  if (draw.length === 3 && validRankings) {
-    rows.push({ issue: cells[0], date: cells[1], draw, rankings });
+  if ((draw.length === 0 || draw.length === 3) && validRankings) {
+    rows.push({ issue: cells[0], date: cells[1], draw: draw || null, rankings });
   }
 }
 rows.sort((left, right) => left.date.localeCompare(right.date));
-if (rows.length < 3_000) throw new Error(`17500 validation failed: only ${rows.length} rows`);
+const officialRows = rows.filter((row) => row.draw);
+if (officialRows.length < 3_000) throw new Error(`17500 validation failed: only ${officialRows.length} official rows`);
 
 const previous = await existingPayload();
 const previousLast = previous?.rows?.at(-1);
-const latest = rows.at(-1);
+const latest = officialRows.at(-1);
 if (previousLast && latest.date < previousLast.date) {
   throw new Error(`17500 went backwards: ${latest.date} < ${previousLast.date}`);
 }
 
-const unchanged = previous?.rows?.length === rows.length
+const preDrawSnapshots = [...(previous?.preDrawSnapshots ?? [])];
+const liveHeat = rows.at(-1);
+let snapshotAdded = false;
+if (
+  liveHeat
+  && !liveHeat.draw
+  && liveHeat.date === beijingDate
+  && insidePreDrawCaptureWindow
+  && !preDrawSnapshots.some((row) => row.issue === liveHeat.issue && row.date === liveHeat.date)
+) {
+  preDrawSnapshots.push({
+    issue: liveHeat.issue,
+    date: liveHeat.date,
+    rankings: liveHeat.rankings,
+    capturedAt,
+    capturedAtBeijing: `${beijingDate} ${beijingParts.hour}:${beijingParts.minute}`,
+    captureWindow: "20:20—21:10",
+  });
+  snapshotAdded = true;
+}
+
+const unchanged = previous?.rows?.length === officialRows.length
   && previousLast?.date === latest.date
   && previousLast?.issue === latest.issue
-  && JSON.stringify(previousLast?.rankings) === JSON.stringify(latest.rankings);
+  && JSON.stringify(previousLast?.rankings) === JSON.stringify(latest.rankings)
+  && !snapshotAdded;
 if (!unchanged) {
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, `${JSON.stringify({
     source,
     sourceLabel: "17500模拟大数据用户选号热度排名，非官方销量",
     updatedThrough: `${latest.date} · 第${latest.issue}期`,
-    count: rows.length,
-    rows,
+    count: officialRows.length,
+    rows: officialRows,
+    preDrawSnapshots,
   })}\n`, "utf8");
 }
-console.log(`17500 heat ${unchanged ? "unchanged" : "updated"}: ${rows.length} rows through ${latest.date}`);
+console.log(`17500 heat ${unchanged ? "unchanged" : "updated"}: ${officialRows.length} rows through ${latest.date}; pre-draw snapshots ${preDrawSnapshots.length}${snapshotAdded ? " (+1)" : ""}`);

@@ -11,6 +11,11 @@ const shape = (value) => {
 
 test("matrix22 publishes exactly 22 unique straight numbers", () => {
   const numbers = data.matrix22.numbers.map((row) => row.number);
+  if (data.matrix22.status === "等待当期热度，尚未推荐") {
+    assert.equal(numbers.length, 0);
+    assert.equal(data.matrix22.heatSnapshot, null);
+    return;
+  }
   assert.equal(numbers.length, 22);
   assert.equal(new Set(numbers).size, 22);
   for (const value of numbers) assert.match(value, /^\d{3}$/);
@@ -22,8 +27,11 @@ test("matrix22 structure and replay marks are derived from the listed numbers", 
     assert.equal(row.shape, shape(row.number));
     counts[row.shape] += 1;
   }
-  assert.deepEqual(counts, { "组六": 16, "组三": 6, "豹子": 0 });
-  assert.deepEqual(data.matrix22.structure, { group6: 16, group3: 6, triple: 0 });
+  const expected = data.matrix22.numbers.length === 22
+    ? { "组六": 16, "组三": 6, "豹子": 0 }
+    : { "组六": 0, "组三": 0, "豹子": 0 };
+  assert.deepEqual(counts, expected);
+  assert.deepEqual(data.matrix22.structure, { group6: expected["组六"], group3: expected["组三"], triple: expected["豹子"] });
   for (const row of data.matrix22.replayRows) {
     assert.equal(row.hit, row.numbers.includes(row.draw));
     assert.equal(row.numbers.length, 22);

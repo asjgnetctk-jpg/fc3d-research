@@ -17,6 +17,7 @@ try { previousPayload = await readJson("pages/heat-data.json"); } catch {}
 
 const rows = source.rows.slice(-120);
 const latest = rows.at(-1);
+const preDrawSnapshots = source.preDrawSnapshots ?? [];
 if (!latest || latest.rankings?.length !== 4) throw new Error("17500 heat data is unavailable");
 
 const digitsOf = (number) => [Math.floor(number / 100), Math.floor(number / 10) % 10, number % 10];
@@ -43,9 +44,9 @@ const expertRows = {
 };
 
 function currentPosition(size) { return position.pools?.[String(size)]?.recommendation ?? null; }
-function currentSignals() {
+function currentSignals(heat) {
   return {
-    date: latest.date, heat: latest, v7: v7.recommendation, v2: v2.recommendation,
+    date: heat.date, heat, v7: v7.recommendation, v2: v2.recommendation,
     v5: v5.recommendation, kill: kill3.recommendation, v9: v9.recommendation,
     v92: v92.recommendation, position5: currentPosition(5), position6: currentPosition(6), position7: currentPosition(7),
   };
@@ -124,6 +125,8 @@ function metrics(history) {
 
 const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
+const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
+const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
 const modelVersion = Number(targetIssue) >= 2026261 ? "M22.2-native" : "M22.1";
 const evaluationRows = [];
 const replayLength = modelVersion === "M22.2-native" ? 259 : 120;
@@ -134,11 +137,13 @@ for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.len
   evaluationRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers, hit: numbers.includes(heatRow.draw) });
 }
 
-const heatAlreadyHasTarget = String(targetIssue).endsWith(String(latest.issue).padStart(3, "0"));
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
-const recommendation = heatAlreadyHasTarget && priorSameTarget
+const targetHeatReady = Boolean(targetHeat);
+const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.heatSnapshot
   ? previousPayload.matrix22.numbers
-  : choose22(currentSignals(), allHeat, modelVersion);
+  : targetHeatReady
+    ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
+    : [];
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
 const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
@@ -149,21 +154,22 @@ const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
   });
 const priorRecommendation = previousPayload?.matrix22;
 const officialPriorResult = officialByIssue.get(String(priorRecommendation?.targetIssue));
-if (priorRecommendation?.targetIssue && officialPriorResult && !liveRows.some((row) => row.issue === priorRecommendation.targetIssue)) {
+if (priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 22 && officialPriorResult && !liveRows.some((row) => row.issue === priorRecommendation.targetIssue)) {
   const priorNumbers = priorRecommendation.numbers.map((item) => item.number ?? item);
   liveRows.push({ issue: priorRecommendation.targetIssue, date: officialPriorResult.date, draw: officialPriorResult.draw, numbers: priorNumbers, hit: priorNumbers.includes(officialPriorResult.draw), version: priorRecommendation.modelVersion ?? "M22.1" });
 }
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: modelVersion === "M22.2-native" ? "M22.2按专家原生用途融合：V2/V5/V7产生候选、杀码执行强冲突过滤、遗漏与上一期热度校准；V9反向和定位信号暂在影子评估，不强行加入。" : "22组直选由V2、V5、V7、定位5/6/7码、杀码、遗漏、V9/V9.2反向信号与17500热度共同评分；热度不是官方销量。",
+  notice: recommendation.length === 22 ? "当期22组只在北京时间20:20后抓到当期热度快照才生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "正在等待当期20:20后热度快照；抓取成功前不生成本期22组。",
   matrix22: {
     modelVersion,
-    status: heatAlreadyHasTarget ? "本期热度页已出现结果，等待福彩官方数据确认后生成下一期；已发布号码保持不变。" : "开奖前锁定",
+    status: recommendation.length === 22 ? "当期热度抓取后锁定" : "等待当期热度，尚未推荐",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
-    numbers: recommendation, structure: { group6: 16, group3: 6, triple: 0 }, theoreticalRate: 0.022,
+    heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
+    numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
-    method: modelVersion === "M22.2-native" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码只用于强冲突过滤；遗漏按状态特征小幅校准；热度只使用开奖前可获得的上一期排名；V9反向与定位模型未在时间隔离检验中证明增益，暂不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
+    method: modelVersion === "M22.2-native" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度必须在开奖前20:20—21:10抓取并保存快照后才能参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
   }, latest, history: rows.slice().reverse(),
 };
 
