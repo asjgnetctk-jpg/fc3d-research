@@ -30,7 +30,7 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
-  document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.slice(0, 20).map(matrixHistoryRow).join("");
+  document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
 
 async function loadHeat() {
