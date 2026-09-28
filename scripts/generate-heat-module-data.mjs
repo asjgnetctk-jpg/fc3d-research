@@ -42,18 +42,49 @@ const expertRows = {
   position6: byDate(position.pools?.["6"]?.history),
   position7: byDate(position.pools?.["7"]?.history),
 };
+const stateSeries = {
+  v7dan: [rowList(v7), "danHit"], v7p7: [rowList(v7), "pool7Hit"],
+  v2dan: [rowList(v2), "danHit"], v2p7: [rowList(v2), "pool7Hit"],
+  v5dan: [rowList(v5), "danHit"], v5p7: [rowList(v5), "pool7Hit"],
+  kill: [rowList(kill3), "hit"],
+  v9p5: [rowList(v9), "pool5Hit"], v9p6: [rowList(v9), "pool6Hit"], v9p7: [rowList(v9), "pool7Hit"], v9p8: [rowList(v9), "pool8Hit"],
+  v92p5: [rowList(v92), "pool5Hit"], v92p6: [rowList(v92), "pool6Hit"], v92p7: [rowList(v92), "pool7Hit"], v92p8: [rowList(v92), "pool8Hit"],
+};
+for (const size of [5, 6, 7]) for (const [short, field] of [["h", "hundredsHit"], ["t", "tensHit"], ["u", "unitsHit"]]) {
+  stateSeries[`p${size}${short}`] = [position.pools?.[String(size)]?.history ?? [], field];
+}
+function stateFactor(key, cutoffDate = null) {
+  const [items, field] = stateSeries[key];
+  const values = items.filter((row) => row[field] !== undefined && (!cutoffDate || row.date < cutoffDate)).map((row) => Boolean(row[field]));
+  if (values.length < 30) return 1;
+  const baseline = (values.filter(Boolean).length + 10) / (values.length + 20);
+  const state = values.at(-1);
+  let streak = 0;
+  for (let index = values.length - 1; index >= 0 && values[index] === state; index -= 1) streak += 1;
+  const threshold = Math.min(streak, 8), targets = [];
+  for (let index = 0; index < values.length - 1; index += 1) {
+    if (values[index] !== state) continue;
+    let count = 0;
+    for (let cursor = index; cursor >= 0 && values[cursor] === state; cursor -= 1) count += 1;
+    if (count >= threshold) targets.push(values[index + 1]);
+  }
+  const conditional = (targets.filter(Boolean).length + 50 * baseline) / (targets.length + 50);
+  return Math.max(0.55, Math.min(1.65, Math.sqrt(conditional / Math.max(baseline, 1e-6))));
+}
+function stateFactors(cutoffDate = null) { return Object.fromEntries(Object.keys(stateSeries).map((key) => [key, stateFactor(key, cutoffDate)])); }
 
 function currentPosition(size) { return position.pools?.[String(size)]?.recommendation ?? null; }
 function currentSignals(heat) {
   return {
     date: heat.date, heat, v7: v7.recommendation, v2: v2.recommendation,
     v5: v5.recommendation, kill: kill3.recommendation, v9: v9.recommendation,
-    v92: v92.recommendation, position5: currentPosition(5), position6: currentPosition(6), position7: currentPosition(7),
+    v92: v92.recommendation, position5: currentPosition(5), position6: currentPosition(6), position7: currentPosition(7), stateFactors: stateFactors(),
   };
 }
 function historicalSignals(heatRow, heatRowIndex, modelVersion) {
   const result = { date: heatRow.date, heat: modelVersion !== "M22.1" ? source.rows[Math.max(0, heatRowIndex - 1)] : heatRow };
   for (const [name, map] of Object.entries(expertRows)) result[name] = map.get(heatRow.date);
+  result.stateFactors = stateFactors(heatRow.date);
   return result;
 }
 function positionFraction(number, row) {
@@ -84,6 +115,29 @@ function heatScore(number, heatRow) {
 }
 function scoreNumber(number, signals, history, modelVersion) {
   const safePool = String(signals.kill?.kills ?? "").split("").reduce((pool, digit) => pool.replace(digit, ""), "0123456789");
+  if (modelVersion === "M22.4-state-aware") {
+    const f = signals.stateFactors ?? {};
+    const positionPart = [5, 6, 7].reduce((total, size) => {
+      const row = signals[`position${size}`], weight = ({ 5: 0.22, 6: 0.18, 7: 0.14 })[size];
+      if (!row) return total;
+      const membership = ["hundredsPool", "tensPool", "unitsPool"].reduce((sum, key, index) => sum + (asSet(row[key]).has(digitsOf(number)[index]) ? (f[`p${size}${["h", "t", "u"][index]}`] ?? 1) : 0), 0) / 3;
+      return total + weight * membership;
+    }, 0);
+    const reverse = (family, row, scale) => [5, 6, 7, 8].reduce((sum, size) => {
+      const native = f[`${family}p${size}`] ?? 1, inverse = Math.max(0.55, Math.min(1.65, 2 - native));
+      return sum - scale * ({ 5: 0.28, 6: 0.16, 7: 0.09, 8: 0.04 })[size] * inverse * full(number, row?.[`pool${size}`]);
+    }, 0);
+    const parts = {
+      "V7状态": 0.9 * (f.v7p7 ?? 1) * (0.58 * full(number, signals.v7?.pool7) + 0.28 * fraction(number, signals.v7?.pool7)) + 0.28 * (f.v7dan ?? 1) * dan(number, signals.v7?.dan),
+      "V2状态": (f.v2p7 ?? 1) * (0.58 * full(number, signals.v2?.pool7) + 0.28 * fraction(number, signals.v2?.pool7)) + 0.28 * (f.v2dan ?? 1) * dan(number, signals.v2?.dan),
+      "V5状态": 0.8 * (f.v5p7 ?? 1) * (0.58 * full(number, signals.v5?.pool7) + 0.28 * fraction(number, signals.v5?.pool7)) + 0.28 * (f.v5dan ?? 1) * dan(number, signals.v5?.dan),
+      "杀码状态": 0.54 * (f.kill ?? 1) * full(number, safePool),
+      "定位状态": positionPart,
+      "V9反向": reverse("v9", signals.v9, 1),
+      "V9.2反向": reverse("v92", signals.v92, 0.85),
+    };
+    return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
+  }
   const parts = {
     "热度": 0.72 * heatScore(number, signals.heat),
     "V7": 1.15 * full(number, signals.v7?.pool5) + 0.72 * full(number, signals.v7?.pool6) + 0.42 * full(number, signals.v7?.pool7) + 0.32 * dan(number, signals.v7?.dan),
@@ -127,7 +181,7 @@ const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
 const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
-const modelVersion = Number(targetIssue) >= 2026261 ? "M22.3-predraw-heat" : "M22.1";
+const modelVersion = Number(targetIssue) >= 2026261 ? "M22.4-state-aware" : "M22.1";
 const evaluationRows = [];
 const replayLength = modelVersion !== "M22.1" ? 259 : 120;
 for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
@@ -140,7 +194,7 @@ for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.len
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
 const targetHeatReady = Boolean(targetHeat);
 const fallbackHeat = latest;
-const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.heatSnapshot
+const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.modelVersion === modelVersion
   ? previousPayload.matrix22.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
@@ -162,15 +216,15 @@ if (priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。",
+  notice: modelVersion === "M22.4-state-aware" ? "当期22组按V2/V5/V7、定位、杀码与V9反向模型的实时连中连断状态概率生成并锁定；概率权重使用样本收缩，避免小样本虚高。" : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
   matrix22: {
     modelVersion,
-    status: targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定",
+    status: modelVersion === "M22.4-state-aware" ? "状态概率融合 · 已锁定" : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
-    heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
+    heatSnapshot: modelVersion === "M22.4-state-aware" ? null : (targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null),
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
-    method: modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度；北京时间20:20后抓到当期热度会自动重算并锁定正式22组。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
+    method: modelVersion === "M22.4-state-aware" ? "状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；V9/V9.2按原模型当前状态反向过滤。验证段21/200，后置独立盲测8/60（13.33%）；该比例是历史样本结果，不是未来保证。" : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   }, latest, history: rows.slice().reverse(),
 };
 
