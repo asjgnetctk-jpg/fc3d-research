@@ -206,6 +206,7 @@ const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.leng
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
 const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
+  .filter((row) => row.version === modelVersion)
   .filter((row) => officialByIssue.has(String(row.issue)))
   .map((row) => {
     const official = officialByIssue.get(String(row.issue));
@@ -213,7 +214,7 @@ const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
   });
 const priorRecommendation = previousPayload?.matrix22;
 const officialPriorResult = officialByIssue.get(String(priorRecommendation?.targetIssue));
-if (priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 22 && officialPriorResult && !liveRows.some((row) => row.issue === priorRecommendation.targetIssue)) {
+if (priorRecommendation?.modelVersion === modelVersion && priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 22 && officialPriorResult && !liveRows.some((row) => row.issue === priorRecommendation.targetIssue)) {
   const priorNumbers = priorRecommendation.numbers.map((item) => item.number ?? item);
   liveRows.push({ issue: priorRecommendation.targetIssue, date: officialPriorResult.date, draw: officialPriorResult.draw, numbers: priorNumbers, hit: priorNumbers.includes(officialPriorResult.draw), version: priorRecommendation.modelVersion ?? "M22.1" });
 }
