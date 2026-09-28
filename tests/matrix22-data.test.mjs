@@ -8,6 +8,7 @@ const shape = (value) => {
   const unique = new Set(value).size;
   return unique === 3 ? "组六" : unique === 2 ? "组三" : "豹子";
 };
+const groupKey = (value) => String(value).padStart(3, "0").split("").sort().join("");
 
 test("matrix22 publishes exactly 22 unique straight numbers", () => {
   const numbers = data.matrix22.numbers.map((row) => row.number);
@@ -50,4 +51,17 @@ test("matrix22 forward ledger is finalized only from official draw rows", () => 
   const currentVersionRows = data.matrix22.liveRows.filter((row) => row.version === data.matrix22.modelVersion);
   assert.equal(data.matrix22.live.count, currentVersionRows.length);
   assert.equal(data.matrix22.live.hits, currentVersionRows.filter((row) => row.hit).length);
+});
+
+test("matrix22 coverage version uses unique groups and group-level hit marks", () => {
+  const matrix = data.matrix22Coverage;
+  const current = matrix.numbers.map((row) => row.number);
+  assert.equal(new Set(current.map(groupKey)).size, current.length);
+  for (const row of matrix.replayRows) {
+    assert.equal(row.numbers.length, 22);
+    assert.equal(new Set(row.numbers.map(groupKey)).size, 22);
+    assert.equal(row.hit, row.numbers.some((number) => groupKey(number) === groupKey(row.draw)));
+  }
+  assert.equal(matrix.replay.hits, matrix.replayRows.filter((row) => row.hit).length);
+  assert.equal(matrix.replay.count, matrix.replayRows.length);
 });

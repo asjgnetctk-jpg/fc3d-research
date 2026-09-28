@@ -22,6 +22,10 @@ function matrixHistoryRow(row) {
   return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em>${row.version ? `<em>${row.version}</em>` : ""}</div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
 }
 
+function coverageHistoryRow(row) {
+  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em></div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "已覆盖" : "未覆盖"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
+}
+
 function renderMatrix(matrix) {
   const rate = (matrix.replay.rate * 100).toFixed(2);
   document.querySelector("#matrix22-target").textContent = `第${matrix.targetIssue}期 · 22组直选`;
@@ -40,6 +44,20 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
 
+function renderCoverage(matrix) {
+  const rate = (matrix.replay.rate * 100).toFixed(2);
+  document.querySelector("#matrix22-coverage-target").textContent = `第${matrix.targetIssue}期 · 22组组选覆盖`;
+  const snapshotText = matrix.heatSnapshot?.capturedAtBeijing ? ` · 热度锁定 ${matrix.heatSnapshot.capturedAtBeijing}` : " · 等待当期热度";
+  document.querySelector("#matrix22-coverage-based").textContent = `${matrix.modelVersion} · 基于${matrix.basedOnIssue}期及以前数据${snapshotText}`;
+  document.querySelector("#matrix22-coverage-numbers").innerHTML = matrix.numbers.length
+    ? matrix.numbers.map(matrixNumber).join("")
+    : '<p class="matrix22-empty">等待北京时间20:20后抓取当期热度，与直选版同时生成并分别锁定。</p>';
+  document.querySelector("#matrix22-coverage-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
+  document.querySelector("#matrix22-coverage-metrics").innerHTML = `<article><span>组选回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>组选覆盖率</span><strong>${rate}%</strong></article><article><span>最长未覆盖</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前未覆盖</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
+  document.querySelector("#matrix22-coverage-method").textContent = matrix.method;
+  document.querySelector("#matrix22-coverage-history").innerHTML = matrix.replayRows.map(coverageHistoryRow).join("");
+}
+
 async function loadHeat() {
   const loading = document.querySelector("#heat-loading");
   const error = document.querySelector("#heat-error");
@@ -51,6 +69,7 @@ async function loadHeat() {
     document.querySelector("#heat-count").textContent = `${data.totalRecords}期热度记录`;
     document.querySelector("#heat-notice").textContent = data.notice;
     renderMatrix(data.matrix22);
+    renderCoverage(data.matrix22Coverage);
     document.querySelector("#heat-issue").textContent = `第${data.latest.issue}期`;
     document.querySelector("#heat-date").textContent = data.latest.date;
     document.querySelector("#heat-rankings").innerHTML = data.latest.rankings.map((values, index) => ranking(labels[index], values)).join("");

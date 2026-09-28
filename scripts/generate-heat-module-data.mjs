@@ -157,13 +157,13 @@ function scoreNumber(number, signals, history, modelVersion) {
   parts["专家共识"] = agreement >= 2 ? 0.28 * (agreement - 1) : 0;
   return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
 }
-function choose22(signals, history, modelVersion) {
+function choose22(signals, history, modelVersion, uniqueGroups = false) {
   const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
   const selected = [], groupCounts = new Map(), shapeCounts = { "组六": 0, "组三": 0, "豹子": 0 };
   const quotas = { "组六": 16, "组三": 6, "豹子": 0 };
   for (const item of ranked) {
     const itemShape = shape(Number(item.number)), key = groupKey(Number(item.number));
-    const groupLimit = itemShape === "组六" ? 2 : 1;
+    const groupLimit = uniqueGroups ? 1 : (itemShape === "组六" ? 2 : 1);
     if (shapeCounts[itemShape] >= quotas[itemShape] || (groupCounts.get(key) ?? 0) >= groupLimit) continue;
     const contributors = Object.entries(item.parts).filter(([, value]) => value > 0).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name);
     selected.push({ number: item.number, shape: itemShape, score: Number(item.score.toFixed(4)), contributors });
@@ -187,12 +187,16 @@ const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
 const modelVersion = Number(targetIssue) >= 2026261 ? "M22.5-state-optimized" : "M22.1";
 const evaluationRows = [];
+const coverageRows = [];
 const replayLength = modelVersion !== "M22.1" ? 259 : 120;
 for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
   const heatRow = allHeat[index], signals = historicalSignals(heatRow, index, modelVersion);
   if (![signals.v7, signals.v2, signals.v5, signals.kill, signals.v9, signals.v92, signals.position7].every(Boolean)) continue;
   const numbers = choose22(signals, allHeat.slice(0, index), modelVersion).map((item) => item.number);
   evaluationRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers, hit: numbers.includes(heatRow.draw) });
+  const coverageNumbers = choose22(signals, allHeat.slice(0, index), modelVersion, true).map((item) => item.number);
+  const drawGroup = groupKey(Number(heatRow.draw));
+  coverageRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers: coverageNumbers, hit: coverageNumbers.some((number) => groupKey(Number(number)) === drawGroup) });
 }
 
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
@@ -202,6 +206,12 @@ const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.leng
   ? previousPayload.matrix22.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
+    : [];
+const priorCoverageSameTarget = previousPayload?.matrix22Coverage?.targetIssue === targetIssue;
+const coverageRecommendation = priorCoverageSameTarget && previousPayload.matrix22Coverage.numbers?.length === 22 && previousPayload.matrix22Coverage.heatSnapshot
+  ? previousPayload.matrix22Coverage.numbers
+  : targetHeatReady
+    ? choose22(currentSignals(targetHeat), allHeat, modelVersion, true)
     : [];
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
@@ -230,6 +240,17 @@ const payload = {
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
     method: modelVersion === "M22.5-state-optimized" ? "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。" : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
+  },
+  matrix22Coverage: {
+    modelVersion: "M22.5-group-cover",
+    status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "等待20:20当期热度，尚未推荐",
+    targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
+    heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
+    numbers: coverageRecommendation,
+    structure: coverageRecommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 },
+    theoreticalRate: 0.114,
+    replay: metrics(coverageRows), replayRows: coverageRows.slice().reverse(),
+    method: "与直选优化版使用相同专家评分，但同一组选组合只保留一个排列，空出的名额顺延给其他高分组合。命中按三位数字排序后的组选组合判断；组六任一排列视为覆盖，组三任一排列同样视为覆盖，不等同于直选命中。",
   }, latest, history: rows.slice().reverse(),
 };
 
