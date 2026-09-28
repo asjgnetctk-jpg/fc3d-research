@@ -4,6 +4,8 @@ import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/heat-data.json", import.meta.url), "utf8"));
 const pl3Data = JSON.parse(await readFile(new URL("../pages/pl3-heat-data.json", import.meta.url), "utf8"));
+const heatSource = JSON.parse(await readFile(new URL("../scripts/data/fc3d-17500-heat.json", import.meta.url), "utf8"));
+const pl3HeatSource = JSON.parse(await readFile(new URL("../scripts/data/pl3-17500-heat.json", import.meta.url), "utf8"));
 const v7 = JSON.parse(await readFile(new URL("../pages/data.json", import.meta.url), "utf8"));
 const pl3V7 = JSON.parse(await readFile(new URL("../pages/pl3-data.json", import.meta.url), "utf8"));
 const shape = (value) => {
@@ -11,6 +13,20 @@ const shape = (value) => {
   return unique === 3 ? "组六" : unique === 2 ? "组三" : "豹子";
 };
 const groupKey = (value) => String(value).padStart(3, "0").split("").sort().join("");
+
+test("pre-draw exact-count snapshots contain three complete digit positions", () => {
+  for (const source of [heatSource, pl3HeatSource]) {
+    for (const snapshot of source.preDrawSnapshots.filter((row) => row.positionCounts)) {
+      assert.equal(snapshot.positionCounts.length, 3);
+      for (const counts of snapshot.positionCounts) {
+        assert.equal(counts.length, 10);
+        for (const count of counts) assert.ok(Number.isInteger(count) && count >= 0);
+      }
+      assert.ok(Number.isInteger(snapshot.totalSelections) && snapshot.totalSelections > 0);
+      assert.match(snapshot.source, /xntzshow\.html\?issue=\d{7}$/);
+    }
+  }
+});
 
 test("matrix22 publishes exactly 22 unique straight numbers", () => {
   const numbers = data.matrix22.numbers.map((row) => row.number);
