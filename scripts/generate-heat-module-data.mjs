@@ -55,7 +55,7 @@ for (const size of [5, 6, 7]) for (const [short, field] of [["h", "hundredsHit"]
 }
 function stateFactor(key, cutoffDate = null) {
   const [items, field] = stateSeries[key];
-  const values = items.filter((row) => row[field] !== undefined && (!cutoffDate || row.date < cutoffDate)).map((row) => Boolean(row[field]));
+  const values = items.filter((row) => row.date >= "2025-09-15" && row[field] !== undefined && (!cutoffDate || row.date < cutoffDate)).map((row) => Boolean(row[field]));
   if (values.length < 30) return 1;
   const baseline = (values.filter(Boolean).length + 10) / (values.length + 20);
   const state = values.at(-1);
