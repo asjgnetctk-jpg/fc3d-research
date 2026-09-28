@@ -128,6 +128,7 @@ function scoreNumber(number, signals, history, modelVersion) {
       return sum - scale * ({ 5: 0.28, 6: 0.16, 7: 0.09, 8: 0.04 })[size] * inverse * full(number, row?.[`pool${size}`]);
     }, 0);
     const parts = {
+      "当期热度": 0.08 * heatScore(number, signals.heat),
       "V7状态": 0.9 * (f.v7p7 ?? 1) * (0.58 * full(number, signals.v7?.pool7) + 0.28 * fraction(number, signals.v7?.pool7)) + 0.28 * (f.v7dan ?? 1) * dan(number, signals.v7?.dan),
       "V2状态": (f.v2p7 ?? 1) * (0.58 * full(number, signals.v2?.pool7) + 0.28 * fraction(number, signals.v2?.pool7)) + 0.28 * (f.v2dan ?? 1) * dan(number, signals.v2?.dan),
       "V5状态": 0.8 * (f.v5p7 ?? 1) * (0.58 * full(number, signals.v5?.pool7) + 0.28 * fraction(number, signals.v5?.pool7)) + 0.28 * (f.v5dan ?? 1) * dan(number, signals.v5?.dan),
@@ -194,11 +195,11 @@ for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.len
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
 const targetHeatReady = Boolean(targetHeat);
 const fallbackHeat = latest;
-const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.modelVersion === modelVersion
+const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.modelVersion === modelVersion && previousPayload.matrix22.heatSnapshot
   ? previousPayload.matrix22.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
-    : choose22(currentSignals(fallbackHeat), allHeat, modelVersion);
+    : [];
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
 const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
@@ -216,12 +217,12 @@ if (priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: modelVersion === "M22.4-state-aware" ? "当期22组按V2/V5/V7、定位、杀码与V9反向模型的实时连中连断状态概率生成并锁定；概率权重使用样本收缩，避免小样本虚高。" : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
+  notice: modelVersion === "M22.4-state-aware" ? (targetHeatReady ? "当期22组按V2/V5/V7、定位、杀码、V9反向状态概率及当期热度快照生成并锁定；概率权重使用样本收缩。" : "正在等待北京时间20:20后的当期热度快照；抓取成功后才生成并锁定本期正式22组。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
   matrix22: {
     modelVersion,
-    status: modelVersion === "M22.4-state-aware" ? "状态概率融合 · 已锁定" : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
+    status: modelVersion === "M22.4-state-aware" ? (targetHeatReady ? "状态概率+当期热度 · 已锁定" : "等待20:20当期热度，尚未推荐") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
-    heatSnapshot: modelVersion === "M22.4-state-aware" ? null : (targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null),
+    heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
     method: modelVersion === "M22.4-state-aware" ? "状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；V9/V9.2按原模型当前状态反向过滤。验证段21/200，后置独立盲测8/60（13.33%）；该比例是历史样本结果，不是未来保证。" : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),

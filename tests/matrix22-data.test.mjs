@@ -11,7 +11,7 @@ const shape = (value) => {
 
 test("matrix22 publishes exactly 22 unique straight numbers", () => {
   const numbers = data.matrix22.numbers.map((row) => row.number);
-  if (data.matrix22.status === "等待当期热度，尚未推荐") {
+  if (data.matrix22.status.includes("尚未推荐")) {
     assert.equal(numbers.length, 0);
     assert.equal(data.matrix22.heatSnapshot, null);
     return;
