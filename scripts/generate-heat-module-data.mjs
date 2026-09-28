@@ -113,9 +113,14 @@ function heatScore(number, heatRow) {
     return sum + (rank < 0 ? 0 : (9 - rank) / 9);
   }, 0) / 3;
 }
-function scoreNumber(number, signals, history, modelVersion) {
+function scoreNumber(number, signals, history, modelVersion, coverageProfile = false) {
   const safePool = String(signals.kill?.kills ?? "").split("").reduce((pool, digit) => pool.replace(digit, ""), "0123456789");
   if (modelVersion === "M22.5-state-optimized") {
+    const heatWeight = coverageProfile ? 0.06 : 0.08;
+    const killWeight = coverageProfile ? 0.10 : 0.30;
+    const positionWeight = coverageProfile ? 2.00 : 1.50;
+    const omissionWeight = coverageProfile ? -0.14 : -0.08;
+    const agreementWeight = coverageProfile ? -0.40 : -0.20;
     const f = signals.stateFactors ?? {};
     const positionPart = [5, 6, 7].reduce((total, size) => {
       const row = signals[`position${size}`], weight = ({ 5: 0.22, 6: 0.18, 7: 0.14 })[size];
@@ -128,18 +133,18 @@ function scoreNumber(number, signals, history, modelVersion) {
       return sum - scale * ({ 5: 0.28, 6: 0.16, 7: 0.09, 8: 0.04 })[size] * inverse * full(number, row?.[`pool${size}`]);
     }, 0);
     const parts = {
-      "当期热度": 0.08 * heatScore(number, signals.heat),
+      "当期热度": heatWeight * heatScore(number, signals.heat),
       "V7状态": 0.9 * (f.v7p7 ?? 1) * (0.58 * full(number, signals.v7?.pool7) + 0.28 * fraction(number, signals.v7?.pool7)) + 0.28 * (f.v7dan ?? 1) * dan(number, signals.v7?.dan),
       "V2状态": (f.v2p7 ?? 1) * (0.58 * full(number, signals.v2?.pool7) + 0.28 * fraction(number, signals.v2?.pool7)) + 0.28 * (f.v2dan ?? 1) * dan(number, signals.v2?.dan),
       "V5状态": 0.8 * (f.v5p7 ?? 1) * (0.58 * full(number, signals.v5?.pool7) + 0.28 * fraction(number, signals.v5?.pool7)) + 0.28 * (f.v5dan ?? 1) * dan(number, signals.v5?.dan),
-      "杀码状态": 0.30 * (f.kill ?? 1) * full(number, safePool),
-      "定位状态": 1.50 * positionPart,
-      "遗漏校准": -0.08 * omissionScore(number, history),
+      "杀码状态": killWeight * (f.kill ?? 1) * full(number, safePool),
+      "定位状态": positionWeight * positionPart,
+      "遗漏校准": omissionWeight * omissionScore(number, history),
       "V9反向": reverse("v9", signals.v9, 1),
       "V9.2反向": reverse("v92", signals.v92, 0.85),
     };
     const agreement = [signals.v7?.pool7, signals.v2?.pool7, signals.v5?.pool7].filter(Boolean).filter((pool) => full(number, pool)).length;
-    parts["重复计票校正"] = -0.20 * Math.max(0, agreement - 1);
+    parts["重复计票校正"] = agreementWeight * Math.max(0, agreement - 1);
     return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
   }
   const parts = {
@@ -158,7 +163,7 @@ function scoreNumber(number, signals, history, modelVersion) {
   return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
 }
 function choose22(signals, history, modelVersion, uniqueGroups = false) {
-  const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
+  const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion, uniqueGroups)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
   const selected = [], groupCounts = new Map(), shapeCounts = { "组六": 0, "组三": 0, "豹子": 0 };
   const quotas = { "组六": 16, "组三": 6, "豹子": 0 };
   for (const item of ranked) {
@@ -242,7 +247,7 @@ const payload = {
     method: modelVersion === "M22.5-state-optimized" ? "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。" : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   },
   matrix22Coverage: {
-    modelVersion: "M22.5-group-cover",
+    modelVersion: "M22.6-group-cover",
     status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "等待20:20当期热度，尚未推荐",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
@@ -250,7 +255,7 @@ const payload = {
     structure: coverageRecommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 },
     theoreticalRate: 0.114,
     replay: metrics(coverageRows), replayRows: coverageRows.slice().reverse(),
-    method: "与直选优化版使用相同专家评分，但同一组选组合只保留一个排列，空出的名额顺延给其他高分组合。命中按三位数字排序后的组选组合判断；组六任一排列视为覆盖，组三任一排列同样视为覆盖，不等同于直选命中。",
+    method: "组选覆盖专用权重：同一组选组合只保留一个排列，空出的名额顺延给其他高分组合；提高定位状态权重，降低杀码权重，并加强遗漏与专家重复计票校正。参数先按开发段与两个验证折选定，再打开后置60期审计。命中按三位数字排序后的组选组合判断，不等同于直选命中。",
   }, latest, history: rows.slice().reverse(),
 };
 
