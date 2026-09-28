@@ -139,11 +139,12 @@ for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.len
 
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
 const targetHeatReady = Boolean(targetHeat);
+const fallbackHeat = latest;
 const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.length === 22 && previousPayload.matrix22.heatSnapshot
   ? previousPayload.matrix22.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
-    : [];
+    : choose22(currentSignals(fallbackHeat), allHeat, modelVersion);
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
 const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
@@ -161,15 +162,15 @@ if (priorRecommendation?.targetIssue && priorRecommendation.numbers?.length === 
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: recommendation.length === 22 ? "当期22组只在北京时间20:20后抓到当期热度快照才生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "正在等待当期20:20后热度快照；抓取成功前不生成本期22组。",
+  notice: targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。",
   matrix22: {
     modelVersion,
-    status: recommendation.length === 22 ? "当期热度抓取后锁定" : "等待当期热度，尚未推荐",
+    status: targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
-    method: modelVersion !== "M22.1" ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度必须在开奖前20:20—21:10抓取并保存快照后才能参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
+    method: modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。历史回放仍按上一期热度计算，真实的当期热度效果只统计封盘后的前瞻记录。V9反向与定位模型继续影子评估，未证明增益前不进入正式分数。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度；北京时间20:20后抓到当期热度会自动重算并锁定正式22组。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。",
   }, latest, history: rows.slice().reverse(),
 };
 
