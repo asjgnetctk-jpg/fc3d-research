@@ -77,7 +77,7 @@ function decoratePage() {
     versionSwitch.append(link);
     versionSwitch.classList.add("eight-versions");
   }
-  if (game === "fc3d" && versionSwitch && !versionSwitch.querySelector('a[href*="heat"]')) {
+  if (versionSwitch && !versionSwitch.querySelector('a[href*="heat"]')) {
     const link = document.createElement("a");
     link.href = "./heat.html";
     link.innerHTML = "<strong>矩阵</strong><span>加密</span>";

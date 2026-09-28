@@ -4,21 +4,25 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const readJson = async (file) => JSON.parse(await readFile(path.join(root, file), "utf8"));
-const source = await readJson("scripts/data/fc3d-17500-heat.json");
-const v7 = await readJson("pages/data.json");
-const v2 = await readJson("pages/v2-data.json");
-const v5 = await readJson("pages/v5-data.json");
-const position = await readJson("pages/position7-data.json");
-const kill3 = await readJson("pages/kill3-data.json");
-const v9 = await readJson("pages/v9-data.json");
-const v92 = await readJson("pages/v9-2-data.json");
+const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
+const prefix = game === "pl3" ? "pl3-" : "";
+const hasReverseModels = game === "fc3d";
+const source = await readJson(`scripts/data/${game}-17500-heat.json`);
+const v7 = await readJson(`pages/${prefix}data.json`);
+const v2 = await readJson(`pages/${prefix}v2-data.json`);
+const v5 = await readJson(`pages/${prefix}v5-data.json`);
+const position = await readJson(`pages/${prefix}position7-data.json`);
+const kill3 = await readJson(`pages/${prefix}kill3-data.json`);
+const v9 = hasReverseModels ? await readJson("pages/v9-data.json") : { history: [], recommendation: null };
+const v92 = hasReverseModels ? await readJson("pages/v9-2-data.json") : { history: [], recommendation: null };
+const outputName = `${prefix}heat-data.json`;
 let previousPayload = null;
-try { previousPayload = await readJson("pages/heat-data.json"); } catch {}
+try { previousPayload = await readJson(`pages/${outputName}`); } catch {}
 
 const rows = source.rows.slice(-120);
 const latest = rows.at(-1);
 const preDrawSnapshots = source.preDrawSnapshots ?? [];
-if (!latest || latest.rankings?.length !== 4) throw new Error("17500 heat data is unavailable");
+if (!latest || latest.rankings?.length !== 4) throw new Error(`17500 ${game} heat data is unavailable`);
 
 const digitsOf = (number) => [Math.floor(number / 100), Math.floor(number / 10) % 10, number % 10];
 const asSet = (value) => new Set(String(value ?? "").split("").map(Number));
@@ -115,12 +119,14 @@ function heatScore(number, heatRow) {
 }
 function scoreNumber(number, signals, history, modelVersion, coverageProfile = false) {
   const safePool = String(signals.kill?.kills ?? "").split("").reduce((pool, digit) => pool.replace(digit, ""), "0123456789");
-  if (modelVersion === "M22.5-state-optimized") {
-    const heatWeight = coverageProfile ? 0.06 : 0.08;
-    const killWeight = coverageProfile ? 0.10 : 0.30;
-    const positionWeight = coverageProfile ? 2.00 : 1.50;
-    const omissionWeight = coverageProfile ? -0.14 : -0.08;
-    const agreementWeight = coverageProfile ? -0.40 : -0.20;
+  if (modelVersion.endsWith("state-optimized")) {
+    const profile = game === "pl3"
+      ? (coverageProfile
+        ? { heat: 0.02, kill: 0, position: 2.50, omission: -0.12, agreement: -0.60 }
+        : { heat: 0.10, kill: 0.20, position: 2.00, omission: -0.06, agreement: -0.50 })
+      : (coverageProfile
+        ? { heat: 0.06, kill: 0.10, position: 2.00, omission: -0.14, agreement: -0.40 }
+        : { heat: 0.08, kill: 0.30, position: 1.50, omission: -0.08, agreement: -0.20 });
     const f = signals.stateFactors ?? {};
     const positionPart = [5, 6, 7].reduce((total, size) => {
       const row = signals[`position${size}`], weight = ({ 5: 0.22, 6: 0.18, 7: 0.14 })[size];
@@ -133,18 +139,18 @@ function scoreNumber(number, signals, history, modelVersion, coverageProfile = f
       return sum - scale * ({ 5: 0.28, 6: 0.16, 7: 0.09, 8: 0.04 })[size] * inverse * full(number, row?.[`pool${size}`]);
     }, 0);
     const parts = {
-      "当期热度": heatWeight * heatScore(number, signals.heat),
+      "当期热度": profile.heat * heatScore(number, signals.heat),
       "V7状态": 0.9 * (f.v7p7 ?? 1) * (0.58 * full(number, signals.v7?.pool7) + 0.28 * fraction(number, signals.v7?.pool7)) + 0.28 * (f.v7dan ?? 1) * dan(number, signals.v7?.dan),
       "V2状态": (f.v2p7 ?? 1) * (0.58 * full(number, signals.v2?.pool7) + 0.28 * fraction(number, signals.v2?.pool7)) + 0.28 * (f.v2dan ?? 1) * dan(number, signals.v2?.dan),
       "V5状态": 0.8 * (f.v5p7 ?? 1) * (0.58 * full(number, signals.v5?.pool7) + 0.28 * fraction(number, signals.v5?.pool7)) + 0.28 * (f.v5dan ?? 1) * dan(number, signals.v5?.dan),
-      "杀码状态": killWeight * (f.kill ?? 1) * full(number, safePool),
-      "定位状态": positionWeight * positionPart,
-      "遗漏校准": omissionWeight * omissionScore(number, history),
+      "杀码状态": profile.kill * (f.kill ?? 1) * full(number, safePool),
+      "定位状态": profile.position * positionPart,
+      "遗漏校准": profile.omission * omissionScore(number, history),
       "V9反向": reverse("v9", signals.v9, 1),
       "V9.2反向": reverse("v92", signals.v92, 0.85),
     };
     const agreement = [signals.v7?.pool7, signals.v2?.pool7, signals.v5?.pool7].filter(Boolean).filter((pool) => full(number, pool)).length;
-    parts["重复计票校正"] = agreementWeight * Math.max(0, agreement - 1);
+    parts["重复计票校正"] = profile.agreement * Math.max(0, agreement - 1);
     return { number: String(number).padStart(3, "0"), score: Object.values(parts).reduce((sum, value) => sum + value, 0), parts };
   }
   const parts = {
@@ -165,10 +171,13 @@ function scoreNumber(number, signals, history, modelVersion, coverageProfile = f
 function choose22(signals, history, modelVersion, uniqueGroups = false) {
   const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion, uniqueGroups)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
   const selected = [], groupCounts = new Map(), shapeCounts = { "组六": 0, "组三": 0, "豹子": 0 };
-  const quotas = { "组六": 16, "组三": 6, "豹子": 0 };
+  const quotas = game === "pl3" && !uniqueGroups
+    ? { "组六": 14, "组三": 8, "豹子": 0 }
+    : { "组六": 16, "组三": 6, "豹子": 0 };
   for (const item of ranked) {
     const itemShape = shape(Number(item.number)), key = groupKey(Number(item.number));
-    const groupLimit = uniqueGroups ? 1 : (itemShape === "组六" ? 2 : 1);
+    const straightGroupLimit = game === "pl3" ? 4 : 2;
+    const groupLimit = uniqueGroups ? 1 : (itemShape === "组六" ? straightGroupLimit : Math.min(straightGroupLimit, 3));
     if (shapeCounts[itemShape] >= quotas[itemShape] || (groupCounts.get(key) ?? 0) >= groupLimit) continue;
     const contributors = Object.entries(item.parts).filter(([, value]) => value > 0).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name);
     selected.push({ number: item.number, shape: itemShape, score: Number(item.score.toFixed(4)), contributors });
@@ -190,13 +199,17 @@ const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
 const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
-const modelVersion = Number(targetIssue) >= 2026261 ? "M22.5-state-optimized" : "M22.1";
+const optimizedModel = game === "pl3" ? "P22.3-state-optimized" : "M22.5-state-optimized";
+const coverageModel = game === "pl3" ? "P22.4-group-cover" : "M22.6-group-cover";
+const modelVersion = game === "pl3" || Number(targetIssue) >= 2026261 ? optimizedModel : "M22.1";
 const evaluationRows = [];
 const coverageRows = [];
 const replayLength = modelVersion !== "M22.1" ? 259 : 120;
 for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
   const heatRow = allHeat[index], signals = historicalSignals(heatRow, index, modelVersion);
-  if (![signals.v7, signals.v2, signals.v5, signals.kill, signals.v9, signals.v92, signals.position7].every(Boolean)) continue;
+  const requiredSignals = [signals.v7, signals.v2, signals.v5, signals.kill, signals.position7];
+  if (hasReverseModels) requiredSignals.push(signals.v9, signals.v92);
+  if (!requiredSignals.every(Boolean)) continue;
   const numbers = choose22(signals, allHeat.slice(0, index), modelVersion).map((item) => item.number);
   evaluationRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers, hit: numbers.includes(heatRow.draw) });
   const coverageNumbers = choose22(signals, allHeat.slice(0, index), modelVersion, true).map((item) => item.number);
@@ -236,18 +249,18 @@ if (priorRecommendation?.modelVersion === modelVersion && priorRecommendation?.t
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: modelVersion === "M22.5-state-optimized" ? (targetHeatReady ? "当期22组按优化后的状态概率、定位、杀码、V9反向、遗漏校准及当期热度快照生成并锁定；概率权重使用样本收缩。" : "正在等待北京时间20:20后的当期热度快照；抓取成功后才生成并锁定本期正式22组。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
+  notice: modelVersion === optimizedModel ? (targetHeatReady ? `当期22组按${game === "pl3" ? "排列3" : "福彩3D"}独立状态概率、定位、杀码、遗漏校准及当期热度快照生成并锁定；概率权重使用样本收缩。` : "正在等待北京时间20:20后的当期热度快照；抓取成功后才生成并锁定本期正式22组。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
   matrix22: {
     modelVersion,
-    status: modelVersion === "M22.5-state-optimized" ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "等待20:20当期热度，尚未推荐") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
+    status: modelVersion === optimizedModel ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "等待20:20当期热度，尚未推荐") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
-    numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
+    numbers: recommendation, structure: recommendation.length === 22 ? { group6: game === "pl3" ? 14 : 16, group3: game === "pl3" ? 8 : 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
-    method: modelVersion === "M22.5-state-optimized" ? "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。" : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
+    method: modelVersion === optimizedModel ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。同一组六最多保留4个高分排列；验证段34/200，后置审计5/60，真实前瞻从上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   },
   matrix22Coverage: {
-    modelVersion: "M22.6-group-cover",
+    modelVersion: coverageModel,
     status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "等待20:20当期热度，尚未推荐",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
@@ -255,12 +268,12 @@ const payload = {
     structure: coverageRecommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 },
     theoreticalRate: 0.114,
     replay: metrics(coverageRows), replayRows: coverageRows.slice().reverse(),
-    method: "组选覆盖专用权重：同一组选组合只保留一个排列，空出的名额顺延给其他高分组合；提高定位状态权重，降低杀码权重，并加强遗漏与专家重复计票校正。参数先按开发段与两个验证折选定，再打开后置60期审计。命中按三位数字排序后的组选组合判断，不等同于直选命中。",
+    method: game === "pl3" ? "排列3组选覆盖专用权重：同一组选组合只保留一个排列；提高定位状态权重并加强遗漏与重复计票校正。验证段64/200，后置审计12/60；命中按三位数字排序后的组选组合判断，不等同于直选命中。" : "组选覆盖专用权重：同一组选组合只保留一个排列，空出的名额顺延给其他高分组合；提高定位状态权重，降低杀码权重，并加强遗漏与专家重复计票校正。参数先按开发段与两个验证折选定，再打开后置60期审计。命中按三位数字排序后的组选组合判断，不等同于直选命中。",
   }, latest, history: rows.slice().reverse(),
 };
 
 await mkdir(path.join(root, "pages/assets"), { recursive: true });
 await mkdir(path.join(root, "public/assets"), { recursive: true });
-for (const directory of ["pages", "public"]) await writeFile(path.join(root, directory, "heat-data.json"), `${JSON.stringify(payload)}\n`, "utf8");
+for (const directory of ["pages", "public"]) await writeFile(path.join(root, directory, outputName), `${JSON.stringify(payload)}\n`, "utf8");
 for (const file of ["heat.html", "styles.css", path.join("assets", "heat.js"), path.join("assets", "game-switch.js")]) await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
 console.log(`matrix22 ${targetIssue}: ${recommendation.map((item) => item.number).join(" ")}; replay ${payload.matrix22.replay.hits}/${payload.matrix22.replay.count}`);

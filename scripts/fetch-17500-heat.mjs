@@ -3,8 +3,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const source = "https://www.17500.cn/chart/3d-xntztablen.html?limit=4000";
-const target = path.join(root, "scripts", "data", "fc3d-17500-heat.json");
+const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
+const source = game === "pl3"
+  ? "https://www.17500.cn/chart/pl3-xntztablen.html?limit=4000"
+  : "https://www.17500.cn/chart/3d-xntztablen.html?limit=4000";
+const target = path.join(root, "scripts", "data", `${game}-17500-heat.json`);
 const now = new Date();
 const capturedAt = now.toISOString();
 const beijingParts = new Intl.DateTimeFormat("en-CA", {
@@ -40,7 +43,7 @@ async function existingPayload() {
 
 const response = await fetch(source, {
   headers: {
-    "user-agent": "Mozilla/5.0 (compatible; fc3d-research-data-bot/1.0)",
+    "user-agent": `Mozilla/5.0 (compatible; ${game}-research-data-bot/1.0)`,
     accept: "text/html,application/xhtml+xml",
   },
   signal: AbortSignal.timeout(30_000),
@@ -110,4 +113,4 @@ if (!unchanged) {
     preDrawSnapshots,
   })}\n`, "utf8");
 }
-console.log(`17500 heat ${unchanged ? "unchanged" : "updated"}: ${officialRows.length} rows through ${latest.date}; pre-draw snapshots ${preDrawSnapshots.length}${snapshotAdded ? " (+1)" : ""}`);
+console.log(`17500 ${game} heat ${unchanged ? "unchanged" : "updated"}: ${officialRows.length} rows through ${latest.date}; pre-draw snapshots ${preDrawSnapshots.length}${snapshotAdded ? " (+1)" : ""}`);

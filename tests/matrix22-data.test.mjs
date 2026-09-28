@@ -3,7 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/heat-data.json", import.meta.url), "utf8"));
+const pl3Data = JSON.parse(await readFile(new URL("../pages/pl3-heat-data.json", import.meta.url), "utf8"));
 const v7 = JSON.parse(await readFile(new URL("../pages/data.json", import.meta.url), "utf8"));
+const pl3V7 = JSON.parse(await readFile(new URL("../pages/pl3-data.json", import.meta.url), "utf8"));
 const shape = (value) => {
   const unique = new Set(value).size;
   return unique === 3 ? "组六" : unique === 2 ? "组三" : "豹子";
@@ -64,4 +66,28 @@ test("matrix22 coverage version uses unique groups and group-level hit marks", (
   }
   assert.equal(matrix.replay.hits, matrix.replayRows.filter((row) => row.hit).length);
   assert.equal(matrix.replay.count, matrix.replayRows.length);
+});
+
+test("PL3 matrix uses independent heat, models, replay marks and group quotas", () => {
+  assert.match(pl3Data.source, /pl3-xntztablen/);
+  assert.match(pl3Data.matrix22.modelVersion, /^P22\./);
+  assert.match(pl3Data.matrix22Coverage.modelVersion, /^P22\./);
+  const official = new Map(pl3V7.history.map((row) => [String(row.issue), row]));
+  for (const row of pl3Data.matrix22.replayRows) {
+    assert.equal(row.numbers.length, 22);
+    assert.equal(row.hit, row.numbers.includes(row.draw));
+  }
+  for (const row of pl3Data.matrix22Coverage.replayRows) {
+    assert.equal(row.numbers.length, 22);
+    assert.equal(new Set(row.numbers.map(groupKey)).size, 22);
+    assert.equal(row.hit, row.numbers.some((number) => groupKey(number) === groupKey(row.draw)));
+  }
+  for (const row of pl3Data.matrix22.liveRows) {
+    assert.ok(official.has(String(row.issue)));
+    assert.equal(row.draw, official.get(String(row.issue)).draw);
+  }
+  if (pl3Data.matrix22.numbers.length) {
+    assert.deepEqual(pl3Data.matrix22.structure, { group6: 14, group3: 8, triple: 0 });
+    assert.deepEqual(pl3Data.matrix22Coverage.structure, { group6: 16, group3: 6, triple: 0 });
+  }
 });

@@ -40,7 +40,7 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
   document.querySelector("#matrix22-live-count").textContent = matrix.live.count ? `${matrix.modelVersion}：${matrix.live.hits}/${matrix.live.count} · 最长断${matrix.live.maxMiss}期` : `${matrix.modelVersion}等待首期官方开奖`;
-  document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从第2026260期开始，开奖前锁定且不回改。</p>';
+  document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从本模型上线后的首个开奖前锁定期开始累计，锁定后不回改。</p>';
   document.querySelector("#matrix22-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
 
@@ -62,7 +62,8 @@ async function loadHeat() {
   const loading = document.querySelector("#heat-loading");
   const error = document.querySelector("#heat-error");
   try {
-    const response = await fetch(`./heat-data.json?t=${Date.now()}`, { cache: "no-store" });
+    const dataFile = window.LotteryGame?.file("heat-data.json") ?? "heat-data.json";
+    const response = await fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     document.querySelector("#heat-through").textContent = data.updatedThrough;
