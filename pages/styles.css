@@ -168,6 +168,10 @@ footer span { font-size: 9px; }
 .position7-window-table th { color:#456257; }
 .private-position-history-heading { margin-top:22px; }
 .private-position-history-heading h3 { margin:3px 0 0; color:#163f31; font-size:20px; }
+.private-position-section #private-position-recommendation article { padding:18px; border:1px solid #2e6250; background:#123f32; box-shadow:0 10px 24px rgba(19,63,50,.12); }
+.private-position-section #private-position-recommendation article > span { margin-bottom:13px; color:#f4f8f1; font-size:15px; letter-spacing:.04em; }
+.private-position-section #private-position-recommendation .position7-pills { gap:10px; }
+.private-position-section #private-position-recommendation .position7-pills b { min-height:58px; border:2px solid #a9c48e; background:#f1f6e9; color:#0b3b2e; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:29px; font-weight:900; line-height:1; text-shadow:none; box-shadow:0 5px 12px rgba(0,0,0,.16); }
 .target-pass { color:#2f7b43; }.target-fail { color:#a8442e; }
 .position7-history { display:grid; gap:8px; }
 .position7-row { display:grid; grid-template-columns:70px 1fr; gap:12px; padding:12px; border-radius:16px; background:#f3f5ef; }
@@ -233,6 +237,11 @@ footer span { font-size: 9px; }
   .position7-metrics { grid-template-columns:1fr; }
   .position7-joint-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .position7-pills { gap:4px; }.position7-pills b { min-height:38px; font-size:18px; }
+  .private-position-section #private-position-recommendation .position7-pills { gap:8px; }
+  .private-position-section #private-position-recommendation .position7-pills[data-pool-size="5"] { grid-template-columns:repeat(5,minmax(0,1fr)); }
+  .private-position-section #private-position-recommendation .position7-pills[data-pool-size="6"] { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .private-position-section #private-position-recommendation .position7-pills[data-pool-size="7"] { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .private-position-section #private-position-recommendation .position7-pills b { min-height:52px; font-size:26px; }
   .position7-row { grid-template-columns:58px minmax(0,1fr); gap:7px; padding:10px 8px; }
   .position7-line { grid-template-columns:34px minmax(76px,1fr) auto; gap:5px; }
   .position7-line > small { grid-column:2 / -1; }

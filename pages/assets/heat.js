@@ -32,7 +32,7 @@ function coverageHistoryRow(row) {
 }
 
 function positionPills(value) {
-  return `<div class="position7-pills" style="--pool-size:${value.length}">${[...value].map((digit) => `<b>${digit}</b>`).join("")}</div>`;
+  return `<div class="position7-pills" data-pool-size="${value.length}" style="--pool-size:${value.length}">${[...value].map((digit) => `<b>${digit}</b>`).join("")}</div>`;
 }
 
 function percentage(value) {
