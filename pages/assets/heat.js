@@ -44,7 +44,9 @@ function renderPrivatePositionHistory() {
   if (!result) return;
   const rows = result.history.filter((row) => !privatePositionQuery || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(privatePositionQuery)).reverse();
   document.querySelector("#private-position-history-count").textContent = `${rows.length}期`;
-  document.querySelector("#private-position-history").innerHTML = (privatePositionShowAll ? rows : rows.slice(0, 20)).map(privatePositionHistoryRow).join("");
+  document.querySelector("#private-position-history").innerHTML = rows.length
+    ? (privatePositionShowAll ? rows : rows.slice(0, 20)).map(privatePositionHistoryRow).join("")
+    : '<p class="matrix22-empty">新版融合定位尚未产生首期真实前瞻记录；北京时间20:20后锁定推荐，开奖后才会在这里新增记录。历史研究命中率不冒充真实前瞻。</p>';
   const toggle = document.querySelector("#private-position-toggle");
   toggle.hidden = rows.length <= 20;
   toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
@@ -112,7 +114,8 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
-  document.querySelector("#matrix22-live-count").textContent = matrix.live.count ? `${matrix.modelVersion}：${matrix.live.hits}/${matrix.live.count} · 最长断${matrix.live.maxMiss}期` : `${matrix.modelVersion}等待首期官方开奖`;
+  const allVersions = matrix.liveAllVersions ?? matrix.live;
+  document.querySelector("#matrix22-live-count").textContent = allVersions.count ? `全部真实锁定：${allVersions.hits}/${allVersions.count} · 当前版本${matrix.live.hits}/${matrix.live.count}` : `${matrix.modelVersion}等待首期官方开奖`;
   document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从本模型上线后的首个开奖前锁定期开始累计，锁定后不回改。</p>';
 }
 

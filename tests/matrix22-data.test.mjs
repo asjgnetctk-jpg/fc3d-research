@@ -69,6 +69,9 @@ test("matrix22 forward ledger is finalized only from official draw rows", () => 
   const currentVersionRows = data.matrix22.liveRows.filter((row) => row.version === data.matrix22.modelVersion);
   assert.equal(data.matrix22.live.count, currentVersionRows.length);
   assert.equal(data.matrix22.live.hits, currentVersionRows.filter((row) => row.hit).length);
+  assert.equal(data.matrix22.liveAllVersions.count, data.matrix22.liveRows.length);
+  assert.equal(data.matrix22.liveAllVersions.hits, data.matrix22.liveRows.filter((row) => row.hit).length);
+  assert.ok(data.matrix22.liveRows.some((row) => row.version !== data.matrix22.modelVersion));
 });
 
 test("matrix22 coverage version uses unique groups and group-level hit marks", () => {

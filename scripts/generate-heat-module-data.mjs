@@ -15,6 +15,7 @@ const position = await readJson(`pages/${prefix}position7-data.json`);
 const kill3 = await readJson(`pages/${prefix}kill3-data.json`);
 const v9 = hasReverseModels ? await readJson("pages/v9-data.json") : { history: [], recommendation: null };
 const v92 = hasReverseModels ? await readJson("pages/v9-2-data.json") : { history: [], recommendation: null };
+const forwardSeed = await readJson("scripts/data/matrix22-forward-seed.json");
 const outputName = `${prefix}heat-data.json`;
 let previousPayload = null;
 try { previousPayload = await readJson(`pages/${outputName}`); } catch {}
@@ -233,8 +234,9 @@ const coverageRecommendation = priorCoverageSameTarget && previousPayload.matrix
     : [];
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
-const liveRows = [...(previousPayload?.matrix22?.liveRows ?? [])]
-  .filter((row) => row.version === modelVersion)
+const liveRowMap = new Map([...(forwardSeed[game] ?? []), ...(previousPayload?.matrix22?.liveRows ?? [])]
+  .map((row) => [`${row.issue}|${row.version ?? "unknown"}`, row]));
+const liveRows = [...liveRowMap.values()]
   .filter((row) => officialByIssue.has(String(row.issue)))
   .map((row) => {
     const official = officialByIssue.get(String(row.issue));
@@ -256,7 +258,7 @@ const payload = {
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: game === "pl3" ? 14 : 16, group3: game === "pl3" ? 8 : 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
-    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveRows,
+    replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveAllVersions: metrics(liveRows), liveRows,
     method: modelVersion === optimizedModel ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。同一组六最多保留4个高分排列；验证段34/200，后置审计5/60，真实前瞻从上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   },
   matrix22Coverage: {
