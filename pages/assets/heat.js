@@ -1,4 +1,5 @@
 const PASSWORD_HASH = "41368ab21298d9364e60169933ba2e9b67060b4f620b6551d9668b4396990444";
+const PRIVATE_ACCESS_KEY = "private-recommendations-unlocked";
 const labels = ["百位热度", "十位热度", "个位热度", "不定位热度"];
 
 async function sha256(value) {
@@ -95,6 +96,7 @@ async function loadHeat() {
 async function unlock(password) {
   if (await sha256(password) !== PASSWORD_HASH) return false;
   sessionStorage.setItem("heat-module-unlocked", "1");
+  sessionStorage.setItem(PRIVATE_ACCESS_KEY, "1");
   await reveal();
   return true;
 }
@@ -114,6 +116,10 @@ document.querySelector("#heat-login").addEventListener("submit", async (event) =
 });
 document.querySelector("#heat-lock-button").addEventListener("click", () => {
   sessionStorage.removeItem("heat-module-unlocked");
+  sessionStorage.removeItem(PRIVATE_ACCESS_KEY);
   location.reload();
 });
-if (sessionStorage.getItem("heat-module-unlocked") === "1") reveal();
+if (sessionStorage.getItem("heat-module-unlocked") === "1" || sessionStorage.getItem(PRIVATE_ACCESS_KEY) === "1") {
+  sessionStorage.setItem("heat-module-unlocked", "1");
+  reveal();
+}

@@ -95,3 +95,18 @@ test("positioning pools use separately optimized formula sets", async () => {
   assert.equal(signatures.size, 3);
   assert.equal(config.optimizationObjective.poolWeightsShared, false);
 });
+
+test("position recommendations share the private matrix access gate", async () => {
+  const [html, positionScript, heatScript] = await Promise.all([
+    readFile("pages/position7.html", "utf8"),
+    readFile("pages/assets/position7.js", "utf8"),
+    readFile("pages/assets/heat.js", "utf8"),
+  ]);
+  assert.match(html, /id="position-lock"/);
+  assert.match(html, /id="position-app"[^>]*hidden/);
+  assert.match(positionScript, /private-recommendations-unlocked/);
+  assert.match(heatScript, /private-recommendations-unlocked/);
+  const positionHash = positionScript.match(/PASSWORD_HASH = "([a-f0-9]+)"/)?.[1];
+  const heatHash = heatScript.match(/PASSWORD_HASH = "([a-f0-9]+)"/)?.[1];
+  assert.equal(positionHash, heatHash);
+});
