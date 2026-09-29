@@ -138,6 +138,38 @@ function buildRecommendation(size) {
   return recommendation;
 }
 
+function buildLockedResearchHistory(size) {
+  const rule = selected[size];
+  const config = configs.find((item) => item.id === rule.configId);
+  const start = Math.max(501, rows.length - 365);
+  const weights = train(rows, indexData, config, 500, start);
+  const lifts = rule.pairWindow ? pairLifts(rows, start, rule.pairWindow) : null;
+  const streaks = [0, 0, 0];
+  return rows.slice(start).map((row, offset) => {
+    const index = start + offset;
+    const probabilities = predictProbabilities(rows, indexData, config, weights, index);
+    const pools = lifts
+      ? coordinatedPools(probabilities, size, rule.reverseMask, lifts, rule.pairLambda)
+      : probabilities.map((values, position) => values
+        .map((probability, digit) => ({ probability, digit }))
+        .sort((a, b) => ((rule.reverseMask & (1 << position)) ? a.probability - b.probability : b.probability - a.probability) || a.digit - b.digit)
+        .slice(0, size).map((item) => item.digit));
+    const output = { issue: row.issue, date: row.date, draw: row.draw, phase: "locked-research" };
+    let allHit = true;
+    positionKeys.forEach((key, position) => {
+      const pool = [...pools[position]].sort((a, b) => a - b).join("");
+      const hit = contains(pool, row.digits[position]);
+      streaks[position] = hit ? 0 : streaks[position] + 1;
+      output[key] = pool;
+      output[`${key.replace("Pool", "")}Hit`] = hit;
+      output[`${key.replace("Pool", "")}MissStreak`] = streaks[position];
+      allHit &&= hit;
+    });
+    output.allHit = allHit;
+    return output;
+  });
+}
+
 function finalizeHistory(size, recommendation) {
   const history = [...(previous?.pools?.[String(size)]?.history ?? [])];
   if (recommendation) {
@@ -210,6 +242,7 @@ for (const size of [5, 6, 7]) {
   const lockedSameTarget = priorRecommendation?.targetIssue === targetIssue;
   const recommendation = lockedSameTarget ? priorRecommendation : targetHeat ? buildRecommendation(size) : null;
   const history = finalizeHistory(size, priorRecommendation);
+  const researchHistory = buildLockedResearchHistory(size);
   const joint = jointMetric(history);
   pools[size] = {
     poolSize: size,
@@ -230,6 +263,8 @@ for (const size of [5, 6, 7]) {
       all: { forward: metric(history, "allHit") },
       windows: Object.fromEntries([30, 100, 300, 500].map((window) => [window, jointMetric(history.slice(-window))])),
     },
+    researchHistory,
+    researchMetrics: jointMetric(researchHistory),
     history,
   };
 }

@@ -143,6 +143,10 @@ for (const game of ["fc3d", "pl3"]) {
       assert.equal(pool.developmentEvidence.excessRate, pool.developmentEvidence.rate - pool.developmentEvidence.theoreticalRate);
       assert.ok(Number.isFinite(pool.developmentEvidence.recentYearRate));
       assert.ok(Number.isInteger(pool.developmentEvidence.recentYearMaxMiss));
+      assert.equal(pool.researchHistory.length, 365);
+      assert.ok(pool.researchHistory.every((row) => row.phase === "locked-research"));
+      assert.equal(pool.researchMetrics.count, pool.researchHistory.length);
+      assert.equal(pool.researchMetrics.allThreeHits, pool.researchHistory.filter((row) => row.allHit).length);
       assert.ok(pool.history.every((row) => row.phase === "prospective-locked"));
       assert.equal(pool.metrics.jointForward.count, pool.history.length);
       assert.equal(pool.metrics.all.forward.count, pool.history.length);

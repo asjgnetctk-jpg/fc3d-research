@@ -35,7 +35,7 @@ function privatePositionHistoryRow(row) {
     const hit = row[`${key}Hit`];
     return `<div class="position7-line"><span>${name}</span><strong>${row[`${key}Pool`]}</strong><span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span><small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`;
   }).join("");
-  const phase = row.phase === "prospective-locked" ? "前瞻" : row.phase === "locked-forward" ? "实战" : "训练";
+  const phase = row.phase === "prospective-locked" ? "前瞻" : row.phase === "locked-forward" ? "实战" : row.phase === "locked-research" ? "锁定研究" : "训练";
   return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${phase}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong><span class="hit-badge${row.allHit ? " is-hit" : ""}">${row.allHit ? "三位全中" : "未全中"}</span></div>${lines}</div></article>`;
 }
 
@@ -50,6 +50,9 @@ function renderPrivatePositionHistory() {
   const toggle = document.querySelector("#private-position-toggle");
   toggle.hidden = rows.length <= 20;
   toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
+  const researchRows = result.researchHistory ?? [];
+  document.querySelector("#private-position-research-summary").textContent = `查看最近一年 ${researchRows.length} 期锁定研究明细`;
+  document.querySelector("#private-position-research-history").innerHTML = researchRows.slice().reverse().map(privatePositionHistoryRow).join("");
 }
 
 function renderPrivatePosition(size) {
@@ -117,6 +120,8 @@ function renderMatrix(matrix) {
   const allVersions = matrix.liveAllVersions ?? matrix.live;
   document.querySelector("#matrix22-live-count").textContent = allVersions.count ? `全部真实锁定：${allVersions.hits}/${allVersions.count} · 当前版本${matrix.live.hits}/${matrix.live.count}` : `${matrix.modelVersion}等待首期官方开奖`;
   document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从本模型上线后的首个开奖前锁定期开始累计，锁定后不回改。</p>';
+  document.querySelector("#matrix22-replay-summary").textContent = `查看 ${matrix.replayRows.length} 期历史回放`;
+  document.querySelector("#matrix22-replay-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
 }
 
 function renderCoverage(matrix) {

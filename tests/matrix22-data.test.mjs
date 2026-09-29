@@ -74,6 +74,12 @@ test("matrix22 forward ledger is finalized only from official draw rows", () => 
   assert.ok(data.matrix22.liveRows.some((row) => row.version !== data.matrix22.modelVersion));
 });
 
+test("matrix22 publishes the full replay ledger separately from forward records", () => {
+  assert.equal(data.matrix22.replayRows.length, 259);
+  assert.equal(data.matrix22.replay.count, 259);
+  assert.equal(data.matrix22.liveAllVersions.currentMiss, 2);
+});
+
 test("matrix22 coverage version uses unique groups and group-level hit marks", () => {
   const matrix = data.matrix22Coverage;
   const current = matrix.numbers.map((row) => row.number);
