@@ -51,8 +51,10 @@ function renderPrivatePositionHistory() {
   toggle.hidden = rows.length <= 20;
   toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
   const researchRows = result.researchHistory ?? [];
-  document.querySelector("#private-position-research-summary").textContent = `查看最近一年 ${researchRows.length} 期锁定研究明细`;
-  document.querySelector("#private-position-research-history").innerHTML = researchRows.slice().reverse().map(privatePositionHistoryRow).join("");
+  const researchSummary = document.querySelector("#private-position-research-summary");
+  const researchHistory = document.querySelector("#private-position-research-history");
+  if (researchSummary) researchSummary.textContent = `查看最近一年 ${researchRows.length} 期锁定研究明细`;
+  if (researchHistory) researchHistory.innerHTML = researchRows.slice().reverse().map(privatePositionHistoryRow).join("");
 }
 
 function renderPrivatePosition(size) {
@@ -120,8 +122,11 @@ function renderMatrix(matrix) {
   const allVersions = matrix.liveAllVersions ?? matrix.live;
   document.querySelector("#matrix22-live-count").textContent = allVersions.count ? `全部真实锁定：${allVersions.hits}/${allVersions.count} · 当前版本${matrix.live.hits}/${matrix.live.count}` : `${matrix.modelVersion}等待首期官方开奖`;
   document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从本模型上线后的首个开奖前锁定期开始累计，锁定后不回改。</p>';
-  document.querySelector("#matrix22-replay-summary").textContent = `查看 ${matrix.replayRows.length} 期历史回放`;
-  document.querySelector("#matrix22-replay-history").innerHTML = matrix.replayRows.map(matrixHistoryRow).join("");
+  const replayRows = matrix.replayRows ?? [];
+  const replaySummary = document.querySelector("#matrix22-replay-summary");
+  const replayHistory = document.querySelector("#matrix22-replay-history");
+  if (replaySummary) replaySummary.textContent = `查看 ${replayRows.length} 期历史回放`;
+  if (replayHistory) replayHistory.innerHTML = replayRows.map(matrixHistoryRow).join("");
 }
 
 function renderCoverage(matrix) {
