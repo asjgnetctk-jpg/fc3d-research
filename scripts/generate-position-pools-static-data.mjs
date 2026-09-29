@@ -121,6 +121,80 @@ function metric(rows, key) {
   };
 }
 
+function jointMetrics(rows) {
+  const count = rows.length;
+  const positionHits = Object.fromEntries(
+    positions.map((key) => [key, rows.reduce((sum, row) => sum + Number(row[`${key}Hit`]), 0)]),
+  );
+  const hitCounts = rows.map((row) =>
+    positions.reduce((sum, key) => sum + Number(row[`${key}Hit`]), 0),
+  );
+  const allThreeHits = hitCounts.filter((value) => value === 3).length;
+  const exactlyTwoHits = hitCounts.filter((value) => value === 2).length;
+  const exactlyOneHits = hitCounts.filter((value) => value === 1).length;
+  const zeroHits = hitCounts.filter((value) => value === 0).length;
+  const aloneDragHits = Object.fromEntries(
+    positions.map((key) => [
+      key,
+      rows.filter((row) => !row[`${key}Hit`] && positions.filter((item) => item !== key).every((item) => row[`${item}Hit`])).length,
+    ]),
+  );
+  let currentAllMiss = 0;
+  let maxAllMiss = 0;
+  let currentAllHit = 0;
+  let longestAllHit = 0;
+  for (const value of hitCounts) {
+    if (value === 3) {
+      currentAllHit += 1;
+      longestAllHit = Math.max(longestAllHit, currentAllHit);
+      currentAllMiss = 0;
+    } else {
+      currentAllMiss += 1;
+      maxAllMiss = Math.max(maxAllMiss, currentAllMiss);
+      currentAllHit = 0;
+    }
+  }
+  const rates = Object.fromEntries(
+    positions.map((key) => [key, count ? positionHits[key] / count : 0]),
+  );
+  const allThreeRate = count ? allThreeHits / count : 0;
+  const exactlyTwoRate = count ? exactlyTwoHits / count : 0;
+  const aloneDragRate = count
+    ? Object.values(aloneDragHits).reduce((sum, value) => sum + value, 0) / count
+    : 0;
+  const independentProduct = rates.hundreds * rates.tens * rates.units;
+  return {
+    count,
+    positionHits,
+    positionRates: rates,
+    allThreeHits,
+    allThreeRate,
+    exactlyTwoHits,
+    exactlyTwoRate,
+    mismatchRate: exactlyTwoRate,
+    exactlyOneHits,
+    exactlyOneRate: count ? exactlyOneHits / count : 0,
+    zeroHits,
+    zeroHitRate: count ? zeroHits / count : 0,
+    aloneDragHits,
+    aloneDragRates: Object.fromEntries(
+      positions.map((key) => [key, count ? aloneDragHits[key] / count : 0]),
+    ),
+    singlePositionDragRate: aloneDragRate,
+    longestAllHit,
+    maxAllMiss,
+    currentAllMiss,
+    syncEfficiency: independentProduct ? allThreeRate / independentProduct : 0,
+    score:
+      0.55 * allThreeRate +
+      0.15 * exactlyTwoRate +
+      0.10 * rates.hundreds +
+      0.10 * rates.tens +
+      0.10 * rates.units -
+      0.20 * aloneDragRate,
+  };
+}
+
 const featureRows = [0, 1, 2].map(() => []);
 for (let index = MIN_HISTORY; index < draws.length; index += 1) {
   const row = draws[index];
@@ -262,6 +336,10 @@ function buildPoolResult(poolSize, poolConfig) {
     training: metric(fullHistory.filter((row) => row.date <= TRAINING_END), "allHit"),
     forward: metric(fullHistory.filter((row) => row.date >= config.forwardStart), "allHit"),
   };
+  metrics.joint = jointMetrics(fullHistory);
+  metrics.windows = Object.fromEntries(
+    [30, 100, 300, 500].map((window) => [window, jointMetrics(fullHistory.slice(-window))]),
+  );
   return {
     poolSize,
     recommendation,
@@ -290,7 +368,8 @@ const output = {
   forwardStart: config.forwardStart,
   futureGuarantee: false,
   notice:
-    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码直接使用2025-09-15至2026-09-14这一年答案搜索权重。每个位置按上期数字和当前连断状态切换公式；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
+    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码分别使用独立权重。联合目标优先提高同一期三位全中率与同步效率，并惩罚错位率；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
+  optimizationObjective: config.optimizationObjective ?? null,
   pools,
 };
 

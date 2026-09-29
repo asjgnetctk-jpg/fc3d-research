@@ -56,6 +56,19 @@ for (const game of ["fc3d", "pl3"]) {
         currentMiss: combinedStreak,
         targetMet: result.history.length > 0 && combinedMaxMiss <= 1,
       });
+      const joint = result.metrics.joint;
+      assert.equal(joint.count, result.history.length);
+      assert.equal(joint.allThreeHits, combinedHits);
+      assert.equal(joint.exactlyTwoRate, joint.mismatchRate);
+      assert.ok(Number.isFinite(joint.syncEfficiency));
+      assert.ok(Number.isFinite(joint.score));
+      assert.equal(
+        joint.aloneDragHits.hundreds + joint.aloneDragHits.tens + joint.aloneDragHits.units,
+        joint.exactlyTwoHits,
+      );
+      for (const window of [30, 100, 300, 500]) {
+        assert.equal(result.metrics.windows[window].count, Math.min(window, result.history.length));
+      }
     }
     assert.deepEqual(
       await readJson(`public/${prefix}position7-data.json`),
@@ -64,17 +77,21 @@ for (const game of ["fc3d", "pl3"]) {
   });
 }
 
-test("pl3 compressed positioning model contains exactly 71 unique formulas", async () => {
+test("positioning pools use separately optimized formula sets", async () => {
   const config = await readJson("scripts/config/pl3-position-pools.json");
   const data = await readJson("pages/pl3-position7-data.json");
   const ids = new Set();
-  for (const pool of Object.values(config.pools)) {
+  const signatures = new Set();
+  for (const [size, pool] of Object.entries(config.pools)) {
+    const poolIds = new Set();
     for (const position of ["hundreds", "tens", "units"]) {
-      for (const method of pool.methods[position].normals) ids.add(method.id);
-      for (const method of pool.methods[position].defenses) ids.add(method.id);
+      for (const method of pool.methods[position].normals) { ids.add(method.id); poolIds.add(method.id); }
+      for (const method of pool.methods[position].defenses) { ids.add(method.id); poolIds.add(method.id); }
     }
+    signatures.add(`${size}:${[...poolIds].sort().join(",")}`);
   }
-  assert.equal(config.candidateFormulaCount, 71);
-  assert.equal(data.candidateFormulaCount, 71);
-  assert.equal(ids.size, 71);
+  assert.equal(data.candidateFormulaCount, ids.size);
+  assert.equal(config.candidateFormulaCount, ids.size);
+  assert.equal(signatures.size, 3);
+  assert.equal(config.optimizationObjective.poolWeightsShared, false);
 });

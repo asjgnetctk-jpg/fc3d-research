@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#163f31" />
-    <meta name="description" content="百位、十位、个位的5码、6码、7码定位推荐与独立盲测。" />
+    <meta name="description" content="百位、十位、个位的5码、6码、7码定位推荐、联合命中与分窗回测。" />
     <title>福彩3D · 定位码</title>
-    <link rel="stylesheet" href="./styles.css?v=20260923-kill3" />
+    <link rel="stylesheet" href="./styles.css?v=20260929-joint-objective" />
     <script src="./assets/game-switch.js?v=20260923-kill3" defer></script>
-    <script src="./assets/position7.js?v=20260920-combined-hidden" defer></script>
+    <script src="./assets/position7.js?v=20260929-joint-objective" defer></script>
   </head>
   <body>
     <main class="app-shell terminal-shell">
@@ -26,7 +26,7 @@
         <section class="section-block"><p id="notice" class="section-note"></p></section>
         <nav id="pool-tabs" class="pool-size-tabs" aria-label="定位码数量"><button data-pool-size="5">5码定位</button><button data-pool-size="6">6码定位</button><button data-pool-size="7" class="is-active">7码定位</button></nav>
         <section class="hero-card position7-hero"><div class="hero-meta"><span id="target"></span><span id="based-on"></span></div><div id="recommendation" class="position7-current"></div></section>
-        <section class="section-block"><div class="section-heading"><div><p class="eyebrow">近一年答案选权重</p><h2>分位置命中与最长连断</h2></div><span id="pool-label" class="backfit-chip">定位7码</span></div><div id="metrics" class="position7-metrics"></div></section>
+        <section class="section-block"><div class="section-heading"><div><p class="eyebrow">三位联合目标</p><h2>同期开奖全中与同步效率</h2></div><span id="pool-label" class="backfit-chip">定位7码</span></div><div id="metrics" class="position7-metrics"></div></section>
         <section class="section-block history-section"><div class="section-heading"><div><p class="eyebrow">逐期证据</p><h2>推荐、开奖号与结果</h2></div></div><div class="history-search"><input id="search" type="search" placeholder="搜索期号、日期、开奖号或定位码"/><span id="count"></span></div><div id="history" class="position7-history"></div><button id="toggle" class="secondary-button"></button></section>
         <section class="section-block formula-block"><p class="section-note"><span id="rule"></span> <a id="audit" href="./audit/position7-model.json">查看锁定公式与统计</a></p></section>
         <footer><strong>训练成绩不等于未来胜率</strong><p>近一年答案参与权重选择；公式从2026-09-15起锁定，新期开奖只计实战，不再改写训练成绩。</p><span id="generated"></span></footer>
