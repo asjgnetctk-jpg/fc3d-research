@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
 const prefix = game === "pl3" ? "pl3-" : "";
+const modelVariant = process.env.POSITION_MODEL === "joint" ? "joint" : "legacy";
+const variantPrefix = modelVariant === "joint" ? "joint-" : "";
 const source = path.join(
   root,
   "scripts",
@@ -14,7 +16,7 @@ const source = path.join(
 const payload = JSON.parse(await readFile(source, "utf8"));
 const draws = payload.rows;
 const config = JSON.parse(
-  await readFile(path.join(root, "scripts", "config", `${game}-position-pools.json`), "utf8"),
+  await readFile(path.join(root, "scripts", "config", `${game}-position-pools${modelVariant === "joint" ? "-joint" : ""}.json`), "utf8"),
 );
 const TRAINING_START = config.trainingStart;
 const TRAINING_END = config.trainingEnd;
@@ -356,6 +358,7 @@ const pools = Object.fromEntries(
 const output = {
   generatedAt: new Date().toISOString(),
   game,
+  modelVariant,
   sourceUpdatedThrough: `${latest.date} · 第${latest.issue}期`,
   dataSha256: payload.canonicalSha256,
   formulaVersion: config.formulaVersion,
@@ -367,8 +370,9 @@ const output = {
   trainingEnd: TRAINING_END,
   forwardStart: config.forwardStart,
   futureGuarantee: false,
-  notice:
-    `${game === "pl3" ? "体彩排列3" : "福彩3D"}定位5码、6码、7码分别使用独立权重。联合目标优先提高同一期三位全中率与同步效率，并惩罚错位率；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
+  notice: modelVariant === "joint"
+    ? `${game === "pl3" ? "体彩排列3" : "福彩3D"}联合定位5码、6码、7码分别使用独立权重，优先提高同一期三位全中率与同步效率，并惩罚错位率；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`
+    : `${game === "pl3" ? "体彩排列3" : "福彩3D"}原定位5码、6码、7码使用2025-09-15至2026-09-14一年答案搜索各位置权重；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
   optimizationObjective: config.optimizationObjective ?? null,
   pools,
 };
@@ -376,19 +380,19 @@ const output = {
 await mkdir(path.join(root, "pages", "audit"), { recursive: true });
 await mkdir(path.join(root, "public", "audit"), { recursive: true });
 for (const directory of ["pages", "public"]) {
-  await writeFile(path.join(root, directory, `${prefix}position7-data.json`), `${JSON.stringify(output)}\n`, "utf8");
+  await writeFile(path.join(root, directory, `${prefix}${variantPrefix}position7-data.json`), `${JSON.stringify(output)}\n`, "utf8");
   await writeFile(
-    path.join(root, directory, "audit", `${prefix}position7-model.json`),
+    path.join(root, directory, "audit", `${prefix}${variantPrefix}position7-model.json`),
     `${JSON.stringify({ ...output, pools: Object.fromEntries(Object.entries(pools).map(([size, item]) => [size, { ...item, history: undefined }])) }, null, 2)}\n`,
     "utf8",
   );
 }
-if (game === "fc3d") {
+if (game === "fc3d" && modelVariant === "legacy") {
   for (const file of ["position7.html", path.join("assets", "position7.js"), "styles.css"]) {
     await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
   }
 }
 
 console.log(
-  `${game} position pools generated: ${[5, 6, 7].map((size) => `${size}码 ${positions.map((key) => pools[size].metrics[key].forward.maxMiss).join("/")}`).join(", ")}`,
+  `${game} ${modelVariant} position pools generated: ${[5, 6, 7].map((size) => `${size}码 ${positions.map((key) => pools[size].metrics[key].forward.maxMiss).join("/")}`).join(", ")}`,
 );

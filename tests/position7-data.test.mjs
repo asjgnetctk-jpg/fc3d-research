@@ -78,8 +78,8 @@ for (const game of ["fc3d", "pl3"]) {
 }
 
 test("positioning pools use separately optimized formula sets", async () => {
-  const config = await readJson("scripts/config/pl3-position-pools.json");
-  const data = await readJson("pages/pl3-position7-data.json");
+  const config = await readJson("scripts/config/pl3-position-pools-joint.json");
+  const data = await readJson("pages/pl3-joint-position7-data.json");
   const ids = new Set();
   const signatures = new Set();
   for (const [size, pool] of Object.entries(config.pools)) {
@@ -94,13 +94,15 @@ test("positioning pools use separately optimized formula sets", async () => {
   assert.equal(config.candidateFormulaCount, ids.size);
   assert.equal(signatures.size, 3);
   assert.equal(config.optimizationObjective.poolWeightsShared, false);
+  assert.equal(data.modelVariant, "joint");
 });
 
 test("joint position recommendations are embedded inside the private matrix module", async () => {
-  const [html, positionScript, heatScript] = await Promise.all([
+  const [html, positionScript, heatScript, matrixGenerator] = await Promise.all([
     readFile("pages/position7.html", "utf8"),
     readFile("pages/assets/position7.js", "utf8"),
     readFile("pages/assets/heat.js", "utf8"),
+    readFile("scripts/generate-heat-module-data.mjs", "utf8"),
   ]);
   const heatHtml = await readFile("pages/heat.html", "utf8");
   assert.doesNotMatch(html, /id="position-lock"/);
@@ -108,5 +110,9 @@ test("joint position recommendations are embedded inside the private matrix modu
   assert.match(heatHtml, /id="heat-lock"/);
   assert.match(heatHtml, /id="private-position-recommendation"/);
   assert.match(heatScript, /position7-data\.json/);
+  assert.match(heatScript, /joint-position7-data\.json/);
+  assert.match(matrixGenerator, /pages\/\$\{prefix\}position7-data\.json/);
   assert.match(heatScript, /renderPrivatePosition\(7\)/);
+  assert.equal((await readJson("pages/position7-data.json")).modelVariant, "legacy");
+  assert.equal((await readJson("pages/joint-position7-data.json")).modelVariant, "joint");
 });

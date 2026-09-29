@@ -100,7 +100,7 @@ async function loadHeat() {
   const error = document.querySelector("#heat-error");
   try {
     const dataFile = window.LotteryGame?.file("heat-data.json") ?? "heat-data.json";
-    const positionFile = window.LotteryGame?.file("position7-data.json") ?? "position7-data.json";
+    const positionFile = window.LotteryGame?.file("joint-position7-data.json") ?? "joint-position7-data.json";
     const [response, positionResponse] = await Promise.all([
       fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" }),
       fetch(`./${positionFile}?t=${Date.now()}`, { cache: "no-store" }),

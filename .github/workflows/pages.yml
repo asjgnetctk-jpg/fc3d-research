@@ -56,6 +56,15 @@ jobs:
         env:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-position-pools-static-data.mjs
+      - name: 生成福彩三位联合定位独立数据
+        env:
+          POSITION_MODEL: "joint"
+        run: node scripts/generate-position-pools-static-data.mjs
+      - name: 生成体彩三位联合定位独立数据
+        env:
+          LOTTERY_GAME: "pl3"
+          POSITION_MODEL: "joint"
+        run: node scripts/generate-position-pools-static-data.mjs
       - name: 生成福彩3D每日3个杀码
         run: node scripts/generate-kill3-static-data.mjs
       - name: 生成体彩排列3每日3个杀码

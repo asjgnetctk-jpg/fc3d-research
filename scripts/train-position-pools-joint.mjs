@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
-const configPath = path.join(root, "scripts", "config", `${game}-position-pools.json`);
+const configPath = path.join(root, "scripts", "config", `${game}-position-pools-joint.json`);
 const dataPath = path.join(root, "scripts", "data", `${game}-full-history.json`);
 const config = JSON.parse(await readFile(configPath, "utf8"));
 const draws = JSON.parse(await readFile(dataPath, "utf8")).rows;
