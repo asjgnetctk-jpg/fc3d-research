@@ -74,6 +74,12 @@ jobs:
           LOTTERY_GAME: "pl3"
           POSITION_MODEL: "trustworthy"
         run: node scripts/generate-position-pools-static-data.mjs
+      - name: 生成福彩融合定位前瞻数据
+        run: node scripts/generate-position-meta-data.mjs
+      - name: 生成体彩融合定位前瞻数据
+        env:
+          LOTTERY_GAME: "pl3"
+        run: node scripts/generate-position-meta-data.mjs
       - name: 生成福彩3D每日3个杀码
         run: node scripts/generate-kill3-static-data.mjs
       - name: 生成体彩排列3每日3个杀码

@@ -113,19 +113,39 @@ test("trustworthy position recommendations are embedded inside the private matri
   assert.match(heatHtml, /id="private-position-search"/);
   assert.match(heatHtml, /id="matrix-panel-tabs"/);
   assert.match(heatHtml, /data-matrix-panel-section="straight"/);
-  assert.match(heatScript, /position7-data\.json/);
-  assert.match(heatScript, /trust-position7-data\.json/);
+  assert.match(heatScript, /meta-position-data\.json/);
   assert.match(matrixGenerator, /pages\/\$\{prefix\}position7-data\.json/);
   assert.match(heatScript, /renderPrivatePosition\(7\)/);
   assert.match(heatScript, /renderPrivatePositionHistory/);
   assert.match(heatScript, /row\.allHit/);
   assert.match(heatScript, /data-pool-size/);
   assert.match(heatScript, /selectMatrixPanel/);
+  assert.doesNotMatch(heatHtml, /data-matrix-panel="heat"/);
+  assert.doesNotMatch(heatHtml, /data-matrix-panel="evidence"/);
+  assert.match(heatHtml, /data-matrix-panel-section="straight"[\s\S]*id="matrix22-live-history"/);
   assert.match(await readFile("pages/styles.css", "utf8"), /private-position-section #private-position-recommendation/);
   assert.equal((await readJson("pages/position7-data.json")).modelVariant, "legacy");
   assert.equal((await readJson("pages/joint-position7-data.json")).modelVariant, "joint");
   assert.equal((await readJson("pages/trust-position7-data.json")).modelVariant, "trustworthy");
 });
+
+for (const game of ["fc3d", "pl3"]) {
+  test(`${game} prospective meta positioning never backfills research rows`, async () => {
+    const prefix = game === "pl3" ? "pl3-" : "";
+    const data = await readJson(`pages/${prefix}meta-position-data.json`);
+    assert.equal(data.modelVariant, "prospective-meta-position");
+    assert.equal(data.futureGuarantee, false);
+    assert.match(data.notice, /历史研究结果不计入真实前瞻/);
+    for (const size of [5, 6, 7]) {
+      const pool = data.pools[size];
+      assert.match(pool.developmentEvidence.label, /不计入真实前瞻/);
+      assert.ok(pool.history.every((row) => row.phase === "prospective-locked"));
+      assert.equal(pool.metrics.jointForward.count, pool.history.length);
+      assert.equal(pool.metrics.all.forward.count, pool.history.length);
+    }
+    assert.deepEqual(await readJson(`public/${prefix}meta-position-data.json`), data);
+  });
+}
 
 for (const game of ["fc3d", "pl3"]) {
   test(`${game} trustworthy positioning keeps selection and holdout strictly separated`, async () => {

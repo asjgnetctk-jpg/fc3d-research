@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#163f31" />
     <meta name="description" content="福彩3D九专家融合22组直选矩阵。" />
     <title>福彩3D · 22组专家矩阵</title>
-    <link rel="stylesheet" href="./styles.css?v=20260929-trustworthy-position" />
+    <link rel="stylesheet" href="./styles.css?v=20260929-meta-position" />
     <script src="./assets/game-switch.js?v=20260928-pl3-matrix" defer></script>
-    <script src="./assets/heat.js?v=20260929-trustworthy-position" defer></script>
+    <script src="./assets/heat.js?v=20260929-meta-position" defer></script>
   </head>
   <body>
     <div id="heat-lock" class="heat-lock">
@@ -32,7 +32,7 @@
       <nav class="version-switch six-versions" aria-label="切换研究页面">
         <a href="./"><strong>V7</strong></a><a href="./v2.html"><strong>V2</strong></a><a href="./v5.html"><strong>V5</strong></a><a href="./v9.html"><strong>V9</strong></a><a href="./v9-2.html"><strong>V9.2</strong></a><a href="./omissions.html"><strong>遗漏</strong></a>
       </nav>
-      <div id="heat-loading" class="notice">正在读取热度数据…</div>
+      <div id="heat-loading" class="notice">正在读取矩阵数据…</div>
       <div id="heat-error" class="notice error" hidden></div>
       <div id="heat-content" hidden>
         <section class="status-strip"><span class="status-dot"></span><span id="heat-through"></span><span>·</span><span id="heat-count"></span></section>
@@ -40,12 +40,10 @@
         <nav id="matrix-panel-tabs" class="matrix-panel-tabs" aria-label="切换加密矩阵模块">
           <button type="button" data-matrix-panel="straight" class="is-active">22组直选</button>
           <button type="button" data-matrix-panel="coverage">组选覆盖</button>
-          <button type="button" data-matrix-panel="position">可信定位</button>
-          <button type="button" data-matrix-panel="evidence">前瞻记录</button>
-          <button type="button" data-matrix-panel="heat">热度数据</button>
+          <button type="button" data-matrix-panel="position">融合定位</button>
         </nav>
         <section class="section-block private-position-section" data-matrix-panel-section="position" hidden>
-          <div class="section-heading matrix22-heading"><div><p class="eyebrow">严格隔离 · 独立盲测</p><h2 id="private-position-target">可信定位七码推荐</h2></div><span id="private-position-based" class="backfit-chip"></span></div>
+          <div class="section-heading matrix22-heading"><div><p class="eyebrow">因果底层 · 多信号融合</p><h2 id="private-position-target">融合定位七码推荐</h2></div><span id="private-position-based" class="backfit-chip"></span></div>
           <nav id="private-position-tabs" class="pool-size-tabs" aria-label="切换可信定位码"><button type="button" data-private-pool-size="5">5码</button><button type="button" data-private-pool-size="6">6码</button><button type="button" data-private-pool-size="7" class="is-active">7码</button></nav>
           <div id="private-position-recommendation" class="position7-current"></div>
           <div id="private-position-metrics" class="matrix22-metrics"></div>
@@ -62,6 +60,8 @@
           <div id="matrix22-structure" class="matrix22-structure"></div>
           <div id="matrix22-metrics" class="matrix22-metrics"></div>
           <details class="matrix22-method"><summary>查看融合办法</summary><p id="matrix22-method"></p></details>
+          <div class="section-heading matrix22-forward-heading"><div><p class="eyebrow">开奖前锁定</p><h3>真实前瞻记录</h3></div><span id="matrix22-live-count" class="backfit-chip"></span></div>
+          <div id="matrix22-live-history" class="matrix22-history"></div>
         </section>
         <section class="section-block matrix22-section" data-matrix-panel-section="coverage" hidden>
           <div class="section-heading matrix22-heading"><div><p class="eyebrow">独立对照 · 组选口径</p><h2 id="matrix22-coverage-target">22组组选覆盖版</h2></div><span id="matrix22-coverage-based" class="backfit-chip"></span></div>
@@ -72,16 +72,6 @@
           <details class="matrix22-method"><summary>查看覆盖办法</summary><p id="matrix22-coverage-method"></p></details>
           <details class="matrix22-method"><summary>查看组选覆盖历史回放</summary><div id="matrix22-coverage-history" class="matrix22-history"></div></details>
         </section>
-        <section class="section-block matrix22-evidence" data-matrix-panel-section="evidence" hidden>
-          <div class="section-heading"><div><p class="eyebrow">开奖前锁定</p><h2>真实前瞻记录</h2></div><span id="matrix22-live-count" class="backfit-chip"></span></div>
-          <div id="matrix22-live-history" class="matrix22-history"></div>
-        </section>
-        <section class="section-block matrix22-evidence" data-matrix-panel-section="evidence" hidden>
-          <div class="section-heading"><div><p class="eyebrow">保守参考口径</p><h2>上一期热度历史回放</h2></div></div>
-          <div id="matrix22-history" class="matrix22-history"></div>
-        </section>
-        <section class="hero-card heat-hero" data-matrix-panel-section="heat" hidden><div class="hero-meta"><span id="heat-issue"></span><span id="heat-date"></span></div><div id="heat-rankings" class="heat-rankings"></div></section>
-        <section class="section-block history-section" data-matrix-panel-section="heat" hidden><div class="section-heading"><div><p class="eyebrow">最近120期</p><h2>热度排名历史</h2></div></div><div class="history-search"><input id="heat-search" type="search" placeholder="搜索期号、日期或开奖号"/><span id="heat-history-count"></span></div><div id="heat-history" class="heat-history"></div></section>
         <footer><strong>22组的理论直选覆盖率为2.2%</strong><p>历史回放不代表未来表现；页面只展示真实规则计算结果，不承诺中奖。</p></footer>
       </div>
     </main>
