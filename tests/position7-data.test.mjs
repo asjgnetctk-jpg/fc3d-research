@@ -109,10 +109,14 @@ test("joint position recommendations are embedded inside the private matrix modu
   assert.match(positionScript, /load\(\);/);
   assert.match(heatHtml, /id="heat-lock"/);
   assert.match(heatHtml, /id="private-position-recommendation"/);
+  assert.match(heatHtml, /id="private-position-history"/);
+  assert.match(heatHtml, /id="private-position-search"/);
   assert.match(heatScript, /position7-data\.json/);
   assert.match(heatScript, /joint-position7-data\.json/);
   assert.match(matrixGenerator, /pages\/\$\{prefix\}position7-data\.json/);
   assert.match(heatScript, /renderPrivatePosition\(7\)/);
+  assert.match(heatScript, /renderPrivatePositionHistory/);
+  assert.match(heatScript, /row\.allHit/);
   assert.equal((await readJson("pages/position7-data.json")).modelVariant, "legacy");
   assert.equal((await readJson("pages/joint-position7-data.json")).modelVariant, "joint");
 });

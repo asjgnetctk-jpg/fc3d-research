@@ -2,6 +2,9 @@ const PASSWORD_HASH = "41368ab21298d9364e60169933ba2e9b67060b4f620b6551d9668b439
 const labels = ["百位热度", "十位热度", "个位热度", "不定位热度"];
 const positionNames = { hundreds: "百位", tens: "十位", units: "个位" };
 let privatePositionPayload = null;
+let privatePositionSize = 7;
+let privatePositionShowAll = false;
+let privatePositionQuery = "";
 
 async function sha256(value) {
   const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
@@ -36,9 +39,30 @@ function percentage(value) {
   return `${((value ?? 0) * 100).toFixed(1)}%`;
 }
 
+function privatePositionHistoryRow(row) {
+  const lines = Object.entries(positionNames).map(([key, name], index) => {
+    const hit = row[`${key}Hit`];
+    return `<div class="position7-line"><span>${name}</span><strong>${row[`${key}Pool`]}</strong><span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span><small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`;
+  }).join("");
+  return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${row.phase === "locked-forward" ? "实战" : "训练"}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong><span class="hit-badge${row.allHit ? " is-hit" : ""}">${row.allHit ? "三位全中" : "未全中"}</span></div>${lines}</div></article>`;
+}
+
+function renderPrivatePositionHistory() {
+  const result = privatePositionPayload?.pools?.[privatePositionSize];
+  if (!result) return;
+  const rows = result.history.filter((row) => !privatePositionQuery || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(privatePositionQuery)).reverse();
+  document.querySelector("#private-position-history-count").textContent = `${rows.length}期`;
+  document.querySelector("#private-position-history").innerHTML = (privatePositionShowAll ? rows : rows.slice(0, 20)).map(privatePositionHistoryRow).join("");
+  const toggle = document.querySelector("#private-position-toggle");
+  toggle.hidden = rows.length <= 20;
+  toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
+}
+
 function renderPrivatePosition(size) {
   const result = privatePositionPayload?.pools?.[size];
   if (!result) return;
+  privatePositionSize = size;
+  privatePositionShowAll = false;
   document.querySelectorAll("[data-private-pool-size]").forEach((button) => {
     button.classList.toggle("is-active", Number(button.dataset.privatePoolSize) === size);
   });
@@ -61,6 +85,7 @@ function renderPrivatePosition(size) {
   }).join("");
   document.querySelector("#private-position-windows").innerHTML = `<table><thead><tr><th>窗口</th><th>样本</th><th>全中率</th><th>错位率</th><th>同步效率</th><th>最大遗漏</th></tr></thead><tbody>${rows}</tbody></table>`;
   document.querySelector("#private-position-notice").textContent = `五码、六码、七码使用各自独立权重；七码优先三位同期开奖全中率与同步效率。${privatePositionPayload.notice}`;
+  renderPrivatePositionHistory();
 }
 
 function renderMatrix(matrix) {
@@ -166,5 +191,14 @@ document.querySelector("#heat-lock-button").addEventListener("click", () => {
 document.querySelector("#private-position-tabs").addEventListener("click", (event) => {
   const button = event.target.closest("[data-private-pool-size]");
   if (button) renderPrivatePosition(Number(button.dataset.privatePoolSize));
+});
+document.querySelector("#private-position-search").addEventListener("input", (event) => {
+  privatePositionQuery = event.target.value.trim();
+  privatePositionShowAll = false;
+  renderPrivatePositionHistory();
+});
+document.querySelector("#private-position-toggle").addEventListener("click", () => {
+  privatePositionShowAll = !privatePositionShowAll;
+  renderPrivatePositionHistory();
 });
 if (sessionStorage.getItem("heat-module-unlocked") === "1") reveal();
