@@ -97,7 +97,7 @@ test("positioning pools use separately optimized formula sets", async () => {
   assert.equal(data.modelVariant, "joint");
 });
 
-test("joint position recommendations are embedded inside the private matrix module", async () => {
+test("trustworthy position recommendations are embedded inside the private matrix module", async () => {
   const [html, positionScript, heatScript, matrixGenerator] = await Promise.all([
     readFile("pages/position7.html", "utf8"),
     readFile("pages/assets/position7.js", "utf8"),
@@ -114,7 +114,7 @@ test("joint position recommendations are embedded inside the private matrix modu
   assert.match(heatHtml, /id="matrix-panel-tabs"/);
   assert.match(heatHtml, /data-matrix-panel-section="straight"/);
   assert.match(heatScript, /position7-data\.json/);
-  assert.match(heatScript, /joint-position7-data\.json/);
+  assert.match(heatScript, /trust-position7-data\.json/);
   assert.match(matrixGenerator, /pages\/\$\{prefix\}position7-data\.json/);
   assert.match(heatScript, /renderPrivatePosition\(7\)/);
   assert.match(heatScript, /renderPrivatePositionHistory/);
@@ -124,4 +124,43 @@ test("joint position recommendations are embedded inside the private matrix modu
   assert.match(await readFile("pages/styles.css", "utf8"), /private-position-section #private-position-recommendation/);
   assert.equal((await readJson("pages/position7-data.json")).modelVariant, "legacy");
   assert.equal((await readJson("pages/joint-position7-data.json")).modelVariant, "joint");
+  assert.equal((await readJson("pages/trust-position7-data.json")).modelVariant, "trustworthy");
 });
+
+for (const game of ["fc3d", "pl3"]) {
+  test(`${game} trustworthy positioning keeps selection and holdout strictly separated`, async () => {
+    const prefix = game === "pl3" ? "pl3-" : "";
+    const config = await readJson(`scripts/config/${game}-position-pools-trustworthy.json`);
+    const data = await readJson(`pages/${prefix}trust-position7-data.json`);
+
+    assert.equal(data.modelVariant, "trustworthy");
+    assert.ok(config.trainingEnd < config.forwardStart);
+    assert.equal(config.compressedFormulaCount, 9);
+    assert.match(config.optimizationObjective.leakageRule, /No draw dated/);
+
+    for (const [size, pool] of Object.entries(config.pools)) {
+      const selected = new Set();
+      for (const position of ["hundreds", "tens", "units"]) {
+        const methods = [
+          ...pool.methods[position].normals,
+          ...pool.methods[position].defenses,
+        ];
+        assert.equal(new Set(methods.map((method) => method.id)).size, 1, `${size}码 ${position} must stay fixed`);
+        selected.add(methods[0].id);
+      }
+      assert.equal(selected.size, 3, `${size}码 should use one independently selected method per position`);
+
+      const generated = data.pools[size];
+      const forwardRows = generated.history.filter((row) => row.phase === "locked-forward");
+      assert.ok(forwardRows.length > 0);
+      assert.ok(forwardRows.every((row) => row.date >= config.forwardStart));
+      assert.equal(generated.metrics.jointForward.count, forwardRows.length);
+      assert.equal(generated.metrics.all.forward.count, forwardRows.length);
+      for (const window of [30, 100, 300, 500]) {
+        assert.equal(generated.metrics.windows[window].count, Math.min(window, forwardRows.length));
+      }
+    }
+
+    assert.deepEqual(await readJson(`public/${prefix}trust-position7-data.json`), data);
+  });
+}

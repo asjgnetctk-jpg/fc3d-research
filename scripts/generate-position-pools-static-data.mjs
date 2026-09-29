@@ -5,8 +5,10 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
 const prefix = game === "pl3" ? "pl3-" : "";
-const modelVariant = process.env.POSITION_MODEL === "joint" ? "joint" : "legacy";
-const variantPrefix = modelVariant === "joint" ? "joint-" : "";
+const requestedVariant = process.env.POSITION_MODEL;
+const modelVariant = requestedVariant === "joint" || requestedVariant === "trustworthy" ? requestedVariant : "legacy";
+const variantPrefix = modelVariant === "joint" ? "joint-" : modelVariant === "trustworthy" ? "trust-" : "";
+const configSuffix = modelVariant === "legacy" ? "" : `-${modelVariant}`;
 const source = path.join(
   root,
   "scripts",
@@ -16,7 +18,7 @@ const source = path.join(
 const payload = JSON.parse(await readFile(source, "utf8"));
 const draws = payload.rows;
 const config = JSON.parse(
-  await readFile(path.join(root, "scripts", "config", `${game}-position-pools${modelVariant === "joint" ? "-joint" : ""}.json`), "utf8"),
+  await readFile(path.join(root, "scripts", "config", `${game}-position-pools${configSuffix}.json`), "utf8"),
 );
 const TRAINING_START = config.trainingStart;
 const TRAINING_END = config.trainingEnd;
@@ -338,9 +340,14 @@ function buildPoolResult(poolSize, poolConfig) {
     training: metric(fullHistory.filter((row) => row.date <= TRAINING_END), "allHit"),
     forward: metric(fullHistory.filter((row) => row.date >= config.forwardStart), "allHit"),
   };
+  const trainingHistory = fullHistory.filter((row) => row.date <= TRAINING_END);
+  const forwardHistory = fullHistory.filter((row) => row.date >= config.forwardStart);
   metrics.joint = jointMetrics(fullHistory);
+  metrics.jointTraining = jointMetrics(trainingHistory);
+  metrics.jointForward = jointMetrics(forwardHistory);
+  const windowSource = modelVariant === "trustworthy" ? forwardHistory : fullHistory;
   metrics.windows = Object.fromEntries(
-    [30, 100, 300, 500].map((window) => [window, jointMetrics(fullHistory.slice(-window))]),
+    [30, 100, 300, 500].map((window) => [window, jointMetrics(windowSource.slice(-window))]),
   );
   return {
     poolSize,
@@ -372,7 +379,9 @@ const output = {
   futureGuarantee: false,
   notice: modelVariant === "joint"
     ? `${game === "pl3" ? "体彩排列3" : "福彩3D"}联合定位5码、6码、7码分别使用独立权重，优先提高同一期三位全中率与同步效率，并惩罚错位率；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`
-    : `${game === "pl3" ? "体彩排列3" : "福彩3D"}原定位5码、6码、7码使用2025-09-15至2026-09-14一年答案搜索各位置权重；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
+    : modelVariant === "trustworthy"
+      ? `${game === "pl3" ? "体彩排列3" : "福彩3D"}可信定位模型只使用${config.trainingStart}至${config.trainingEnd}数据选定9套固定公式；${config.forwardStart}起全部作为未参与选模的独立盲测，页面命中率以盲测为主，不承诺未来结果。`
+      : `${game === "pl3" ? "体彩排列3" : "福彩3D"}原定位5码、6码、7码使用2025-09-15至2026-09-14一年答案搜索各位置权重；权重已于2026-09-14锁定，此后只记录实战结果。${config.candidateFormulaCount ? ` 当前压缩公式库为${config.candidateFormulaCount}套。` : ""}`,
   optimizationObjective: config.optimizationObjective ?? null,
   pools,
 };

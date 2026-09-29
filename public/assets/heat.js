@@ -66,27 +66,27 @@ function renderPrivatePosition(size) {
   document.querySelectorAll("[data-private-pool-size]").forEach((button) => {
     button.classList.toggle("is-active", Number(button.dataset.privatePoolSize) === size);
   });
-  document.querySelector("#private-position-target").textContent = `第${result.recommendation.targetIssue}期 · 定位${size}码`;
+  document.querySelector("#private-position-target").textContent = `第${result.recommendation.targetIssue}期 · 可信定位${size}码`;
   document.querySelector("#private-position-based").textContent = `基于${result.recommendation.basedOnIssue}期及以前数据`;
   document.querySelector("#private-position-recommendation").innerHTML = Object.entries(positionNames).map(([key, name]) => `<article><span>${name}${size}码</span>${positionPills(result.recommendation[`${key}Pool`])}</article>`).join("");
-  const joint = result.metrics.joint;
+  const joint = result.metrics.jointForward ?? result.metrics.joint;
   const forward = result.metrics.all.forward;
   const positionRate = `${percentage(joint.positionRates.hundreds)} / ${percentage(joint.positionRates.tens)} / ${percentage(joint.positionRates.units)}`;
   document.querySelector("#private-position-metrics").innerHTML = [
-    ["三位全中率", percentage(joint.allThreeRate)],
+    ["独立盲测全中率", `${joint.allThreeHits}/${joint.count} · ${percentage(joint.allThreeRate)}`],
     ["错位率", percentage(joint.mismatchRate)],
     ["同步效率", joint.syncEfficiency.toFixed(3)],
     ["最大未全中遗漏", `${joint.maxAllMiss}期`],
     ["百/十/个位", positionRate],
     ["联合评分", joint.score.toFixed(4)],
-    ["锁定后实战", `${forward.hits}/${forward.count} · 当前断${forward.currentMiss}期`],
+    ["盲测最长/当前断", `${forward.maxMiss}期 / ${forward.currentMiss}期`],
   ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
   const rows = [30, 100, 300, 500].map((window) => {
     const item = result.metrics.windows[window];
     return `<tr><th>近${window}期</th><td>${item.count}</td><td>${percentage(item.allThreeRate)}</td><td>${percentage(item.mismatchRate)}</td><td>${item.syncEfficiency.toFixed(3)}</td><td>${item.maxAllMiss}期</td></tr>`;
   }).join("");
   document.querySelector("#private-position-windows").innerHTML = `<table><thead><tr><th>窗口</th><th>样本</th><th>全中率</th><th>错位率</th><th>同步效率</th><th>最大遗漏</th></tr></thead><tbody>${rows}</tbody></table>`;
-  document.querySelector("#private-position-notice").textContent = `五码、六码、七码使用各自独立权重；七码优先三位同期开奖全中率与同步效率。${privatePositionPayload.notice}`;
+  document.querySelector("#private-position-notice").textContent = `可信版只用盲测开始日前的数据选定固定公式；页面命中率不包含训练期。五码、六码、七码及福彩、体彩参数全部独立。${privatePositionPayload.notice}`;
   renderPrivatePositionHistory();
 }
 
@@ -137,7 +137,7 @@ async function loadHeat() {
   const error = document.querySelector("#heat-error");
   try {
     const dataFile = window.LotteryGame?.file("heat-data.json") ?? "heat-data.json";
-    const positionFile = window.LotteryGame?.file("joint-position7-data.json") ?? "joint-position7-data.json";
+    const positionFile = window.LotteryGame?.file("trust-position7-data.json") ?? "trust-position7-data.json";
     const [response, positionResponse] = await Promise.all([
       fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" }),
       fetch(`./${positionFile}?t=${Date.now()}`, { cache: "no-store" }),

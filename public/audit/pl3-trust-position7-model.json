@@ -1,0 +1,2811 @@
+{
+  "generatedAt": "2026-09-29T04:53:53.466Z",
+  "game": "pl3",
+  "modelVariant": "trustworthy",
+  "sourceUpdatedThrough": "2026-09-28 · 第26261期",
+  "dataSha256": "975c1d89ad895dbc0b204d4bd1667010b240f4840e22341613da77383ba39595",
+  "formulaVersion": "PL3-POSITION-TRUSTWORTHY-FIXED-9-V1",
+  "trainingMode": "strict-precutoff-fixed-formula-holdout",
+  "candidateFormulaCount": 1620,
+  "compressionSourceCandidateCount": null,
+  "compressionValidatedThrough": null,
+  "trainingStart": "2021-09-15",
+  "trainingEnd": "2025-09-14",
+  "forwardStart": "2025-09-15",
+  "futureGuarantee": false,
+  "notice": "体彩排列3可信定位模型只使用2021-09-15至2025-09-14数据选定9套固定公式；2025-09-15起全部作为未参与选模的独立盲测，页面命中率以盲测为主，不承诺未来结果。",
+  "optimizationObjective": {
+    "primary": "worst-year-same-draw-all-three-hit-rate",
+    "score": "0.55*allThree + 0.15*exactlyTwo + 0.10*hundreds + 0.10*tens + 0.10*units - 0.20*singlePositionDrag",
+    "folds": [
+      {
+        "key": "2021-22",
+        "start": "2021-09-15",
+        "end": "2022-09-14"
+      },
+      {
+        "key": "2022-23",
+        "start": "2022-09-15",
+        "end": "2023-09-14"
+      },
+      {
+        "key": "2023-24",
+        "start": "2023-09-15",
+        "end": "2024-09-14"
+      },
+      {
+        "key": "2024-25",
+        "start": "2024-09-15",
+        "end": "2025-09-14"
+      }
+    ],
+    "topCandidatesPerPosition": 25,
+    "poolWeightsShared": false,
+    "leakageRule": "No draw dated 2025-09-15 or later was visible during formula selection."
+  },
+  "pools": {
+    "5": {
+      "poolSize": 5,
+      "recommendation": {
+        "targetIssue": "26262",
+        "basedOnIssue": "26261",
+        "basedOnDate": "2026-09-28",
+        "hundredsPool": "01245",
+        "tensPool": "01367",
+        "unitsPool": "12456"
+      },
+      "methods": {
+        "hundreds": {
+          "normals": [
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-804",
+              "longWindow": 30,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            }
+          ]
+        },
+        "tens": {
+          "normals": [
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1179",
+              "longWindow": 60,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 1
+            }
+          ]
+        },
+        "units": {
+          "normals": [
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            },
+            {
+              "id": "p7-1408",
+              "longWindow": 120,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 2,
+              "lastWeight": -1
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 1405,
+            "hits": 761,
+            "rate": 0.5416370106761565,
+            "maxMiss": 11,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 199,
+            "rate": 0.5452054794520548,
+            "maxMiss": 8,
+            "currentMiss": 3,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 1405,
+            "hits": 754,
+            "rate": 0.5366548042704626,
+            "maxMiss": 8,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 186,
+            "rate": 0.5095890410958904,
+            "maxMiss": 5,
+            "currentMiss": 2,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 1405,
+            "hits": 744,
+            "rate": 0.5295373665480427,
+            "maxMiss": 8,
+            "currentMiss": 1,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 191,
+            "rate": 0.5232876712328767,
+            "maxMiss": 6,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "all": {
+          "overall": {
+            "count": 1770,
+            "hits": 279,
+            "rate": 0.1576271186440678,
+            "maxMiss": 31,
+            "currentMiss": 7,
+            "targetMet": false
+          },
+          "training": {
+            "count": 1405,
+            "hits": 232,
+            "rate": 0.16512455516014235,
+            "maxMiss": 26,
+            "currentMiss": 1,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 47,
+            "rate": 0.12876712328767123,
+            "maxMiss": 31,
+            "currentMiss": 7,
+            "targetMet": false
+          }
+        },
+        "joint": {
+          "count": 1770,
+          "positionHits": {
+            "hundreds": 960,
+            "tens": 940,
+            "units": 935
+          },
+          "positionRates": {
+            "hundreds": 0.5423728813559322,
+            "tens": 0.5310734463276836,
+            "units": 0.5282485875706214
+          },
+          "allThreeHits": 279,
+          "allThreeRate": 0.1576271186440678,
+          "exactlyTwoHits": 681,
+          "exactlyTwoRate": 0.3847457627118644,
+          "mismatchRate": 0.3847457627118644,
+          "exactlyOneHits": 636,
+          "exactlyOneRate": 0.3593220338983051,
+          "zeroHits": 174,
+          "zeroHitRate": 0.09830508474576272,
+          "aloneDragHits": {
+            "hundreds": 236,
+            "tens": 225,
+            "units": 220
+          },
+          "aloneDragRates": {
+            "hundreds": 0.13333333333333333,
+            "tens": 0.1271186440677966,
+            "units": 0.12429378531073447
+          },
+          "singlePositionDragRate": 0.3847457627118644,
+          "longestAllHit": 4,
+          "maxAllMiss": 31,
+          "currentAllMiss": 7,
+          "syncEfficiency": 1.0359529667766527,
+          "score": 0.22762711864406782
+        },
+        "jointTraining": {
+          "count": 1405,
+          "positionHits": {
+            "hundreds": 761,
+            "tens": 754,
+            "units": 744
+          },
+          "positionRates": {
+            "hundreds": 0.5416370106761565,
+            "tens": 0.5366548042704626,
+            "units": 0.5295373665480427
+          },
+          "allThreeHits": 232,
+          "allThreeRate": 0.16512455516014235,
+          "exactlyTwoHits": 529,
+          "exactlyTwoRate": 0.37651245551601425,
+          "mismatchRate": 0.37651245551601425,
+          "exactlyOneHits": 505,
+          "exactlyOneRate": 0.3594306049822064,
+          "zeroHits": 139,
+          "zeroHitRate": 0.09893238434163701,
+          "aloneDragHits": {
+            "hundreds": 184,
+            "tens": 170,
+            "units": 175
+          },
+          "aloneDragRates": {
+            "hundreds": 0.1309608540925267,
+            "tens": 0.12099644128113879,
+            "units": 0.12455516014234876
+          },
+          "singlePositionDragRate": 0.37651245551601425,
+          "longestAllHit": 4,
+          "maxAllMiss": 26,
+          "currentAllMiss": 1,
+          "syncEfficiency": 1.0727825365822907,
+          "score": 0.2327758007117438
+        },
+        "jointForward": {
+          "count": 365,
+          "positionHits": {
+            "hundreds": 199,
+            "tens": 186,
+            "units": 191
+          },
+          "positionRates": {
+            "hundreds": 0.5452054794520548,
+            "tens": 0.5095890410958904,
+            "units": 0.5232876712328767
+          },
+          "allThreeHits": 47,
+          "allThreeRate": 0.12876712328767123,
+          "exactlyTwoHits": 152,
+          "exactlyTwoRate": 0.41643835616438357,
+          "mismatchRate": 0.41643835616438357,
+          "exactlyOneHits": 131,
+          "exactlyOneRate": 0.3589041095890411,
+          "zeroHits": 35,
+          "zeroHitRate": 0.0958904109589041,
+          "aloneDragHits": {
+            "hundreds": 52,
+            "tens": 55,
+            "units": 45
+          },
+          "aloneDragRates": {
+            "hundreds": 0.14246575342465753,
+            "tens": 0.1506849315068493,
+            "units": 0.1232876712328767
+          },
+          "singlePositionDragRate": 0.41643835616438357,
+          "longestAllHit": 2,
+          "maxAllMiss": 31,
+          "currentAllMiss": 7,
+          "syncEfficiency": 0.8856950122452605,
+          "score": 0.20780821917808218
+        },
+        "windows": {
+          "30": {
+            "count": 30,
+            "positionHits": {
+              "hundreds": 15,
+              "tens": 16,
+              "units": 14
+            },
+            "positionRates": {
+              "hundreds": 0.5,
+              "tens": 0.5333333333333333,
+              "units": 0.4666666666666667
+            },
+            "allThreeHits": 2,
+            "allThreeRate": 0.06666666666666667,
+            "exactlyTwoHits": 15,
+            "exactlyTwoRate": 0.5,
+            "mismatchRate": 0.5,
+            "exactlyOneHits": 9,
+            "exactlyOneRate": 0.3,
+            "zeroHits": 4,
+            "zeroHitRate": 0.13333333333333333,
+            "aloneDragHits": {
+              "hundreds": 5,
+              "tens": 6,
+              "units": 4
+            },
+            "aloneDragRates": {
+              "hundreds": 0.16666666666666666,
+              "tens": 0.2,
+              "units": 0.13333333333333333
+            },
+            "singlePositionDragRate": 0.5,
+            "longestAllHit": 1,
+            "maxAllMiss": 20,
+            "currentAllMiss": 7,
+            "syncEfficiency": 0.5357142857142857,
+            "score": 0.1616666666666667
+          },
+          "100": {
+            "count": 100,
+            "positionHits": {
+              "hundreds": 50,
+              "tens": 51,
+              "units": 56
+            },
+            "positionRates": {
+              "hundreds": 0.5,
+              "tens": 0.51,
+              "units": 0.56
+            },
+            "allThreeHits": 12,
+            "allThreeRate": 0.12,
+            "exactlyTwoHits": 42,
+            "exactlyTwoRate": 0.42,
+            "mismatchRate": 0.42,
+            "exactlyOneHits": 37,
+            "exactlyOneRate": 0.37,
+            "zeroHits": 9,
+            "zeroHitRate": 0.09,
+            "aloneDragHits": {
+              "hundreds": 19,
+              "tens": 13,
+              "units": 10
+            },
+            "aloneDragRates": {
+              "hundreds": 0.19,
+              "tens": 0.13,
+              "units": 0.1
+            },
+            "singlePositionDragRate": 0.42,
+            "longestAllHit": 2,
+            "maxAllMiss": 20,
+            "currentAllMiss": 7,
+            "syncEfficiency": 0.8403361344537814,
+            "score": 0.20199999999999996
+          },
+          "300": {
+            "count": 300,
+            "positionHits": {
+              "hundreds": 165,
+              "tens": 154,
+              "units": 163
+            },
+            "positionRates": {
+              "hundreds": 0.55,
+              "tens": 0.5133333333333333,
+              "units": 0.5433333333333333
+            },
+            "allThreeHits": 39,
+            "allThreeRate": 0.13,
+            "exactlyTwoHits": 129,
+            "exactlyTwoRate": 0.43,
+            "mismatchRate": 0.43,
+            "exactlyOneHits": 107,
+            "exactlyOneRate": 0.3566666666666667,
+            "zeroHits": 25,
+            "zeroHitRate": 0.08333333333333333,
+            "aloneDragHits": {
+              "hundreds": 45,
+              "tens": 47,
+              "units": 37
+            },
+            "aloneDragRates": {
+              "hundreds": 0.15,
+              "tens": 0.15666666666666668,
+              "units": 0.12333333333333334
+            },
+            "singlePositionDragRate": 0.43,
+            "longestAllHit": 2,
+            "maxAllMiss": 31,
+            "currentAllMiss": 7,
+            "syncEfficiency": 0.8474514888346456,
+            "score": 0.21066666666666667
+          },
+          "500": {
+            "count": 365,
+            "positionHits": {
+              "hundreds": 199,
+              "tens": 186,
+              "units": 191
+            },
+            "positionRates": {
+              "hundreds": 0.5452054794520548,
+              "tens": 0.5095890410958904,
+              "units": 0.5232876712328767
+            },
+            "allThreeHits": 47,
+            "allThreeRate": 0.12876712328767123,
+            "exactlyTwoHits": 152,
+            "exactlyTwoRate": 0.41643835616438357,
+            "mismatchRate": 0.41643835616438357,
+            "exactlyOneHits": 131,
+            "exactlyOneRate": 0.3589041095890411,
+            "zeroHits": 35,
+            "zeroHitRate": 0.0958904109589041,
+            "aloneDragHits": {
+              "hundreds": 52,
+              "tens": 55,
+              "units": 45
+            },
+            "aloneDragRates": {
+              "hundreds": 0.14246575342465753,
+              "tens": 0.1506849315068493,
+              "units": 0.1232876712328767
+            },
+            "singlePositionDragRate": 0.41643835616438357,
+            "longestAllHit": 2,
+            "maxAllMiss": 31,
+            "currentAllMiss": 7,
+            "syncEfficiency": 0.8856950122452605,
+            "score": 0.20780821917808218
+          }
+        }
+      }
+    },
+    "6": {
+      "poolSize": 6,
+      "recommendation": {
+        "targetIssue": "26262",
+        "basedOnIssue": "26261",
+        "basedOnDate": "2026-09-28",
+        "hundredsPool": "012589",
+        "tensPool": "015678",
+        "unitsPool": "012456"
+      },
+      "methods": {
+        "hundreds": {
+          "normals": [
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1035",
+              "longWindow": 60,
+              "shortWindow": 10,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 1
+            }
+          ]
+        },
+        "tens": {
+          "normals": [
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1538",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 1,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            }
+          ]
+        },
+        "units": {
+          "normals": [
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1286",
+              "longWindow": 120,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 0,
+              "gapWeight": 1,
+              "lastWeight": 0
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 1405,
+            "hits": 888,
+            "rate": 0.6320284697508897,
+            "maxMiss": 6,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 212,
+            "rate": 0.5808219178082191,
+            "maxMiss": 8,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 1405,
+            "hits": 875,
+            "rate": 0.6227758007117438,
+            "maxMiss": 8,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 231,
+            "rate": 0.6328767123287671,
+            "maxMiss": 5,
+            "currentMiss": 1,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 1405,
+            "hits": 889,
+            "rate": 0.6327402135231317,
+            "maxMiss": 7,
+            "currentMiss": 1,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 216,
+            "rate": 0.5917808219178082,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "all": {
+          "overall": {
+            "count": 1770,
+            "hits": 455,
+            "rate": 0.2570621468926554,
+            "maxMiss": 21,
+            "currentMiss": 3,
+            "targetMet": false
+          },
+          "training": {
+            "count": 1405,
+            "hits": 378,
+            "rate": 0.2690391459074733,
+            "maxMiss": 21,
+            "currentMiss": 1,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 77,
+            "rate": 0.21095890410958903,
+            "maxMiss": 20,
+            "currentMiss": 3,
+            "targetMet": false
+          }
+        },
+        "joint": {
+          "count": 1770,
+          "positionHits": {
+            "hundreds": 1100,
+            "tens": 1106,
+            "units": 1105
+          },
+          "positionRates": {
+            "hundreds": 0.6214689265536724,
+            "tens": 0.6248587570621469,
+            "units": 0.6242937853107344
+          },
+          "allThreeHits": 455,
+          "allThreeRate": 0.2570621468926554,
+          "exactlyTwoHits": 732,
+          "exactlyTwoRate": 0.4135593220338983,
+          "mismatchRate": 0.4135593220338983,
+          "exactlyOneHits": 482,
+          "exactlyOneRate": 0.27231638418079096,
+          "zeroHits": 101,
+          "zeroHitRate": 0.05706214689265537,
+          "aloneDragHits": {
+            "hundreds": 247,
+            "tens": 250,
+            "units": 235
+          },
+          "aloneDragRates": {
+            "hundreds": 0.13954802259887006,
+            "tens": 0.14124293785310735,
+            "units": 0.1327683615819209
+          },
+          "singlePositionDragRate": 0.4135593220338983,
+          "longestAllHit": 4,
+          "maxAllMiss": 21,
+          "currentAllMiss": 3,
+          "syncEfficiency": 1.0603465782170176,
+          "score": 0.3077683615819209
+        },
+        "jointTraining": {
+          "count": 1405,
+          "positionHits": {
+            "hundreds": 888,
+            "tens": 875,
+            "units": 889
+          },
+          "positionRates": {
+            "hundreds": 0.6320284697508897,
+            "tens": 0.6227758007117438,
+            "units": 0.6327402135231317
+          },
+          "allThreeHits": 378,
+          "allThreeRate": 0.2690391459074733,
+          "exactlyTwoHits": 564,
+          "exactlyTwoRate": 0.401423487544484,
+          "mismatchRate": 0.401423487544484,
+          "exactlyOneHits": 390,
+          "exactlyOneRate": 0.2775800711743772,
+          "zeroHits": 73,
+          "zeroHitRate": 0.05195729537366548,
+          "aloneDragHits": {
+            "hundreds": 190,
+            "tens": 198,
+            "units": 176
+          },
+          "aloneDragRates": {
+            "hundreds": 0.13523131672597866,
+            "tens": 0.1409252669039146,
+            "units": 0.12526690391459075
+          },
+          "singlePositionDragRate": 0.401423487544484,
+          "longestAllHit": 4,
+          "maxAllMiss": 21,
+          "currentAllMiss": 1,
+          "syncEfficiency": 1.08024351685769,
+          "score": 0.31665480427046266
+        },
+        "jointForward": {
+          "count": 365,
+          "positionHits": {
+            "hundreds": 212,
+            "tens": 231,
+            "units": 216
+          },
+          "positionRates": {
+            "hundreds": 0.5808219178082191,
+            "tens": 0.6328767123287671,
+            "units": 0.5917808219178082
+          },
+          "allThreeHits": 77,
+          "allThreeRate": 0.21095890410958903,
+          "exactlyTwoHits": 168,
+          "exactlyTwoRate": 0.4602739726027397,
+          "mismatchRate": 0.4602739726027397,
+          "exactlyOneHits": 92,
+          "exactlyOneRate": 0.25205479452054796,
+          "zeroHits": 28,
+          "zeroHitRate": 0.07671232876712329,
+          "aloneDragHits": {
+            "hundreds": 57,
+            "tens": 52,
+            "units": 59
+          },
+          "aloneDragRates": {
+            "hundreds": 0.15616438356164383,
+            "tens": 0.14246575342465753,
+            "units": 0.16164383561643836
+          },
+          "singlePositionDragRate": 0.4602739726027397,
+          "longestAllHit": 3,
+          "maxAllMiss": 20,
+          "currentAllMiss": 3,
+          "syncEfficiency": 0.9697836594456092,
+          "score": 0.27356164383561643
+        },
+        "windows": {
+          "30": {
+            "count": 30,
+            "positionHits": {
+              "hundreds": 19,
+              "tens": 20,
+              "units": 19
+            },
+            "positionRates": {
+              "hundreds": 0.6333333333333333,
+              "tens": 0.6666666666666666,
+              "units": 0.6333333333333333
+            },
+            "allThreeHits": 9,
+            "allThreeRate": 0.3,
+            "exactlyTwoHits": 13,
+            "exactlyTwoRate": 0.43333333333333335,
+            "mismatchRate": 0.43333333333333335,
+            "exactlyOneHits": 5,
+            "exactlyOneRate": 0.16666666666666666,
+            "zeroHits": 3,
+            "zeroHitRate": 0.1,
+            "aloneDragHits": {
+              "hundreds": 6,
+              "tens": 3,
+              "units": 4
+            },
+            "aloneDragRates": {
+              "hundreds": 0.2,
+              "tens": 0.1,
+              "units": 0.13333333333333333
+            },
+            "singlePositionDragRate": 0.43333333333333335,
+            "longestAllHit": 2,
+            "maxAllMiss": 8,
+            "currentAllMiss": 3,
+            "syncEfficiency": 1.1218836565096955,
+            "score": 0.33666666666666667
+          },
+          "100": {
+            "count": 100,
+            "positionHits": {
+              "hundreds": 59,
+              "tens": 62,
+              "units": 62
+            },
+            "positionRates": {
+              "hundreds": 0.59,
+              "tens": 0.62,
+              "units": 0.62
+            },
+            "allThreeHits": 24,
+            "allThreeRate": 0.24,
+            "exactlyTwoHits": 45,
+            "exactlyTwoRate": 0.45,
+            "mismatchRate": 0.45,
+            "exactlyOneHits": 21,
+            "exactlyOneRate": 0.21,
+            "zeroHits": 10,
+            "zeroHitRate": 0.1,
+            "aloneDragHits": {
+              "hundreds": 17,
+              "tens": 16,
+              "units": 12
+            },
+            "aloneDragRates": {
+              "hundreds": 0.17,
+              "tens": 0.16,
+              "units": 0.12
+            },
+            "singlePositionDragRate": 0.45,
+            "longestAllHit": 2,
+            "maxAllMiss": 13,
+            "currentAllMiss": 3,
+            "syncEfficiency": 1.0582197216882132,
+            "score": 0.2925
+          },
+          "300": {
+            "count": 300,
+            "positionHits": {
+              "hundreds": 175,
+              "tens": 186,
+              "units": 181
+            },
+            "positionRates": {
+              "hundreds": 0.5833333333333334,
+              "tens": 0.62,
+              "units": 0.6033333333333334
+            },
+            "allThreeHits": 65,
+            "allThreeRate": 0.21666666666666667,
+            "exactlyTwoHits": 136,
+            "exactlyTwoRate": 0.4533333333333333,
+            "mismatchRate": 0.4533333333333333,
+            "exactlyOneHits": 75,
+            "exactlyOneRate": 0.25,
+            "zeroHits": 24,
+            "zeroHitRate": 0.08,
+            "aloneDragHits": {
+              "hundreds": 46,
+              "tens": 45,
+              "units": 45
+            },
+            "aloneDragRates": {
+              "hundreds": 0.15333333333333332,
+              "tens": 0.15,
+              "units": 0.15
+            },
+            "singlePositionDragRate": 0.4533333333333333,
+            "longestAllHit": 3,
+            "maxAllMiss": 20,
+            "currentAllMiss": 3,
+            "syncEfficiency": 0.992947526542251,
+            "score": 0.2771666666666667
+          },
+          "500": {
+            "count": 365,
+            "positionHits": {
+              "hundreds": 212,
+              "tens": 231,
+              "units": 216
+            },
+            "positionRates": {
+              "hundreds": 0.5808219178082191,
+              "tens": 0.6328767123287671,
+              "units": 0.5917808219178082
+            },
+            "allThreeHits": 77,
+            "allThreeRate": 0.21095890410958903,
+            "exactlyTwoHits": 168,
+            "exactlyTwoRate": 0.4602739726027397,
+            "mismatchRate": 0.4602739726027397,
+            "exactlyOneHits": 92,
+            "exactlyOneRate": 0.25205479452054796,
+            "zeroHits": 28,
+            "zeroHitRate": 0.07671232876712329,
+            "aloneDragHits": {
+              "hundreds": 57,
+              "tens": 52,
+              "units": 59
+            },
+            "aloneDragRates": {
+              "hundreds": 0.15616438356164383,
+              "tens": 0.14246575342465753,
+              "units": 0.16164383561643836
+            },
+            "singlePositionDragRate": 0.4602739726027397,
+            "longestAllHit": 3,
+            "maxAllMiss": 20,
+            "currentAllMiss": 3,
+            "syncEfficiency": 0.9697836594456092,
+            "score": 0.27356164383561643
+          }
+        }
+      }
+    },
+    "7": {
+      "poolSize": 7,
+      "recommendation": {
+        "targetIssue": "26262",
+        "basedOnIssue": "26261",
+        "basedOnDate": "2026-09-28",
+        "hundredsPool": "0125789",
+        "tensPool": "0145678",
+        "unitsPool": "0123569"
+      },
+      "methods": {
+        "hundreds": {
+          "normals": [
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            },
+            {
+              "id": "p7-1617",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": 1,
+              "gapWeight": 1,
+              "lastWeight": 1
+            }
+          ]
+        },
+        "tens": {
+          "normals": [
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-1583",
+              "longWindow": 120,
+              "shortWindow": 20,
+              "longWeight": 2,
+              "shortWeight": -1,
+              "gapWeight": 0,
+              "lastWeight": 0
+            }
+          ]
+        },
+        "units": {
+          "normals": [
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            }
+          ],
+          "defenses": [
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            },
+            {
+              "id": "p7-494",
+              "longWindow": 30,
+              "shortWindow": 5,
+              "longWeight": 1,
+              "shortWeight": 1,
+              "gapWeight": 2,
+              "lastWeight": 0
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "hundreds": {
+          "training": {
+            "count": 1405,
+            "hits": 1031,
+            "rate": 0.7338078291814947,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 249,
+            "rate": 0.6821917808219178,
+            "maxMiss": 4,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "tens": {
+          "training": {
+            "count": 1405,
+            "hits": 1030,
+            "rate": 0.7330960854092526,
+            "maxMiss": 5,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 256,
+            "rate": 0.7013698630136986,
+            "maxMiss": 4,
+            "currentMiss": 1,
+            "targetMet": false
+          }
+        },
+        "units": {
+          "training": {
+            "count": 1405,
+            "hits": 1022,
+            "rate": 0.7274021352313167,
+            "maxMiss": 7,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 256,
+            "rate": 0.7013698630136986,
+            "maxMiss": 4,
+            "currentMiss": 0,
+            "targetMet": false
+          }
+        },
+        "all": {
+          "overall": {
+            "count": 1770,
+            "hits": 698,
+            "rate": 0.3943502824858757,
+            "maxMiss": 15,
+            "currentMiss": 2,
+            "targetMet": false
+          },
+          "training": {
+            "count": 1405,
+            "hits": 576,
+            "rate": 0.4099644128113879,
+            "maxMiss": 15,
+            "currentMiss": 0,
+            "targetMet": false
+          },
+          "forward": {
+            "count": 365,
+            "hits": 122,
+            "rate": 0.33424657534246577,
+            "maxMiss": 9,
+            "currentMiss": 2,
+            "targetMet": false
+          }
+        },
+        "joint": {
+          "count": 1770,
+          "positionHits": {
+            "hundreds": 1280,
+            "tens": 1286,
+            "units": 1278
+          },
+          "positionRates": {
+            "hundreds": 0.7231638418079096,
+            "tens": 0.7265536723163842,
+            "units": 0.7220338983050848
+          },
+          "allThreeHits": 698,
+          "allThreeRate": 0.3943502824858757,
+          "exactlyTwoHits": 724,
+          "exactlyTwoRate": 0.4090395480225989,
+          "mismatchRate": 0.4090395480225989,
+          "exactlyOneHits": 302,
+          "exactlyOneRate": 0.17062146892655367,
+          "zeroHits": 46,
+          "zeroHitRate": 0.02598870056497175,
+          "aloneDragHits": {
+            "hundreds": 247,
+            "tens": 229,
+            "units": 248
+          },
+          "aloneDragRates": {
+            "hundreds": 0.13954802259887006,
+            "tens": 0.12937853107344632,
+            "units": 0.1401129943502825
+          },
+          "singlePositionDragRate": 0.4090395480225989,
+          "longestAllHit": 7,
+          "maxAllMiss": 15,
+          "currentAllMiss": 2,
+          "syncEfficiency": 1.039489635128031,
+          "score": 0.4136158192090396
+        },
+        "jointTraining": {
+          "count": 1405,
+          "positionHits": {
+            "hundreds": 1031,
+            "tens": 1030,
+            "units": 1022
+          },
+          "positionRates": {
+            "hundreds": 0.7338078291814947,
+            "tens": 0.7330960854092526,
+            "units": 0.7274021352313167
+          },
+          "allThreeHits": 576,
+          "allThreeRate": 0.4099644128113879,
+          "exactlyTwoHits": 561,
+          "exactlyTwoRate": 0.399288256227758,
+          "mismatchRate": 0.399288256227758,
+          "exactlyOneHits": 233,
+          "exactlyOneRate": 0.16583629893238433,
+          "zeroHits": 35,
+          "zeroHitRate": 0.02491103202846975,
+          "aloneDragHits": {
+            "hundreds": 188,
+            "tens": 179,
+            "units": 194
+          },
+          "aloneDragRates": {
+            "hundreds": 0.13380782918149467,
+            "tens": 0.12740213523131672,
+            "units": 0.13807829181494663
+          },
+          "singlePositionDragRate": 0.399288256227758,
+          "longestAllHit": 7,
+          "maxAllMiss": 15,
+          "currentAllMiss": 0,
+          "syncEfficiency": 1.0476792587317894,
+          "score": 0.42494661921708193
+        },
+        "jointForward": {
+          "count": 365,
+          "positionHits": {
+            "hundreds": 249,
+            "tens": 256,
+            "units": 256
+          },
+          "positionRates": {
+            "hundreds": 0.6821917808219178,
+            "tens": 0.7013698630136986,
+            "units": 0.7013698630136986
+          },
+          "allThreeHits": 122,
+          "allThreeRate": 0.33424657534246577,
+          "exactlyTwoHits": 163,
+          "exactlyTwoRate": 0.4465753424657534,
+          "mismatchRate": 0.4465753424657534,
+          "exactlyOneHits": 69,
+          "exactlyOneRate": 0.18904109589041096,
+          "zeroHits": 11,
+          "zeroHitRate": 0.030136986301369864,
+          "aloneDragHits": {
+            "hundreds": 59,
+            "tens": 50,
+            "units": 54
+          },
+          "aloneDragRates": {
+            "hundreds": 0.16164383561643836,
+            "tens": 0.136986301369863,
+            "units": 0.14794520547945206
+          },
+          "singlePositionDragRate": 0.4465753424657534,
+          "longestAllHit": 5,
+          "maxAllMiss": 9,
+          "currentAllMiss": 2,
+          "syncEfficiency": 0.9960159240477536,
+          "score": 0.3700000000000001
+        },
+        "windows": {
+          "30": {
+            "count": 30,
+            "positionHits": {
+              "hundreds": 21,
+              "tens": 18,
+              "units": 22
+            },
+            "positionRates": {
+              "hundreds": 0.7,
+              "tens": 0.6,
+              "units": 0.7333333333333333
+            },
+            "allThreeHits": 9,
+            "allThreeRate": 0.3,
+            "exactlyTwoHits": 13,
+            "exactlyTwoRate": 0.43333333333333335,
+            "mismatchRate": 0.43333333333333335,
+            "exactlyOneHits": 8,
+            "exactlyOneRate": 0.26666666666666666,
+            "zeroHits": 0,
+            "zeroHitRate": 0,
+            "aloneDragHits": {
+              "hundreds": 5,
+              "tens": 6,
+              "units": 2
+            },
+            "aloneDragRates": {
+              "hundreds": 0.16666666666666666,
+              "tens": 0.2,
+              "units": 0.06666666666666667
+            },
+            "singlePositionDragRate": 0.43333333333333335,
+            "longestAllHit": 4,
+            "maxAllMiss": 8,
+            "currentAllMiss": 2,
+            "syncEfficiency": 0.9740259740259741,
+            "score": 0.3466666666666667
+          },
+          "100": {
+            "count": 100,
+            "positionHits": {
+              "hundreds": 67,
+              "tens": 69,
+              "units": 67
+            },
+            "positionRates": {
+              "hundreds": 0.67,
+              "tens": 0.69,
+              "units": 0.67
+            },
+            "allThreeHits": 33,
+            "allThreeRate": 0.33,
+            "exactlyTwoHits": 38,
+            "exactlyTwoRate": 0.38,
+            "mismatchRate": 0.38,
+            "exactlyOneHits": 28,
+            "exactlyOneRate": 0.28,
+            "zeroHits": 1,
+            "zeroHitRate": 0.01,
+            "aloneDragHits": {
+              "hundreds": 14,
+              "tens": 11,
+              "units": 13
+            },
+            "aloneDragRates": {
+              "hundreds": 0.14,
+              "tens": 0.11,
+              "units": 0.13
+            },
+            "singlePositionDragRate": 0.38,
+            "longestAllHit": 5,
+            "maxAllMiss": 8,
+            "currentAllMiss": 2,
+            "syncEfficiency": 1.0654062587774948,
+            "score": 0.3655
+          },
+          "300": {
+            "count": 300,
+            "positionHits": {
+              "hundreds": 205,
+              "tens": 208,
+              "units": 208
+            },
+            "positionRates": {
+              "hundreds": 0.6833333333333333,
+              "tens": 0.6933333333333334,
+              "units": 0.6933333333333334
+            },
+            "allThreeHits": 98,
+            "allThreeRate": 0.32666666666666666,
+            "exactlyTwoHits": 134,
+            "exactlyTwoRate": 0.44666666666666666,
+            "mismatchRate": 0.44666666666666666,
+            "exactlyOneHits": 59,
+            "exactlyOneRate": 0.19666666666666666,
+            "zeroHits": 9,
+            "zeroHitRate": 0.03,
+            "aloneDragHits": {
+              "hundreds": 46,
+              "tens": 42,
+              "units": 46
+            },
+            "aloneDragRates": {
+              "hundreds": 0.15333333333333332,
+              "tens": 0.14,
+              "units": 0.15333333333333332
+            },
+            "singlePositionDragRate": 0.44666666666666666,
+            "longestAllHit": 5,
+            "maxAllMiss": 9,
+            "currentAllMiss": 2,
+            "syncEfficiency": 0.9944616827825081,
+            "score": 0.3643333333333334
+          },
+          "500": {
+            "count": 365,
+            "positionHits": {
+              "hundreds": 249,
+              "tens": 256,
+              "units": 256
+            },
+            "positionRates": {
+              "hundreds": 0.6821917808219178,
+              "tens": 0.7013698630136986,
+              "units": 0.7013698630136986
+            },
+            "allThreeHits": 122,
+            "allThreeRate": 0.33424657534246577,
+            "exactlyTwoHits": 163,
+            "exactlyTwoRate": 0.4465753424657534,
+            "mismatchRate": 0.4465753424657534,
+            "exactlyOneHits": 69,
+            "exactlyOneRate": 0.18904109589041096,
+            "zeroHits": 11,
+            "zeroHitRate": 0.030136986301369864,
+            "aloneDragHits": {
+              "hundreds": 59,
+              "tens": 50,
+              "units": 54
+            },
+            "aloneDragRates": {
+              "hundreds": 0.16164383561643836,
+              "tens": 0.136986301369863,
+              "units": 0.14794520547945206
+            },
+            "singlePositionDragRate": 0.4465753424657534,
+            "longestAllHit": 5,
+            "maxAllMiss": 9,
+            "currentAllMiss": 2,
+            "syncEfficiency": 0.9960159240477536,
+            "score": 0.3700000000000001
+          }
+        }
+      }
+    }
+  }
+}
