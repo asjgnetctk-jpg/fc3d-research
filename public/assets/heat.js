@@ -70,6 +70,7 @@ function renderPrivatePosition(size) {
   document.querySelector("#private-position-based").textContent = `基于${result.recommendation.basedOnIssue}期及以前数据`;
   document.querySelector("#private-position-recommendation").innerHTML = Object.entries(positionNames).map(([key, name]) => `<article><span>${name}${size}码</span>${positionPills(result.recommendation[`${key}Pool`])}</article>`).join("");
   const joint = result.metrics.joint;
+  const forward = result.metrics.all.forward;
   const positionRate = `${percentage(joint.positionRates.hundreds)} / ${percentage(joint.positionRates.tens)} / ${percentage(joint.positionRates.units)}`;
   document.querySelector("#private-position-metrics").innerHTML = [
     ["三位全中率", percentage(joint.allThreeRate)],
@@ -78,6 +79,7 @@ function renderPrivatePosition(size) {
     ["最大未全中遗漏", `${joint.maxAllMiss}期`],
     ["百/十/个位", positionRate],
     ["联合评分", joint.score.toFixed(4)],
+    ["锁定后实战", `${forward.hits}/${forward.count} · 当前断${forward.currentMiss}期`],
   ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
   const rows = [30, 100, 300, 500].map((window) => {
     const item = result.metrics.windows[window];
@@ -86,6 +88,16 @@ function renderPrivatePosition(size) {
   document.querySelector("#private-position-windows").innerHTML = `<table><thead><tr><th>窗口</th><th>样本</th><th>全中率</th><th>错位率</th><th>同步效率</th><th>最大遗漏</th></tr></thead><tbody>${rows}</tbody></table>`;
   document.querySelector("#private-position-notice").textContent = `五码、六码、七码使用各自独立权重；七码优先三位同期开奖全中率与同步效率。${privatePositionPayload.notice}`;
   renderPrivatePositionHistory();
+}
+
+function selectMatrixPanel(panel) {
+  document.querySelectorAll("[data-matrix-panel-section]").forEach((section) => {
+    section.hidden = section.dataset.matrixPanelSection !== panel;
+  });
+  document.querySelectorAll("[data-matrix-panel]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.matrixPanel === panel);
+  });
+  sessionStorage.setItem("private-matrix-panel", panel);
 }
 
 function renderMatrix(matrix) {
@@ -201,4 +213,9 @@ document.querySelector("#private-position-toggle").addEventListener("click", () 
   privatePositionShowAll = !privatePositionShowAll;
   renderPrivatePositionHistory();
 });
+document.querySelector("#matrix-panel-tabs").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-matrix-panel]");
+  if (button) selectMatrixPanel(button.dataset.matrixPanel);
+});
+selectMatrixPanel(sessionStorage.getItem("private-matrix-panel") ?? "straight");
 if (sessionStorage.getItem("heat-module-unlocked") === "1") reveal();

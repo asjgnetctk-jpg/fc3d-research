@@ -197,6 +197,10 @@ footer span { font-size: 9px; }
 .heat-history article > div:first-child { display:grid; align-content:start; gap:4px; }.heat-history article span,.heat-history article em { color:#60736a; font-size:12px; font-style:normal; }
 .heat-history article p { display:grid; grid-template-columns:76px 1fr; gap:8px; margin:0 0 5px; }.heat-history article p b { color:#163f31; letter-spacing:2px; }
 .matrix22-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.matrix-panel-tabs { position:sticky; top:8px; z-index:20; display:flex; gap:7px; margin:12px 0 16px; padding:7px; overflow-x:auto; border:1px solid #d8dfd4; border-radius:18px; background:rgba(250,250,245,.96); box-shadow:0 8px 24px rgba(19,63,49,.10); scrollbar-width:none; }
+.matrix-panel-tabs::-webkit-scrollbar { display:none; }
+.matrix-panel-tabs button { flex:0 0 auto; padding:11px 14px; border:0; border-radius:12px; background:transparent; color:#52645d; font-size:13px; font-weight:900; white-space:nowrap; cursor:pointer; }
+.matrix-panel-tabs button.is-active { background:#163f31; color:#f4f8f1; box-shadow:0 5px 14px rgba(22,63,49,.22); }
 .matrix22-numbers { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
 .matrix22-number { min-width:0; padding:12px 9px; border-radius:16px; background:#edf3e8; text-align:center; }
 .matrix22-number strong { display:block; color:#163f31; font-family:Georgia,"Times New Roman",serif; font-size:27px; letter-spacing:.04em; }
@@ -223,6 +227,7 @@ footer span { font-size: 9px; }
 .matrix22-empty { margin:0; padding:14px; border-radius:14px; background:#f3f5ef; color:#5d6d63; }
 @media (max-width:640px) { .heat-rankings { grid-template-columns:1fr; }.heat-history > article { grid-template-columns:76px 1fr; }.heat-history article p { grid-template-columns:64px 1fr; }.heat-history article p b { letter-spacing:1px; font-size:12px; } }
 @media (max-width:640px) { .matrix22-numbers { grid-template-columns:repeat(3,minmax(0,1fr)); }.matrix22-number strong { font-size:25px; }.matrix22-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }.matrix22-history > article { grid-template-columns:78px 1fr; } }
+@media (max-width:640px) { .matrix-panel-tabs { margin-inline:-4px; }.matrix-panel-tabs button { padding:10px 12px; font-size:12px; } }
 .kill3-hero > p { margin:18px 0 10px; color:#dfe9df; font-weight:800; }
 .kill3-hero > small { display:block; margin-top:14px; color:#cbd9d1; }
 .kill3-digits { display:grid; grid-template-columns:repeat(3,minmax(0,92px)); gap:12px; }
