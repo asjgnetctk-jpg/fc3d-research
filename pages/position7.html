@@ -7,26 +7,14 @@
     <meta name="description" content="百位、十位、个位的5码、6码、7码定位推荐、联合命中与分窗回测。" />
     <title>福彩3D · 定位码</title>
     <link rel="stylesheet" href="./styles.css?v=20260929-joint-objective" />
-    <script src="./assets/game-switch.js?v=20260929-private-position" defer></script>
-    <script src="./assets/position7.js?v=20260929-private-position" defer></script>
+    <script src="./assets/game-switch.js?v=20260929-joint-objective" defer></script>
+    <script src="./assets/position7.js?v=20260929-joint-objective" defer></script>
   </head>
   <body>
-    <div id="position-lock" class="heat-lock">
-      <form id="position-login" class="heat-login">
-        <span class="brand-sigil">密</span>
-        <p class="eyebrow">PRIVATE / POSITION</p>
-        <h1>定位推荐</h1>
-        <p>请输入访问密码后查看定位5码、6码、7码推荐。</p>
-        <label for="position-password">访问密码</label>
-        <input id="position-password" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" autofocus />
-        <button type="submit" class="refresh-button">解锁推荐</button>
-        <strong id="position-login-error" class="heat-login-error" hidden>密码错误，请重新输入</strong>
-      </form>
-    </div>
-    <main id="position-app" class="app-shell terminal-shell" hidden>
+    <main class="app-shell terminal-shell">
       <header class="topbar">
         <div class="terminal-brand"><span class="brand-sigil">定位</span><div><p class="eyebrow">福彩3D · 定位研究</p><h1>百十个位定位码</h1></div></div>
-        <div class="terminal-actions"><span class="live-readout">POSITION / PRIVATE</span><button id="refresh" class="refresh-button">刷新</button><button id="position-lock-button" class="refresh-button" type="button">锁定</button></div>
+        <div class="terminal-actions"><span class="live-readout">POSITION / LIVE</span><button id="refresh" class="refresh-button">刷新</button></div>
       </header>
       <div class="beijing-clock"><span>北京时间</span><strong id="beijing-time">正在校时</strong></div>
       <nav class="version-switch six-versions" aria-label="切换研究页面">

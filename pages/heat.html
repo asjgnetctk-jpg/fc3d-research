@@ -8,7 +8,7 @@
     <title>福彩3D · 22组专家矩阵</title>
     <link rel="stylesheet" href="./styles.css?v=20260927-matrix22" />
     <script src="./assets/game-switch.js?v=20260928-pl3-matrix" defer></script>
-    <script src="./assets/heat.js?v=20260928-pl3-matrix" defer></script>
+    <script src="./assets/heat.js?v=20260929-joint-position" defer></script>
   </head>
   <body>
     <div id="heat-lock" class="heat-lock">
@@ -37,6 +37,14 @@
       <div id="heat-content" hidden>
         <section class="status-strip"><span class="status-dot"></span><span id="heat-through"></span><span>·</span><span id="heat-count"></span></section>
         <section class="section-block"><p id="heat-notice" class="section-note"></p></section>
+        <section class="section-block private-position-section">
+          <div class="section-heading matrix22-heading"><div><p class="eyebrow">三位联合优化</p><h2 id="private-position-target">定位七码推荐</h2></div><span id="private-position-based" class="backfit-chip"></span></div>
+          <nav id="private-position-tabs" class="pool-size-tabs" aria-label="切换联合定位码"><button type="button" data-private-pool-size="5">5码</button><button type="button" data-private-pool-size="6">6码</button><button type="button" data-private-pool-size="7" class="is-active">7码</button></nav>
+          <div id="private-position-recommendation" class="position7-current"></div>
+          <div id="private-position-metrics" class="matrix22-metrics"></div>
+          <div id="private-position-windows" class="position7-window-table"></div>
+          <p id="private-position-notice" class="section-note"></p>
+        </section>
         <section class="section-block matrix22-section">
           <div class="section-heading matrix22-heading"><div><p class="eyebrow">下一期直选</p><h2 id="matrix22-target">22组号码矩阵</h2></div><span id="matrix22-based" class="backfit-chip"></span></div>
           <div id="matrix22-numbers" class="matrix22-numbers"></div>

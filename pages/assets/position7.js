@@ -1,6 +1,4 @@
 const $ = (selector) => document.querySelector(selector);
-const PASSWORD_HASH = "41368ab21298d9364e60169933ba2e9b67060b4f620b6551d9668b4396990444";
-const PRIVATE_ACCESS_KEY = "private-recommendations-unlocked";
 const root = "https://raw.githubusercontent.com/asjgnetctk-jpg/fc3d-research/main/pages";
 const names = { hundreds: "百位", tens: "十位", units: "个位" };
 let payload, data;
@@ -98,39 +96,8 @@ async function load() {
     render(await response.json());
   } catch (error) { $("#loading").hidden = true; $("#error").hidden = false; $("#error").textContent = error.message; }
 }
-async function sha256(value) {
-  const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return [...new Uint8Array(buffer)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-async function reveal() {
-  $("#position-lock").hidden = true;
-  $("#position-app").hidden = false;
-  await load();
-}
-async function unlock(password) {
-  if (await sha256(password) !== PASSWORD_HASH) return false;
-  sessionStorage.setItem(PRIVATE_ACCESS_KEY, "1");
-  sessionStorage.setItem("heat-module-unlocked", "1");
-  await reveal();
-  return true;
-}
 $("#refresh").addEventListener("click", load);
 $("#toggle").addEventListener("click", () => { showAll = !showAll; renderHistory(); });
 $("#search").addEventListener("input", (event) => { query = event.target.value.trim(); showAll = false; renderHistory(); });
 $("#pool-tabs").addEventListener("click", (event) => { const button = event.target.closest("[data-pool-size]"); if (button) selectPool(Number(button.dataset.poolSize)); });
-$("#position-login").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const input = $("#position-password");
-  const accepted = await unlock(input.value);
-  $("#position-login-error").hidden = accepted;
-  if (!accepted) { input.value = ""; input.focus(); }
-});
-$("#position-lock-button").addEventListener("click", () => {
-  sessionStorage.removeItem(PRIVATE_ACCESS_KEY);
-  sessionStorage.removeItem("heat-module-unlocked");
-  location.reload();
-});
-if (sessionStorage.getItem(PRIVATE_ACCESS_KEY) === "1" || sessionStorage.getItem("heat-module-unlocked") === "1") {
-  sessionStorage.setItem(PRIVATE_ACCESS_KEY, "1");
-  reveal();
-}
+load();

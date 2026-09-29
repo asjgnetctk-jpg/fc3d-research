@@ -1,6 +1,7 @@
 const PASSWORD_HASH = "41368ab21298d9364e60169933ba2e9b67060b4f620b6551d9668b4396990444";
-const PRIVATE_ACCESS_KEY = "private-recommendations-unlocked";
 const labels = ["百位热度", "十位热度", "个位热度", "不定位热度"];
+const positionNames = { hundreds: "百位", tens: "十位", units: "个位" };
+let privatePositionPayload = null;
 
 async function sha256(value) {
   const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
@@ -25,6 +26,41 @@ function matrixHistoryRow(row) {
 
 function coverageHistoryRow(row) {
   return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em></div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "已覆盖" : "未覆盖"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
+}
+
+function positionPills(value) {
+  return `<div class="position7-pills" style="--pool-size:${value.length}">${[...value].map((digit) => `<b>${digit}</b>`).join("")}</div>`;
+}
+
+function percentage(value) {
+  return `${((value ?? 0) * 100).toFixed(1)}%`;
+}
+
+function renderPrivatePosition(size) {
+  const result = privatePositionPayload?.pools?.[size];
+  if (!result) return;
+  document.querySelectorAll("[data-private-pool-size]").forEach((button) => {
+    button.classList.toggle("is-active", Number(button.dataset.privatePoolSize) === size);
+  });
+  document.querySelector("#private-position-target").textContent = `第${result.recommendation.targetIssue}期 · 定位${size}码`;
+  document.querySelector("#private-position-based").textContent = `基于${result.recommendation.basedOnIssue}期及以前数据`;
+  document.querySelector("#private-position-recommendation").innerHTML = Object.entries(positionNames).map(([key, name]) => `<article><span>${name}${size}码</span>${positionPills(result.recommendation[`${key}Pool`])}</article>`).join("");
+  const joint = result.metrics.joint;
+  const positionRate = `${percentage(joint.positionRates.hundreds)} / ${percentage(joint.positionRates.tens)} / ${percentage(joint.positionRates.units)}`;
+  document.querySelector("#private-position-metrics").innerHTML = [
+    ["三位全中率", percentage(joint.allThreeRate)],
+    ["错位率", percentage(joint.mismatchRate)],
+    ["同步效率", joint.syncEfficiency.toFixed(3)],
+    ["最大未全中遗漏", `${joint.maxAllMiss}期`],
+    ["百/十/个位", positionRate],
+    ["联合评分", joint.score.toFixed(4)],
+  ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
+  const rows = [30, 100, 300, 500].map((window) => {
+    const item = result.metrics.windows[window];
+    return `<tr><th>近${window}期</th><td>${item.count}</td><td>${percentage(item.allThreeRate)}</td><td>${percentage(item.mismatchRate)}</td><td>${item.syncEfficiency.toFixed(3)}</td><td>${item.maxAllMiss}期</td></tr>`;
+  }).join("");
+  document.querySelector("#private-position-windows").innerHTML = `<table><thead><tr><th>窗口</th><th>样本</th><th>全中率</th><th>错位率</th><th>同步效率</th><th>最大遗漏</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.querySelector("#private-position-notice").textContent = `五码、六码、七码使用各自独立权重；七码优先三位同期开奖全中率与同步效率。${privatePositionPayload.notice}`;
 }
 
 function renderMatrix(matrix) {
@@ -64,9 +100,19 @@ async function loadHeat() {
   const error = document.querySelector("#heat-error");
   try {
     const dataFile = window.LotteryGame?.file("heat-data.json") ?? "heat-data.json";
-    const response = await fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" });
+    const positionFile = window.LotteryGame?.file("position7-data.json") ?? "position7-data.json";
+    const [response, positionResponse] = await Promise.all([
+      fetch(`./${dataFile}?t=${Date.now()}`, { cache: "no-store" }),
+      fetch(`./${positionFile}?t=${Date.now()}`, { cache: "no-store" }),
+    ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
+    if (positionResponse.ok) {
+      privatePositionPayload = await positionResponse.json();
+      renderPrivatePosition(7);
+    } else {
+      document.querySelector("#private-position-notice").textContent = `定位推荐读取失败：HTTP ${positionResponse.status}`;
+    }
     document.querySelector("#heat-through").textContent = data.updatedThrough;
     document.querySelector("#heat-count").textContent = `${data.totalRecords}期热度记录`;
     document.querySelector("#heat-notice").textContent = data.notice;
@@ -96,7 +142,6 @@ async function loadHeat() {
 async function unlock(password) {
   if (await sha256(password) !== PASSWORD_HASH) return false;
   sessionStorage.setItem("heat-module-unlocked", "1");
-  sessionStorage.setItem(PRIVATE_ACCESS_KEY, "1");
   await reveal();
   return true;
 }
@@ -116,10 +161,10 @@ document.querySelector("#heat-login").addEventListener("submit", async (event) =
 });
 document.querySelector("#heat-lock-button").addEventListener("click", () => {
   sessionStorage.removeItem("heat-module-unlocked");
-  sessionStorage.removeItem(PRIVATE_ACCESS_KEY);
   location.reload();
 });
-if (sessionStorage.getItem("heat-module-unlocked") === "1" || sessionStorage.getItem(PRIVATE_ACCESS_KEY) === "1") {
-  sessionStorage.setItem("heat-module-unlocked", "1");
-  reveal();
-}
+document.querySelector("#private-position-tabs").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-private-pool-size]");
+  if (button) renderPrivatePosition(Number(button.dataset.privatePoolSize));
+});
+if (sessionStorage.getItem("heat-module-unlocked") === "1") reveal();
