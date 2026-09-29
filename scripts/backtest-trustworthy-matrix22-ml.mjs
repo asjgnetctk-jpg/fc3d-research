@@ -15,6 +15,10 @@ const configs = [
   { id: "ml-b2", freqWindows: [5, 20, 60, 250], transitionWindows: [60, 250, 500], learningRate: 0.03, regularization: 0.02, epochs: 8 },
   { id: "ml-c1", freqWindows: [20, 60, 120, 250, 500], transitionWindows: [120, 500], learningRate: 0.05, regularization: 0.005, epochs: 6 },
   { id: "ml-c2", freqWindows: [20, 60, 120, 250, 500], transitionWindows: [120, 500], learningRate: 0.025, regularization: 0.03, epochs: 10 },
+  { id: "grid-03", freqWindows: [5, 20, 60, 250], transitionWindows: [120, 500], learningRate: 0.025, regularization: 0.03, epochs: 8 },
+  { id: "grid-09", freqWindows: [10, 30, 120, 500], transitionWindows: [120, 500], learningRate: 0.025, regularization: 0.03, epochs: 8 },
+  { id: "cross-41", freqWindows: [30, 90, 180, 360], transitionWindows: [120, 500], crossTransitionWindows: [120, 500], learningRate: 0.025, regularization: 0.03, epochs: 8 },
+  { id: "lag2-63", freqWindows: [30, 90, 180, 360], transitionWindows: [120, 500], lagTwoTransitionWindows: [120], learningRate: 0.025, regularization: 0.03, epochs: 8 },
 ];
 const quotaOptions = [
   { id: "free", group6: 22, group3: 22, triple: 22 },
@@ -34,6 +38,10 @@ const softmax = (scores) => {
 function buildIndex(rows) {
   const countPrefix = Array.from({ length: 3 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1)));
   const transitionPrefix = Array.from({ length: 3 }, () => Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1))));
+  const lagTwoTransitionPrefix = Array.from({ length: 3 }, () => Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1))));
+  const deltaTransitionPrefix = Array.from({ length: 3 }, () => Array.from({ length: 19 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1))));
+  const crossTransitionPrefix = Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1)))));
+  const contextTransitionPrefix = Array.from({ length: 3 }, () => Array.from({ length: 31 }, () => Array.from({ length: 10 }, () => new Int32Array(rows.length + 1))));
   const lastBefore = Array.from({ length: rows.length }, () => Array.from({ length: 3 }, () => Array(10).fill(-1)));
   const lastSeen = Array.from({ length: 3 }, () => Array(10).fill(-1));
   for (let index = 0; index < rows.length; index += 1) {
@@ -43,13 +51,39 @@ function buildIndex(rows) {
       countPrefix[position][rows[index].digits[position]][index + 1] += 1;
       for (let previous = 0; previous < 10; previous += 1) for (let digit = 0; digit < 10; digit += 1) {
         transitionPrefix[position][previous][digit][index + 1] = transitionPrefix[position][previous][digit][index];
+        lagTwoTransitionPrefix[position][previous][digit][index + 1] = lagTwoTransitionPrefix[position][previous][digit][index];
+      }
+      for (let delta = 0; delta < 19; delta += 1) for (let digit = 0; digit < 10; digit += 1) {
+        deltaTransitionPrefix[position][delta][digit][index + 1] = deltaTransitionPrefix[position][delta][digit][index];
+      }
+      for (let sourcePosition = 0; sourcePosition < 3; sourcePosition += 1) for (let previous = 0; previous < 10; previous += 1) for (let digit = 0; digit < 10; digit += 1) {
+        crossTransitionPrefix[position][sourcePosition][previous][digit][index + 1] = crossTransitionPrefix[position][sourcePosition][previous][digit][index];
+      }
+      for (let context = 0; context < 31; context += 1) for (let digit = 0; digit < 10; digit += 1) {
+        contextTransitionPrefix[position][context][digit][index + 1] = contextTransitionPrefix[position][context][digit][index];
       }
       if (index > 0) transitionPrefix[position][rows[index - 1].digits[position]][rows[index].digits[position]][index + 1] += 1;
+      if (index > 1) {
+        lagTwoTransitionPrefix[position][rows[index - 2].digits[position]][rows[index].digits[position]][index + 1] += 1;
+        const delta = rows[index - 1].digits[position] - rows[index - 2].digits[position] + 9;
+        deltaTransitionPrefix[position][delta][rows[index].digits[position]][index + 1] += 1;
+      }
+      if (index > 0) for (let sourcePosition = 0; sourcePosition < 3; sourcePosition += 1) {
+        crossTransitionPrefix[position][sourcePosition][rows[index - 1].digits[sourcePosition]][rows[index].digits[position]][index + 1] += 1;
+      }
+      if (index > 0) {
+        const previousDigits = rows[index - 1].digits;
+        const sumContext = previousDigits.reduce((sum, digit) => sum + digit, 0);
+        const unique = new Set(previousDigits).size;
+        const shapeContext = unique === 3 ? 28 : unique === 2 ? 29 : 30;
+        contextTransitionPrefix[position][sumContext][rows[index].digits[position]][index + 1] += 1;
+        contextTransitionPrefix[position][shapeContext][rows[index].digits[position]][index + 1] += 1;
+      }
       lastSeen[position][rows[index].digits[position]] = index;
     }
   }
   lastBefore[rows.length] = lastSeen.map((items) => [...items]);
-  return { countPrefix, transitionPrefix, lastBefore };
+  return { countPrefix, transitionPrefix, lagTwoTransitionPrefix, deltaTransitionPrefix, crossTransitionPrefix, contextTransitionPrefix, lastBefore };
 }
 
 function featureVector(rows, indexData, config, index, position, candidate) {
@@ -67,6 +101,56 @@ function featureVector(rows, indexData, config, index, position, candidate) {
     for (let digit = 0; digit < 10; digit += 1) total += indexData.transitionPrefix[position][previous][digit][index] - indexData.transitionPrefix[position][previous][digit][start];
     const count = indexData.transitionPrefix[position][previous][candidate][index] - indexData.transitionPrefix[position][previous][candidate][start];
     features.push(count / Math.max(total, 1));
+  }
+  for (const window of config.lagTwoTransitionWindows ?? []) {
+    const start = Math.max(2, index - window);
+    const lagTwo = rows[index - 2].digits[position];
+    let total = 0;
+    for (let digit = 0; digit < 10; digit += 1) total += indexData.lagTwoTransitionPrefix[position][lagTwo][digit][index] - indexData.lagTwoTransitionPrefix[position][lagTwo][digit][start];
+    const count = indexData.lagTwoTransitionPrefix[position][lagTwo][candidate][index] - indexData.lagTwoTransitionPrefix[position][lagTwo][candidate][start];
+    features.push(count / Math.max(total, 1));
+  }
+  for (const window of config.deltaTransitionWindows ?? []) {
+    const start = Math.max(2, index - window);
+    const delta = rows[index - 1].digits[position] - rows[index - 2].digits[position] + 9;
+    let total = 0;
+    for (let digit = 0; digit < 10; digit += 1) total += indexData.deltaTransitionPrefix[position][delta][digit][index] - indexData.deltaTransitionPrefix[position][delta][digit][start];
+    const count = indexData.deltaTransitionPrefix[position][delta][candidate][index] - indexData.deltaTransitionPrefix[position][delta][candidate][start];
+    features.push(count / Math.max(total, 1));
+  }
+  for (const window of config.crossTransitionWindows ?? []) {
+    const start = Math.max(1, index - window);
+    for (let sourcePosition = 0; sourcePosition < 3; sourcePosition += 1) {
+      const sourceDigit = rows[index - 1].digits[sourcePosition];
+      let total = 0;
+      for (let digit = 0; digit < 10; digit += 1) total += indexData.crossTransitionPrefix[position][sourcePosition][sourceDigit][digit][index] - indexData.crossTransitionPrefix[position][sourcePosition][sourceDigit][digit][start];
+      const count = indexData.crossTransitionPrefix[position][sourcePosition][sourceDigit][candidate][index] - indexData.crossTransitionPrefix[position][sourcePosition][sourceDigit][candidate][start];
+      features.push(count / Math.max(total, 1));
+    }
+  }
+  for (const window of config.contextTransitionWindows ?? []) {
+    const start = Math.max(1, index - window);
+    const previousDigits = rows[index - 1].digits;
+    const unique = new Set(previousDigits).size;
+    const contexts = [previousDigits.reduce((sum, digit) => sum + digit, 0), unique === 3 ? 28 : unique === 2 ? 29 : 30];
+    for (const context of contexts) {
+      let total = 0;
+      for (let digit = 0; digit < 10; digit += 1) total += indexData.contextTransitionPrefix[position][context][digit][index] - indexData.contextTransitionPrefix[position][context][digit][start];
+      const count = indexData.contextTransitionPrefix[position][context][candidate][index] - indexData.contextTransitionPrefix[position][context][candidate][start];
+      features.push(count / Math.max(total, 1));
+    }
+  }
+  if (config.arithmeticFeatures) {
+    const previousDigits = rows[index - 1].digits;
+    const previousSum = previousDigits.reduce((sum, digit) => sum + digit, 0);
+    const left = previousDigits[(position + 2) % 3];
+    const right = previousDigits[(position + 1) % 3];
+    features.push(previousDigits.filter((digit) => digit % 2 === candidate % 2).length / 3);
+    features.push(previousDigits.filter((digit) => digit % 3 === candidate % 3).length / 3);
+    features.push(candidate === previousSum % 10 ? 1 : 0);
+    features.push(candidate === (left + right) % 10 ? 1 : 0);
+    features.push(candidate === Math.abs(left - right) ? 1 : 0);
+    features.push(Math.min(...previousDigits.map((digit) => Math.min(Math.abs(candidate - digit), 10 - Math.abs(candidate - digit)))) / 5);
   }
   const last = indexData.lastBefore[index][position][candidate];
   features.push(Math.min(last < 0 ? 40 : index - 1 - last, 40) / 40);

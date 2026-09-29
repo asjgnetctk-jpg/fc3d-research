@@ -3,14 +3,13 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { configs, digitRows, buildIndex, train, predictProbabilities } from "./backtest-trustworthy-matrix22-ml.mjs";
+import { pairLifts, coordinatedPools } from "./optimize-position-joint-pairs.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
 const prefix = game === "pl3" ? "pl3-" : "";
-const modelVersion = game === "pl3" ? "PL3-POS-META-1.0" : "FC3D-POS-META-1.0";
+const modelVersion = game === "pl3" ? "PL3-POS-META-1.2" : "FC3D-POS-META-1.2";
 const readJson = async (file) => JSON.parse(await readFile(path.join(root, file), "utf8"));
-const rowList = (payload) => payload.history ?? payload.rows ?? [];
-const digits = (value) => String(value ?? "").split("").map(Number);
 const contains = (value, digit) => String(value ?? "").includes(String(digit));
 const source = await readJson(`scripts/data/${game}-full-history.json`);
 const heat = await readJson(`scripts/data/${game}-17500-heat.json`);
@@ -28,31 +27,29 @@ try { previous = await readJson(`pages/${outputFile}`); } catch {}
 
 const selected = game === "fc3d"
   ? {
-      5: { configId: "ml-a2", reverseMask: 4, developmentRate: 0.1452, developmentMaxMiss: 35 },
-      6: { configId: "ml-b2", reverseMask: 0, developmentRate: 0.2548, developmentMaxMiss: 15, trustworthyAnchor: true },
-      7: { configId: "ml-a2", reverseMask: 0, developmentRate: 0.3479, developmentMaxMiss: 16 },
+      5: { configId: "grid-03", reverseMask: 1, developmentRate: 0.1255, developmentMaxMiss: 46, recentRate: 0.137, recentMaxMiss: 17 },
+      6: { configId: "lag2-63", reverseMask: 1, developmentRate: 0.223, developmentMaxMiss: 28, recentRate: 0.2247, recentMaxMiss: 15 },
+      7: { configId: "grid-09", reverseMask: 5, developmentRate: 0.3392, developmentMaxMiss: 17, recentRate: 0.3534, recentMaxMiss: 9 },
     }
   : {
-      5: { configId: "ml-a1", reverseMask: 0, developmentRate: 0.1397, developmentMaxMiss: 27 },
-      6: { configId: "ml-b2", reverseMask: 0, developmentRate: 0.2356, developmentMaxMiss: 12 },
-      7: { configId: "ml-b1", reverseMask: 0, developmentRate: 0.3726, developmentMaxMiss: 8 },
+      5: { configId: "cross-41", reverseMask: 1, pairWindow: 500, pairLambda: 0.5, developmentRate: 0.1425, developmentMaxMiss: 29, recentRate: 0.1644, recentMaxMiss: 19 },
+      6: { configId: "ml-b2", reverseMask: 0, pairWindow: 250, pairLambda: 1, developmentRate: 0.2175, developmentMaxMiss: 23, recentRate: 0.2411, recentMaxMiss: 12 },
+      7: { configId: "ml-b1", reverseMask: 0, pairWindow: 250, pairLambda: 1, developmentRate: 0.3381, developmentMaxMiss: 12, recentRate: 0.3753, recentMaxMiss: 8 },
     };
 
-const overlay = {
-  causal: 1,
-  trustworthyPosition: 0.18,
-  legacyPosition: 0.1,
-  v7: 0.065,
-  v2: 0.075,
-  v5: 0.045,
-  dan: 0.035,
-  killSafe: 0.045,
-  omission: 0.03,
-  heat: 0.09,
-  v9Reverse: 0.035,
-  v92Reverse: 0.025,
-};
-const modelHash = createHash("sha256").update(JSON.stringify({ modelVersion, selected, overlay })).digest("hex");
+const exploratory = { trustworthyPosition: 0, legacyPosition: 0, v7: 0.005, v2: 0.005, v5: 0.003, dan: 0.003, killSafe: 0, omission: 0, heat: 0.02, v9Reverse: 0.003, v92Reverse: 0.002 };
+const overlayBySize = game === "fc3d"
+  ? {
+      5: { causal: 1, ...exploratory },
+      6: { causal: 1, ...exploratory, trustworthyPosition: 0.1, killSafe: 0.1, omission: 0.03 },
+      7: { causal: 1, ...exploratory },
+    }
+  : {
+      5: { causal: 1, ...exploratory },
+      6: { causal: 1, ...exploratory },
+      7: { causal: 1, ...exploratory },
+    };
+const modelHash = createHash("sha256").update(JSON.stringify({ modelVersion, selected, overlayBySize })).digest("hex");
 const rows = digitRows(source.rows);
 const indexData = buildIndex(rows);
 const targetIndex = rows.length;
@@ -85,6 +82,7 @@ function rankScores(probabilities, reverse) {
 
 function buildRecommendation(size) {
   const rule = selected[size];
+  const overlay = overlayBySize[size];
   const config = configs.find((item) => item.id === rule.configId);
   const weights = train(rows, indexData, config, 500, rows.length);
   const probabilities = predictProbabilities(rows, indexData, config, weights, targetIndex);
@@ -96,6 +94,7 @@ function buildRecommendation(size) {
     basedOnDate: latest.date,
     heatCapturedAt: targetHeat.capturedAtBeijing,
   };
+  const fusedScores = [];
   for (let position = 0; position < 3; position += 1) {
     const reverse = Boolean(rule.reverseMask & (1 << position));
     const causalScores = rankScores(probabilities[position], reverse);
@@ -127,7 +126,14 @@ function buildRecommendation(size) {
         - overlay.v92Reverse * reverseV92;
       return { digit, score };
     }).sort((a, b) => b.score - a.score || a.digit - b.digit);
+    fusedScores[position] = Array.from({ length: 10 });
+    scored.forEach((item) => { fusedScores[position][item.digit] = item.score; });
     recommendation[positionKeys[position]] = scored.slice(0, size).map((item) => item.digit).sort((a, b) => a - b).join("");
+  }
+  if (rule.pairWindow) {
+    const lifts = pairLifts(rows, targetIndex, rule.pairWindow);
+    const pools = coordinatedPools(fusedScores, size, 0, lifts, rule.pairLambda);
+    pools.forEach((pool, position) => { recommendation[positionKeys[position]] = [...pool].sort((a, b) => a - b).join(""); });
   }
   return recommendation;
 }
@@ -210,9 +216,13 @@ for (const size of [5, 6, 7]) {
     recommendation,
     status: recommendation ? "已在开奖前锁定" : "等待20:20后当期热度快照",
     developmentEvidence: {
-      label: "多方案研究结果，不计入真实前瞻",
+      label: "五年分段锁定研究，不计入真实前瞻",
       rate: selected[size].developmentRate,
       maxMiss: selected[size].developmentMaxMiss,
+      recentYearRate: selected[size].recentRate,
+      recentYearMaxMiss: selected[size].recentMaxMiss,
+      theoreticalRate: size ** 3 / 1000,
+      excessRate: selected[size].developmentRate - size ** 3 / 1000,
     },
     metrics: {
       joint,
@@ -236,7 +246,7 @@ const payload = {
   heatSnapshot: targetHeat ? { issue: targetHeat.issue, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
   futureGuarantee: false,
   notice: "融合定位以因果概率模型为底层，小幅融合V2/V5/V7、V9反向、杀码、遗漏、旧定位和开奖前热度。历史研究结果不计入真实前瞻；从本版本上线后逐期锁定，开奖后只核对、不回改。",
-  overlay,
+  overlayBySize,
   selected,
   pools,
 };

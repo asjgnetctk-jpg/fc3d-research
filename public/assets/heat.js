@@ -69,7 +69,9 @@ function renderPrivatePosition(size) {
   const positionRate = `${percentage(joint.positionRates.hundreds)} / ${percentage(joint.positionRates.tens)} / ${percentage(joint.positionRates.units)}`;
   document.querySelector("#private-position-metrics").innerHTML = [
     ["真实前瞻全中率", joint.count ? `${joint.allThreeHits}/${joint.count} · ${percentage(joint.allThreeRate)}` : "等待首期开奖"],
-    ["历史研究参考", `${percentage(result.developmentEvidence.rate)} · 最长断${result.developmentEvidence.maxMiss}期`],
+    ["五年分段研究", `${percentage(result.developmentEvidence.rate)} · 最长断${result.developmentEvidence.maxMiss}期`],
+    ["最近一年锁定段", `${percentage(result.developmentEvidence.recentYearRate)} · 最长断${result.developmentEvidence.recentYearMaxMiss}期`],
+    ["理论基线 / 五年差值", `${percentage(result.developmentEvidence.theoreticalRate)} / ${result.developmentEvidence.excessRate >= 0 ? "+" : ""}${percentage(result.developmentEvidence.excessRate)}`],
     ["错位率", percentage(joint.mismatchRate)],
     ["同步效率", joint.syncEfficiency.toFixed(3)],
     ["最大未全中遗漏", `${joint.maxAllMiss}期`],

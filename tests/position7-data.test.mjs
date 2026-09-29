@@ -139,6 +139,10 @@ for (const game of ["fc3d", "pl3"]) {
     for (const size of [5, 6, 7]) {
       const pool = data.pools[size];
       assert.match(pool.developmentEvidence.label, /不计入真实前瞻/);
+      assert.equal(pool.developmentEvidence.theoreticalRate, Number(size) ** 3 / 1000);
+      assert.equal(pool.developmentEvidence.excessRate, pool.developmentEvidence.rate - pool.developmentEvidence.theoreticalRate);
+      assert.ok(Number.isFinite(pool.developmentEvidence.recentYearRate));
+      assert.ok(Number.isInteger(pool.developmentEvidence.recentYearMaxMiss));
       assert.ok(pool.history.every((row) => row.phase === "prospective-locked"));
       assert.equal(pool.metrics.jointForward.count, pool.history.length);
       assert.equal(pool.metrics.all.forward.count, pool.history.length);
