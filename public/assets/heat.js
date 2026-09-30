@@ -51,10 +51,14 @@ function renderPrivatePositionHistory() {
   const toggle = document.querySelector("#private-position-toggle");
   toggle.hidden = rows.length <= 20;
   toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
-  const researchRows = result.researchHistory ?? [];
+  const forwardIssues = new Set(result.history.map((row) => String(row.issue)));
+  const forwardDates = new Set(result.history.map((row) => row.date));
+  const researchRows = (result.researchHistory ?? []).filter((row) =>
+    !forwardIssues.has(String(row.issue)) && !forwardDates.has(row.date),
+  );
   const researchSummary = document.querySelector("#private-position-research-summary");
   const researchHistory = document.querySelector("#private-position-research-history");
-  if (researchSummary) researchSummary.textContent = `查看最近一年 ${researchRows.length} 期锁定研究明细`;
+  if (researchSummary) researchSummary.textContent = `查看最近一年 ${researchRows.length} 期锁定研究明细（已排除真实前瞻同期）`;
   if (researchHistory) researchHistory.innerHTML = researchRows.slice().reverse().map(privatePositionHistoryRow).join("");
 }
 
