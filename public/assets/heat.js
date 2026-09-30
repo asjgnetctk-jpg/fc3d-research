@@ -15,7 +15,8 @@ function matrixNumber(item) {
 }
 
 function matrixHistoryRow(row) {
-  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em>${row.version ? `<em>${row.version}</em>` : ""}</div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
+  const recordLabel = row.recordType === "live" ? `真实前瞻 · ${row.version}` : "历史回放";
+  return `<article><div><strong>${row.issue}期</strong><span>${row.date}</span><em>开奖 ${row.draw}</em><em>${recordLabel}</em></div><div><span class="${row.hit ? "matrix-hit" : "matrix-miss"}">${row.hit ? "命中" : "未中"}</span><p>${row.numbers.join(" · ")}</p></div></article>`;
 }
 
 function coverageHistoryRow(row) {
@@ -119,14 +120,18 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-structure").innerHTML = `<span>组六 <b>${matrix.structure.group6}</b>组</span><span>组三 <b>${matrix.structure.group3}</b>组</span><span>豹子 <b>${matrix.structure.triple}</b>组</span><span>${matrix.status}</span>`;
   document.querySelector("#matrix22-metrics").innerHTML = `<article><span>历史回放</span><strong>${matrix.replay.hits}/${matrix.replay.count}</strong></article><article><span>回放命中率</span><strong>${rate}%</strong></article><article><span>最长连断</span><strong>${matrix.replay.maxMiss}期</strong></article><article><span>当前连断</span><strong>${matrix.replay.currentMiss}期</strong></article>`;
   document.querySelector("#matrix22-method").textContent = matrix.method;
-  const allVersions = matrix.liveAllVersions ?? matrix.live;
-  document.querySelector("#matrix22-live-count").textContent = allVersions.count ? `全部真实锁定：${allVersions.hits}/${allVersions.count} · 当前版本${matrix.live.hits}/${matrix.live.count}` : `${matrix.modelVersion}等待首期官方开奖`;
-  document.querySelector("#matrix22-live-history").innerHTML = matrix.liveRows.length ? matrix.liveRows.slice().reverse().map(matrixHistoryRow).join("") : '<p class="matrix22-empty">从本模型上线后的首个开奖前锁定期开始累计，锁定后不回改。</p>';
   const replayRows = matrix.replayRows ?? [];
-  const replaySummary = document.querySelector("#matrix22-replay-summary");
-  const replayHistory = document.querySelector("#matrix22-replay-history");
-  if (replaySummary) replaySummary.textContent = `查看 ${replayRows.length} 期历史回放`;
-  if (replayHistory) replayHistory.innerHTML = replayRows.map(matrixHistoryRow).join("");
+  const currentLiveRows = (matrix.liveRows ?? []).filter((row) => row.version === matrix.modelVersion);
+  const combinedRows = [
+    ...currentLiveRows.map((row) => ({ ...row, recordType: "live" })),
+    ...replayRows.map((row) => ({ ...row, recordType: "replay" })),
+  ].sort((left, right) => right.date.localeCompare(left.date) || Number(right.recordType === "live") - Number(left.recordType === "live"));
+  document.querySelector("#matrix22-live-count").textContent = currentLiveRows.length
+    ? `${matrix.modelVersion}前瞻 ${matrix.live.hits}/${matrix.live.count} · 回放${replayRows.length}期`
+    : `${matrix.modelVersion}等待首期官方开奖 · 回放${replayRows.length}期`;
+  document.querySelector("#matrix22-live-history").innerHTML = combinedRows.length
+    ? combinedRows.map(matrixHistoryRow).join("")
+    : '<p class="matrix22-empty">暂无可显示的前瞻或历史回放记录。</p>';
 }
 
 function renderCoverage(matrix) {
