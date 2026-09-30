@@ -122,9 +122,11 @@ function renderMatrix(matrix) {
   document.querySelector("#matrix22-method").textContent = matrix.method;
   const replayRows = matrix.replayRows ?? [];
   const currentLiveRows = (matrix.liveRows ?? []).filter((row) => row.version === matrix.modelVersion);
+  const liveDates = new Set(currentLiveRows.map((row) => row.date));
+  const visibleReplayRows = replayRows.filter((row) => !liveDates.has(row.date));
   const combinedRows = [
     ...currentLiveRows.map((row) => ({ ...row, recordType: "live" })),
-    ...replayRows.map((row) => ({ ...row, recordType: "replay" })),
+    ...visibleReplayRows.map((row) => ({ ...row, recordType: "replay" })),
   ].sort((left, right) => right.date.localeCompare(left.date) || Number(right.recordType === "live") - Number(left.recordType === "live"));
   document.querySelector("#matrix22-live-count").textContent = currentLiveRows.length
     ? `${matrix.modelVersion}前瞻 ${matrix.live.hits}/${matrix.live.count} · 回放${replayRows.length}期`
