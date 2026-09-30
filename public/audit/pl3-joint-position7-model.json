@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-29T12:58:17.177Z",
+  "generatedAt": "2026-09-30T04:12:16.970Z",
   "game": "pl3",
   "modelVariant": "joint",
-  "sourceUpdatedThrough": "2026-09-28 · 第26261期",
-  "dataSha256": "975c1d89ad895dbc0b204d4bd1667010b240f4840e22341613da77383ba39595",
+  "sourceUpdatedThrough": "2026-09-29 · 第26262期",
+  "dataSha256": "646475cc10380240d3cc86fec9054aba12ea96789df75b26865f9eb1af94da53",
   "formulaVersion": "PL3-POSITION-POOLS-JOINT-OBJECTIVE-V2",
   "trainingMode": "one-year-in-sample-joint-objective-selection",
   "candidateFormulaCount": 64,
@@ -321,12 +321,12 @@
     "5": {
       "poolSize": 5,
       "recommendation": {
-        "targetIssue": "26262",
-        "basedOnIssue": "26261",
-        "basedOnDate": "2026-09-28",
-        "hundredsPool": "12346",
-        "tensPool": "24679",
-        "unitsPool": "01248"
+        "targetIssue": "26263",
+        "basedOnIssue": "26262",
+        "basedOnDate": "2026-09-29",
+        "hundredsPool": "02678",
+        "tensPool": "01458",
+        "unitsPool": "24789"
       },
       "methods": {
         "hundreds": {
@@ -908,9 +908,9 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
-            "hits": 2,
-            "rate": 0.14285714285714285,
+            "count": 15,
+            "hits": 3,
+            "rate": 0.2,
             "maxMiss": 6,
             "currentMiss": 0,
             "targetMet": false
@@ -926,11 +926,11 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
-            "hits": 7,
-            "rate": 0.5,
+            "count": 15,
+            "hits": 8,
+            "rate": 0.5333333333333333,
             "maxMiss": 3,
-            "currentMiss": 3,
+            "currentMiss": 0,
             "targetMet": false
           }
         },
@@ -944,21 +944,21 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 7,
-            "rate": 0.5,
+            "rate": 0.4666666666666667,
             "maxMiss": 4,
-            "currentMiss": 0,
+            "currentMiss": 1,
             "targetMet": false
           }
         },
         "all": {
           "overall": {
-            "count": 365,
+            "count": 366,
             "hits": 178,
-            "rate": 0.4876712328767123,
-            "maxMiss": 14,
-            "currentMiss": 14,
+            "rate": 0.48633879781420764,
+            "maxMiss": 15,
+            "currentMiss": 15,
             "targetMet": false
           },
           "training": {
@@ -970,51 +970,51 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 0,
             "rate": 0,
-            "maxMiss": 14,
-            "currentMiss": 14,
+            "maxMiss": 15,
+            "currentMiss": 15,
             "targetMet": false
           }
         },
         "joint": {
-          "count": 365,
+          "count": 366,
           "positionHits": {
-            "hundreds": 260,
-            "tens": 277,
+            "hundreds": 261,
+            "tens": 278,
             "units": 288
           },
           "positionRates": {
-            "hundreds": 0.7123287671232876,
-            "tens": 0.7589041095890411,
-            "units": 0.7890410958904109
+            "hundreds": 0.7131147540983607,
+            "tens": 0.7595628415300546,
+            "units": 0.7868852459016393
           },
           "allThreeHits": 178,
-          "allThreeRate": 0.4876712328767123,
-          "exactlyTwoHits": 114,
-          "exactlyTwoRate": 0.31232876712328766,
-          "mismatchRate": 0.31232876712328766,
+          "allThreeRate": 0.48633879781420764,
+          "exactlyTwoHits": 115,
+          "exactlyTwoRate": 0.31420765027322406,
+          "mismatchRate": 0.31420765027322406,
           "exactlyOneHits": 63,
-          "exactlyOneRate": 0.1726027397260274,
+          "exactlyOneRate": 0.1721311475409836,
           "zeroHits": 10,
-          "zeroHitRate": 0.0273972602739726,
+          "zeroHitRate": 0.0273224043715847,
           "aloneDragHits": {
             "hundreds": 44,
             "tens": 37,
-            "units": 33
+            "units": 34
           },
           "aloneDragRates": {
-            "hundreds": 0.12054794520547946,
-            "tens": 0.10136986301369863,
-            "units": 0.09041095890410959
+            "hundreds": 0.12021857923497267,
+            "tens": 0.10109289617486339,
+            "units": 0.09289617486338798
           },
-          "singlePositionDragRate": 0.31232876712328766,
+          "singlePositionDragRate": 0.31420765027322406,
           "longestAllHit": 9,
-          "maxAllMiss": 14,
-          "currentAllMiss": 14,
-          "syncEfficiency": 1.1432997971242558,
-          "score": 0.4786301369863013
+          "maxAllMiss": 15,
+          "currentAllMiss": 15,
+          "syncEfficiency": 1.1410492295818517,
+          "score": 0.4777322404371585
         },
         "jointTraining": {
           "count": 351,
@@ -1055,55 +1055,55 @@
           "score": 0.49401709401709404
         },
         "jointForward": {
-          "count": 14,
+          "count": 15,
           "positionHits": {
-            "hundreds": 2,
-            "tens": 7,
+            "hundreds": 3,
+            "tens": 8,
             "units": 7
           },
           "positionRates": {
-            "hundreds": 0.14285714285714285,
-            "tens": 0.5,
-            "units": 0.5
+            "hundreds": 0.2,
+            "tens": 0.5333333333333333,
+            "units": 0.4666666666666667
           },
           "allThreeHits": 0,
           "allThreeRate": 0,
-          "exactlyTwoHits": 6,
-          "exactlyTwoRate": 0.42857142857142855,
-          "mismatchRate": 0.42857142857142855,
+          "exactlyTwoHits": 7,
+          "exactlyTwoRate": 0.4666666666666667,
+          "mismatchRate": 0.4666666666666667,
           "exactlyOneHits": 4,
-          "exactlyOneRate": 0.2857142857142857,
+          "exactlyOneRate": 0.26666666666666666,
           "zeroHits": 4,
-          "zeroHitRate": 0.2857142857142857,
+          "zeroHitRate": 0.26666666666666666,
           "aloneDragHits": {
             "hundreds": 4,
             "tens": 1,
-            "units": 1
+            "units": 2
           },
           "aloneDragRates": {
-            "hundreds": 0.2857142857142857,
-            "tens": 0.07142857142857142,
-            "units": 0.07142857142857142
+            "hundreds": 0.26666666666666666,
+            "tens": 0.06666666666666667,
+            "units": 0.13333333333333333
           },
-          "singlePositionDragRate": 0.42857142857142855,
+          "singlePositionDragRate": 0.4666666666666667,
           "longestAllHit": 0,
-          "maxAllMiss": 14,
-          "currentAllMiss": 14,
+          "maxAllMiss": 15,
+          "currentAllMiss": 15,
           "syncEfficiency": 0,
-          "score": 0.09285714285714283
+          "score": 0.09666666666666666
         },
         "windows": {
           "30": {
             "count": 30,
             "positionHits": {
-              "hundreds": 14,
+              "hundreds": 15,
               "tens": 21,
-              "units": 20
+              "units": 19
             },
             "positionRates": {
-              "hundreds": 0.4666666666666667,
+              "hundreds": 0.5,
               "tens": 0.7,
-              "units": 0.6666666666666666
+              "units": 0.6333333333333333
             },
             "allThreeHits": 10,
             "allThreeRate": 0.3333333333333333,
@@ -1115,20 +1115,20 @@
             "zeroHits": 4,
             "zeroHitRate": 0.13333333333333333,
             "aloneDragHits": {
-              "hundreds": 5,
+              "hundreds": 4,
               "tens": 2,
-              "units": 2
+              "units": 3
             },
             "aloneDragRates": {
-              "hundreds": 0.16666666666666666,
+              "hundreds": 0.13333333333333333,
               "tens": 0.06666666666666667,
-              "units": 0.06666666666666667
+              "units": 0.1
             },
             "singlePositionDragRate": 0.3,
             "longestAllHit": 3,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.530612244897959,
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.5037593984962405,
             "score": 0.3516666666666667
           },
           "100": {
@@ -1164,8 +1164,8 @@
             },
             "singlePositionDragRate": 0.24,
             "longestAllHit": 7,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
             "syncEfficiency": 1.295816364309515,
             "score": 0.4745
           },
@@ -1174,18 +1174,18 @@
             "positionHits": {
               "hundreds": 214,
               "tens": 226,
-              "units": 236
+              "units": 235
             },
             "positionRates": {
               "hundreds": 0.7133333333333334,
               "tens": 0.7533333333333333,
-              "units": 0.7866666666666666
+              "units": 0.7833333333333333
             },
-            "allThreeHits": 148,
-            "allThreeRate": 0.49333333333333335,
-            "exactlyTwoHits": 88,
-            "exactlyTwoRate": 0.29333333333333333,
-            "mismatchRate": 0.29333333333333333,
+            "allThreeHits": 147,
+            "allThreeRate": 0.49,
+            "exactlyTwoHits": 89,
+            "exactlyTwoRate": 0.2966666666666667,
+            "mismatchRate": 0.2966666666666667,
             "exactlyOneHits": 56,
             "exactlyOneRate": 0.18666666666666668,
             "zeroHits": 8,
@@ -1193,57 +1193,57 @@
             "aloneDragHits": {
               "hundreds": 34,
               "tens": 29,
-              "units": 25
+              "units": 26
             },
             "aloneDragRates": {
               "hundreds": 0.11333333333333333,
               "tens": 0.09666666666666666,
-              "units": 0.08333333333333333
+              "units": 0.08666666666666667
             },
-            "singlePositionDragRate": 0.29333333333333333,
+            "singlePositionDragRate": 0.2966666666666667,
             "longestAllHit": 9,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.1669977248801113,
-            "score": 0.4820000000000001
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.1640449991817372,
+            "score": 0.4796666666666667
           },
           "500": {
-            "count": 365,
+            "count": 366,
             "positionHits": {
-              "hundreds": 260,
-              "tens": 277,
+              "hundreds": 261,
+              "tens": 278,
               "units": 288
             },
             "positionRates": {
-              "hundreds": 0.7123287671232876,
-              "tens": 0.7589041095890411,
-              "units": 0.7890410958904109
+              "hundreds": 0.7131147540983607,
+              "tens": 0.7595628415300546,
+              "units": 0.7868852459016393
             },
             "allThreeHits": 178,
-            "allThreeRate": 0.4876712328767123,
-            "exactlyTwoHits": 114,
-            "exactlyTwoRate": 0.31232876712328766,
-            "mismatchRate": 0.31232876712328766,
+            "allThreeRate": 0.48633879781420764,
+            "exactlyTwoHits": 115,
+            "exactlyTwoRate": 0.31420765027322406,
+            "mismatchRate": 0.31420765027322406,
             "exactlyOneHits": 63,
-            "exactlyOneRate": 0.1726027397260274,
+            "exactlyOneRate": 0.1721311475409836,
             "zeroHits": 10,
-            "zeroHitRate": 0.0273972602739726,
+            "zeroHitRate": 0.0273224043715847,
             "aloneDragHits": {
               "hundreds": 44,
               "tens": 37,
-              "units": 33
+              "units": 34
             },
             "aloneDragRates": {
-              "hundreds": 0.12054794520547946,
-              "tens": 0.10136986301369863,
-              "units": 0.09041095890410959
+              "hundreds": 0.12021857923497267,
+              "tens": 0.10109289617486339,
+              "units": 0.09289617486338798
             },
-            "singlePositionDragRate": 0.31232876712328766,
+            "singlePositionDragRate": 0.31420765027322406,
             "longestAllHit": 9,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.1432997971242558,
-            "score": 0.4786301369863013
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.1410492295818517,
+            "score": 0.4777322404371585
           }
         }
       }
@@ -1251,12 +1251,12 @@
     "6": {
       "poolSize": 6,
       "recommendation": {
-        "targetIssue": "26262",
-        "basedOnIssue": "26261",
-        "basedOnDate": "2026-09-28",
-        "hundredsPool": "124589",
-        "tensPool": "134568",
-        "unitsPool": "124568"
+        "targetIssue": "26263",
+        "basedOnIssue": "26262",
+        "basedOnDate": "2026-09-29",
+        "hundredsPool": "012349",
+        "tensPool": "134678",
+        "unitsPool": "023478"
       },
       "methods": {
         "hundreds": {
@@ -1838,9 +1838,9 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
-            "hits": 7,
-            "rate": 0.5,
+            "count": 15,
+            "hits": 8,
+            "rate": 0.5333333333333333,
             "maxMiss": 6,
             "currentMiss": 0,
             "targetMet": false
@@ -1856,11 +1856,11 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 7,
-            "rate": 0.5,
-            "maxMiss": 3,
-            "currentMiss": 3,
+            "rate": 0.4666666666666667,
+            "maxMiss": 4,
+            "currentMiss": 4,
             "targetMet": false
           }
         },
@@ -1874,21 +1874,21 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 6,
-            "rate": 0.42857142857142855,
+            "rate": 0.4,
             "maxMiss": 4,
-            "currentMiss": 0,
+            "currentMiss": 1,
             "targetMet": false
           }
         },
         "all": {
           "overall": {
-            "count": 365,
+            "count": 366,
             "hits": 219,
-            "rate": 0.6,
-            "maxMiss": 14,
-            "currentMiss": 14,
+            "rate": 0.5983606557377049,
+            "maxMiss": 15,
+            "currentMiss": 15,
             "targetMet": false
           },
           "training": {
@@ -1900,51 +1900,51 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 0,
             "rate": 0,
-            "maxMiss": 14,
-            "currentMiss": 14,
+            "maxMiss": 15,
+            "currentMiss": 15,
             "targetMet": false
           }
         },
         "joint": {
-          "count": 365,
+          "count": 366,
           "positionHits": {
-            "hundreds": 292,
+            "hundreds": 293,
             "tens": 298,
             "units": 307
           },
           "positionRates": {
-            "hundreds": 0.8,
-            "tens": 0.8164383561643835,
-            "units": 0.8410958904109589
+            "hundreds": 0.8005464480874317,
+            "tens": 0.8142076502732241,
+            "units": 0.8387978142076503
           },
           "allThreeHits": 219,
-          "allThreeRate": 0.6,
+          "allThreeRate": 0.5983606557377049,
           "exactlyTwoHits": 101,
-          "exactlyTwoRate": 0.27671232876712326,
-          "mismatchRate": 0.27671232876712326,
-          "exactlyOneHits": 38,
-          "exactlyOneRate": 0.10410958904109589,
+          "exactlyTwoRate": 0.27595628415300544,
+          "mismatchRate": 0.27595628415300544,
+          "exactlyOneHits": 39,
+          "exactlyOneRate": 0.10655737704918032,
           "zeroHits": 7,
-          "zeroHitRate": 0.019178082191780823,
+          "zeroHitRate": 0.01912568306010929,
           "aloneDragHits": {
             "hundreds": 37,
             "tens": 35,
             "units": 29
           },
           "aloneDragRates": {
-            "hundreds": 0.10136986301369863,
-            "tens": 0.0958904109589041,
-            "units": 0.07945205479452055
+            "hundreds": 0.10109289617486339,
+            "tens": 0.09562841530054644,
+            "units": 0.07923497267759563
           },
-          "singlePositionDragRate": 0.27671232876712326,
+          "singlePositionDragRate": 0.27595628415300544,
           "longestAllHit": 11,
-          "maxAllMiss": 14,
-          "currentAllMiss": 14,
-          "syncEfficiency": 1.0921753055112255,
-          "score": 0.5619178082191781
+          "maxAllMiss": 15,
+          "currentAllMiss": 15,
+          "syncEfficiency": 1.0944200119692309,
+          "score": 0.5606557377049181
         },
         "jointTraining": {
           "count": 351,
@@ -1985,63 +1985,63 @@
           "score": 0.5797720797720797
         },
         "jointForward": {
-          "count": 14,
+          "count": 15,
           "positionHits": {
-            "hundreds": 7,
+            "hundreds": 8,
             "tens": 7,
             "units": 6
           },
           "positionRates": {
-            "hundreds": 0.5,
-            "tens": 0.5,
-            "units": 0.42857142857142855
+            "hundreds": 0.5333333333333333,
+            "tens": 0.4666666666666667,
+            "units": 0.4
           },
           "allThreeHits": 0,
           "allThreeRate": 0,
           "exactlyTwoHits": 8,
-          "exactlyTwoRate": 0.5714285714285714,
-          "mismatchRate": 0.5714285714285714,
-          "exactlyOneHits": 4,
-          "exactlyOneRate": 0.2857142857142857,
+          "exactlyTwoRate": 0.5333333333333333,
+          "mismatchRate": 0.5333333333333333,
+          "exactlyOneHits": 5,
+          "exactlyOneRate": 0.3333333333333333,
           "zeroHits": 2,
-          "zeroHitRate": 0.14285714285714285,
+          "zeroHitRate": 0.13333333333333333,
           "aloneDragHits": {
             "hundreds": 3,
             "tens": 3,
             "units": 2
           },
           "aloneDragRates": {
-            "hundreds": 0.21428571428571427,
-            "tens": 0.21428571428571427,
-            "units": 0.14285714285714285
+            "hundreds": 0.2,
+            "tens": 0.2,
+            "units": 0.13333333333333333
           },
-          "singlePositionDragRate": 0.5714285714285714,
+          "singlePositionDragRate": 0.5333333333333333,
           "longestAllHit": 0,
-          "maxAllMiss": 14,
-          "currentAllMiss": 14,
+          "maxAllMiss": 15,
+          "currentAllMiss": 15,
           "syncEfficiency": 0,
-          "score": 0.11428571428571431
+          "score": 0.11333333333333333
         },
         "windows": {
           "30": {
             "count": 30,
             "positionHits": {
               "hundreds": 21,
-              "tens": 20,
-              "units": 21
+              "tens": 19,
+              "units": 20
             },
             "positionRates": {
               "hundreds": 0.7,
-              "tens": 0.6666666666666666,
-              "units": 0.7
+              "tens": 0.6333333333333333,
+              "units": 0.6666666666666666
             },
-            "allThreeHits": 12,
-            "allThreeRate": 0.4,
+            "allThreeHits": 11,
+            "allThreeRate": 0.36666666666666664,
             "exactlyTwoHits": 10,
             "exactlyTwoRate": 0.3333333333333333,
             "mismatchRate": 0.3333333333333333,
-            "exactlyOneHits": 6,
-            "exactlyOneRate": 0.2,
+            "exactlyOneHits": 7,
+            "exactlyOneRate": 0.23333333333333334,
             "zeroHits": 2,
             "zeroHitRate": 0.06666666666666667,
             "aloneDragHits": {
@@ -2056,30 +2056,30 @@
             },
             "singlePositionDragRate": 0.3333333333333333,
             "longestAllHit": 4,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.2244897959183676,
-            "score": 0.41000000000000003
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.2406015037593985,
+            "score": 0.385
           },
           "100": {
             "count": 100,
             "positionHits": {
               "hundreds": 78,
-              "tens": 80,
-              "units": 81
+              "tens": 79,
+              "units": 80
             },
             "positionRates": {
               "hundreds": 0.78,
-              "tens": 0.8,
-              "units": 0.81
+              "tens": 0.79,
+              "units": 0.8
             },
-            "allThreeHits": 60,
-            "allThreeRate": 0.6,
+            "allThreeHits": 59,
+            "allThreeRate": 0.59,
             "exactlyTwoHits": 23,
             "exactlyTwoRate": 0.23,
             "mismatchRate": 0.23,
-            "exactlyOneHits": 13,
-            "exactlyOneRate": 0.13,
+            "exactlyOneHits": 14,
+            "exactlyOneRate": 0.14,
             "zeroHits": 4,
             "zeroHitRate": 0.04,
             "aloneDragHits": {
@@ -2094,30 +2094,30 @@
             },
             "singlePositionDragRate": 0.23,
             "longestAllHit": 11,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.1870845204178535,
-            "score": 0.5575000000000001
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.1968516715352155,
+            "score": 0.55
           },
           "300": {
             "count": 300,
             "positionHits": {
               "hundreds": 239,
-              "tens": 247,
-              "units": 255
+              "tens": 246,
+              "units": 254
             },
             "positionRates": {
               "hundreds": 0.7966666666666666,
-              "tens": 0.8233333333333334,
-              "units": 0.85
+              "tens": 0.82,
+              "units": 0.8466666666666667
             },
-            "allThreeHits": 184,
-            "allThreeRate": 0.6133333333333333,
+            "allThreeHits": 183,
+            "allThreeRate": 0.61,
             "exactlyTwoHits": 79,
             "exactlyTwoRate": 0.2633333333333333,
             "mismatchRate": 0.2633333333333333,
-            "exactlyOneHits": 31,
-            "exactlyOneRate": 0.10333333333333333,
+            "exactlyOneHits": 32,
+            "exactlyOneRate": 0.10666666666666667,
             "zeroHits": 6,
             "zeroHitRate": 0.02,
             "aloneDragHits": {
@@ -2132,48 +2132,48 @@
             },
             "singlePositionDragRate": 0.2633333333333333,
             "longestAllHit": 11,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.1000826058406015,
-            "score": 0.5711666666666666
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.1028764786379457,
+            "score": 0.5686666666666667
           },
           "500": {
-            "count": 365,
+            "count": 366,
             "positionHits": {
-              "hundreds": 292,
+              "hundreds": 293,
               "tens": 298,
               "units": 307
             },
             "positionRates": {
-              "hundreds": 0.8,
-              "tens": 0.8164383561643835,
-              "units": 0.8410958904109589
+              "hundreds": 0.8005464480874317,
+              "tens": 0.8142076502732241,
+              "units": 0.8387978142076503
             },
             "allThreeHits": 219,
-            "allThreeRate": 0.6,
+            "allThreeRate": 0.5983606557377049,
             "exactlyTwoHits": 101,
-            "exactlyTwoRate": 0.27671232876712326,
-            "mismatchRate": 0.27671232876712326,
-            "exactlyOneHits": 38,
-            "exactlyOneRate": 0.10410958904109589,
+            "exactlyTwoRate": 0.27595628415300544,
+            "mismatchRate": 0.27595628415300544,
+            "exactlyOneHits": 39,
+            "exactlyOneRate": 0.10655737704918032,
             "zeroHits": 7,
-            "zeroHitRate": 0.019178082191780823,
+            "zeroHitRate": 0.01912568306010929,
             "aloneDragHits": {
               "hundreds": 37,
               "tens": 35,
               "units": 29
             },
             "aloneDragRates": {
-              "hundreds": 0.10136986301369863,
-              "tens": 0.0958904109589041,
-              "units": 0.07945205479452055
+              "hundreds": 0.10109289617486339,
+              "tens": 0.09562841530054644,
+              "units": 0.07923497267759563
             },
-            "singlePositionDragRate": 0.27671232876712326,
+            "singlePositionDragRate": 0.27595628415300544,
             "longestAllHit": 11,
-            "maxAllMiss": 14,
-            "currentAllMiss": 14,
-            "syncEfficiency": 1.0921753055112255,
-            "score": 0.5619178082191781
+            "maxAllMiss": 15,
+            "currentAllMiss": 15,
+            "syncEfficiency": 1.0944200119692309,
+            "score": 0.5606557377049181
           }
         }
       }
@@ -2181,12 +2181,12 @@
     "7": {
       "poolSize": 7,
       "recommendation": {
-        "targetIssue": "26262",
-        "basedOnIssue": "26261",
-        "basedOnDate": "2026-09-28",
+        "targetIssue": "26263",
+        "basedOnIssue": "26262",
+        "basedOnDate": "2026-09-29",
         "hundredsPool": "0356789",
-        "tensPool": "1345678",
-        "unitsPool": "1245678"
+        "tensPool": "1245689",
+        "unitsPool": "0124789"
       },
       "methods": {
         "hundreds": {
@@ -2768,11 +2768,11 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 8,
-            "rate": 0.5714285714285714,
+            "rate": 0.5333333333333333,
             "maxMiss": 3,
-            "currentMiss": 2,
+            "currentMiss": 3,
             "targetMet": false
           }
         },
@@ -2786,11 +2786,11 @@
             "targetMet": true
           },
           "forward": {
-            "count": 14,
-            "hits": 9,
-            "rate": 0.6428571428571429,
+            "count": 15,
+            "hits": 10,
+            "rate": 0.6666666666666666,
             "maxMiss": 2,
-            "currentMiss": 1,
+            "currentMiss": 0,
             "targetMet": false
           }
         },
@@ -2804,21 +2804,21 @@
             "targetMet": true
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 13,
-            "rate": 0.9285714285714286,
+            "rate": 0.8666666666666667,
             "maxMiss": 1,
-            "currentMiss": 0,
+            "currentMiss": 1,
             "targetMet": true
           }
         },
         "all": {
           "overall": {
-            "count": 365,
+            "count": 366,
             "hits": 266,
-            "rate": 0.7287671232876712,
-            "maxMiss": 10,
-            "currentMiss": 10,
+            "rate": 0.726775956284153,
+            "maxMiss": 11,
+            "currentMiss": 11,
             "targetMet": false
           },
           "training": {
@@ -2830,51 +2830,51 @@
             "targetMet": false
           },
           "forward": {
-            "count": 14,
+            "count": 15,
             "hits": 4,
-            "rate": 0.2857142857142857,
-            "maxMiss": 10,
-            "currentMiss": 10,
+            "rate": 0.26666666666666666,
+            "maxMiss": 11,
+            "currentMiss": 11,
             "targetMet": false
           }
         },
         "joint": {
-          "count": 365,
+          "count": 366,
           "positionHits": {
             "hundreds": 321,
-            "tens": 322,
+            "tens": 323,
             "units": 329
           },
           "positionRates": {
-            "hundreds": 0.8794520547945206,
-            "tens": 0.8821917808219178,
-            "units": 0.9013698630136986
+            "hundreds": 0.8770491803278688,
+            "tens": 0.8825136612021858,
+            "units": 0.8989071038251366
           },
           "allThreeHits": 266,
-          "allThreeRate": 0.7287671232876712,
+          "allThreeRate": 0.726775956284153,
           "exactlyTwoHits": 77,
-          "exactlyTwoRate": 0.21095890410958903,
-          "mismatchRate": 0.21095890410958903,
-          "exactlyOneHits": 20,
-          "exactlyOneRate": 0.0547945205479452,
+          "exactlyTwoRate": 0.2103825136612022,
+          "mismatchRate": 0.2103825136612022,
+          "exactlyOneHits": 21,
+          "exactlyOneRate": 0.05737704918032787,
           "zeroHits": 2,
-          "zeroHitRate": 0.005479452054794521,
+          "zeroHitRate": 0.00546448087431694,
           "aloneDragHits": {
             "hundreds": 33,
             "tens": 26,
             "units": 18
           },
           "aloneDragRates": {
-            "hundreds": 0.09041095890410959,
-            "tens": 0.07123287671232877,
-            "units": 0.049315068493150684
+            "hundreds": 0.09016393442622951,
+            "tens": 0.07103825136612021,
+            "units": 0.04918032786885246
           },
-          "singlePositionDragRate": 0.21095890410958903,
+          "singlePositionDragRate": 0.2103825136612022,
           "longestAllHit": 12,
-          "maxAllMiss": 10,
-          "currentAllMiss": 10,
-          "syncEfficiency": 1.0421028016798632,
-          "score": 0.6565753424657536
+          "maxAllMiss": 11,
+          "currentAllMiss": 11,
+          "syncEfficiency": 1.0445767489736002,
+          "score": 0.6550546448087432
         },
         "jointTraining": {
           "count": 351,
@@ -2915,24 +2915,24 @@
           "score": 0.6690883190883191
         },
         "jointForward": {
-          "count": 14,
+          "count": 15,
           "positionHits": {
             "hundreds": 8,
-            "tens": 9,
+            "tens": 10,
             "units": 13
           },
           "positionRates": {
-            "hundreds": 0.5714285714285714,
-            "tens": 0.6428571428571429,
-            "units": 0.9285714285714286
+            "hundreds": 0.5333333333333333,
+            "tens": 0.6666666666666666,
+            "units": 0.8666666666666667
           },
           "allThreeHits": 4,
-          "allThreeRate": 0.2857142857142857,
+          "allThreeRate": 0.26666666666666666,
           "exactlyTwoHits": 8,
-          "exactlyTwoRate": 0.5714285714285714,
-          "mismatchRate": 0.5714285714285714,
-          "exactlyOneHits": 2,
-          "exactlyOneRate": 0.14285714285714285,
+          "exactlyTwoRate": 0.5333333333333333,
+          "mismatchRate": 0.5333333333333333,
+          "exactlyOneHits": 3,
+          "exactlyOneRate": 0.2,
           "zeroHits": 0,
           "zeroHitRate": 0,
           "aloneDragHits": {
@@ -2941,37 +2941,37 @@
             "units": 0
           },
           "aloneDragRates": {
-            "hundreds": 0.2857142857142857,
-            "tens": 0.2857142857142857,
+            "hundreds": 0.26666666666666666,
+            "tens": 0.26666666666666666,
             "units": 0
           },
-          "singlePositionDragRate": 0.5714285714285714,
+          "singlePositionDragRate": 0.5333333333333333,
           "longestAllHit": 4,
-          "maxAllMiss": 10,
-          "currentAllMiss": 10,
-          "syncEfficiency": 0.8376068376068375,
-          "score": 0.34285714285714286
+          "maxAllMiss": 11,
+          "currentAllMiss": 11,
+          "syncEfficiency": 0.8653846153846154,
+          "score": 0.32666666666666666
         },
         "windows": {
           "30": {
             "count": 30,
             "positionHits": {
-              "hundreds": 22,
+              "hundreds": 21,
               "tens": 24,
-              "units": 29
+              "units": 28
             },
             "positionRates": {
-              "hundreds": 0.7333333333333333,
+              "hundreds": 0.7,
               "tens": 0.8,
-              "units": 0.9666666666666667
+              "units": 0.9333333333333333
             },
-            "allThreeHits": 18,
-            "allThreeRate": 0.6,
+            "allThreeHits": 17,
+            "allThreeRate": 0.5666666666666667,
             "exactlyTwoHits": 9,
             "exactlyTwoRate": 0.3,
             "mismatchRate": 0.3,
-            "exactlyOneHits": 3,
-            "exactlyOneRate": 0.1,
+            "exactlyOneHits": 4,
+            "exactlyOneRate": 0.13333333333333333,
             "zeroHits": 0,
             "zeroHitRate": 0,
             "aloneDragHits": {
@@ -2986,30 +2986,30 @@
             },
             "singlePositionDragRate": 0.3,
             "longestAllHit": 12,
-            "maxAllMiss": 10,
-            "currentAllMiss": 10,
-            "syncEfficiency": 1.0579937304075235,
-            "score": 0.565
+            "maxAllMiss": 11,
+            "currentAllMiss": 11,
+            "syncEfficiency": 1.084183673469388,
+            "score": 0.54
           },
           "100": {
             "count": 100,
             "positionHits": {
-              "hundreds": 84,
+              "hundreds": 83,
               "tens": 90,
-              "units": 93
+              "units": 92
             },
             "positionRates": {
-              "hundreds": 0.84,
+              "hundreds": 0.83,
               "tens": 0.9,
-              "units": 0.93
+              "units": 0.92
             },
-            "allThreeHits": 73,
-            "allThreeRate": 0.73,
+            "allThreeHits": 72,
+            "allThreeRate": 0.72,
             "exactlyTwoHits": 21,
             "exactlyTwoRate": 0.21,
             "mismatchRate": 0.21,
-            "exactlyOneHits": 6,
-            "exactlyOneRate": 0.06,
+            "exactlyOneHits": 7,
+            "exactlyOneRate": 0.07,
             "zeroHits": 0,
             "zeroHitRate": 0,
             "aloneDragHits": {
@@ -3024,30 +3024,30 @@
             },
             "singlePositionDragRate": 0.21,
             "longestAllHit": 12,
-            "maxAllMiss": 10,
-            "currentAllMiss": 10,
-            "syncEfficiency": 1.0382886726972749,
-            "score": 0.6579999999999999
+            "maxAllMiss": 11,
+            "currentAllMiss": 11,
+            "syncEfficiency": 1.0476689366160292,
+            "score": 0.6504999999999999
           },
           "300": {
             "count": 300,
             "positionHits": {
-              "hundreds": 264,
+              "hundreds": 263,
               "tens": 264,
-              "units": 274
+              "units": 273
             },
             "positionRates": {
-              "hundreds": 0.88,
+              "hundreds": 0.8766666666666667,
               "tens": 0.88,
-              "units": 0.9133333333333333
+              "units": 0.91
             },
-            "allThreeHits": 220,
-            "allThreeRate": 0.7333333333333333,
+            "allThreeHits": 219,
+            "allThreeRate": 0.73,
             "exactlyTwoHits": 64,
             "exactlyTwoRate": 0.21333333333333335,
             "mismatchRate": 0.21333333333333335,
-            "exactlyOneHits": 14,
-            "exactlyOneRate": 0.04666666666666667,
+            "exactlyOneHits": 15,
+            "exactlyOneRate": 0.05,
             "zeroHits": 2,
             "zeroHitRate": 0.006666666666666667,
             "aloneDragHits": {
@@ -3062,48 +3062,48 @@
             },
             "singlePositionDragRate": 0.21333333333333335,
             "longestAllHit": 12,
-            "maxAllMiss": 10,
-            "currentAllMiss": 10,
-            "syncEfficiency": 1.0368281353682813,
-            "score": 0.66
+            "maxAllMiss": 11,
+            "currentAllMiss": 11,
+            "syncEfficiency": 1.0398346900248039,
+            "score": 0.6575
           },
           "500": {
-            "count": 365,
+            "count": 366,
             "positionHits": {
               "hundreds": 321,
-              "tens": 322,
+              "tens": 323,
               "units": 329
             },
             "positionRates": {
-              "hundreds": 0.8794520547945206,
-              "tens": 0.8821917808219178,
-              "units": 0.9013698630136986
+              "hundreds": 0.8770491803278688,
+              "tens": 0.8825136612021858,
+              "units": 0.8989071038251366
             },
             "allThreeHits": 266,
-            "allThreeRate": 0.7287671232876712,
+            "allThreeRate": 0.726775956284153,
             "exactlyTwoHits": 77,
-            "exactlyTwoRate": 0.21095890410958903,
-            "mismatchRate": 0.21095890410958903,
-            "exactlyOneHits": 20,
-            "exactlyOneRate": 0.0547945205479452,
+            "exactlyTwoRate": 0.2103825136612022,
+            "mismatchRate": 0.2103825136612022,
+            "exactlyOneHits": 21,
+            "exactlyOneRate": 0.05737704918032787,
             "zeroHits": 2,
-            "zeroHitRate": 0.005479452054794521,
+            "zeroHitRate": 0.00546448087431694,
             "aloneDragHits": {
               "hundreds": 33,
               "tens": 26,
               "units": 18
             },
             "aloneDragRates": {
-              "hundreds": 0.09041095890410959,
-              "tens": 0.07123287671232877,
-              "units": 0.049315068493150684
+              "hundreds": 0.09016393442622951,
+              "tens": 0.07103825136612021,
+              "units": 0.04918032786885246
             },
-            "singlePositionDragRate": 0.21095890410958903,
+            "singlePositionDragRate": 0.2103825136612022,
             "longestAllHit": 12,
-            "maxAllMiss": 10,
-            "currentAllMiss": 10,
-            "syncEfficiency": 1.0421028016798632,
-            "score": 0.6565753424657536
+            "maxAllMiss": 11,
+            "currentAllMiss": 11,
+            "syncEfficiency": 1.0445767489736002,
+            "score": 0.6550546448087432
           }
         }
       }
