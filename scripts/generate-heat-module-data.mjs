@@ -172,9 +172,7 @@ function scoreNumber(number, signals, history, modelVersion, coverageProfile = f
 function choose22(signals, history, modelVersion, uniqueGroups = false) {
   const ranked = Array.from({ length: 1000 }, (_, number) => scoreNumber(number, signals, history, modelVersion, uniqueGroups)).sort((a, b) => b.score - a.score || a.number.localeCompare(b.number));
   const selected = [], groupCounts = new Map(), shapeCounts = { "组六": 0, "组三": 0, "豹子": 0 };
-  const quotas = game === "pl3" && !uniqueGroups
-    ? { "组六": 14, "组三": 8, "豹子": 0 }
-    : { "组六": 16, "组三": 6, "豹子": 0 };
+  const quotas = { "组六": 16, "组三": 6, "豹子": 0 };
   for (const item of ranked) {
     const itemShape = shape(Number(item.number)), key = groupKey(Number(item.number));
     const straightGroupLimit = game === "pl3" ? 4 : 2;
@@ -200,7 +198,7 @@ const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
 const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
-const optimizedModel = game === "pl3" ? "P22.3-state-optimized" : "M22.5-state-optimized";
+const optimizedModel = game === "pl3" ? "P22.5-balanced-6x16-state-optimized" : "M22.5-state-optimized";
 const coverageModel = game === "pl3" ? "P22.4-group-cover" : "M22.6-group-cover";
 const modelVersion = game === "pl3" || Number(targetIssue) >= 2026261 ? optimizedModel : "M22.1";
 const evaluationRows = [];
@@ -257,9 +255,9 @@ const payload = {
     status: modelVersion === optimizedModel ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "等待20:20当期热度，尚未推荐") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
-    numbers: recommendation, structure: recommendation.length === 22 ? { group6: game === "pl3" ? 14 : 16, group3: game === "pl3" ? 8 : 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
+    numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveAllVersions: metrics(liveRows), liveRows,
-    method: modelVersion === optimizedModel ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。同一组六最多保留4个高分排列；验证段34/200，后置审计5/60，真实前瞻从上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
+    method: modelVersion === optimizedModel ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。直选形态与福彩一致采用16个组六、6个组三；同一组六最多保留4个高分排列，真实前瞻从本版本上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   },
   matrix22Coverage: {
     modelVersion: coverageModel,

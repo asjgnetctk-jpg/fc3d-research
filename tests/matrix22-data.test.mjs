@@ -119,7 +119,7 @@ test("PL3 matrix uses independent heat, models, replay marks and group quotas", 
     assert.equal(row.draw, official.get(String(row.issue)).draw);
   }
   if (pl3Data.matrix22.numbers.length) {
-    assert.deepEqual(pl3Data.matrix22.structure, { group6: 14, group3: 8, triple: 0 });
+    assert.deepEqual(pl3Data.matrix22.structure, { group6: 16, group3: 6, triple: 0 });
     assert.deepEqual(pl3Data.matrix22Coverage.structure, { group6: 16, group3: 6, triple: 0 });
   }
 });
