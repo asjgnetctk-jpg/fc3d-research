@@ -1,5 +1,68 @@
 <!doctype html>
-<meta charset="UTF-8" />
-<meta http-equiv="refresh" content="0; url=https://asjgnetctk-jpg.github.io/fc3d-research/v2-high.html" />
-<title>正在打开V2高命中研究</title>
-<a href="https://asjgnetctk-jpg.github.io/fc3d-research/v2-high.html">打开V2高命中研究</a>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#081713" />
+    <meta name="description" content="福彩3D V2高命中率独立回测与候选模型状态。" />
+    <title>福彩3D · V2高命中研究</title>
+    <link rel="stylesheet" href="./styles.css?v=20261004-v2blind" />
+    <script src="./assets/v2-high.js?v=20261004-v2blind" defer></script>
+  </head>
+  <body>
+    <main class="app-shell terminal-shell">
+      <header class="topbar">
+        <div class="terminal-brand">
+          <span class="brand-sigil" aria-hidden="true">V2+</span>
+          <div><p class="eyebrow">福彩3D · 独立研究页</p><h1>V2高命中研究</h1></div>
+        </div>
+        <span class="live-readout">5,000,000 / BATCH</span>
+      </header>
+
+      <section class="status-strip">
+        <span class="status-dot"></span>
+          <strong>严格滚动盲测已完成，结果与训练内成绩分开</strong>
+      </section>
+
+      <section class="hero-card">
+        <div class="hero-meta"><span>2,000万组候选 + 多模型复核</span><span id="latest-source">读取数据中…</span></div>
+        <div class="single-group3">
+          <span>最终选择</span>
+          <strong>福彩6码在线融合</strong>
+          <small>只有该候选在完全保留的独立段明显高于12%理论基线；其余玩法不因训练内高分而强行替换。</small>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">最终保留段</p><h2>严格独立结果</h2></div></div>
+        <div id="blind-metrics" class="metrics-grid v2-metrics"></div>
+        <p class="section-note warning-note">5码随机理论命中率为6%，6码为12%。下面只显示未参与参数选择的最后保留段，不能保证未来重复。</p>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">回测纪律</p><h2>怎么决定是否升级</h2></div></div>
+        <div class="metrics-grid v2-metrics">
+          <div class="metric-card"><span>搜索规模</span><strong>2,000万组</strong><small>56个状态架构、5个年度滚动窗口</small></div>
+          <div class="metric-card"><span>隔离方式</span><strong>逐期只看过去</strong><small>开发段选参数，最后一年只打开一次</small></div>
+          <div class="metric-card"><span>晋级标准</span><strong>独立段优先</strong><small>命中率、最长连断与年度稳定性同时检查</small></div>
+        </div>
+      </section>
+
+      <section class="section-block history-section">
+        <div class="section-heading"><div><p class="eyebrow">独立证据</p><h2>福彩6码最后保留段</h2></div></div>
+        <div id="blind-history" class="history-list"></div>
+      </section>
+
+      <section class="section-block integrity-block">
+        <p class="section-note">本页不把训练内的18%—27%写成未来命中率。完整参数、逐期推荐与淘汰结果均可下载核对。</p>
+        <div class="audit-links">
+          <a href="./audit/fc3d-v2-online-stack.json">福彩完整逐期报告</a>
+          <a href="./audit/pl3-v2-online-stack.json">体彩完整逐期报告</a>
+          <a href="./audit/v2-pool56-blind-leaderboard.json">2,000万组滚动榜</a>
+        </div>
+      </section>
+
+      <footer><strong>历史高命中不代表未来保证</strong><p>彩票开奖结果随机；本页只记录可核查的训练、复选和独立测试结果。</p></footer>
+    </main>
+  </body>
+</html>

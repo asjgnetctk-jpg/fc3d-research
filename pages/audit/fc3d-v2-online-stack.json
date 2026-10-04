@@ -1,0 +1,6391 @@
+{
+  "generatedAt": "2026-09-30T09:03:32.288Z",
+  "game": "fc3d",
+  "methodology": "Causal online stacking over 15 already-walk-forward base experts. At every date, expert weights use only earlier out-of-fold hits. Hyperparameters are selected on search and development intervals; the final interval is opened once.",
+  "plays": {
+    "pool5": {
+      "theoreticalRate": 0.06,
+      "experts": [
+        "direct-single",
+        "direct-ensemble",
+        "formula-draw-single",
+        "formula-draw-ensemble",
+        "formula-heat-single",
+        "formula-heat-ensemble",
+        "formula-fusion-single",
+        "formula-fusion-ensemble",
+        "ridge-draw",
+        "ridge-heat",
+        "ridge-fusion",
+        "knn-25",
+        "knn-50",
+        "knn-100",
+        "knn-200"
+      ],
+      "ranges": {
+        "search": {
+          "start": "2021-03-30",
+          "end": "2024-07-28",
+          "count": 1175
+        },
+        "development": {
+          "start": "2024-07-29",
+          "end": "2025-07-28",
+          "count": 351
+        },
+        "test": {
+          "start": "2025-07-29",
+          "end": "2026-09-28",
+          "count": 413
+        }
+      },
+      "selected": {
+        "config": {
+          "mode": "weighted",
+          "window": 100,
+          "alpha": 2,
+          "topExperts": 12
+        },
+        "search": {
+          "count": 1175,
+          "hits": 81,
+          "rate": 0.06893617021276596,
+          "maxMiss": 74,
+          "currentMiss": 7
+        },
+        "development": {
+          "count": 351,
+          "hits": 26,
+          "rate": 0.07407407407407407,
+          "maxMiss": 38,
+          "currentMiss": 7
+        },
+        "score": 132.22817966903082,
+        "test": {
+          "count": 413,
+          "hits": 27,
+          "rate": 0.06537530266343826,
+          "maxMiss": 43,
+          "currentMiss": 43
+        }
+      },
+      "topDevelopmentCandidates": [
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 12
+          },
+          "search": {
+            "count": 1175,
+            "hits": 81,
+            "rate": 0.06893617021276596,
+            "maxMiss": 74,
+            "currentMiss": 7
+          },
+          "development": {
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 38,
+            "currentMiss": 7
+          },
+          "score": 132.22817966903082
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 8
+          },
+          "search": {
+            "count": 1175,
+            "hits": 80,
+            "rate": 0.06808510638297872,
+            "maxMiss": 74,
+            "currentMiss": 15
+          },
+          "development": {
+            "count": 351,
+            "hits": 27,
+            "rate": 0.07692307692307693,
+            "maxMiss": 65,
+            "currentMiss": 7
+          },
+          "score": 126.12795417348617
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 0.25,
+            "topExperts": 5
+          },
+          "search": {
+            "count": 1175,
+            "hits": 83,
+            "rate": 0.07063829787234042,
+            "maxMiss": 65,
+            "currentMiss": 23
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 53,
+            "currentMiss": 27
+          },
+          "score": 110.10633569739963
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 0.5,
+            "topExperts": 5
+          },
+          "search": {
+            "count": 1175,
+            "hits": 83,
+            "rate": 0.07063829787234042,
+            "maxMiss": 65,
+            "currentMiss": 23
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 53,
+            "currentMiss": 27
+          },
+          "score": 110.10633569739963
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 1,
+            "topExperts": 8
+          },
+          "search": {
+            "count": 1175,
+            "hits": 81,
+            "rate": 0.06893617021276596,
+            "maxMiss": 69,
+            "currentMiss": 24
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 40,
+            "currentMiss": 7
+          },
+          "score": 109.57314420803795
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 1,
+            "topExperts": 5
+          },
+          "search": {
+            "count": 1175,
+            "hits": 80,
+            "rate": 0.06808510638297872,
+            "maxMiss": 69,
+            "currentMiss": 7
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 47,
+            "currentMiss": 7
+          },
+          "score": 104.12692853246052
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 0.25,
+            "topExperts": 5
+          },
+          "search": {
+            "count": 1175,
+            "hits": 79,
+            "rate": 0.06723404255319149,
+            "maxMiss": 69,
+            "currentMiss": 7
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 47,
+            "currentMiss": 7
+          },
+          "score": 94.33969448990729
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 0.5,
+            "topExperts": 5
+          },
+          "search": {
+            "count": 1175,
+            "hits": 79,
+            "rate": 0.06723404255319149,
+            "maxMiss": 69,
+            "currentMiss": 7
+          },
+          "development": {
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 47,
+            "currentMiss": 7
+          },
+          "score": 94.33969448990729
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 15
+          },
+          "search": {
+            "count": 1175,
+            "hits": 78,
+            "rate": 0.06638297872340425,
+            "maxMiss": 74,
+            "currentMiss": 24
+          },
+          "development": {
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 41,
+            "currentMiss": 7
+          },
+          "score": 93.77946899436257
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 2,
+            "topExperts": 8
+          },
+          "search": {
+            "count": 1175,
+            "hits": 77,
+            "rate": 0.06553191489361702,
+            "maxMiss": 69,
+            "currentMiss": 24
+          },
+          "development": {
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 45,
+            "currentMiss": 14
+          },
+          "score": 92.21924349881803
+        }
+      ],
+      "testRows": [
+        {
+          "issue": "2025200",
+          "date": "2025-07-29",
+          "draw": "015",
+          "recommendation": "05689",
+          "hit": false
+        },
+        {
+          "issue": "2025201",
+          "date": "2025-07-30",
+          "draw": "846",
+          "recommendation": "24567",
+          "hit": false
+        },
+        {
+          "issue": "2025202",
+          "date": "2025-07-31",
+          "draw": "953",
+          "recommendation": "03469",
+          "hit": false
+        },
+        {
+          "issue": "2025203",
+          "date": "2025-08-01",
+          "draw": "013",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2025204",
+          "date": "2025-08-02",
+          "draw": "007",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2025205",
+          "date": "2025-08-03",
+          "draw": "920",
+          "recommendation": "12689",
+          "hit": false
+        },
+        {
+          "issue": "2025206",
+          "date": "2025-08-04",
+          "draw": "444",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2025207",
+          "date": "2025-08-05",
+          "draw": "255",
+          "recommendation": "04689",
+          "hit": false
+        },
+        {
+          "issue": "2025208",
+          "date": "2025-08-06",
+          "draw": "432",
+          "recommendation": "02578",
+          "hit": false
+        },
+        {
+          "issue": "2025209",
+          "date": "2025-08-07",
+          "draw": "387",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2025210",
+          "date": "2025-08-08",
+          "draw": "520",
+          "recommendation": "13469",
+          "hit": false
+        },
+        {
+          "issue": "2025211",
+          "date": "2025-08-09",
+          "draw": "897",
+          "recommendation": "12568",
+          "hit": false
+        },
+        {
+          "issue": "2025212",
+          "date": "2025-08-10",
+          "draw": "456",
+          "recommendation": "14689",
+          "hit": false
+        },
+        {
+          "issue": "2025213",
+          "date": "2025-08-11",
+          "draw": "381",
+          "recommendation": "14689",
+          "hit": false
+        },
+        {
+          "issue": "2025214",
+          "date": "2025-08-12",
+          "draw": "920",
+          "recommendation": "02689",
+          "hit": true
+        },
+        {
+          "issue": "2025215",
+          "date": "2025-08-13",
+          "draw": "853",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2025216",
+          "date": "2025-08-14",
+          "draw": "625",
+          "recommendation": "05689",
+          "hit": false
+        },
+        {
+          "issue": "2025217",
+          "date": "2025-08-15",
+          "draw": "894",
+          "recommendation": "01249",
+          "hit": false
+        },
+        {
+          "issue": "2025218",
+          "date": "2025-08-16",
+          "draw": "526",
+          "recommendation": "01269",
+          "hit": false
+        },
+        {
+          "issue": "2025219",
+          "date": "2025-08-17",
+          "draw": "900",
+          "recommendation": "01245",
+          "hit": false
+        },
+        {
+          "issue": "2025220",
+          "date": "2025-08-18",
+          "draw": "536",
+          "recommendation": "12368",
+          "hit": false
+        },
+        {
+          "issue": "2025221",
+          "date": "2025-08-19",
+          "draw": "296",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2025222",
+          "date": "2025-08-20",
+          "draw": "010",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2025223",
+          "date": "2025-08-21",
+          "draw": "736",
+          "recommendation": "15689",
+          "hit": false
+        },
+        {
+          "issue": "2025224",
+          "date": "2025-08-22",
+          "draw": "990",
+          "recommendation": "14689",
+          "hit": false
+        },
+        {
+          "issue": "2025225",
+          "date": "2025-08-23",
+          "draw": "806",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2025226",
+          "date": "2025-08-24",
+          "draw": "180",
+          "recommendation": "14589",
+          "hit": false
+        },
+        {
+          "issue": "2025227",
+          "date": "2025-08-25",
+          "draw": "611",
+          "recommendation": "03468",
+          "hit": false
+        },
+        {
+          "issue": "2025228",
+          "date": "2025-08-26",
+          "draw": "465",
+          "recommendation": "23467",
+          "hit": false
+        },
+        {
+          "issue": "2025229",
+          "date": "2025-08-27",
+          "draw": "108",
+          "recommendation": "01469",
+          "hit": false
+        },
+        {
+          "issue": "2025230",
+          "date": "2025-08-28",
+          "draw": "439",
+          "recommendation": "14589",
+          "hit": false
+        },
+        {
+          "issue": "2025231",
+          "date": "2025-08-29",
+          "draw": "732",
+          "recommendation": "46789",
+          "hit": false
+        },
+        {
+          "issue": "2025232",
+          "date": "2025-08-30",
+          "draw": "044",
+          "recommendation": "24567",
+          "hit": false
+        },
+        {
+          "issue": "2025233",
+          "date": "2025-08-31",
+          "draw": "259",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2025234",
+          "date": "2025-09-01",
+          "draw": "620",
+          "recommendation": "34567",
+          "hit": false
+        },
+        {
+          "issue": "2025235",
+          "date": "2025-09-02",
+          "draw": "969",
+          "recommendation": "15679",
+          "hit": false
+        },
+        {
+          "issue": "2025236",
+          "date": "2025-09-03",
+          "draw": "355",
+          "recommendation": "34678",
+          "hit": false
+        },
+        {
+          "issue": "2025237",
+          "date": "2025-09-04",
+          "draw": "590",
+          "recommendation": "25678",
+          "hit": false
+        },
+        {
+          "issue": "2025238",
+          "date": "2025-09-05",
+          "draw": "860",
+          "recommendation": "12578",
+          "hit": false
+        },
+        {
+          "issue": "2025239",
+          "date": "2025-09-06",
+          "draw": "125",
+          "recommendation": "12458",
+          "hit": true
+        },
+        {
+          "issue": "2025240",
+          "date": "2025-09-07",
+          "draw": "419",
+          "recommendation": "12457",
+          "hit": false
+        },
+        {
+          "issue": "2025241",
+          "date": "2025-09-08",
+          "draw": "160",
+          "recommendation": "24678",
+          "hit": false
+        },
+        {
+          "issue": "2025242",
+          "date": "2025-09-09",
+          "draw": "990",
+          "recommendation": "14578",
+          "hit": false
+        },
+        {
+          "issue": "2025243",
+          "date": "2025-09-10",
+          "draw": "176",
+          "recommendation": "12478",
+          "hit": false
+        },
+        {
+          "issue": "2025244",
+          "date": "2025-09-11",
+          "draw": "673",
+          "recommendation": "23458",
+          "hit": false
+        },
+        {
+          "issue": "2025245",
+          "date": "2025-09-12",
+          "draw": "848",
+          "recommendation": "12348",
+          "hit": false
+        },
+        {
+          "issue": "2025246",
+          "date": "2025-09-13",
+          "draw": "997",
+          "recommendation": "13489",
+          "hit": false
+        },
+        {
+          "issue": "2025247",
+          "date": "2025-09-14",
+          "draw": "262",
+          "recommendation": "12389",
+          "hit": false
+        },
+        {
+          "issue": "2025248",
+          "date": "2025-09-15",
+          "draw": "526",
+          "recommendation": "12345",
+          "hit": false
+        },
+        {
+          "issue": "2025249",
+          "date": "2025-09-16",
+          "draw": "952",
+          "recommendation": "01234",
+          "hit": false
+        },
+        {
+          "issue": "2025250",
+          "date": "2025-09-17",
+          "draw": "902",
+          "recommendation": "01278",
+          "hit": false
+        },
+        {
+          "issue": "2025251",
+          "date": "2025-09-18",
+          "draw": "868",
+          "recommendation": "12478",
+          "hit": false
+        },
+        {
+          "issue": "2025252",
+          "date": "2025-09-19",
+          "draw": "792",
+          "recommendation": "01368",
+          "hit": false
+        },
+        {
+          "issue": "2025253",
+          "date": "2025-09-20",
+          "draw": "457",
+          "recommendation": "13478",
+          "hit": false
+        },
+        {
+          "issue": "2025254",
+          "date": "2025-09-21",
+          "draw": "072",
+          "recommendation": "45689",
+          "hit": false
+        },
+        {
+          "issue": "2025255",
+          "date": "2025-09-22",
+          "draw": "264",
+          "recommendation": "01245",
+          "hit": false
+        },
+        {
+          "issue": "2025256",
+          "date": "2025-09-23",
+          "draw": "406",
+          "recommendation": "23468",
+          "hit": false
+        },
+        {
+          "issue": "2025257",
+          "date": "2025-09-24",
+          "draw": "860",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2025258",
+          "date": "2025-09-25",
+          "draw": "626",
+          "recommendation": "14569",
+          "hit": false
+        },
+        {
+          "issue": "2025259",
+          "date": "2025-09-26",
+          "draw": "625",
+          "recommendation": "12456",
+          "hit": true
+        },
+        {
+          "issue": "2025260",
+          "date": "2025-09-27",
+          "draw": "199",
+          "recommendation": "23579",
+          "hit": false
+        },
+        {
+          "issue": "2025261",
+          "date": "2025-09-28",
+          "draw": "751",
+          "recommendation": "02589",
+          "hit": false
+        },
+        {
+          "issue": "2025262",
+          "date": "2025-09-29",
+          "draw": "914",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2025263",
+          "date": "2025-09-30",
+          "draw": "399",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2025264",
+          "date": "2025-10-05",
+          "draw": "734",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2025265",
+          "date": "2025-10-06",
+          "draw": "546",
+          "recommendation": "24569",
+          "hit": true
+        },
+        {
+          "issue": "2025266",
+          "date": "2025-10-07",
+          "draw": "723",
+          "recommendation": "24568",
+          "hit": false
+        },
+        {
+          "issue": "2025267",
+          "date": "2025-10-08",
+          "draw": "391",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2025268",
+          "date": "2025-10-09",
+          "draw": "674",
+          "recommendation": "25689",
+          "hit": false
+        },
+        {
+          "issue": "2025269",
+          "date": "2025-10-10",
+          "draw": "055",
+          "recommendation": "04689",
+          "hit": false
+        },
+        {
+          "issue": "2025270",
+          "date": "2025-10-11",
+          "draw": "408",
+          "recommendation": "02467",
+          "hit": false
+        },
+        {
+          "issue": "2025271",
+          "date": "2025-10-12",
+          "draw": "727",
+          "recommendation": "12689",
+          "hit": false
+        },
+        {
+          "issue": "2025272",
+          "date": "2025-10-13",
+          "draw": "967",
+          "recommendation": "02578",
+          "hit": false
+        },
+        {
+          "issue": "2025273",
+          "date": "2025-10-14",
+          "draw": "045",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2025274",
+          "date": "2025-10-15",
+          "draw": "596",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2025275",
+          "date": "2025-10-16",
+          "draw": "203",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2025276",
+          "date": "2025-10-17",
+          "draw": "714",
+          "recommendation": "12369",
+          "hit": false
+        },
+        {
+          "issue": "2025277",
+          "date": "2025-10-18",
+          "draw": "061",
+          "recommendation": "12478",
+          "hit": false
+        },
+        {
+          "issue": "2025278",
+          "date": "2025-10-19",
+          "draw": "629",
+          "recommendation": "12356",
+          "hit": false
+        },
+        {
+          "issue": "2025279",
+          "date": "2025-10-20",
+          "draw": "752",
+          "recommendation": "02589",
+          "hit": false
+        },
+        {
+          "issue": "2025280",
+          "date": "2025-10-21",
+          "draw": "411",
+          "recommendation": "04567",
+          "hit": false
+        },
+        {
+          "issue": "2025281",
+          "date": "2025-10-22",
+          "draw": "897",
+          "recommendation": "23459",
+          "hit": false
+        },
+        {
+          "issue": "2025282",
+          "date": "2025-10-23",
+          "draw": "416",
+          "recommendation": "01589",
+          "hit": false
+        },
+        {
+          "issue": "2025283",
+          "date": "2025-10-24",
+          "draw": "664",
+          "recommendation": "24569",
+          "hit": false
+        },
+        {
+          "issue": "2025284",
+          "date": "2025-10-25",
+          "draw": "844",
+          "recommendation": "01247",
+          "hit": false
+        },
+        {
+          "issue": "2025285",
+          "date": "2025-10-26",
+          "draw": "172",
+          "recommendation": "04689",
+          "hit": false
+        },
+        {
+          "issue": "2025286",
+          "date": "2025-10-27",
+          "draw": "827",
+          "recommendation": "02568",
+          "hit": false
+        },
+        {
+          "issue": "2025287",
+          "date": "2025-10-28",
+          "draw": "805",
+          "recommendation": "23567",
+          "hit": false
+        },
+        {
+          "issue": "2025288",
+          "date": "2025-10-29",
+          "draw": "767",
+          "recommendation": "02345",
+          "hit": false
+        },
+        {
+          "issue": "2025289",
+          "date": "2025-10-30",
+          "draw": "473",
+          "recommendation": "01569",
+          "hit": false
+        },
+        {
+          "issue": "2025290",
+          "date": "2025-10-31",
+          "draw": "332",
+          "recommendation": "04567",
+          "hit": false
+        },
+        {
+          "issue": "2025291",
+          "date": "2025-11-01",
+          "draw": "794",
+          "recommendation": "01368",
+          "hit": false
+        },
+        {
+          "issue": "2025292",
+          "date": "2025-11-02",
+          "draw": "117",
+          "recommendation": "01267",
+          "hit": false
+        },
+        {
+          "issue": "2025293",
+          "date": "2025-11-03",
+          "draw": "154",
+          "recommendation": "12457",
+          "hit": true
+        },
+        {
+          "issue": "2025294",
+          "date": "2025-11-04",
+          "draw": "513",
+          "recommendation": "04578",
+          "hit": false
+        },
+        {
+          "issue": "2025295",
+          "date": "2025-11-05",
+          "draw": "273",
+          "recommendation": "03678",
+          "hit": false
+        },
+        {
+          "issue": "2025296",
+          "date": "2025-11-06",
+          "draw": "537",
+          "recommendation": "01358",
+          "hit": false
+        },
+        {
+          "issue": "2025297",
+          "date": "2025-11-07",
+          "draw": "051",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2025298",
+          "date": "2025-11-08",
+          "draw": "544",
+          "recommendation": "24569",
+          "hit": false
+        },
+        {
+          "issue": "2025299",
+          "date": "2025-11-09",
+          "draw": "385",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2025300",
+          "date": "2025-11-10",
+          "draw": "867",
+          "recommendation": "12345",
+          "hit": false
+        },
+        {
+          "issue": "2025301",
+          "date": "2025-11-11",
+          "draw": "755",
+          "recommendation": "03567",
+          "hit": false
+        },
+        {
+          "issue": "2025302",
+          "date": "2025-11-12",
+          "draw": "715",
+          "recommendation": "01236",
+          "hit": false
+        },
+        {
+          "issue": "2025303",
+          "date": "2025-11-13",
+          "draw": "933",
+          "recommendation": "12567",
+          "hit": false
+        },
+        {
+          "issue": "2025304",
+          "date": "2025-11-14",
+          "draw": "471",
+          "recommendation": "12359",
+          "hit": false
+        },
+        {
+          "issue": "2025305",
+          "date": "2025-11-15",
+          "draw": "310",
+          "recommendation": "35678",
+          "hit": false
+        },
+        {
+          "issue": "2025306",
+          "date": "2025-11-16",
+          "draw": "697",
+          "recommendation": "01268",
+          "hit": false
+        },
+        {
+          "issue": "2025307",
+          "date": "2025-11-17",
+          "draw": "164",
+          "recommendation": "12678",
+          "hit": false
+        },
+        {
+          "issue": "2025308",
+          "date": "2025-11-18",
+          "draw": "448",
+          "recommendation": "24578",
+          "hit": false
+        },
+        {
+          "issue": "2025309",
+          "date": "2025-11-19",
+          "draw": "190",
+          "recommendation": "02346",
+          "hit": false
+        },
+        {
+          "issue": "2025310",
+          "date": "2025-11-20",
+          "draw": "169",
+          "recommendation": "12689",
+          "hit": true
+        },
+        {
+          "issue": "2025311",
+          "date": "2025-11-21",
+          "draw": "640",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2025312",
+          "date": "2025-11-22",
+          "draw": "689",
+          "recommendation": "03456",
+          "hit": false
+        },
+        {
+          "issue": "2025313",
+          "date": "2025-11-23",
+          "draw": "664",
+          "recommendation": "01268",
+          "hit": false
+        },
+        {
+          "issue": "2025314",
+          "date": "2025-11-24",
+          "draw": "917",
+          "recommendation": "13467",
+          "hit": false
+        },
+        {
+          "issue": "2025315",
+          "date": "2025-11-25",
+          "draw": "729",
+          "recommendation": "12678",
+          "hit": false
+        },
+        {
+          "issue": "2025316",
+          "date": "2025-11-26",
+          "draw": "775",
+          "recommendation": "01237",
+          "hit": false
+        },
+        {
+          "issue": "2025317",
+          "date": "2025-11-27",
+          "draw": "301",
+          "recommendation": "23479",
+          "hit": false
+        },
+        {
+          "issue": "2025318",
+          "date": "2025-11-28",
+          "draw": "430",
+          "recommendation": "14567",
+          "hit": false
+        },
+        {
+          "issue": "2025319",
+          "date": "2025-11-29",
+          "draw": "294",
+          "recommendation": "12457",
+          "hit": false
+        },
+        {
+          "issue": "2025320",
+          "date": "2025-11-30",
+          "draw": "121",
+          "recommendation": "01459",
+          "hit": false
+        },
+        {
+          "issue": "2025321",
+          "date": "2025-12-01",
+          "draw": "847",
+          "recommendation": "03569",
+          "hit": false
+        },
+        {
+          "issue": "2025322",
+          "date": "2025-12-02",
+          "draw": "226",
+          "recommendation": "23459",
+          "hit": false
+        },
+        {
+          "issue": "2025323",
+          "date": "2025-12-03",
+          "draw": "551",
+          "recommendation": "04678",
+          "hit": false
+        },
+        {
+          "issue": "2025324",
+          "date": "2025-12-04",
+          "draw": "661",
+          "recommendation": "02458",
+          "hit": false
+        },
+        {
+          "issue": "2025325",
+          "date": "2025-12-05",
+          "draw": "165",
+          "recommendation": "01346",
+          "hit": false
+        },
+        {
+          "issue": "2025326",
+          "date": "2025-12-06",
+          "draw": "185",
+          "recommendation": "14568",
+          "hit": true
+        },
+        {
+          "issue": "2025327",
+          "date": "2025-12-07",
+          "draw": "789",
+          "recommendation": "01248",
+          "hit": false
+        },
+        {
+          "issue": "2025328",
+          "date": "2025-12-08",
+          "draw": "040",
+          "recommendation": "04579",
+          "hit": false
+        },
+        {
+          "issue": "2025329",
+          "date": "2025-12-09",
+          "draw": "564",
+          "recommendation": "01578",
+          "hit": false
+        },
+        {
+          "issue": "2025330",
+          "date": "2025-12-10",
+          "draw": "062",
+          "recommendation": "02467",
+          "hit": true
+        },
+        {
+          "issue": "2025331",
+          "date": "2025-12-11",
+          "draw": "050",
+          "recommendation": "01456",
+          "hit": false
+        },
+        {
+          "issue": "2025332",
+          "date": "2025-12-12",
+          "draw": "885",
+          "recommendation": "04578",
+          "hit": false
+        },
+        {
+          "issue": "2025333",
+          "date": "2025-12-13",
+          "draw": "273",
+          "recommendation": "01258",
+          "hit": false
+        },
+        {
+          "issue": "2025334",
+          "date": "2025-12-14",
+          "draw": "198",
+          "recommendation": "03589",
+          "hit": false
+        },
+        {
+          "issue": "2025335",
+          "date": "2025-12-15",
+          "draw": "051",
+          "recommendation": "05679",
+          "hit": false
+        },
+        {
+          "issue": "2025336",
+          "date": "2025-12-16",
+          "draw": "641",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2025337",
+          "date": "2025-12-17",
+          "draw": "876",
+          "recommendation": "24678",
+          "hit": true
+        },
+        {
+          "issue": "2025338",
+          "date": "2025-12-18",
+          "draw": "689",
+          "recommendation": "01469",
+          "hit": false
+        },
+        {
+          "issue": "2025339",
+          "date": "2025-12-19",
+          "draw": "676",
+          "recommendation": "46789",
+          "hit": false
+        },
+        {
+          "issue": "2025340",
+          "date": "2025-12-20",
+          "draw": "130",
+          "recommendation": "01678",
+          "hit": false
+        },
+        {
+          "issue": "2025341",
+          "date": "2025-12-21",
+          "draw": "996",
+          "recommendation": "25678",
+          "hit": false
+        },
+        {
+          "issue": "2025342",
+          "date": "2025-12-22",
+          "draw": "681",
+          "recommendation": "01568",
+          "hit": true
+        },
+        {
+          "issue": "2025343",
+          "date": "2025-12-23",
+          "draw": "645",
+          "recommendation": "04578",
+          "hit": false
+        },
+        {
+          "issue": "2025344",
+          "date": "2025-12-24",
+          "draw": "622",
+          "recommendation": "14567",
+          "hit": false
+        },
+        {
+          "issue": "2025345",
+          "date": "2025-12-25",
+          "draw": "630",
+          "recommendation": "12568",
+          "hit": false
+        },
+        {
+          "issue": "2025346",
+          "date": "2025-12-26",
+          "draw": "897",
+          "recommendation": "15689",
+          "hit": false
+        },
+        {
+          "issue": "2025347",
+          "date": "2025-12-27",
+          "draw": "192",
+          "recommendation": "14689",
+          "hit": false
+        },
+        {
+          "issue": "2025348",
+          "date": "2025-12-28",
+          "draw": "278",
+          "recommendation": "12678",
+          "hit": true
+        },
+        {
+          "issue": "2025349",
+          "date": "2025-12-29",
+          "draw": "743",
+          "recommendation": "25678",
+          "hit": false
+        },
+        {
+          "issue": "2025350",
+          "date": "2025-12-30",
+          "draw": "580",
+          "recommendation": "35678",
+          "hit": false
+        },
+        {
+          "issue": "2025351",
+          "date": "2025-12-31",
+          "draw": "452",
+          "recommendation": "01368",
+          "hit": false
+        },
+        {
+          "issue": "2026001",
+          "date": "2026-01-01",
+          "draw": "298",
+          "recommendation": "34568",
+          "hit": false
+        },
+        {
+          "issue": "2026002",
+          "date": "2026-01-02",
+          "draw": "520",
+          "recommendation": "15689",
+          "hit": false
+        },
+        {
+          "issue": "2026003",
+          "date": "2026-01-03",
+          "draw": "601",
+          "recommendation": "03456",
+          "hit": false
+        },
+        {
+          "issue": "2026004",
+          "date": "2026-01-04",
+          "draw": "019",
+          "recommendation": "02348",
+          "hit": false
+        },
+        {
+          "issue": "2026005",
+          "date": "2026-01-05",
+          "draw": "476",
+          "recommendation": "02378",
+          "hit": false
+        },
+        {
+          "issue": "2026006",
+          "date": "2026-01-06",
+          "draw": "244",
+          "recommendation": "04569",
+          "hit": false
+        },
+        {
+          "issue": "2026007",
+          "date": "2026-01-07",
+          "draw": "353",
+          "recommendation": "13469",
+          "hit": false
+        },
+        {
+          "issue": "2026008",
+          "date": "2026-01-08",
+          "draw": "252",
+          "recommendation": "25689",
+          "hit": false
+        },
+        {
+          "issue": "2026009",
+          "date": "2026-01-09",
+          "draw": "265",
+          "recommendation": "01289",
+          "hit": false
+        },
+        {
+          "issue": "2026010",
+          "date": "2026-01-10",
+          "draw": "667",
+          "recommendation": "02389",
+          "hit": false
+        },
+        {
+          "issue": "2026011",
+          "date": "2026-01-11",
+          "draw": "647",
+          "recommendation": "24689",
+          "hit": false
+        },
+        {
+          "issue": "2026012",
+          "date": "2026-01-12",
+          "draw": "241",
+          "recommendation": "12679",
+          "hit": false
+        },
+        {
+          "issue": "2026013",
+          "date": "2026-01-13",
+          "draw": "513",
+          "recommendation": "12346",
+          "hit": false
+        },
+        {
+          "issue": "2026014",
+          "date": "2026-01-14",
+          "draw": "050",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2026015",
+          "date": "2026-01-15",
+          "draw": "532",
+          "recommendation": "02356",
+          "hit": true
+        },
+        {
+          "issue": "2026016",
+          "date": "2026-01-16",
+          "draw": "582",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026017",
+          "date": "2026-01-17",
+          "draw": "945",
+          "recommendation": "35689",
+          "hit": false
+        },
+        {
+          "issue": "2026018",
+          "date": "2026-01-18",
+          "draw": "494",
+          "recommendation": "24579",
+          "hit": false
+        },
+        {
+          "issue": "2026019",
+          "date": "2026-01-19",
+          "draw": "223",
+          "recommendation": "23456",
+          "hit": false
+        },
+        {
+          "issue": "2026020",
+          "date": "2026-01-20",
+          "draw": "676",
+          "recommendation": "02469",
+          "hit": false
+        },
+        {
+          "issue": "2026021",
+          "date": "2026-01-21",
+          "draw": "559",
+          "recommendation": "34569",
+          "hit": false
+        },
+        {
+          "issue": "2026022",
+          "date": "2026-01-22",
+          "draw": "678",
+          "recommendation": "24569",
+          "hit": false
+        },
+        {
+          "issue": "2026023",
+          "date": "2026-01-23",
+          "draw": "784",
+          "recommendation": "46789",
+          "hit": true
+        },
+        {
+          "issue": "2026024",
+          "date": "2026-01-24",
+          "draw": "911",
+          "recommendation": "23478",
+          "hit": false
+        },
+        {
+          "issue": "2026025",
+          "date": "2026-01-25",
+          "draw": "029",
+          "recommendation": "23489",
+          "hit": false
+        },
+        {
+          "issue": "2026026",
+          "date": "2026-01-26",
+          "draw": "099",
+          "recommendation": "02458",
+          "hit": false
+        },
+        {
+          "issue": "2026027",
+          "date": "2026-01-27",
+          "draw": "126",
+          "recommendation": "45789",
+          "hit": false
+        },
+        {
+          "issue": "2026028",
+          "date": "2026-01-28",
+          "draw": "270",
+          "recommendation": "04567",
+          "hit": false
+        },
+        {
+          "issue": "2026029",
+          "date": "2026-01-29",
+          "draw": "003",
+          "recommendation": "24567",
+          "hit": false
+        },
+        {
+          "issue": "2026030",
+          "date": "2026-01-30",
+          "draw": "134",
+          "recommendation": "02357",
+          "hit": false
+        },
+        {
+          "issue": "2026031",
+          "date": "2026-01-31",
+          "draw": "142",
+          "recommendation": "04578",
+          "hit": false
+        },
+        {
+          "issue": "2026032",
+          "date": "2026-02-01",
+          "draw": "452",
+          "recommendation": "02579",
+          "hit": false
+        },
+        {
+          "issue": "2026033",
+          "date": "2026-02-02",
+          "draw": "119",
+          "recommendation": "34789",
+          "hit": false
+        },
+        {
+          "issue": "2026034",
+          "date": "2026-02-03",
+          "draw": "052",
+          "recommendation": "03489",
+          "hit": false
+        },
+        {
+          "issue": "2026035",
+          "date": "2026-02-04",
+          "draw": "213",
+          "recommendation": "02589",
+          "hit": false
+        },
+        {
+          "issue": "2026036",
+          "date": "2026-02-05",
+          "draw": "762",
+          "recommendation": "01234",
+          "hit": false
+        },
+        {
+          "issue": "2026037",
+          "date": "2026-02-06",
+          "draw": "420",
+          "recommendation": "23469",
+          "hit": false
+        },
+        {
+          "issue": "2026038",
+          "date": "2026-02-07",
+          "draw": "467",
+          "recommendation": "02345",
+          "hit": false
+        },
+        {
+          "issue": "2026039",
+          "date": "2026-02-08",
+          "draw": "450",
+          "recommendation": "45679",
+          "hit": false
+        },
+        {
+          "issue": "2026040",
+          "date": "2026-02-09",
+          "draw": "425",
+          "recommendation": "02457",
+          "hit": true
+        },
+        {
+          "issue": "2026041",
+          "date": "2026-02-10",
+          "draw": "901",
+          "recommendation": "02479",
+          "hit": false
+        },
+        {
+          "issue": "2026042",
+          "date": "2026-02-11",
+          "draw": "854",
+          "recommendation": "01237",
+          "hit": false
+        },
+        {
+          "issue": "2026043",
+          "date": "2026-02-12",
+          "draw": "765",
+          "recommendation": "02459",
+          "hit": false
+        },
+        {
+          "issue": "2026044",
+          "date": "2026-02-13",
+          "draw": "589",
+          "recommendation": "02459",
+          "hit": false
+        },
+        {
+          "issue": "2026045",
+          "date": "2026-02-24",
+          "draw": "181",
+          "recommendation": "02459",
+          "hit": false
+        },
+        {
+          "issue": "2026046",
+          "date": "2026-02-25",
+          "draw": "291",
+          "recommendation": "02345",
+          "hit": false
+        },
+        {
+          "issue": "2026047",
+          "date": "2026-02-26",
+          "draw": "936",
+          "recommendation": "12349",
+          "hit": false
+        },
+        {
+          "issue": "2026048",
+          "date": "2026-02-27",
+          "draw": "612",
+          "recommendation": "12349",
+          "hit": false
+        },
+        {
+          "issue": "2026049",
+          "date": "2026-02-28",
+          "draw": "110",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026050",
+          "date": "2026-03-01",
+          "draw": "689",
+          "recommendation": "01259",
+          "hit": false
+        },
+        {
+          "issue": "2026051",
+          "date": "2026-03-02",
+          "draw": "302",
+          "recommendation": "12459",
+          "hit": false
+        },
+        {
+          "issue": "2026052",
+          "date": "2026-03-03",
+          "draw": "277",
+          "recommendation": "01248",
+          "hit": false
+        },
+        {
+          "issue": "2026053",
+          "date": "2026-03-04",
+          "draw": "755",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2026054",
+          "date": "2026-03-05",
+          "draw": "217",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026055",
+          "date": "2026-03-06",
+          "draw": "107",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2026056",
+          "date": "2026-03-07",
+          "draw": "477",
+          "recommendation": "01267",
+          "hit": false
+        },
+        {
+          "issue": "2026057",
+          "date": "2026-03-08",
+          "draw": "264",
+          "recommendation": "01246",
+          "hit": true
+        },
+        {
+          "issue": "2026058",
+          "date": "2026-03-09",
+          "draw": "543",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2026059",
+          "date": "2026-03-10",
+          "draw": "794",
+          "recommendation": "01347",
+          "hit": false
+        },
+        {
+          "issue": "2026060",
+          "date": "2026-03-11",
+          "draw": "943",
+          "recommendation": "12457",
+          "hit": false
+        },
+        {
+          "issue": "2026061",
+          "date": "2026-03-12",
+          "draw": "429",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2026062",
+          "date": "2026-03-13",
+          "draw": "294",
+          "recommendation": "12347",
+          "hit": false
+        },
+        {
+          "issue": "2026063",
+          "date": "2026-03-14",
+          "draw": "517",
+          "recommendation": "12479",
+          "hit": false
+        },
+        {
+          "issue": "2026064",
+          "date": "2026-03-15",
+          "draw": "604",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2026065",
+          "date": "2026-03-16",
+          "draw": "057",
+          "recommendation": "01247",
+          "hit": false
+        },
+        {
+          "issue": "2026066",
+          "date": "2026-03-17",
+          "draw": "934",
+          "recommendation": "02457",
+          "hit": false
+        },
+        {
+          "issue": "2026067",
+          "date": "2026-03-18",
+          "draw": "695",
+          "recommendation": "02349",
+          "hit": false
+        },
+        {
+          "issue": "2026068",
+          "date": "2026-03-19",
+          "draw": "706",
+          "recommendation": "23459",
+          "hit": false
+        },
+        {
+          "issue": "2026069",
+          "date": "2026-03-20",
+          "draw": "908",
+          "recommendation": "02579",
+          "hit": false
+        },
+        {
+          "issue": "2026070",
+          "date": "2026-03-21",
+          "draw": "484",
+          "recommendation": "25689",
+          "hit": false
+        },
+        {
+          "issue": "2026071",
+          "date": "2026-03-22",
+          "draw": "261",
+          "recommendation": "24578",
+          "hit": false
+        },
+        {
+          "issue": "2026072",
+          "date": "2026-03-23",
+          "draw": "245",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2026073",
+          "date": "2026-03-24",
+          "draw": "504",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2026074",
+          "date": "2026-03-25",
+          "draw": "487",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026075",
+          "date": "2026-03-26",
+          "draw": "816",
+          "recommendation": "01245",
+          "hit": false
+        },
+        {
+          "issue": "2026076",
+          "date": "2026-03-27",
+          "draw": "863",
+          "recommendation": "12467",
+          "hit": false
+        },
+        {
+          "issue": "2026077",
+          "date": "2026-03-28",
+          "draw": "112",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026078",
+          "date": "2026-03-29",
+          "draw": "049",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026079",
+          "date": "2026-03-30",
+          "draw": "233",
+          "recommendation": "02467",
+          "hit": false
+        },
+        {
+          "issue": "2026080",
+          "date": "2026-03-31",
+          "draw": "802",
+          "recommendation": "02469",
+          "hit": false
+        },
+        {
+          "issue": "2026081",
+          "date": "2026-04-01",
+          "draw": "827",
+          "recommendation": "04789",
+          "hit": false
+        },
+        {
+          "issue": "2026082",
+          "date": "2026-04-02",
+          "draw": "942",
+          "recommendation": "24579",
+          "hit": true
+        },
+        {
+          "issue": "2026083",
+          "date": "2026-04-03",
+          "draw": "506",
+          "recommendation": "03469",
+          "hit": false
+        },
+        {
+          "issue": "2026084",
+          "date": "2026-04-04",
+          "draw": "456",
+          "recommendation": "13456",
+          "hit": true
+        },
+        {
+          "issue": "2026085",
+          "date": "2026-04-05",
+          "draw": "118",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2026086",
+          "date": "2026-04-06",
+          "draw": "382",
+          "recommendation": "25789",
+          "hit": false
+        },
+        {
+          "issue": "2026087",
+          "date": "2026-04-07",
+          "draw": "911",
+          "recommendation": "02469",
+          "hit": false
+        },
+        {
+          "issue": "2026088",
+          "date": "2026-04-08",
+          "draw": "608",
+          "recommendation": "01456",
+          "hit": false
+        },
+        {
+          "issue": "2026089",
+          "date": "2026-04-09",
+          "draw": "922",
+          "recommendation": "12356",
+          "hit": false
+        },
+        {
+          "issue": "2026090",
+          "date": "2026-04-10",
+          "draw": "816",
+          "recommendation": "12456",
+          "hit": false
+        },
+        {
+          "issue": "2026091",
+          "date": "2026-04-11",
+          "draw": "537",
+          "recommendation": "23478",
+          "hit": false
+        },
+        {
+          "issue": "2026092",
+          "date": "2026-04-12",
+          "draw": "870",
+          "recommendation": "04678",
+          "hit": true
+        },
+        {
+          "issue": "2026093",
+          "date": "2026-04-13",
+          "draw": "518",
+          "recommendation": "02459",
+          "hit": false
+        },
+        {
+          "issue": "2026094",
+          "date": "2026-04-14",
+          "draw": "418",
+          "recommendation": "23468",
+          "hit": false
+        },
+        {
+          "issue": "2026095",
+          "date": "2026-04-15",
+          "draw": "022",
+          "recommendation": "01567",
+          "hit": false
+        },
+        {
+          "issue": "2026096",
+          "date": "2026-04-16",
+          "draw": "689",
+          "recommendation": "02589",
+          "hit": false
+        },
+        {
+          "issue": "2026097",
+          "date": "2026-04-17",
+          "draw": "818",
+          "recommendation": "04589",
+          "hit": false
+        },
+        {
+          "issue": "2026098",
+          "date": "2026-04-18",
+          "draw": "513",
+          "recommendation": "24578",
+          "hit": false
+        },
+        {
+          "issue": "2026099",
+          "date": "2026-04-19",
+          "draw": "877",
+          "recommendation": "12458",
+          "hit": false
+        },
+        {
+          "issue": "2026100",
+          "date": "2026-04-20",
+          "draw": "414",
+          "recommendation": "34568",
+          "hit": false
+        },
+        {
+          "issue": "2026101",
+          "date": "2026-04-21",
+          "draw": "584",
+          "recommendation": "23456",
+          "hit": false
+        },
+        {
+          "issue": "2026102",
+          "date": "2026-04-22",
+          "draw": "420",
+          "recommendation": "01246",
+          "hit": true
+        },
+        {
+          "issue": "2026103",
+          "date": "2026-04-23",
+          "draw": "661",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026104",
+          "date": "2026-04-24",
+          "draw": "482",
+          "recommendation": "04569",
+          "hit": false
+        },
+        {
+          "issue": "2026105",
+          "date": "2026-04-25",
+          "draw": "631",
+          "recommendation": "24568",
+          "hit": false
+        },
+        {
+          "issue": "2026106",
+          "date": "2026-04-26",
+          "draw": "928",
+          "recommendation": "01456",
+          "hit": false
+        },
+        {
+          "issue": "2026107",
+          "date": "2026-04-27",
+          "draw": "278",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2026108",
+          "date": "2026-04-28",
+          "draw": "671",
+          "recommendation": "02458",
+          "hit": false
+        },
+        {
+          "issue": "2026109",
+          "date": "2026-04-29",
+          "draw": "195",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026110",
+          "date": "2026-04-30",
+          "draw": "379",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2026111",
+          "date": "2026-05-01",
+          "draw": "863",
+          "recommendation": "13458",
+          "hit": false
+        },
+        {
+          "issue": "2026112",
+          "date": "2026-05-02",
+          "draw": "065",
+          "recommendation": "03468",
+          "hit": false
+        },
+        {
+          "issue": "2026113",
+          "date": "2026-05-03",
+          "draw": "040",
+          "recommendation": "03456",
+          "hit": false
+        },
+        {
+          "issue": "2026114",
+          "date": "2026-05-04",
+          "draw": "864",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026115",
+          "date": "2026-05-05",
+          "draw": "581",
+          "recommendation": "24568",
+          "hit": false
+        },
+        {
+          "issue": "2026116",
+          "date": "2026-05-06",
+          "draw": "020",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026117",
+          "date": "2026-05-07",
+          "draw": "411",
+          "recommendation": "04567",
+          "hit": false
+        },
+        {
+          "issue": "2026118",
+          "date": "2026-05-08",
+          "draw": "132",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026119",
+          "date": "2026-05-09",
+          "draw": "112",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026120",
+          "date": "2026-05-10",
+          "draw": "734",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026121",
+          "date": "2026-05-11",
+          "draw": "393",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026122",
+          "date": "2026-05-12",
+          "draw": "346",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026123",
+          "date": "2026-05-13",
+          "draw": "200",
+          "recommendation": "14568",
+          "hit": false
+        },
+        {
+          "issue": "2026124",
+          "date": "2026-05-14",
+          "draw": "280",
+          "recommendation": "02568",
+          "hit": true
+        },
+        {
+          "issue": "2026125",
+          "date": "2026-05-15",
+          "draw": "954",
+          "recommendation": "03568",
+          "hit": false
+        },
+        {
+          "issue": "2026126",
+          "date": "2026-05-16",
+          "draw": "846",
+          "recommendation": "03458",
+          "hit": false
+        },
+        {
+          "issue": "2026127",
+          "date": "2026-05-17",
+          "draw": "700",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026128",
+          "date": "2026-05-18",
+          "draw": "776",
+          "recommendation": "01246",
+          "hit": false
+        },
+        {
+          "issue": "2026129",
+          "date": "2026-05-19",
+          "draw": "023",
+          "recommendation": "01267",
+          "hit": false
+        },
+        {
+          "issue": "2026130",
+          "date": "2026-05-20",
+          "draw": "267",
+          "recommendation": "01235",
+          "hit": false
+        },
+        {
+          "issue": "2026131",
+          "date": "2026-05-21",
+          "draw": "598",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026132",
+          "date": "2026-05-22",
+          "draw": "756",
+          "recommendation": "02568",
+          "hit": false
+        },
+        {
+          "issue": "2026133",
+          "date": "2026-05-23",
+          "draw": "080",
+          "recommendation": "01256",
+          "hit": false
+        },
+        {
+          "issue": "2026134",
+          "date": "2026-05-24",
+          "draw": "654",
+          "recommendation": "04567",
+          "hit": true
+        },
+        {
+          "issue": "2026135",
+          "date": "2026-05-25",
+          "draw": "487",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026136",
+          "date": "2026-05-26",
+          "draw": "889",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026137",
+          "date": "2026-05-27",
+          "draw": "165",
+          "recommendation": "01456",
+          "hit": true
+        },
+        {
+          "issue": "2026138",
+          "date": "2026-05-28",
+          "draw": "790",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026139",
+          "date": "2026-05-29",
+          "draw": "286",
+          "recommendation": "02459",
+          "hit": false
+        },
+        {
+          "issue": "2026140",
+          "date": "2026-05-30",
+          "draw": "285",
+          "recommendation": "02356",
+          "hit": false
+        },
+        {
+          "issue": "2026141",
+          "date": "2026-05-31",
+          "draw": "397",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026142",
+          "date": "2026-06-01",
+          "draw": "894",
+          "recommendation": "24569",
+          "hit": false
+        },
+        {
+          "issue": "2026143",
+          "date": "2026-06-02",
+          "draw": "376",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026144",
+          "date": "2026-06-03",
+          "draw": "726",
+          "recommendation": "24689",
+          "hit": false
+        },
+        {
+          "issue": "2026145",
+          "date": "2026-06-04",
+          "draw": "279",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026146",
+          "date": "2026-06-05",
+          "draw": "464",
+          "recommendation": "24789",
+          "hit": false
+        },
+        {
+          "issue": "2026147",
+          "date": "2026-06-06",
+          "draw": "712",
+          "recommendation": "02678",
+          "hit": false
+        },
+        {
+          "issue": "2026148",
+          "date": "2026-06-07",
+          "draw": "408",
+          "recommendation": "24678",
+          "hit": false
+        },
+        {
+          "issue": "2026149",
+          "date": "2026-06-08",
+          "draw": "696",
+          "recommendation": "45678",
+          "hit": false
+        },
+        {
+          "issue": "2026150",
+          "date": "2026-06-09",
+          "draw": "720",
+          "recommendation": "02458",
+          "hit": false
+        },
+        {
+          "issue": "2026151",
+          "date": "2026-06-10",
+          "draw": "631",
+          "recommendation": "24678",
+          "hit": false
+        },
+        {
+          "issue": "2026152",
+          "date": "2026-06-11",
+          "draw": "220",
+          "recommendation": "02467",
+          "hit": false
+        },
+        {
+          "issue": "2026153",
+          "date": "2026-06-12",
+          "draw": "887",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2026154",
+          "date": "2026-06-13",
+          "draw": "377",
+          "recommendation": "45678",
+          "hit": false
+        },
+        {
+          "issue": "2026155",
+          "date": "2026-06-14",
+          "draw": "409",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2026156",
+          "date": "2026-06-15",
+          "draw": "162",
+          "recommendation": "02456",
+          "hit": false
+        },
+        {
+          "issue": "2026157",
+          "date": "2026-06-16",
+          "draw": "327",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026158",
+          "date": "2026-06-17",
+          "draw": "178",
+          "recommendation": "23568",
+          "hit": false
+        },
+        {
+          "issue": "2026159",
+          "date": "2026-06-18",
+          "draw": "995",
+          "recommendation": "25678",
+          "hit": false
+        },
+        {
+          "issue": "2026160",
+          "date": "2026-06-19",
+          "draw": "332",
+          "recommendation": "23568",
+          "hit": false
+        },
+        {
+          "issue": "2026161",
+          "date": "2026-06-20",
+          "draw": "529",
+          "recommendation": "45678",
+          "hit": false
+        },
+        {
+          "issue": "2026162",
+          "date": "2026-06-21",
+          "draw": "585",
+          "recommendation": "03457",
+          "hit": false
+        },
+        {
+          "issue": "2026163",
+          "date": "2026-06-22",
+          "draw": "537",
+          "recommendation": "01278",
+          "hit": false
+        },
+        {
+          "issue": "2026164",
+          "date": "2026-06-23",
+          "draw": "690",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2026165",
+          "date": "2026-06-24",
+          "draw": "424",
+          "recommendation": "24678",
+          "hit": false
+        },
+        {
+          "issue": "2026166",
+          "date": "2026-06-25",
+          "draw": "900",
+          "recommendation": "23678",
+          "hit": false
+        },
+        {
+          "issue": "2026167",
+          "date": "2026-06-26",
+          "draw": "631",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026168",
+          "date": "2026-06-27",
+          "draw": "130",
+          "recommendation": "04678",
+          "hit": false
+        },
+        {
+          "issue": "2026169",
+          "date": "2026-06-28",
+          "draw": "832",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026170",
+          "date": "2026-06-29",
+          "draw": "805",
+          "recommendation": "02678",
+          "hit": false
+        },
+        {
+          "issue": "2026171",
+          "date": "2026-06-30",
+          "draw": "134",
+          "recommendation": "26789",
+          "hit": false
+        },
+        {
+          "issue": "2026172",
+          "date": "2026-07-01",
+          "draw": "445",
+          "recommendation": "25689",
+          "hit": false
+        },
+        {
+          "issue": "2026173",
+          "date": "2026-07-02",
+          "draw": "677",
+          "recommendation": "23579",
+          "hit": false
+        },
+        {
+          "issue": "2026174",
+          "date": "2026-07-03",
+          "draw": "618",
+          "recommendation": "12469",
+          "hit": false
+        },
+        {
+          "issue": "2026175",
+          "date": "2026-07-04",
+          "draw": "421",
+          "recommendation": "15689",
+          "hit": false
+        },
+        {
+          "issue": "2026176",
+          "date": "2026-07-05",
+          "draw": "269",
+          "recommendation": "23689",
+          "hit": true
+        },
+        {
+          "issue": "2026177",
+          "date": "2026-07-06",
+          "draw": "808",
+          "recommendation": "23468",
+          "hit": false
+        },
+        {
+          "issue": "2026178",
+          "date": "2026-07-07",
+          "draw": "266",
+          "recommendation": "04568",
+          "hit": false
+        },
+        {
+          "issue": "2026179",
+          "date": "2026-07-08",
+          "draw": "993",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026180",
+          "date": "2026-07-09",
+          "draw": "520",
+          "recommendation": "12458",
+          "hit": false
+        },
+        {
+          "issue": "2026181",
+          "date": "2026-07-10",
+          "draw": "818",
+          "recommendation": "04678",
+          "hit": false
+        },
+        {
+          "issue": "2026182",
+          "date": "2026-07-11",
+          "draw": "662",
+          "recommendation": "45678",
+          "hit": false
+        },
+        {
+          "issue": "2026183",
+          "date": "2026-07-12",
+          "draw": "923",
+          "recommendation": "01568",
+          "hit": false
+        },
+        {
+          "issue": "2026184",
+          "date": "2026-07-13",
+          "draw": "902",
+          "recommendation": "25678",
+          "hit": false
+        },
+        {
+          "issue": "2026185",
+          "date": "2026-07-14",
+          "draw": "397",
+          "recommendation": "12568",
+          "hit": false
+        },
+        {
+          "issue": "2026186",
+          "date": "2026-07-15",
+          "draw": "045",
+          "recommendation": "02479",
+          "hit": false
+        },
+        {
+          "issue": "2026187",
+          "date": "2026-07-16",
+          "draw": "023",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2026188",
+          "date": "2026-07-17",
+          "draw": "969",
+          "recommendation": "24689",
+          "hit": false
+        },
+        {
+          "issue": "2026189",
+          "date": "2026-07-18",
+          "draw": "558",
+          "recommendation": "01289",
+          "hit": false
+        },
+        {
+          "issue": "2026190",
+          "date": "2026-07-19",
+          "draw": "026",
+          "recommendation": "02456",
+          "hit": true
+        },
+        {
+          "issue": "2026191",
+          "date": "2026-07-20",
+          "draw": "906",
+          "recommendation": "02689",
+          "hit": true
+        },
+        {
+          "issue": "2026192",
+          "date": "2026-07-21",
+          "draw": "425",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026193",
+          "date": "2026-07-22",
+          "draw": "254",
+          "recommendation": "03689",
+          "hit": false
+        },
+        {
+          "issue": "2026194",
+          "date": "2026-07-23",
+          "draw": "283",
+          "recommendation": "02389",
+          "hit": true
+        },
+        {
+          "issue": "2026195",
+          "date": "2026-07-24",
+          "draw": "275",
+          "recommendation": "01239",
+          "hit": false
+        },
+        {
+          "issue": "2026196",
+          "date": "2026-07-25",
+          "draw": "419",
+          "recommendation": "02379",
+          "hit": false
+        },
+        {
+          "issue": "2026197",
+          "date": "2026-07-26",
+          "draw": "232",
+          "recommendation": "01289",
+          "hit": false
+        },
+        {
+          "issue": "2026198",
+          "date": "2026-07-27",
+          "draw": "685",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2026199",
+          "date": "2026-07-28",
+          "draw": "591",
+          "recommendation": "01489",
+          "hit": false
+        },
+        {
+          "issue": "2026200",
+          "date": "2026-07-29",
+          "draw": "912",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2026201",
+          "date": "2026-07-30",
+          "draw": "321",
+          "recommendation": "02569",
+          "hit": false
+        },
+        {
+          "issue": "2026202",
+          "date": "2026-07-31",
+          "draw": "988",
+          "recommendation": "02489",
+          "hit": false
+        },
+        {
+          "issue": "2026203",
+          "date": "2026-08-01",
+          "draw": "435",
+          "recommendation": "02489",
+          "hit": false
+        },
+        {
+          "issue": "2026204",
+          "date": "2026-08-02",
+          "draw": "978",
+          "recommendation": "02349",
+          "hit": false
+        },
+        {
+          "issue": "2026205",
+          "date": "2026-08-03",
+          "draw": "814",
+          "recommendation": "02349",
+          "hit": false
+        },
+        {
+          "issue": "2026206",
+          "date": "2026-08-04",
+          "draw": "942",
+          "recommendation": "01279",
+          "hit": false
+        },
+        {
+          "issue": "2026207",
+          "date": "2026-08-05",
+          "draw": "415",
+          "recommendation": "02489",
+          "hit": false
+        },
+        {
+          "issue": "2026208",
+          "date": "2026-08-06",
+          "draw": "632",
+          "recommendation": "01234",
+          "hit": false
+        },
+        {
+          "issue": "2026209",
+          "date": "2026-08-07",
+          "draw": "289",
+          "recommendation": "12369",
+          "hit": false
+        },
+        {
+          "issue": "2026210",
+          "date": "2026-08-08",
+          "draw": "755",
+          "recommendation": "02349",
+          "hit": false
+        },
+        {
+          "issue": "2026211",
+          "date": "2026-08-09",
+          "draw": "708",
+          "recommendation": "01238",
+          "hit": false
+        },
+        {
+          "issue": "2026212",
+          "date": "2026-08-10",
+          "draw": "561",
+          "recommendation": "02479",
+          "hit": false
+        },
+        {
+          "issue": "2026213",
+          "date": "2026-08-11",
+          "draw": "872",
+          "recommendation": "02346",
+          "hit": false
+        },
+        {
+          "issue": "2026214",
+          "date": "2026-08-12",
+          "draw": "545",
+          "recommendation": "02789",
+          "hit": false
+        },
+        {
+          "issue": "2026215",
+          "date": "2026-08-13",
+          "draw": "172",
+          "recommendation": "23679",
+          "hit": false
+        },
+        {
+          "issue": "2026216",
+          "date": "2026-08-14",
+          "draw": "935",
+          "recommendation": "36789",
+          "hit": false
+        },
+        {
+          "issue": "2026217",
+          "date": "2026-08-15",
+          "draw": "882",
+          "recommendation": "23679",
+          "hit": false
+        },
+        {
+          "issue": "2026218",
+          "date": "2026-08-16",
+          "draw": "382",
+          "recommendation": "23489",
+          "hit": true
+        },
+        {
+          "issue": "2026219",
+          "date": "2026-08-17",
+          "draw": "225",
+          "recommendation": "13689",
+          "hit": false
+        },
+        {
+          "issue": "2026220",
+          "date": "2026-08-18",
+          "draw": "373",
+          "recommendation": "23569",
+          "hit": false
+        },
+        {
+          "issue": "2026221",
+          "date": "2026-08-19",
+          "draw": "296",
+          "recommendation": "12378",
+          "hit": false
+        },
+        {
+          "issue": "2026222",
+          "date": "2026-08-20",
+          "draw": "380",
+          "recommendation": "24679",
+          "hit": false
+        },
+        {
+          "issue": "2026223",
+          "date": "2026-08-21",
+          "draw": "948",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026224",
+          "date": "2026-08-22",
+          "draw": "862",
+          "recommendation": "03789",
+          "hit": false
+        },
+        {
+          "issue": "2026225",
+          "date": "2026-08-23",
+          "draw": "555",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026226",
+          "date": "2026-08-24",
+          "draw": "851",
+          "recommendation": "01238",
+          "hit": false
+        },
+        {
+          "issue": "2026227",
+          "date": "2026-08-25",
+          "draw": "522",
+          "recommendation": "12689",
+          "hit": false
+        },
+        {
+          "issue": "2026228",
+          "date": "2026-08-26",
+          "draw": "399",
+          "recommendation": "12378",
+          "hit": false
+        },
+        {
+          "issue": "2026229",
+          "date": "2026-08-27",
+          "draw": "828",
+          "recommendation": "23478",
+          "hit": false
+        },
+        {
+          "issue": "2026230",
+          "date": "2026-08-28",
+          "draw": "066",
+          "recommendation": "23568",
+          "hit": false
+        },
+        {
+          "issue": "2026231",
+          "date": "2026-08-29",
+          "draw": "733",
+          "recommendation": "12678",
+          "hit": false
+        },
+        {
+          "issue": "2026232",
+          "date": "2026-08-30",
+          "draw": "658",
+          "recommendation": "02468",
+          "hit": false
+        },
+        {
+          "issue": "2026233",
+          "date": "2026-08-31",
+          "draw": "970",
+          "recommendation": "12468",
+          "hit": false
+        },
+        {
+          "issue": "2026234",
+          "date": "2026-09-01",
+          "draw": "695",
+          "recommendation": "24568",
+          "hit": false
+        },
+        {
+          "issue": "2026235",
+          "date": "2026-09-02",
+          "draw": "219",
+          "recommendation": "26789",
+          "hit": false
+        },
+        {
+          "issue": "2026236",
+          "date": "2026-09-03",
+          "draw": "047",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026237",
+          "date": "2026-09-04",
+          "draw": "854",
+          "recommendation": "03679",
+          "hit": false
+        },
+        {
+          "issue": "2026238",
+          "date": "2026-09-05",
+          "draw": "899",
+          "recommendation": "35789",
+          "hit": false
+        },
+        {
+          "issue": "2026239",
+          "date": "2026-09-06",
+          "draw": "002",
+          "recommendation": "45678",
+          "hit": false
+        },
+        {
+          "issue": "2026240",
+          "date": "2026-09-07",
+          "draw": "981",
+          "recommendation": "01367",
+          "hit": false
+        },
+        {
+          "issue": "2026241",
+          "date": "2026-09-08",
+          "draw": "002",
+          "recommendation": "02578",
+          "hit": false
+        },
+        {
+          "issue": "2026242",
+          "date": "2026-09-09",
+          "draw": "555",
+          "recommendation": "02356",
+          "hit": false
+        },
+        {
+          "issue": "2026243",
+          "date": "2026-09-10",
+          "draw": "219",
+          "recommendation": "03789",
+          "hit": false
+        },
+        {
+          "issue": "2026244",
+          "date": "2026-09-11",
+          "draw": "654",
+          "recommendation": "02589",
+          "hit": false
+        },
+        {
+          "issue": "2026245",
+          "date": "2026-09-12",
+          "draw": "549",
+          "recommendation": "01268",
+          "hit": false
+        },
+        {
+          "issue": "2026246",
+          "date": "2026-09-13",
+          "draw": "982",
+          "recommendation": "05679",
+          "hit": false
+        },
+        {
+          "issue": "2026247",
+          "date": "2026-09-14",
+          "draw": "609",
+          "recommendation": "02568",
+          "hit": false
+        },
+        {
+          "issue": "2026248",
+          "date": "2026-09-15",
+          "draw": "876",
+          "recommendation": "23578",
+          "hit": false
+        },
+        {
+          "issue": "2026249",
+          "date": "2026-09-16",
+          "draw": "689",
+          "recommendation": "23578",
+          "hit": false
+        },
+        {
+          "issue": "2026250",
+          "date": "2026-09-17",
+          "draw": "954",
+          "recommendation": "02689",
+          "hit": false
+        },
+        {
+          "issue": "2026251",
+          "date": "2026-09-18",
+          "draw": "777",
+          "recommendation": "04567",
+          "hit": false
+        },
+        {
+          "issue": "2026252",
+          "date": "2026-09-19",
+          "draw": "092",
+          "recommendation": "05679",
+          "hit": false
+        },
+        {
+          "issue": "2026253",
+          "date": "2026-09-20",
+          "draw": "034",
+          "recommendation": "16789",
+          "hit": false
+        },
+        {
+          "issue": "2026254",
+          "date": "2026-09-21",
+          "draw": "850",
+          "recommendation": "06789",
+          "hit": false
+        },
+        {
+          "issue": "2026255",
+          "date": "2026-09-22",
+          "draw": "699",
+          "recommendation": "02679",
+          "hit": false
+        },
+        {
+          "issue": "2026256",
+          "date": "2026-09-23",
+          "draw": "051",
+          "recommendation": "05789",
+          "hit": false
+        },
+        {
+          "issue": "2026257",
+          "date": "2026-09-24",
+          "draw": "486",
+          "recommendation": "06789",
+          "hit": false
+        },
+        {
+          "issue": "2026258",
+          "date": "2026-09-25",
+          "draw": "635",
+          "recommendation": "06789",
+          "hit": false
+        },
+        {
+          "issue": "2026259",
+          "date": "2026-09-26",
+          "draw": "731",
+          "recommendation": "05678",
+          "hit": false
+        },
+        {
+          "issue": "2026260",
+          "date": "2026-09-27",
+          "draw": "619",
+          "recommendation": "05789",
+          "hit": false
+        },
+        {
+          "issue": "2026261",
+          "date": "2026-09-28",
+          "draw": "511",
+          "recommendation": "01689",
+          "hit": false
+        }
+      ]
+    },
+    "pool6": {
+      "theoreticalRate": 0.12,
+      "experts": [
+        "direct-single",
+        "direct-ensemble",
+        "formula-draw-single",
+        "formula-draw-ensemble",
+        "formula-heat-single",
+        "formula-heat-ensemble",
+        "formula-fusion-single",
+        "formula-fusion-ensemble",
+        "ridge-draw",
+        "ridge-heat",
+        "ridge-fusion",
+        "knn-25",
+        "knn-50",
+        "knn-100",
+        "knn-200"
+      ],
+      "ranges": {
+        "search": {
+          "start": "2021-03-30",
+          "end": "2024-07-28",
+          "count": 1175
+        },
+        "development": {
+          "start": "2024-07-29",
+          "end": "2025-07-28",
+          "count": 351
+        },
+        "test": {
+          "start": "2025-07-29",
+          "end": "2026-09-28",
+          "count": 413
+        }
+      },
+      "selected": {
+        "config": {
+          "mode": "weighted",
+          "window": 100,
+          "alpha": 2,
+          "topExperts": 3
+        },
+        "search": {
+          "count": 1175,
+          "hits": 145,
+          "rate": 0.12340425531914893,
+          "maxMiss": 40,
+          "currentMiss": 1
+        },
+        "development": {
+          "count": 351,
+          "hits": 57,
+          "rate": 0.1623931623931624,
+          "maxMiss": 25,
+          "currentMiss": 2
+        },
+        "score": 158.62842334970003,
+        "test": {
+          "count": 413,
+          "hits": 66,
+          "rate": 0.15980629539951574,
+          "maxMiss": 23,
+          "currentMiss": 7
+        }
+      },
+      "topDevelopmentCandidates": [
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 145,
+            "rate": 0.12340425531914893,
+            "maxMiss": 40,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 57,
+            "rate": 0.1623931623931624,
+            "maxMiss": 25,
+            "currentMiss": 2
+          },
+          "score": 158.62842334970003
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 200,
+            "alpha": 2,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 146,
+            "rate": 0.12425531914893617,
+            "maxMiss": 34,
+            "currentMiss": 4
+          },
+          "development": {
+            "count": 351,
+            "hits": 51,
+            "rate": 0.1452991452991453,
+            "maxMiss": 25,
+            "currentMiss": 2
+          },
+          "score": 117.61360611020197
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 12
+          },
+          "search": {
+            "count": 1175,
+            "hits": 145,
+            "rate": 0.12340425531914893,
+            "maxMiss": 47,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 52,
+            "rate": 0.14814814814814814,
+            "maxMiss": 26,
+            "currentMiss": 2
+          },
+          "score": 115.15338061465721
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 2,
+            "topExperts": 15
+          },
+          "search": {
+            "count": 1175,
+            "hits": 144,
+            "rate": 0.1225531914893617,
+            "maxMiss": 47,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 53,
+            "rate": 0.150997150997151,
+            "maxMiss": 26,
+            "currentMiss": 2
+          },
+          "score": 113.91315511911256
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 0.25,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 154,
+            "rate": 0.13106382978723405,
+            "maxMiss": 28,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 40,
+            "currentMiss": 9
+          },
+          "score": 113.82241134751767
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 0.5,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 154,
+            "rate": 0.13106382978723405,
+            "maxMiss": 28,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 40,
+            "currentMiss": 9
+          },
+          "score": 113.82241134751767
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 1,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 154,
+            "rate": 0.13106382978723405,
+            "maxMiss": 28,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 40,
+            "currentMiss": 9
+          },
+          "score": 113.82241134751767
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 100,
+            "alpha": 1,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 140,
+            "rate": 0.11914893617021277,
+            "maxMiss": 40,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 57,
+            "rate": 0.1623931623931624,
+            "maxMiss": 25,
+            "currentMiss": 2
+          },
+          "score": 109.69225313693413
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 50,
+            "alpha": 1,
+            "topExperts": 8
+          },
+          "search": {
+            "count": 1175,
+            "hits": 150,
+            "rate": 0.1276595744680851,
+            "maxMiss": 40,
+            "currentMiss": 1
+          },
+          "development": {
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 25,
+            "currentMiss": 2
+          },
+          "score": 105.00049099836326
+        },
+        {
+          "config": {
+            "mode": "weighted",
+            "window": 200,
+            "alpha": 1,
+            "topExperts": 3
+          },
+          "search": {
+            "count": 1175,
+            "hits": 144,
+            "rate": 0.1225531914893617,
+            "maxMiss": 51,
+            "currentMiss": 4
+          },
+          "development": {
+            "count": 351,
+            "hits": 51,
+            "rate": 0.1452991452991453,
+            "maxMiss": 26,
+            "currentMiss": 2
+          },
+          "score": 96.4991380250955
+        }
+      ],
+      "testRows": [
+        {
+          "issue": "2025200",
+          "date": "2025-07-29",
+          "draw": "015",
+          "recommendation": "023459",
+          "hit": false
+        },
+        {
+          "issue": "2025201",
+          "date": "2025-07-30",
+          "draw": "846",
+          "recommendation": "012459",
+          "hit": false
+        },
+        {
+          "issue": "2025202",
+          "date": "2025-07-31",
+          "draw": "953",
+          "recommendation": "034789",
+          "hit": false
+        },
+        {
+          "issue": "2025203",
+          "date": "2025-08-01",
+          "draw": "013",
+          "recommendation": "012345",
+          "hit": true
+        },
+        {
+          "issue": "2025204",
+          "date": "2025-08-02",
+          "draw": "007",
+          "recommendation": "012357",
+          "hit": false
+        },
+        {
+          "issue": "2025205",
+          "date": "2025-08-03",
+          "draw": "920",
+          "recommendation": "012469",
+          "hit": true
+        },
+        {
+          "issue": "2025206",
+          "date": "2025-08-04",
+          "draw": "444",
+          "recommendation": "012459",
+          "hit": false
+        },
+        {
+          "issue": "2025207",
+          "date": "2025-08-05",
+          "draw": "255",
+          "recommendation": "024569",
+          "hit": false
+        },
+        {
+          "issue": "2025208",
+          "date": "2025-08-06",
+          "draw": "432",
+          "recommendation": "012456",
+          "hit": false
+        },
+        {
+          "issue": "2025209",
+          "date": "2025-08-07",
+          "draw": "387",
+          "recommendation": "012569",
+          "hit": false
+        },
+        {
+          "issue": "2025210",
+          "date": "2025-08-08",
+          "draw": "520",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2025211",
+          "date": "2025-08-09",
+          "draw": "897",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2025212",
+          "date": "2025-08-10",
+          "draw": "456",
+          "recommendation": "014569",
+          "hit": true
+        },
+        {
+          "issue": "2025213",
+          "date": "2025-08-11",
+          "draw": "381",
+          "recommendation": "014689",
+          "hit": false
+        },
+        {
+          "issue": "2025214",
+          "date": "2025-08-12",
+          "draw": "920",
+          "recommendation": "014569",
+          "hit": false
+        },
+        {
+          "issue": "2025215",
+          "date": "2025-08-13",
+          "draw": "853",
+          "recommendation": "014569",
+          "hit": false
+        },
+        {
+          "issue": "2025216",
+          "date": "2025-08-14",
+          "draw": "625",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2025217",
+          "date": "2025-08-15",
+          "draw": "894",
+          "recommendation": "145689",
+          "hit": true
+        },
+        {
+          "issue": "2025218",
+          "date": "2025-08-16",
+          "draw": "526",
+          "recommendation": "014569",
+          "hit": false
+        },
+        {
+          "issue": "2025219",
+          "date": "2025-08-17",
+          "draw": "900",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2025220",
+          "date": "2025-08-18",
+          "draw": "536",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2025221",
+          "date": "2025-08-19",
+          "draw": "296",
+          "recommendation": "013459",
+          "hit": false
+        },
+        {
+          "issue": "2025222",
+          "date": "2025-08-20",
+          "draw": "010",
+          "recommendation": "012346",
+          "hit": false
+        },
+        {
+          "issue": "2025223",
+          "date": "2025-08-21",
+          "draw": "736",
+          "recommendation": "012789",
+          "hit": false
+        },
+        {
+          "issue": "2025224",
+          "date": "2025-08-22",
+          "draw": "990",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2025225",
+          "date": "2025-08-23",
+          "draw": "806",
+          "recommendation": "013468",
+          "hit": true
+        },
+        {
+          "issue": "2025226",
+          "date": "2025-08-24",
+          "draw": "180",
+          "recommendation": "014589",
+          "hit": true
+        },
+        {
+          "issue": "2025227",
+          "date": "2025-08-25",
+          "draw": "611",
+          "recommendation": "045689",
+          "hit": false
+        },
+        {
+          "issue": "2025228",
+          "date": "2025-08-26",
+          "draw": "465",
+          "recommendation": "013469",
+          "hit": false
+        },
+        {
+          "issue": "2025229",
+          "date": "2025-08-27",
+          "draw": "108",
+          "recommendation": "013459",
+          "hit": false
+        },
+        {
+          "issue": "2025230",
+          "date": "2025-08-28",
+          "draw": "439",
+          "recommendation": "356789",
+          "hit": false
+        },
+        {
+          "issue": "2025231",
+          "date": "2025-08-29",
+          "draw": "732",
+          "recommendation": "234578",
+          "hit": true
+        },
+        {
+          "issue": "2025232",
+          "date": "2025-08-30",
+          "draw": "044",
+          "recommendation": "012579",
+          "hit": false
+        },
+        {
+          "issue": "2025233",
+          "date": "2025-08-31",
+          "draw": "259",
+          "recommendation": "016789",
+          "hit": false
+        },
+        {
+          "issue": "2025234",
+          "date": "2025-09-01",
+          "draw": "620",
+          "recommendation": "015678",
+          "hit": false
+        },
+        {
+          "issue": "2025235",
+          "date": "2025-09-02",
+          "draw": "969",
+          "recommendation": "015678",
+          "hit": false
+        },
+        {
+          "issue": "2025236",
+          "date": "2025-09-03",
+          "draw": "355",
+          "recommendation": "135678",
+          "hit": false
+        },
+        {
+          "issue": "2025237",
+          "date": "2025-09-04",
+          "draw": "590",
+          "recommendation": "123567",
+          "hit": false
+        },
+        {
+          "issue": "2025238",
+          "date": "2025-09-05",
+          "draw": "860",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2025239",
+          "date": "2025-09-06",
+          "draw": "125",
+          "recommendation": "145678",
+          "hit": false
+        },
+        {
+          "issue": "2025240",
+          "date": "2025-09-07",
+          "draw": "419",
+          "recommendation": "012478",
+          "hit": false
+        },
+        {
+          "issue": "2025241",
+          "date": "2025-09-08",
+          "draw": "160",
+          "recommendation": "123467",
+          "hit": false
+        },
+        {
+          "issue": "2025242",
+          "date": "2025-09-09",
+          "draw": "990",
+          "recommendation": "134679",
+          "hit": false
+        },
+        {
+          "issue": "2025243",
+          "date": "2025-09-10",
+          "draw": "176",
+          "recommendation": "135678",
+          "hit": true
+        },
+        {
+          "issue": "2025244",
+          "date": "2025-09-11",
+          "draw": "673",
+          "recommendation": "134678",
+          "hit": true
+        },
+        {
+          "issue": "2025245",
+          "date": "2025-09-12",
+          "draw": "848",
+          "recommendation": "345678",
+          "hit": false
+        },
+        {
+          "issue": "2025246",
+          "date": "2025-09-13",
+          "draw": "997",
+          "recommendation": "134578",
+          "hit": false
+        },
+        {
+          "issue": "2025247",
+          "date": "2025-09-14",
+          "draw": "262",
+          "recommendation": "123578",
+          "hit": false
+        },
+        {
+          "issue": "2025248",
+          "date": "2025-09-15",
+          "draw": "526",
+          "recommendation": "123478",
+          "hit": false
+        },
+        {
+          "issue": "2025249",
+          "date": "2025-09-16",
+          "draw": "952",
+          "recommendation": "123458",
+          "hit": false
+        },
+        {
+          "issue": "2025250",
+          "date": "2025-09-17",
+          "draw": "902",
+          "recommendation": "012378",
+          "hit": false
+        },
+        {
+          "issue": "2025251",
+          "date": "2025-09-18",
+          "draw": "868",
+          "recommendation": "013678",
+          "hit": false
+        },
+        {
+          "issue": "2025252",
+          "date": "2025-09-19",
+          "draw": "792",
+          "recommendation": "123568",
+          "hit": false
+        },
+        {
+          "issue": "2025253",
+          "date": "2025-09-20",
+          "draw": "457",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2025254",
+          "date": "2025-09-21",
+          "draw": "072",
+          "recommendation": "456789",
+          "hit": false
+        },
+        {
+          "issue": "2025255",
+          "date": "2025-09-22",
+          "draw": "264",
+          "recommendation": "123458",
+          "hit": false
+        },
+        {
+          "issue": "2025256",
+          "date": "2025-09-23",
+          "draw": "406",
+          "recommendation": "234689",
+          "hit": false
+        },
+        {
+          "issue": "2025257",
+          "date": "2025-09-24",
+          "draw": "860",
+          "recommendation": "123468",
+          "hit": false
+        },
+        {
+          "issue": "2025258",
+          "date": "2025-09-25",
+          "draw": "626",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2025259",
+          "date": "2025-09-26",
+          "draw": "625",
+          "recommendation": "124568",
+          "hit": true
+        },
+        {
+          "issue": "2025260",
+          "date": "2025-09-27",
+          "draw": "199",
+          "recommendation": "023579",
+          "hit": false
+        },
+        {
+          "issue": "2025261",
+          "date": "2025-09-28",
+          "draw": "751",
+          "recommendation": "012569",
+          "hit": false
+        },
+        {
+          "issue": "2025262",
+          "date": "2025-09-29",
+          "draw": "914",
+          "recommendation": "012356",
+          "hit": false
+        },
+        {
+          "issue": "2025263",
+          "date": "2025-09-30",
+          "draw": "399",
+          "recommendation": "012456",
+          "hit": false
+        },
+        {
+          "issue": "2025264",
+          "date": "2025-10-05",
+          "draw": "734",
+          "recommendation": "023678",
+          "hit": false
+        },
+        {
+          "issue": "2025265",
+          "date": "2025-10-06",
+          "draw": "546",
+          "recommendation": "023456",
+          "hit": true
+        },
+        {
+          "issue": "2025266",
+          "date": "2025-10-07",
+          "draw": "723",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2025267",
+          "date": "2025-10-08",
+          "draw": "391",
+          "recommendation": "023569",
+          "hit": false
+        },
+        {
+          "issue": "2025268",
+          "date": "2025-10-09",
+          "draw": "674",
+          "recommendation": "023467",
+          "hit": true
+        },
+        {
+          "issue": "2025269",
+          "date": "2025-10-10",
+          "draw": "055",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2025270",
+          "date": "2025-10-11",
+          "draw": "408",
+          "recommendation": "023478",
+          "hit": true
+        },
+        {
+          "issue": "2025271",
+          "date": "2025-10-12",
+          "draw": "727",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2025272",
+          "date": "2025-10-13",
+          "draw": "967",
+          "recommendation": "025679",
+          "hit": true
+        },
+        {
+          "issue": "2025273",
+          "date": "2025-10-14",
+          "draw": "045",
+          "recommendation": "125679",
+          "hit": false
+        },
+        {
+          "issue": "2025274",
+          "date": "2025-10-15",
+          "draw": "596",
+          "recommendation": "124568",
+          "hit": false
+        },
+        {
+          "issue": "2025275",
+          "date": "2025-10-16",
+          "draw": "203",
+          "recommendation": "012369",
+          "hit": true
+        },
+        {
+          "issue": "2025276",
+          "date": "2025-10-17",
+          "draw": "714",
+          "recommendation": "012369",
+          "hit": false
+        },
+        {
+          "issue": "2025277",
+          "date": "2025-10-18",
+          "draw": "061",
+          "recommendation": "012467",
+          "hit": true
+        },
+        {
+          "issue": "2025278",
+          "date": "2025-10-19",
+          "draw": "629",
+          "recommendation": "156789",
+          "hit": false
+        },
+        {
+          "issue": "2025279",
+          "date": "2025-10-20",
+          "draw": "752",
+          "recommendation": "056789",
+          "hit": false
+        },
+        {
+          "issue": "2025280",
+          "date": "2025-10-21",
+          "draw": "411",
+          "recommendation": "014567",
+          "hit": false
+        },
+        {
+          "issue": "2025281",
+          "date": "2025-10-22",
+          "draw": "897",
+          "recommendation": "012349",
+          "hit": false
+        },
+        {
+          "issue": "2025282",
+          "date": "2025-10-23",
+          "draw": "416",
+          "recommendation": "013589",
+          "hit": false
+        },
+        {
+          "issue": "2025283",
+          "date": "2025-10-24",
+          "draw": "664",
+          "recommendation": "234579",
+          "hit": false
+        },
+        {
+          "issue": "2025284",
+          "date": "2025-10-25",
+          "draw": "844",
+          "recommendation": "012379",
+          "hit": false
+        },
+        {
+          "issue": "2025285",
+          "date": "2025-10-26",
+          "draw": "172",
+          "recommendation": "036789",
+          "hit": false
+        },
+        {
+          "issue": "2025286",
+          "date": "2025-10-27",
+          "draw": "827",
+          "recommendation": "023568",
+          "hit": false
+        },
+        {
+          "issue": "2025287",
+          "date": "2025-10-28",
+          "draw": "805",
+          "recommendation": "012357",
+          "hit": false
+        },
+        {
+          "issue": "2025288",
+          "date": "2025-10-29",
+          "draw": "767",
+          "recommendation": "034578",
+          "hit": false
+        },
+        {
+          "issue": "2025289",
+          "date": "2025-10-30",
+          "draw": "473",
+          "recommendation": "023456",
+          "hit": false
+        },
+        {
+          "issue": "2025290",
+          "date": "2025-10-31",
+          "draw": "332",
+          "recommendation": "013456",
+          "hit": false
+        },
+        {
+          "issue": "2025291",
+          "date": "2025-11-01",
+          "draw": "794",
+          "recommendation": "013568",
+          "hit": false
+        },
+        {
+          "issue": "2025292",
+          "date": "2025-11-02",
+          "draw": "117",
+          "recommendation": "012378",
+          "hit": false
+        },
+        {
+          "issue": "2025293",
+          "date": "2025-11-03",
+          "draw": "154",
+          "recommendation": "123789",
+          "hit": false
+        },
+        {
+          "issue": "2025294",
+          "date": "2025-11-04",
+          "draw": "513",
+          "recommendation": "012458",
+          "hit": false
+        },
+        {
+          "issue": "2025295",
+          "date": "2025-11-05",
+          "draw": "273",
+          "recommendation": "013678",
+          "hit": false
+        },
+        {
+          "issue": "2025296",
+          "date": "2025-11-06",
+          "draw": "537",
+          "recommendation": "013568",
+          "hit": false
+        },
+        {
+          "issue": "2025297",
+          "date": "2025-11-07",
+          "draw": "051",
+          "recommendation": "013456",
+          "hit": true
+        },
+        {
+          "issue": "2025298",
+          "date": "2025-11-08",
+          "draw": "544",
+          "recommendation": "245679",
+          "hit": false
+        },
+        {
+          "issue": "2025299",
+          "date": "2025-11-09",
+          "draw": "385",
+          "recommendation": "013456",
+          "hit": false
+        },
+        {
+          "issue": "2025300",
+          "date": "2025-11-10",
+          "draw": "867",
+          "recommendation": "023468",
+          "hit": false
+        },
+        {
+          "issue": "2025301",
+          "date": "2025-11-11",
+          "draw": "755",
+          "recommendation": "034678",
+          "hit": false
+        },
+        {
+          "issue": "2025302",
+          "date": "2025-11-12",
+          "draw": "715",
+          "recommendation": "012346",
+          "hit": false
+        },
+        {
+          "issue": "2025303",
+          "date": "2025-11-13",
+          "draw": "933",
+          "recommendation": "014567",
+          "hit": false
+        },
+        {
+          "issue": "2025304",
+          "date": "2025-11-14",
+          "draw": "471",
+          "recommendation": "013589",
+          "hit": false
+        },
+        {
+          "issue": "2025305",
+          "date": "2025-11-15",
+          "draw": "310",
+          "recommendation": "345678",
+          "hit": false
+        },
+        {
+          "issue": "2025306",
+          "date": "2025-11-16",
+          "draw": "697",
+          "recommendation": "012489",
+          "hit": false
+        },
+        {
+          "issue": "2025307",
+          "date": "2025-11-17",
+          "draw": "164",
+          "recommendation": "234678",
+          "hit": false
+        },
+        {
+          "issue": "2025308",
+          "date": "2025-11-18",
+          "draw": "448",
+          "recommendation": "145678",
+          "hit": false
+        },
+        {
+          "issue": "2025309",
+          "date": "2025-11-19",
+          "draw": "190",
+          "recommendation": "023456",
+          "hit": false
+        },
+        {
+          "issue": "2025310",
+          "date": "2025-11-20",
+          "draw": "169",
+          "recommendation": "012689",
+          "hit": true
+        },
+        {
+          "issue": "2025311",
+          "date": "2025-11-21",
+          "draw": "640",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2025312",
+          "date": "2025-11-22",
+          "draw": "689",
+          "recommendation": "034567",
+          "hit": false
+        },
+        {
+          "issue": "2025313",
+          "date": "2025-11-23",
+          "draw": "664",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2025314",
+          "date": "2025-11-24",
+          "draw": "917",
+          "recommendation": "013679",
+          "hit": true
+        },
+        {
+          "issue": "2025315",
+          "date": "2025-11-25",
+          "draw": "729",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2025316",
+          "date": "2025-11-26",
+          "draw": "775",
+          "recommendation": "012578",
+          "hit": false
+        },
+        {
+          "issue": "2025317",
+          "date": "2025-11-27",
+          "draw": "301",
+          "recommendation": "123479",
+          "hit": false
+        },
+        {
+          "issue": "2025318",
+          "date": "2025-11-28",
+          "draw": "430",
+          "recommendation": "456789",
+          "hit": false
+        },
+        {
+          "issue": "2025319",
+          "date": "2025-11-29",
+          "draw": "294",
+          "recommendation": "124789",
+          "hit": true
+        },
+        {
+          "issue": "2025320",
+          "date": "2025-11-30",
+          "draw": "121",
+          "recommendation": "024789",
+          "hit": false
+        },
+        {
+          "issue": "2025321",
+          "date": "2025-12-01",
+          "draw": "847",
+          "recommendation": "035689",
+          "hit": false
+        },
+        {
+          "issue": "2025322",
+          "date": "2025-12-02",
+          "draw": "226",
+          "recommendation": "012459",
+          "hit": false
+        },
+        {
+          "issue": "2025323",
+          "date": "2025-12-03",
+          "draw": "551",
+          "recommendation": "046789",
+          "hit": false
+        },
+        {
+          "issue": "2025324",
+          "date": "2025-12-04",
+          "draw": "661",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2025325",
+          "date": "2025-12-05",
+          "draw": "165",
+          "recommendation": "012456",
+          "hit": true
+        },
+        {
+          "issue": "2025326",
+          "date": "2025-12-06",
+          "draw": "185",
+          "recommendation": "014568",
+          "hit": true
+        },
+        {
+          "issue": "2025327",
+          "date": "2025-12-07",
+          "draw": "789",
+          "recommendation": "012489",
+          "hit": false
+        },
+        {
+          "issue": "2025328",
+          "date": "2025-12-08",
+          "draw": "040",
+          "recommendation": "023457",
+          "hit": false
+        },
+        {
+          "issue": "2025329",
+          "date": "2025-12-09",
+          "draw": "564",
+          "recommendation": "145678",
+          "hit": true
+        },
+        {
+          "issue": "2025330",
+          "date": "2025-12-10",
+          "draw": "062",
+          "recommendation": "024679",
+          "hit": true
+        },
+        {
+          "issue": "2025331",
+          "date": "2025-12-11",
+          "draw": "050",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2025332",
+          "date": "2025-12-12",
+          "draw": "885",
+          "recommendation": "045678",
+          "hit": false
+        },
+        {
+          "issue": "2025333",
+          "date": "2025-12-13",
+          "draw": "273",
+          "recommendation": "124578",
+          "hit": false
+        },
+        {
+          "issue": "2025334",
+          "date": "2025-12-14",
+          "draw": "198",
+          "recommendation": "013589",
+          "hit": true
+        },
+        {
+          "issue": "2025335",
+          "date": "2025-12-15",
+          "draw": "051",
+          "recommendation": "045679",
+          "hit": false
+        },
+        {
+          "issue": "2025336",
+          "date": "2025-12-16",
+          "draw": "641",
+          "recommendation": "034568",
+          "hit": false
+        },
+        {
+          "issue": "2025337",
+          "date": "2025-12-17",
+          "draw": "876",
+          "recommendation": "234678",
+          "hit": true
+        },
+        {
+          "issue": "2025338",
+          "date": "2025-12-18",
+          "draw": "689",
+          "recommendation": "012489",
+          "hit": false
+        },
+        {
+          "issue": "2025339",
+          "date": "2025-12-19",
+          "draw": "676",
+          "recommendation": "046789",
+          "hit": false
+        },
+        {
+          "issue": "2025340",
+          "date": "2025-12-20",
+          "draw": "130",
+          "recommendation": "014567",
+          "hit": false
+        },
+        {
+          "issue": "2025341",
+          "date": "2025-12-21",
+          "draw": "996",
+          "recommendation": "125678",
+          "hit": false
+        },
+        {
+          "issue": "2025342",
+          "date": "2025-12-22",
+          "draw": "681",
+          "recommendation": "013567",
+          "hit": false
+        },
+        {
+          "issue": "2025343",
+          "date": "2025-12-23",
+          "draw": "645",
+          "recommendation": "012478",
+          "hit": false
+        },
+        {
+          "issue": "2025344",
+          "date": "2025-12-24",
+          "draw": "622",
+          "recommendation": "123467",
+          "hit": false
+        },
+        {
+          "issue": "2025345",
+          "date": "2025-12-25",
+          "draw": "630",
+          "recommendation": "124789",
+          "hit": false
+        },
+        {
+          "issue": "2025346",
+          "date": "2025-12-26",
+          "draw": "897",
+          "recommendation": "124689",
+          "hit": false
+        },
+        {
+          "issue": "2025347",
+          "date": "2025-12-27",
+          "draw": "192",
+          "recommendation": "136789",
+          "hit": false
+        },
+        {
+          "issue": "2025348",
+          "date": "2025-12-28",
+          "draw": "278",
+          "recommendation": "023567",
+          "hit": false
+        },
+        {
+          "issue": "2025349",
+          "date": "2025-12-29",
+          "draw": "743",
+          "recommendation": "023479",
+          "hit": true
+        },
+        {
+          "issue": "2025350",
+          "date": "2025-12-30",
+          "draw": "580",
+          "recommendation": "035678",
+          "hit": true
+        },
+        {
+          "issue": "2025351",
+          "date": "2025-12-31",
+          "draw": "452",
+          "recommendation": "034689",
+          "hit": false
+        },
+        {
+          "issue": "2026001",
+          "date": "2026-01-01",
+          "draw": "298",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2026002",
+          "date": "2026-01-02",
+          "draw": "520",
+          "recommendation": "123789",
+          "hit": false
+        },
+        {
+          "issue": "2026003",
+          "date": "2026-01-03",
+          "draw": "601",
+          "recommendation": "013678",
+          "hit": true
+        },
+        {
+          "issue": "2026004",
+          "date": "2026-01-04",
+          "draw": "019",
+          "recommendation": "012479",
+          "hit": true
+        },
+        {
+          "issue": "2026005",
+          "date": "2026-01-05",
+          "draw": "476",
+          "recommendation": "013478",
+          "hit": false
+        },
+        {
+          "issue": "2026006",
+          "date": "2026-01-06",
+          "draw": "244",
+          "recommendation": "012459",
+          "hit": false
+        },
+        {
+          "issue": "2026007",
+          "date": "2026-01-07",
+          "draw": "353",
+          "recommendation": "014569",
+          "hit": false
+        },
+        {
+          "issue": "2026008",
+          "date": "2026-01-08",
+          "draw": "252",
+          "recommendation": "245689",
+          "hit": false
+        },
+        {
+          "issue": "2026009",
+          "date": "2026-01-09",
+          "draw": "265",
+          "recommendation": "013479",
+          "hit": false
+        },
+        {
+          "issue": "2026010",
+          "date": "2026-01-10",
+          "draw": "667",
+          "recommendation": "024579",
+          "hit": false
+        },
+        {
+          "issue": "2026011",
+          "date": "2026-01-11",
+          "draw": "647",
+          "recommendation": "014679",
+          "hit": true
+        },
+        {
+          "issue": "2026012",
+          "date": "2026-01-12",
+          "draw": "241",
+          "recommendation": "126789",
+          "hit": false
+        },
+        {
+          "issue": "2026013",
+          "date": "2026-01-13",
+          "draw": "513",
+          "recommendation": "024679",
+          "hit": false
+        },
+        {
+          "issue": "2026014",
+          "date": "2026-01-14",
+          "draw": "050",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026015",
+          "date": "2026-01-15",
+          "draw": "532",
+          "recommendation": "012346",
+          "hit": false
+        },
+        {
+          "issue": "2026016",
+          "date": "2026-01-16",
+          "draw": "582",
+          "recommendation": "024789",
+          "hit": false
+        },
+        {
+          "issue": "2026017",
+          "date": "2026-01-17",
+          "draw": "945",
+          "recommendation": "135679",
+          "hit": false
+        },
+        {
+          "issue": "2026018",
+          "date": "2026-01-18",
+          "draw": "494",
+          "recommendation": "015679",
+          "hit": false
+        },
+        {
+          "issue": "2026019",
+          "date": "2026-01-19",
+          "draw": "223",
+          "recommendation": "034567",
+          "hit": false
+        },
+        {
+          "issue": "2026020",
+          "date": "2026-01-20",
+          "draw": "676",
+          "recommendation": "013689",
+          "hit": false
+        },
+        {
+          "issue": "2026021",
+          "date": "2026-01-21",
+          "draw": "559",
+          "recommendation": "013456",
+          "hit": false
+        },
+        {
+          "issue": "2026022",
+          "date": "2026-01-22",
+          "draw": "678",
+          "recommendation": "024567",
+          "hit": false
+        },
+        {
+          "issue": "2026023",
+          "date": "2026-01-23",
+          "draw": "784",
+          "recommendation": "146789",
+          "hit": true
+        },
+        {
+          "issue": "2026024",
+          "date": "2026-01-24",
+          "draw": "911",
+          "recommendation": "234789",
+          "hit": false
+        },
+        {
+          "issue": "2026025",
+          "date": "2026-01-25",
+          "draw": "029",
+          "recommendation": "234789",
+          "hit": false
+        },
+        {
+          "issue": "2026026",
+          "date": "2026-01-26",
+          "draw": "099",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026027",
+          "date": "2026-01-27",
+          "draw": "126",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2026028",
+          "date": "2026-01-28",
+          "draw": "270",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2026029",
+          "date": "2026-01-29",
+          "draw": "003",
+          "recommendation": "012467",
+          "hit": false
+        },
+        {
+          "issue": "2026030",
+          "date": "2026-01-30",
+          "draw": "134",
+          "recommendation": "023579",
+          "hit": false
+        },
+        {
+          "issue": "2026031",
+          "date": "2026-01-31",
+          "draw": "142",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2026032",
+          "date": "2026-02-01",
+          "draw": "452",
+          "recommendation": "024789",
+          "hit": false
+        },
+        {
+          "issue": "2026033",
+          "date": "2026-02-02",
+          "draw": "119",
+          "recommendation": "034589",
+          "hit": false
+        },
+        {
+          "issue": "2026034",
+          "date": "2026-02-03",
+          "draw": "052",
+          "recommendation": "034689",
+          "hit": false
+        },
+        {
+          "issue": "2026035",
+          "date": "2026-02-04",
+          "draw": "213",
+          "recommendation": "023689",
+          "hit": false
+        },
+        {
+          "issue": "2026036",
+          "date": "2026-02-05",
+          "draw": "762",
+          "recommendation": "034689",
+          "hit": false
+        },
+        {
+          "issue": "2026037",
+          "date": "2026-02-06",
+          "draw": "420",
+          "recommendation": "046789",
+          "hit": false
+        },
+        {
+          "issue": "2026038",
+          "date": "2026-02-07",
+          "draw": "467",
+          "recommendation": "025789",
+          "hit": false
+        },
+        {
+          "issue": "2026039",
+          "date": "2026-02-08",
+          "draw": "450",
+          "recommendation": "146789",
+          "hit": false
+        },
+        {
+          "issue": "2026040",
+          "date": "2026-02-09",
+          "draw": "425",
+          "recommendation": "034567",
+          "hit": false
+        },
+        {
+          "issue": "2026041",
+          "date": "2026-02-10",
+          "draw": "901",
+          "recommendation": "023478",
+          "hit": false
+        },
+        {
+          "issue": "2026042",
+          "date": "2026-02-11",
+          "draw": "854",
+          "recommendation": "012679",
+          "hit": false
+        },
+        {
+          "issue": "2026043",
+          "date": "2026-02-12",
+          "draw": "765",
+          "recommendation": "034569",
+          "hit": false
+        },
+        {
+          "issue": "2026044",
+          "date": "2026-02-13",
+          "draw": "589",
+          "recommendation": "024589",
+          "hit": true
+        },
+        {
+          "issue": "2026045",
+          "date": "2026-02-24",
+          "draw": "181",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2026046",
+          "date": "2026-02-25",
+          "draw": "291",
+          "recommendation": "023458",
+          "hit": false
+        },
+        {
+          "issue": "2026047",
+          "date": "2026-02-26",
+          "draw": "936",
+          "recommendation": "012357",
+          "hit": false
+        },
+        {
+          "issue": "2026048",
+          "date": "2026-02-27",
+          "draw": "612",
+          "recommendation": "013469",
+          "hit": false
+        },
+        {
+          "issue": "2026049",
+          "date": "2026-02-28",
+          "draw": "110",
+          "recommendation": "013468",
+          "hit": false
+        },
+        {
+          "issue": "2026050",
+          "date": "2026-03-01",
+          "draw": "689",
+          "recommendation": "023457",
+          "hit": false
+        },
+        {
+          "issue": "2026051",
+          "date": "2026-03-02",
+          "draw": "302",
+          "recommendation": "125689",
+          "hit": false
+        },
+        {
+          "issue": "2026052",
+          "date": "2026-03-03",
+          "draw": "277",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2026053",
+          "date": "2026-03-04",
+          "draw": "755",
+          "recommendation": "023479",
+          "hit": false
+        },
+        {
+          "issue": "2026054",
+          "date": "2026-03-05",
+          "draw": "217",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2026055",
+          "date": "2026-03-06",
+          "draw": "107",
+          "recommendation": "245679",
+          "hit": false
+        },
+        {
+          "issue": "2026056",
+          "date": "2026-03-07",
+          "draw": "477",
+          "recommendation": "024679",
+          "hit": false
+        },
+        {
+          "issue": "2026057",
+          "date": "2026-03-08",
+          "draw": "264",
+          "recommendation": "012489",
+          "hit": false
+        },
+        {
+          "issue": "2026058",
+          "date": "2026-03-09",
+          "draw": "543",
+          "recommendation": "125678",
+          "hit": false
+        },
+        {
+          "issue": "2026059",
+          "date": "2026-03-10",
+          "draw": "794",
+          "recommendation": "013479",
+          "hit": true
+        },
+        {
+          "issue": "2026060",
+          "date": "2026-03-11",
+          "draw": "943",
+          "recommendation": "012579",
+          "hit": false
+        },
+        {
+          "issue": "2026061",
+          "date": "2026-03-12",
+          "draw": "429",
+          "recommendation": "012478",
+          "hit": false
+        },
+        {
+          "issue": "2026062",
+          "date": "2026-03-13",
+          "draw": "294",
+          "recommendation": "023478",
+          "hit": false
+        },
+        {
+          "issue": "2026063",
+          "date": "2026-03-14",
+          "draw": "517",
+          "recommendation": "134678",
+          "hit": false
+        },
+        {
+          "issue": "2026064",
+          "date": "2026-03-15",
+          "draw": "604",
+          "recommendation": "124567",
+          "hit": false
+        },
+        {
+          "issue": "2026065",
+          "date": "2026-03-16",
+          "draw": "057",
+          "recommendation": "012457",
+          "hit": true
+        },
+        {
+          "issue": "2026066",
+          "date": "2026-03-17",
+          "draw": "934",
+          "recommendation": "012457",
+          "hit": false
+        },
+        {
+          "issue": "2026067",
+          "date": "2026-03-18",
+          "draw": "695",
+          "recommendation": "012459",
+          "hit": false
+        },
+        {
+          "issue": "2026068",
+          "date": "2026-03-19",
+          "draw": "706",
+          "recommendation": "245679",
+          "hit": false
+        },
+        {
+          "issue": "2026069",
+          "date": "2026-03-20",
+          "draw": "908",
+          "recommendation": "014569",
+          "hit": false
+        },
+        {
+          "issue": "2026070",
+          "date": "2026-03-21",
+          "draw": "484",
+          "recommendation": "012457",
+          "hit": false
+        },
+        {
+          "issue": "2026071",
+          "date": "2026-03-22",
+          "draw": "261",
+          "recommendation": "012578",
+          "hit": false
+        },
+        {
+          "issue": "2026072",
+          "date": "2026-03-23",
+          "draw": "245",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026073",
+          "date": "2026-03-24",
+          "draw": "504",
+          "recommendation": "124579",
+          "hit": false
+        },
+        {
+          "issue": "2026074",
+          "date": "2026-03-25",
+          "draw": "487",
+          "recommendation": "024579",
+          "hit": false
+        },
+        {
+          "issue": "2026075",
+          "date": "2026-03-26",
+          "draw": "816",
+          "recommendation": "124589",
+          "hit": false
+        },
+        {
+          "issue": "2026076",
+          "date": "2026-03-27",
+          "draw": "863",
+          "recommendation": "124678",
+          "hit": false
+        },
+        {
+          "issue": "2026077",
+          "date": "2026-03-28",
+          "draw": "112",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026078",
+          "date": "2026-03-29",
+          "draw": "049",
+          "recommendation": "124678",
+          "hit": false
+        },
+        {
+          "issue": "2026079",
+          "date": "2026-03-30",
+          "draw": "233",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026080",
+          "date": "2026-03-31",
+          "draw": "802",
+          "recommendation": "024678",
+          "hit": true
+        },
+        {
+          "issue": "2026081",
+          "date": "2026-04-01",
+          "draw": "827",
+          "recommendation": "024578",
+          "hit": true
+        },
+        {
+          "issue": "2026082",
+          "date": "2026-04-02",
+          "draw": "942",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026083",
+          "date": "2026-04-03",
+          "draw": "506",
+          "recommendation": "245789",
+          "hit": false
+        },
+        {
+          "issue": "2026084",
+          "date": "2026-04-04",
+          "draw": "456",
+          "recommendation": "024569",
+          "hit": true
+        },
+        {
+          "issue": "2026085",
+          "date": "2026-04-05",
+          "draw": "118",
+          "recommendation": "245679",
+          "hit": false
+        },
+        {
+          "issue": "2026086",
+          "date": "2026-04-06",
+          "draw": "382",
+          "recommendation": "145789",
+          "hit": false
+        },
+        {
+          "issue": "2026087",
+          "date": "2026-04-07",
+          "draw": "911",
+          "recommendation": "234568",
+          "hit": false
+        },
+        {
+          "issue": "2026088",
+          "date": "2026-04-08",
+          "draw": "608",
+          "recommendation": "134789",
+          "hit": false
+        },
+        {
+          "issue": "2026089",
+          "date": "2026-04-09",
+          "draw": "922",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2026090",
+          "date": "2026-04-10",
+          "draw": "816",
+          "recommendation": "124689",
+          "hit": true
+        },
+        {
+          "issue": "2026091",
+          "date": "2026-04-11",
+          "draw": "537",
+          "recommendation": "124689",
+          "hit": false
+        },
+        {
+          "issue": "2026092",
+          "date": "2026-04-12",
+          "draw": "870",
+          "recommendation": "123568",
+          "hit": false
+        },
+        {
+          "issue": "2026093",
+          "date": "2026-04-13",
+          "draw": "518",
+          "recommendation": "015678",
+          "hit": true
+        },
+        {
+          "issue": "2026094",
+          "date": "2026-04-14",
+          "draw": "418",
+          "recommendation": "014568",
+          "hit": true
+        },
+        {
+          "issue": "2026095",
+          "date": "2026-04-15",
+          "draw": "022",
+          "recommendation": "012458",
+          "hit": false
+        },
+        {
+          "issue": "2026096",
+          "date": "2026-04-16",
+          "draw": "689",
+          "recommendation": "012368",
+          "hit": false
+        },
+        {
+          "issue": "2026097",
+          "date": "2026-04-17",
+          "draw": "818",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2026098",
+          "date": "2026-04-18",
+          "draw": "513",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2026099",
+          "date": "2026-04-19",
+          "draw": "877",
+          "recommendation": "123568",
+          "hit": false
+        },
+        {
+          "issue": "2026100",
+          "date": "2026-04-20",
+          "draw": "414",
+          "recommendation": "124568",
+          "hit": false
+        },
+        {
+          "issue": "2026101",
+          "date": "2026-04-21",
+          "draw": "584",
+          "recommendation": "123458",
+          "hit": true
+        },
+        {
+          "issue": "2026102",
+          "date": "2026-04-22",
+          "draw": "420",
+          "recommendation": "012458",
+          "hit": true
+        },
+        {
+          "issue": "2026103",
+          "date": "2026-04-23",
+          "draw": "661",
+          "recommendation": "245689",
+          "hit": false
+        },
+        {
+          "issue": "2026104",
+          "date": "2026-04-24",
+          "draw": "482",
+          "recommendation": "245689",
+          "hit": true
+        },
+        {
+          "issue": "2026105",
+          "date": "2026-04-25",
+          "draw": "631",
+          "recommendation": "045689",
+          "hit": false
+        },
+        {
+          "issue": "2026106",
+          "date": "2026-04-26",
+          "draw": "928",
+          "recommendation": "245689",
+          "hit": true
+        },
+        {
+          "issue": "2026107",
+          "date": "2026-04-27",
+          "draw": "278",
+          "recommendation": "045689",
+          "hit": false
+        },
+        {
+          "issue": "2026108",
+          "date": "2026-04-28",
+          "draw": "671",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026109",
+          "date": "2026-04-29",
+          "draw": "195",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026110",
+          "date": "2026-04-30",
+          "draw": "379",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026111",
+          "date": "2026-05-01",
+          "draw": "863",
+          "recommendation": "234568",
+          "hit": true
+        },
+        {
+          "issue": "2026112",
+          "date": "2026-05-02",
+          "draw": "065",
+          "recommendation": "024568",
+          "hit": true
+        },
+        {
+          "issue": "2026113",
+          "date": "2026-05-03",
+          "draw": "040",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026114",
+          "date": "2026-05-04",
+          "draw": "864",
+          "recommendation": "024568",
+          "hit": true
+        },
+        {
+          "issue": "2026115",
+          "date": "2026-05-05",
+          "draw": "581",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026116",
+          "date": "2026-05-06",
+          "draw": "020",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026117",
+          "date": "2026-05-07",
+          "draw": "411",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026118",
+          "date": "2026-05-08",
+          "draw": "132",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026119",
+          "date": "2026-05-09",
+          "draw": "112",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2026120",
+          "date": "2026-05-10",
+          "draw": "734",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2026121",
+          "date": "2026-05-11",
+          "draw": "393",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2026122",
+          "date": "2026-05-12",
+          "draw": "346",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2026123",
+          "date": "2026-05-13",
+          "draw": "200",
+          "recommendation": "013468",
+          "hit": false
+        },
+        {
+          "issue": "2026124",
+          "date": "2026-05-14",
+          "draw": "280",
+          "recommendation": "012568",
+          "hit": true
+        },
+        {
+          "issue": "2026125",
+          "date": "2026-05-15",
+          "draw": "954",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2026126",
+          "date": "2026-05-16",
+          "draw": "846",
+          "recommendation": "014589",
+          "hit": false
+        },
+        {
+          "issue": "2026127",
+          "date": "2026-05-17",
+          "draw": "700",
+          "recommendation": "014568",
+          "hit": false
+        },
+        {
+          "issue": "2026128",
+          "date": "2026-05-18",
+          "draw": "776",
+          "recommendation": "014678",
+          "hit": false
+        },
+        {
+          "issue": "2026129",
+          "date": "2026-05-19",
+          "draw": "023",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2026130",
+          "date": "2026-05-20",
+          "draw": "267",
+          "recommendation": "012348",
+          "hit": false
+        },
+        {
+          "issue": "2026131",
+          "date": "2026-05-21",
+          "draw": "598",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2026132",
+          "date": "2026-05-22",
+          "draw": "756",
+          "recommendation": "012489",
+          "hit": false
+        },
+        {
+          "issue": "2026133",
+          "date": "2026-05-23",
+          "draw": "080",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2026134",
+          "date": "2026-05-24",
+          "draw": "654",
+          "recommendation": "012348",
+          "hit": false
+        },
+        {
+          "issue": "2026135",
+          "date": "2026-05-25",
+          "draw": "487",
+          "recommendation": "012346",
+          "hit": false
+        },
+        {
+          "issue": "2026136",
+          "date": "2026-05-26",
+          "draw": "889",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026137",
+          "date": "2026-05-27",
+          "draw": "165",
+          "recommendation": "012348",
+          "hit": false
+        },
+        {
+          "issue": "2026138",
+          "date": "2026-05-28",
+          "draw": "790",
+          "recommendation": "012346",
+          "hit": false
+        },
+        {
+          "issue": "2026139",
+          "date": "2026-05-29",
+          "draw": "286",
+          "recommendation": "012347",
+          "hit": false
+        },
+        {
+          "issue": "2026140",
+          "date": "2026-05-30",
+          "draw": "285",
+          "recommendation": "023468",
+          "hit": false
+        },
+        {
+          "issue": "2026141",
+          "date": "2026-05-31",
+          "draw": "397",
+          "recommendation": "023468",
+          "hit": false
+        },
+        {
+          "issue": "2026142",
+          "date": "2026-06-01",
+          "draw": "894",
+          "recommendation": "023478",
+          "hit": false
+        },
+        {
+          "issue": "2026143",
+          "date": "2026-06-02",
+          "draw": "376",
+          "recommendation": "012468",
+          "hit": false
+        },
+        {
+          "issue": "2026144",
+          "date": "2026-06-03",
+          "draw": "726",
+          "recommendation": "023478",
+          "hit": false
+        },
+        {
+          "issue": "2026145",
+          "date": "2026-06-04",
+          "draw": "279",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026146",
+          "date": "2026-06-05",
+          "draw": "464",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026147",
+          "date": "2026-06-06",
+          "draw": "712",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026148",
+          "date": "2026-06-07",
+          "draw": "408",
+          "recommendation": "024678",
+          "hit": true
+        },
+        {
+          "issue": "2026149",
+          "date": "2026-06-08",
+          "draw": "696",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026150",
+          "date": "2026-06-09",
+          "draw": "720",
+          "recommendation": "024678",
+          "hit": true
+        },
+        {
+          "issue": "2026151",
+          "date": "2026-06-10",
+          "draw": "631",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026152",
+          "date": "2026-06-11",
+          "draw": "220",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026153",
+          "date": "2026-06-12",
+          "draw": "887",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026154",
+          "date": "2026-06-13",
+          "draw": "377",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026155",
+          "date": "2026-06-14",
+          "draw": "409",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026156",
+          "date": "2026-06-15",
+          "draw": "162",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026157",
+          "date": "2026-06-16",
+          "draw": "327",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2026158",
+          "date": "2026-06-17",
+          "draw": "178",
+          "recommendation": "245678",
+          "hit": false
+        },
+        {
+          "issue": "2026159",
+          "date": "2026-06-18",
+          "draw": "995",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2026160",
+          "date": "2026-06-19",
+          "draw": "332",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2026161",
+          "date": "2026-06-20",
+          "draw": "529",
+          "recommendation": "246789",
+          "hit": false
+        },
+        {
+          "issue": "2026162",
+          "date": "2026-06-21",
+          "draw": "585",
+          "recommendation": "023478",
+          "hit": false
+        },
+        {
+          "issue": "2026163",
+          "date": "2026-06-22",
+          "draw": "537",
+          "recommendation": "012789",
+          "hit": false
+        },
+        {
+          "issue": "2026164",
+          "date": "2026-06-23",
+          "draw": "690",
+          "recommendation": "124689",
+          "hit": false
+        },
+        {
+          "issue": "2026165",
+          "date": "2026-06-24",
+          "draw": "424",
+          "recommendation": "024678",
+          "hit": false
+        },
+        {
+          "issue": "2026166",
+          "date": "2026-06-25",
+          "draw": "900",
+          "recommendation": "136789",
+          "hit": false
+        },
+        {
+          "issue": "2026167",
+          "date": "2026-06-26",
+          "draw": "631",
+          "recommendation": "034678",
+          "hit": false
+        },
+        {
+          "issue": "2026168",
+          "date": "2026-06-27",
+          "draw": "130",
+          "recommendation": "034678",
+          "hit": false
+        },
+        {
+          "issue": "2026169",
+          "date": "2026-06-28",
+          "draw": "832",
+          "recommendation": "026789",
+          "hit": false
+        },
+        {
+          "issue": "2026170",
+          "date": "2026-06-29",
+          "draw": "805",
+          "recommendation": "026789",
+          "hit": false
+        },
+        {
+          "issue": "2026171",
+          "date": "2026-06-30",
+          "draw": "134",
+          "recommendation": "023489",
+          "hit": false
+        },
+        {
+          "issue": "2026172",
+          "date": "2026-07-01",
+          "draw": "445",
+          "recommendation": "236789",
+          "hit": false
+        },
+        {
+          "issue": "2026173",
+          "date": "2026-07-02",
+          "draw": "677",
+          "recommendation": "236789",
+          "hit": false
+        },
+        {
+          "issue": "2026174",
+          "date": "2026-07-03",
+          "draw": "618",
+          "recommendation": "123689",
+          "hit": true
+        },
+        {
+          "issue": "2026175",
+          "date": "2026-07-04",
+          "draw": "421",
+          "recommendation": "123689",
+          "hit": false
+        },
+        {
+          "issue": "2026176",
+          "date": "2026-07-05",
+          "draw": "269",
+          "recommendation": "123689",
+          "hit": true
+        },
+        {
+          "issue": "2026177",
+          "date": "2026-07-06",
+          "draw": "808",
+          "recommendation": "234689",
+          "hit": false
+        },
+        {
+          "issue": "2026178",
+          "date": "2026-07-07",
+          "draw": "266",
+          "recommendation": "234568",
+          "hit": false
+        },
+        {
+          "issue": "2026179",
+          "date": "2026-07-08",
+          "draw": "993",
+          "recommendation": "234569",
+          "hit": false
+        },
+        {
+          "issue": "2026180",
+          "date": "2026-07-09",
+          "draw": "520",
+          "recommendation": "234568",
+          "hit": false
+        },
+        {
+          "issue": "2026181",
+          "date": "2026-07-10",
+          "draw": "818",
+          "recommendation": "124568",
+          "hit": false
+        },
+        {
+          "issue": "2026182",
+          "date": "2026-07-11",
+          "draw": "662",
+          "recommendation": "124568",
+          "hit": false
+        },
+        {
+          "issue": "2026183",
+          "date": "2026-07-12",
+          "draw": "923",
+          "recommendation": "123689",
+          "hit": true
+        },
+        {
+          "issue": "2026184",
+          "date": "2026-07-13",
+          "draw": "902",
+          "recommendation": "123689",
+          "hit": false
+        },
+        {
+          "issue": "2026185",
+          "date": "2026-07-14",
+          "draw": "397",
+          "recommendation": "236789",
+          "hit": true
+        },
+        {
+          "issue": "2026186",
+          "date": "2026-07-15",
+          "draw": "045",
+          "recommendation": "234689",
+          "hit": false
+        },
+        {
+          "issue": "2026187",
+          "date": "2026-07-16",
+          "draw": "023",
+          "recommendation": "023469",
+          "hit": true
+        },
+        {
+          "issue": "2026188",
+          "date": "2026-07-17",
+          "draw": "969",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2026189",
+          "date": "2026-07-18",
+          "draw": "558",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2026190",
+          "date": "2026-07-19",
+          "draw": "026",
+          "recommendation": "023469",
+          "hit": true
+        },
+        {
+          "issue": "2026191",
+          "date": "2026-07-20",
+          "draw": "906",
+          "recommendation": "024689",
+          "hit": true
+        },
+        {
+          "issue": "2026192",
+          "date": "2026-07-21",
+          "draw": "425",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2026193",
+          "date": "2026-07-22",
+          "draw": "254",
+          "recommendation": "023469",
+          "hit": false
+        },
+        {
+          "issue": "2026194",
+          "date": "2026-07-23",
+          "draw": "283",
+          "recommendation": "023479",
+          "hit": false
+        },
+        {
+          "issue": "2026195",
+          "date": "2026-07-24",
+          "draw": "275",
+          "recommendation": "024589",
+          "hit": false
+        },
+        {
+          "issue": "2026196",
+          "date": "2026-07-25",
+          "draw": "419",
+          "recommendation": "024789",
+          "hit": false
+        },
+        {
+          "issue": "2026197",
+          "date": "2026-07-26",
+          "draw": "232",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026198",
+          "date": "2026-07-27",
+          "draw": "685",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026199",
+          "date": "2026-07-28",
+          "draw": "591",
+          "recommendation": "012367",
+          "hit": false
+        },
+        {
+          "issue": "2026200",
+          "date": "2026-07-29",
+          "draw": "912",
+          "recommendation": "012469",
+          "hit": true
+        },
+        {
+          "issue": "2026201",
+          "date": "2026-07-30",
+          "draw": "321",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2026202",
+          "date": "2026-07-31",
+          "draw": "988",
+          "recommendation": "012349",
+          "hit": false
+        },
+        {
+          "issue": "2026203",
+          "date": "2026-08-01",
+          "draw": "435",
+          "recommendation": "012789",
+          "hit": false
+        },
+        {
+          "issue": "2026204",
+          "date": "2026-08-02",
+          "draw": "978",
+          "recommendation": "012349",
+          "hit": false
+        },
+        {
+          "issue": "2026205",
+          "date": "2026-08-03",
+          "draw": "814",
+          "recommendation": "023479",
+          "hit": false
+        },
+        {
+          "issue": "2026206",
+          "date": "2026-08-04",
+          "draw": "942",
+          "recommendation": "012379",
+          "hit": false
+        },
+        {
+          "issue": "2026207",
+          "date": "2026-08-05",
+          "draw": "415",
+          "recommendation": "012479",
+          "hit": false
+        },
+        {
+          "issue": "2026208",
+          "date": "2026-08-06",
+          "draw": "632",
+          "recommendation": "012379",
+          "hit": false
+        },
+        {
+          "issue": "2026209",
+          "date": "2026-08-07",
+          "draw": "289",
+          "recommendation": "012379",
+          "hit": false
+        },
+        {
+          "issue": "2026210",
+          "date": "2026-08-08",
+          "draw": "755",
+          "recommendation": "023789",
+          "hit": false
+        },
+        {
+          "issue": "2026211",
+          "date": "2026-08-09",
+          "draw": "708",
+          "recommendation": "023678",
+          "hit": true
+        },
+        {
+          "issue": "2026212",
+          "date": "2026-08-10",
+          "draw": "561",
+          "recommendation": "023678",
+          "hit": false
+        },
+        {
+          "issue": "2026213",
+          "date": "2026-08-11",
+          "draw": "872",
+          "recommendation": "012367",
+          "hit": false
+        },
+        {
+          "issue": "2026214",
+          "date": "2026-08-12",
+          "draw": "545",
+          "recommendation": "012368",
+          "hit": false
+        },
+        {
+          "issue": "2026215",
+          "date": "2026-08-13",
+          "draw": "172",
+          "recommendation": "013467",
+          "hit": false
+        },
+        {
+          "issue": "2026216",
+          "date": "2026-08-14",
+          "draw": "935",
+          "recommendation": "013467",
+          "hit": false
+        },
+        {
+          "issue": "2026217",
+          "date": "2026-08-15",
+          "draw": "882",
+          "recommendation": "023459",
+          "hit": false
+        },
+        {
+          "issue": "2026218",
+          "date": "2026-08-16",
+          "draw": "382",
+          "recommendation": "234568",
+          "hit": true
+        },
+        {
+          "issue": "2026219",
+          "date": "2026-08-17",
+          "draw": "225",
+          "recommendation": "135689",
+          "hit": false
+        },
+        {
+          "issue": "2026220",
+          "date": "2026-08-18",
+          "draw": "373",
+          "recommendation": "235689",
+          "hit": false
+        },
+        {
+          "issue": "2026221",
+          "date": "2026-08-19",
+          "draw": "296",
+          "recommendation": "012579",
+          "hit": false
+        },
+        {
+          "issue": "2026222",
+          "date": "2026-08-20",
+          "draw": "380",
+          "recommendation": "125679",
+          "hit": false
+        },
+        {
+          "issue": "2026223",
+          "date": "2026-08-21",
+          "draw": "948",
+          "recommendation": "012469",
+          "hit": false
+        },
+        {
+          "issue": "2026224",
+          "date": "2026-08-22",
+          "draw": "862",
+          "recommendation": "012789",
+          "hit": false
+        },
+        {
+          "issue": "2026225",
+          "date": "2026-08-23",
+          "draw": "555",
+          "recommendation": "023469",
+          "hit": false
+        },
+        {
+          "issue": "2026226",
+          "date": "2026-08-24",
+          "draw": "851",
+          "recommendation": "013468",
+          "hit": false
+        },
+        {
+          "issue": "2026227",
+          "date": "2026-08-25",
+          "draw": "522",
+          "recommendation": "126789",
+          "hit": false
+        },
+        {
+          "issue": "2026228",
+          "date": "2026-08-26",
+          "draw": "399",
+          "recommendation": "123457",
+          "hit": false
+        },
+        {
+          "issue": "2026229",
+          "date": "2026-08-27",
+          "draw": "828",
+          "recommendation": "345678",
+          "hit": false
+        },
+        {
+          "issue": "2026230",
+          "date": "2026-08-28",
+          "draw": "066",
+          "recommendation": "025689",
+          "hit": false
+        },
+        {
+          "issue": "2026231",
+          "date": "2026-08-29",
+          "draw": "733",
+          "recommendation": "124678",
+          "hit": false
+        },
+        {
+          "issue": "2026232",
+          "date": "2026-08-30",
+          "draw": "658",
+          "recommendation": "024689",
+          "hit": false
+        },
+        {
+          "issue": "2026233",
+          "date": "2026-08-31",
+          "draw": "970",
+          "recommendation": "024568",
+          "hit": false
+        },
+        {
+          "issue": "2026234",
+          "date": "2026-09-01",
+          "draw": "695",
+          "recommendation": "256789",
+          "hit": true
+        },
+        {
+          "issue": "2026235",
+          "date": "2026-09-02",
+          "draw": "219",
+          "recommendation": "025789",
+          "hit": false
+        },
+        {
+          "issue": "2026236",
+          "date": "2026-09-03",
+          "draw": "047",
+          "recommendation": "023489",
+          "hit": false
+        },
+        {
+          "issue": "2026237",
+          "date": "2026-09-04",
+          "draw": "854",
+          "recommendation": "012379",
+          "hit": false
+        },
+        {
+          "issue": "2026238",
+          "date": "2026-09-05",
+          "draw": "899",
+          "recommendation": "023789",
+          "hit": false
+        },
+        {
+          "issue": "2026239",
+          "date": "2026-09-06",
+          "draw": "002",
+          "recommendation": "024578",
+          "hit": false
+        },
+        {
+          "issue": "2026240",
+          "date": "2026-09-07",
+          "draw": "981",
+          "recommendation": "013679",
+          "hit": false
+        },
+        {
+          "issue": "2026241",
+          "date": "2026-09-08",
+          "draw": "002",
+          "recommendation": "014578",
+          "hit": false
+        },
+        {
+          "issue": "2026242",
+          "date": "2026-09-09",
+          "draw": "555",
+          "recommendation": "024578",
+          "hit": false
+        },
+        {
+          "issue": "2026243",
+          "date": "2026-09-10",
+          "draw": "219",
+          "recommendation": "123579",
+          "hit": true
+        },
+        {
+          "issue": "2026244",
+          "date": "2026-09-11",
+          "draw": "654",
+          "recommendation": "235789",
+          "hit": false
+        },
+        {
+          "issue": "2026245",
+          "date": "2026-09-12",
+          "draw": "549",
+          "recommendation": "012568",
+          "hit": false
+        },
+        {
+          "issue": "2026246",
+          "date": "2026-09-13",
+          "draw": "982",
+          "recommendation": "124589",
+          "hit": true
+        },
+        {
+          "issue": "2026247",
+          "date": "2026-09-14",
+          "draw": "609",
+          "recommendation": "245789",
+          "hit": false
+        },
+        {
+          "issue": "2026248",
+          "date": "2026-09-15",
+          "draw": "876",
+          "recommendation": "124589",
+          "hit": false
+        },
+        {
+          "issue": "2026249",
+          "date": "2026-09-16",
+          "draw": "689",
+          "recommendation": "056789",
+          "hit": true
+        },
+        {
+          "issue": "2026250",
+          "date": "2026-09-17",
+          "draw": "954",
+          "recommendation": "025689",
+          "hit": false
+        },
+        {
+          "issue": "2026251",
+          "date": "2026-09-18",
+          "draw": "777",
+          "recommendation": "045689",
+          "hit": false
+        },
+        {
+          "issue": "2026252",
+          "date": "2026-09-19",
+          "draw": "092",
+          "recommendation": "456789",
+          "hit": false
+        },
+        {
+          "issue": "2026253",
+          "date": "2026-09-20",
+          "draw": "034",
+          "recommendation": "056789",
+          "hit": false
+        },
+        {
+          "issue": "2026254",
+          "date": "2026-09-21",
+          "draw": "850",
+          "recommendation": "045789",
+          "hit": true
+        },
+        {
+          "issue": "2026255",
+          "date": "2026-09-22",
+          "draw": "699",
+          "recommendation": "034589",
+          "hit": false
+        },
+        {
+          "issue": "2026256",
+          "date": "2026-09-23",
+          "draw": "051",
+          "recommendation": "045789",
+          "hit": false
+        },
+        {
+          "issue": "2026257",
+          "date": "2026-09-24",
+          "draw": "486",
+          "recommendation": "025789",
+          "hit": false
+        },
+        {
+          "issue": "2026258",
+          "date": "2026-09-25",
+          "draw": "635",
+          "recommendation": "045689",
+          "hit": false
+        },
+        {
+          "issue": "2026259",
+          "date": "2026-09-26",
+          "draw": "731",
+          "recommendation": "356789",
+          "hit": false
+        },
+        {
+          "issue": "2026260",
+          "date": "2026-09-27",
+          "draw": "619",
+          "recommendation": "356789",
+          "hit": false
+        },
+        {
+          "issue": "2026261",
+          "date": "2026-09-28",
+          "draw": "511",
+          "recommendation": "135689",
+          "hit": false
+        }
+      ]
+    }
+  }
+}

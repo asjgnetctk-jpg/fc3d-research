@@ -1,0 +1,2496 @@
+{
+  "generatedAt": "2026-10-04T14:58:03.436Z",
+  "methodology": "Each fold trains on one year and evaluates only the following unseen year. State may carry from known training history, while reported miss streak resets at the test boundary.",
+  "completedFiles": 280,
+  "completedGroups": 56,
+  "bestByTarget": {
+    "fc3d-pool5": [
+      {
+        "key": "2-fc3d-pool5-8",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 8,
+        "folds": 5,
+        "count": 1756,
+        "hits": 123,
+        "rate": 0.07004555808656036,
+        "maxMiss": 91,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 34,
+            "rate": 0.09686609686609686,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 75
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 23,
+            "rate": 0.06534090909090909,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 91
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 27,
+            "rate": 0.07692307692307693,
+            "maxMiss": 42
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 96,
+          "maxMiss": 91,
+          "rate": 0.06832740213523132
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 27,
+          "rate": 0.07692307692307693,
+          "maxMiss": 42
+        }
+      },
+      {
+        "key": "2-fc3d-pool5-5",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 5,
+        "folds": 5,
+        "count": 1756,
+        "hits": 116,
+        "rate": 0.06605922551252848,
+        "maxMiss": 90,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 90
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 14,
+            "rate": 0.039886039886039885,
+            "maxMiss": 70
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 30,
+            "rate": 0.08522727272727272,
+            "maxMiss": 35
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 30,
+            "rate": 0.08547008547008547,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 54
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 95,
+          "maxMiss": 90,
+          "rate": 0.06761565836298933
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 21,
+          "rate": 0.05982905982905983,
+          "maxMiss": 54
+        }
+      },
+      {
+        "key": "3-fc3d-pool5-7",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 7,
+        "folds": 5,
+        "count": 1756,
+        "hits": 114,
+        "rate": 0.06492027334851937,
+        "maxMiss": 70,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 70
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 27,
+            "rate": 0.07670454545454546,
+            "maxMiss": 51
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 68
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 61
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 93,
+          "maxMiss": 70,
+          "rate": 0.06619217081850534
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 21,
+          "rate": 0.05982905982905983,
+          "maxMiss": 61
+        }
+      },
+      {
+        "key": "2-fc3d-pool5-3",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 3,
+        "folds": 5,
+        "count": 1756,
+        "hits": 105,
+        "rate": 0.05979498861047836,
+        "maxMiss": 86,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 51
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 40
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 14,
+            "rate": 0.03977272727272727,
+            "maxMiss": 65
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 28,
+            "rate": 0.07977207977207977,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 15,
+            "rate": 0.042735042735042736,
+            "maxMiss": 86
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 90,
+          "maxMiss": 65,
+          "rate": 0.06405693950177936
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 15,
+          "rate": 0.042735042735042736,
+          "maxMiss": 86
+        }
+      },
+      {
+        "key": "3-fc3d-pool5-14",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 14,
+        "folds": 5,
+        "count": 1756,
+        "hits": 105,
+        "rate": 0.05979498861047836,
+        "maxMiss": 62,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 42
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 16,
+            "rate": 0.045454545454545456,
+            "maxMiss": 54
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 62
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 18,
+            "rate": 0.05128205128205128,
+            "maxMiss": 61
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 87,
+          "maxMiss": 62,
+          "rate": 0.06192170818505338
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 18,
+          "rate": 0.05128205128205128,
+          "maxMiss": 61
+        }
+      },
+      {
+        "key": "3-fc3d-pool5-1",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 1,
+        "folds": 5,
+        "count": 1756,
+        "hits": 116,
+        "rate": 0.06605922551252848,
+        "maxMiss": 57,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 28,
+            "rate": 0.07977207977207977,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 19,
+            "rate": 0.05397727272727273,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 17,
+            "rate": 0.04843304843304843,
+            "maxMiss": 57
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 32,
+            "rate": 0.09116809116809117,
+            "maxMiss": 44
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 84,
+          "maxMiss": 57,
+          "rate": 0.0597864768683274
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 32,
+          "rate": 0.09116809116809117,
+          "maxMiss": 44
+        }
+      },
+      {
+        "key": "2-fc3d-pool5-12",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 12,
+        "folds": 5,
+        "count": 1756,
+        "hits": 100,
+        "rate": 0.05694760820045558,
+        "maxMiss": 85,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 22,
+            "rate": 0.06267806267806268,
+            "maxMiss": 48
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 40
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 17,
+            "rate": 0.048295454545454544,
+            "maxMiss": 59
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 45
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 16,
+            "rate": 0.045584045584045586,
+            "maxMiss": 85
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 84,
+          "maxMiss": 59,
+          "rate": 0.0597864768683274
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 16,
+          "rate": 0.045584045584045586,
+          "maxMiss": 85
+        }
+      },
+      {
+        "key": "1-fc3d-pool5-6",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 6,
+        "folds": 5,
+        "count": 1756,
+        "hits": 111,
+        "rate": 0.0632118451025057,
+        "maxMiss": 72,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 22,
+            "rate": 0.06267806267806268,
+            "maxMiss": 72
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 66
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 24,
+            "rate": 0.06818181818181818,
+            "maxMiss": 42
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 18,
+            "rate": 0.05128205128205128,
+            "maxMiss": 43
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 28,
+            "rate": 0.07977207977207977,
+            "maxMiss": 36
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 83,
+          "maxMiss": 72,
+          "rate": 0.05907473309608541
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 28,
+          "rate": 0.07977207977207977,
+          "maxMiss": 36
+        }
+      },
+      {
+        "key": "1-fc3d-pool5-10",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 10,
+        "folds": 5,
+        "count": 1756,
+        "hits": 102,
+        "rate": 0.05808656036446469,
+        "maxMiss": 74,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 28,
+            "rate": 0.07977207977207977,
+            "maxMiss": 40
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 13,
+            "rate": 0.037037037037037035,
+            "maxMiss": 74
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 20,
+            "rate": 0.056818181818181816,
+            "maxMiss": 48
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 64
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 22,
+            "rate": 0.06267806267806268,
+            "maxMiss": 43
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 80,
+          "maxMiss": 74,
+          "rate": 0.05693950177935943
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 22,
+          "rate": 0.06267806267806268,
+          "maxMiss": 43
+        }
+      },
+      {
+        "key": "3-fc3d-pool5-9",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool5",
+        "states": 9,
+        "folds": 5,
+        "count": 1756,
+        "hits": 105,
+        "rate": 0.05979498861047836,
+        "maxMiss": 80,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 17,
+            "rate": 0.04843304843304843,
+            "maxMiss": 80
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 17,
+            "rate": 0.04843304843304843,
+            "maxMiss": 43
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 19,
+            "rate": 0.05397727272727273,
+            "maxMiss": 64
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 27,
+            "rate": 0.07692307692307693,
+            "maxMiss": 43
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 61
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 80,
+          "maxMiss": 80,
+          "rate": 0.05693950177935943
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 25,
+          "rate": 0.07122507122507123,
+          "maxMiss": 61
+        }
+      }
+    ],
+    "fc3d-pool6": [
+      {
+        "key": "1-fc3d-pool6-4",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 4,
+        "folds": 5,
+        "count": 1756,
+        "hits": 242,
+        "rate": 0.1378132118451025,
+        "maxMiss": 34,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 58,
+            "rate": 0.16524216524216523,
+            "maxMiss": 24
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 42,
+            "rate": 0.11931818181818182,
+            "maxMiss": 34
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 52,
+            "rate": 0.14814814814814814,
+            "maxMiss": 18
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 47,
+            "rate": 0.1339031339031339,
+            "maxMiss": 24
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 195,
+          "maxMiss": 34,
+          "rate": 0.1387900355871886
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 47,
+          "rate": 0.1339031339031339,
+          "maxMiss": 24
+        }
+      },
+      {
+        "key": "1-fc3d-pool6-2",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 2,
+        "folds": 5,
+        "count": 1756,
+        "hits": 228,
+        "rate": 0.12984054669703873,
+        "maxMiss": 58,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 46,
+            "rate": 0.13105413105413105,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 37,
+            "rate": 0.10541310541310542,
+            "maxMiss": 58
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 55,
+            "rate": 0.15625,
+            "maxMiss": 20
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 44,
+            "rate": 0.12535612535612536,
+            "maxMiss": 31
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 46,
+            "rate": 0.13105413105413105,
+            "maxMiss": 25
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 182,
+          "maxMiss": 58,
+          "rate": 0.1295373665480427
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 46,
+          "rate": 0.13105413105413105,
+          "maxMiss": 25
+        }
+      },
+      {
+        "key": "1-fc3d-pool6-10",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 10,
+        "folds": 5,
+        "count": 1756,
+        "hits": 211,
+        "rate": 0.12015945330296128,
+        "maxMiss": 46,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 25
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 45,
+            "rate": 0.1278409090909091,
+            "maxMiss": 24
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 48,
+            "rate": 0.13675213675213677,
+            "maxMiss": 46
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 36,
+            "rate": 0.10256410256410256,
+            "maxMiss": 34
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 175,
+          "maxMiss": 46,
+          "rate": 0.12455516014234876
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 36,
+          "rate": 0.10256410256410256,
+          "maxMiss": 34
+        }
+      },
+      {
+        "key": "3-fc3d-pool6-20",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 20,
+        "folds": 5,
+        "count": 1756,
+        "hits": 226,
+        "rate": 0.12870159453302962,
+        "maxMiss": 35,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 36,
+            "rate": 0.10256410256410256,
+            "maxMiss": 32
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 40,
+            "rate": 0.11363636363636363,
+            "maxMiss": 35
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 48,
+            "rate": 0.13675213675213677,
+            "maxMiss": 24
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 52,
+            "rate": 0.14814814814814814,
+            "maxMiss": 25
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 174,
+          "maxMiss": 35,
+          "rate": 0.12384341637010676
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 52,
+          "rate": 0.14814814814814814,
+          "maxMiss": 25
+        }
+      },
+      {
+        "key": "2-fc3d-pool6-16",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 16,
+        "folds": 5,
+        "count": 1756,
+        "hits": 217,
+        "rate": 0.12357630979498861,
+        "maxMiss": 51,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 44,
+            "rate": 0.12535612535612536,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 44,
+            "rate": 0.125,
+            "maxMiss": 25
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 41,
+            "rate": 0.1168091168091168,
+            "maxMiss": 31
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 51
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 172,
+          "maxMiss": 31,
+          "rate": 0.12241992882562278
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 45,
+          "rate": 0.1282051282051282,
+          "maxMiss": 51
+        }
+      },
+      {
+        "key": "2-fc3d-pool6-12",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 12,
+        "folds": 5,
+        "count": 1756,
+        "hits": 223,
+        "rate": 0.12699316628701596,
+        "maxMiss": 52,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 38,
+            "rate": 0.10826210826210826,
+            "maxMiss": 52
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 39,
+            "rate": 0.1111111111111111,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 47,
+            "rate": 0.13352272727272727,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 47,
+            "rate": 0.1339031339031339,
+            "maxMiss": 24
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 52,
+            "rate": 0.14814814814814814,
+            "maxMiss": 24
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 171,
+          "maxMiss": 52,
+          "rate": 0.12170818505338078
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 52,
+          "rate": 0.14814814814814814,
+          "maxMiss": 24
+        }
+      },
+      {
+        "key": "1-fc3d-pool6-6",
+        "round": 1,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 6,
+        "folds": 5,
+        "count": 1756,
+        "hits": 206,
+        "rate": 0.11731207289293849,
+        "maxMiss": 45,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 15
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 36,
+            "rate": 0.10256410256410256,
+            "maxMiss": 45
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 42,
+            "rate": 0.11931818181818182,
+            "maxMiss": 23
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 33
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 38,
+            "rate": 0.10826210826210826,
+            "maxMiss": 22
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 168,
+          "maxMiss": 45,
+          "rate": 0.1195729537366548
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 38,
+          "rate": 0.10826210826210826,
+          "maxMiss": 22
+        }
+      },
+      {
+        "key": "2-fc3d-pool6-3",
+        "round": 2,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 3,
+        "folds": 5,
+        "count": 1756,
+        "hits": 216,
+        "rate": 0.12300683371298406,
+        "maxMiss": 47,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 35,
+            "rate": 0.09971509971509972,
+            "maxMiss": 26
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 45,
+            "rate": 0.1278409090909091,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 47
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 43
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 166,
+          "maxMiss": 47,
+          "rate": 0.11814946619217082
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 50,
+          "rate": 0.14245014245014245,
+          "maxMiss": 43
+        }
+      },
+      {
+        "key": "3-fc3d-pool6-1",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 1,
+        "folds": 5,
+        "count": 1756,
+        "hits": 202,
+        "rate": 0.11503416856492027,
+        "maxMiss": 50,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 46,
+            "rate": 0.13105413105413105,
+            "maxMiss": 21
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 34,
+            "rate": 0.09686609686609686,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 43,
+            "rate": 0.12215909090909091,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 36,
+            "rate": 0.10256410256410256,
+            "maxMiss": 39
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 166,
+          "maxMiss": 50,
+          "rate": 0.11814946619217082
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 36,
+          "rate": 0.10256410256410256,
+          "maxMiss": 39
+        }
+      },
+      {
+        "key": "3-fc3d-pool6-7",
+        "round": 3,
+        "game": "fc3d",
+        "play": "pool6",
+        "states": 7,
+        "folds": 5,
+        "count": 1756,
+        "hits": 195,
+        "rate": 0.11104783599088838,
+        "maxMiss": 37,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 34
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 33,
+            "rate": 0.09401709401709402,
+            "maxMiss": 33
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 41,
+            "rate": 0.11647727272727272,
+            "maxMiss": 35
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 39,
+            "rate": 0.1111111111111111,
+            "maxMiss": 37
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 32,
+            "rate": 0.09116809116809117,
+            "maxMiss": 35
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 163,
+          "maxMiss": 37,
+          "rate": 0.11601423487544484
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 32,
+          "rate": 0.09116809116809117,
+          "maxMiss": 35
+        }
+      }
+    ],
+    "pl3-pool5": [
+      {
+        "key": "2-pl3-pool5-16",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 16,
+        "folds": 5,
+        "count": 1756,
+        "hits": 119,
+        "rate": 0.06776765375854214,
+        "maxMiss": 64,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 64
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 59
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 30,
+            "rate": 0.08522727272727272,
+            "maxMiss": 39
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 28,
+            "rate": 0.07977207977207977,
+            "maxMiss": 45
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 16,
+            "rate": 0.045584045584045586,
+            "maxMiss": 64
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 103,
+          "maxMiss": 64,
+          "rate": 0.07330960854092526
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 16,
+          "rate": 0.045584045584045586,
+          "maxMiss": 64
+        }
+      },
+      {
+        "key": "2-pl3-pool5-5",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 5,
+        "folds": 5,
+        "count": 1756,
+        "hits": 118,
+        "rate": 0.06719817767653759,
+        "maxMiss": 78,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 78
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 29,
+            "rate": 0.08262108262108261,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 24,
+            "rate": 0.06818181818181818,
+            "maxMiss": 46
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 55
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 22,
+            "rate": 0.06267806267806268,
+            "maxMiss": 50
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 96,
+          "maxMiss": 78,
+          "rate": 0.06832740213523132
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 22,
+          "rate": 0.06267806267806268,
+          "maxMiss": 50
+        }
+      },
+      {
+        "key": "3-pl3-pool5-9",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 9,
+        "folds": 5,
+        "count": 1756,
+        "hits": 116,
+        "rate": 0.06605922551252848,
+        "maxMiss": 120,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 42
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 120
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 23,
+            "rate": 0.06534090909090909,
+            "maxMiss": 53
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 27,
+            "rate": 0.07692307692307693,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 55
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 96,
+          "maxMiss": 120,
+          "rate": 0.06832740213523132
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 20,
+          "rate": 0.05698005698005698,
+          "maxMiss": 55
+        }
+      },
+      {
+        "key": "1-pl3-pool5-4",
+        "round": 1,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 4,
+        "folds": 5,
+        "count": 1756,
+        "hits": 106,
+        "rate": 0.06036446469248292,
+        "maxMiss": 83,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 60
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 20,
+            "rate": 0.056818181818181816,
+            "maxMiss": 73
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 26,
+            "rate": 0.07407407407407407,
+            "maxMiss": 56
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 12,
+            "rate": 0.03418803418803419,
+            "maxMiss": 83
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 94,
+          "maxMiss": 73,
+          "rate": 0.06690391459074733
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 12,
+          "rate": 0.03418803418803419,
+          "maxMiss": 83
+        }
+      },
+      {
+        "key": "3-pl3-pool5-7",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 7,
+        "folds": 5,
+        "count": 1756,
+        "hits": 107,
+        "rate": 0.06093394077448747,
+        "maxMiss": 69,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 60
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 68
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 25,
+            "rate": 0.07102272727272728,
+            "maxMiss": 43
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 20,
+            "rate": 0.05698005698005698,
+            "maxMiss": 69
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 51
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 88,
+          "maxMiss": 69,
+          "rate": 0.06263345195729537
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 19,
+          "rate": 0.05413105413105413,
+          "maxMiss": 51
+        }
+      },
+      {
+        "key": "1-pl3-pool5-2",
+        "round": 1,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 2,
+        "folds": 5,
+        "count": 1756,
+        "hits": 103,
+        "rate": 0.058656036446469245,
+        "maxMiss": 58,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 55
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 21,
+            "rate": 0.05982905982905983,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 24,
+            "rate": 0.06818181818181818,
+            "maxMiss": 44
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 17,
+            "rate": 0.04843304843304843,
+            "maxMiss": 40
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 16,
+            "rate": 0.045584045584045586,
+            "maxMiss": 58
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 87,
+          "maxMiss": 55,
+          "rate": 0.06192170818505338
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 16,
+          "rate": 0.045584045584045586,
+          "maxMiss": 58
+        }
+      },
+      {
+        "key": "3-pl3-pool5-20",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 20,
+        "folds": 5,
+        "count": 1756,
+        "hits": 106,
+        "rate": 0.06036446469248292,
+        "maxMiss": 67,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 22,
+            "rate": 0.06267806267806268,
+            "maxMiss": 58
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 24,
+            "rate": 0.06837606837606838,
+            "maxMiss": 64
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 18,
+            "rate": 0.05113636363636364,
+            "maxMiss": 67
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 36
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 41
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 87,
+          "maxMiss": 67,
+          "rate": 0.06192170818505338
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 19,
+          "rate": 0.05413105413105413,
+          "maxMiss": 41
+        }
+      },
+      {
+        "key": "2-pl3-pool5-8",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 8,
+        "folds": 5,
+        "count": 1756,
+        "hits": 101,
+        "rate": 0.057517084282460135,
+        "maxMiss": 54,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 45
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 54
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 21,
+            "rate": 0.05965909090909091,
+            "maxMiss": 52
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 35
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 54
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 82,
+          "maxMiss": 54,
+          "rate": 0.058362989323843414
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 19,
+          "rate": 0.05413105413105413,
+          "maxMiss": 54
+        }
+      },
+      {
+        "key": "1-pl3-pool5-10",
+        "round": 1,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 10,
+        "folds": 5,
+        "count": 1756,
+        "hits": 104,
+        "rate": 0.05922551252847381,
+        "maxMiss": 76,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 15,
+            "rate": 0.042735042735042736,
+            "maxMiss": 66
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 23,
+            "rate": 0.06552706552706553,
+            "maxMiss": 45
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 24,
+            "rate": 0.06818181818181818,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 17,
+            "rate": 0.04843304843304843,
+            "maxMiss": 76
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 25,
+            "rate": 0.07122507122507123,
+            "maxMiss": 63
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 79,
+          "maxMiss": 76,
+          "rate": 0.056227758007117434
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 25,
+          "rate": 0.07122507122507123,
+          "maxMiss": 63
+        }
+      },
+      {
+        "key": "3-pl3-pool5-14",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool5",
+        "states": 14,
+        "folds": 5,
+        "count": 1756,
+        "hits": 109,
+        "rate": 0.062072892938496584,
+        "maxMiss": 87,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 16,
+            "rate": 0.045584045584045586,
+            "maxMiss": 87
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 19,
+            "rate": 0.05413105413105413,
+            "maxMiss": 63
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 26,
+            "rate": 0.07386363636363637,
+            "maxMiss": 41
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 18,
+            "rate": 0.05128205128205128,
+            "maxMiss": 59
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 30,
+            "rate": 0.08547008547008547,
+            "maxMiss": 32
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 79,
+          "maxMiss": 87,
+          "rate": 0.056227758007117434
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 30,
+          "rate": 0.08547008547008547,
+          "maxMiss": 32
+        }
+      }
+    ],
+    "pl3-pool6": [
+      {
+        "key": "3-pl3-pool6-14",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 14,
+        "folds": 5,
+        "count": 1756,
+        "hits": 238,
+        "rate": 0.13553530751708429,
+        "maxMiss": 38,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 32
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 54,
+            "rate": 0.1534090909090909,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 52,
+            "rate": 0.14814814814814814,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 26
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 198,
+          "maxMiss": 38,
+          "rate": 0.1409252669039146
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 40,
+          "rate": 0.11396011396011396,
+          "maxMiss": 26
+        }
+      },
+      {
+        "key": "3-pl3-pool6-1",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 1,
+        "folds": 5,
+        "count": 1756,
+        "hits": 217,
+        "rate": 0.12357630979498861,
+        "maxMiss": 52,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 25
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 54,
+            "rate": 0.15384615384615385,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 42,
+            "rate": 0.11931818181818182,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 22
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 38,
+            "rate": 0.10826210826210826,
+            "maxMiss": 52
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 179,
+          "maxMiss": 38,
+          "rate": 0.12740213523131672
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 38,
+          "rate": 0.10826210826210826,
+          "maxMiss": 52
+        }
+      },
+      {
+        "key": "2-pl3-pool6-3",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 3,
+        "folds": 5,
+        "count": 1756,
+        "hits": 228,
+        "rate": 0.12984054669703873,
+        "maxMiss": 34,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 37,
+            "rate": 0.10541310541310542,
+            "maxMiss": 34
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 44,
+            "rate": 0.12535612535612536,
+            "maxMiss": 25
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 43,
+            "rate": 0.12215909090909091,
+            "maxMiss": 20
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 54,
+            "rate": 0.15384615384615385,
+            "maxMiss": 19
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 50,
+            "rate": 0.14245014245014245,
+            "maxMiss": 22
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 178,
+          "maxMiss": 34,
+          "rate": 0.12669039145907474
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 50,
+          "rate": 0.14245014245014245,
+          "maxMiss": 22
+        }
+      },
+      {
+        "key": "2-pl3-pool6-8",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 8,
+        "folds": 5,
+        "count": 1756,
+        "hits": 221,
+        "rate": 0.12585421412300685,
+        "maxMiss": 38,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 49,
+            "rate": 0.1396011396011396,
+            "maxMiss": 37
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 24
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 46,
+            "rate": 0.13068181818181818,
+            "maxMiss": 34
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 37,
+            "rate": 0.10541310541310542,
+            "maxMiss": 38
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 44,
+            "rate": 0.12535612535612536,
+            "maxMiss": 24
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 177,
+          "maxMiss": 38,
+          "rate": 0.12597864768683273
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 44,
+          "rate": 0.12535612535612536,
+          "maxMiss": 24
+        }
+      },
+      {
+        "key": "2-pl3-pool6-16",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 16,
+        "folds": 5,
+        "count": 1756,
+        "hits": 218,
+        "rate": 0.12414578587699317,
+        "maxMiss": 50,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 41,
+            "rate": 0.1168091168091168,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 39,
+            "rate": 0.1111111111111111,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 47,
+            "rate": 0.13352272727272727,
+            "maxMiss": 31
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 48,
+            "rate": 0.13675213675213677,
+            "maxMiss": 22
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 42
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 175,
+          "maxMiss": 50,
+          "rate": 0.12455516014234876
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 43,
+          "rate": 0.1225071225071225,
+          "maxMiss": 42
+        }
+      },
+      {
+        "key": "3-pl3-pool6-7",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 7,
+        "folds": 5,
+        "count": 1756,
+        "hits": 226,
+        "rate": 0.12870159453302962,
+        "maxMiss": 43,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 47,
+            "rate": 0.1339031339031339,
+            "maxMiss": 26
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 43
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 42,
+            "rate": 0.11931818181818182,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 44,
+            "rate": 0.12535612535612536,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 53,
+            "rate": 0.150997150997151,
+            "maxMiss": 22
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 173,
+          "maxMiss": 43,
+          "rate": 0.12313167259786477
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 53,
+          "rate": 0.150997150997151,
+          "maxMiss": 22
+        }
+      },
+      {
+        "key": "3-pl3-pool6-20",
+        "round": 3,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 20,
+        "folds": 5,
+        "count": 1756,
+        "hits": 210,
+        "rate": 0.11958997722095673,
+        "maxMiss": 50,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 34,
+            "rate": 0.09686609686609686,
+            "maxMiss": 50
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 30
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 52,
+            "rate": 0.14772727272727273,
+            "maxMiss": 22
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 41,
+            "rate": 0.1168091168091168,
+            "maxMiss": 23
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 40,
+            "rate": 0.11396011396011396,
+            "maxMiss": 27
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 170,
+          "maxMiss": 50,
+          "rate": 0.12099644128113879
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 40,
+          "rate": 0.11396011396011396,
+          "maxMiss": 27
+        }
+      },
+      {
+        "key": "1-pl3-pool6-6",
+        "round": 1,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 6,
+        "folds": 5,
+        "count": 1756,
+        "hits": 214,
+        "rate": 0.12186788154897495,
+        "maxMiss": 39,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 36,
+            "rate": 0.10256410256410256,
+            "maxMiss": 39
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 43,
+            "rate": 0.1225071225071225,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 44,
+            "rate": 0.125,
+            "maxMiss": 28
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 46,
+            "rate": 0.13105413105413105,
+            "maxMiss": 34
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 168,
+          "maxMiss": 39,
+          "rate": 0.1195729537366548
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 46,
+          "rate": 0.13105413105413105,
+          "maxMiss": 34
+        }
+      },
+      {
+        "key": "2-pl3-pool6-12",
+        "round": 2,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 12,
+        "folds": 5,
+        "count": 1756,
+        "hits": 209,
+        "rate": 0.11902050113895217,
+        "maxMiss": 46,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 31
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 48,
+            "rate": 0.13675213675213677,
+            "maxMiss": 17
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 35,
+            "rate": 0.09943181818181818,
+            "maxMiss": 46
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 33
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 36
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 167,
+          "maxMiss": 46,
+          "rate": 0.11886120996441281
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 42,
+          "rate": 0.11965811965811966,
+          "maxMiss": 36
+        }
+      },
+      {
+        "key": "1-pl3-pool6-10",
+        "round": 1,
+        "game": "pl3",
+        "play": "pool6",
+        "states": 10,
+        "folds": 5,
+        "count": 1756,
+        "hits": 196,
+        "rate": 0.11161731207289294,
+        "maxMiss": 34,
+        "details": [
+          {
+            "fold": 2021,
+            "count": 351,
+            "hits": 42,
+            "rate": 0.11965811965811966,
+            "maxMiss": 31
+          },
+          {
+            "fold": 2022,
+            "count": 351,
+            "hits": 38,
+            "rate": 0.10826210826210826,
+            "maxMiss": 34
+          },
+          {
+            "fold": 2023,
+            "count": 352,
+            "hits": 41,
+            "rate": 0.11647727272727272,
+            "maxMiss": 27
+          },
+          {
+            "fold": 2024,
+            "count": 351,
+            "hits": 45,
+            "rate": 0.1282051282051282,
+            "maxMiss": 29
+          },
+          {
+            "fold": 2025,
+            "count": 351,
+            "hits": 30,
+            "rate": 0.08547008547008547,
+            "maxMiss": 30
+          }
+        ],
+        "development": {
+          "count": 1405,
+          "hits": 166,
+          "maxMiss": 34,
+          "rate": 0.11814946619217082
+        },
+        "finalHoldout": {
+          "fold": 2025,
+          "count": 351,
+          "hits": 30,
+          "rate": 0.08547008547008547,
+          "maxMiss": 30
+        }
+      }
+    ]
+  }
+}

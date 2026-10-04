@@ -1,0 +1,137 @@
+{
+  "methodology": "Deterministic combination rotations selected on 2021-2023, validated in 2024, final holdout 2025.",
+  "results": {
+    "fc3d-pool5": {
+      "selected": {
+        "step": 65,
+        "offset": 194,
+        "development": {
+          "count": 1054,
+          "hits": 95,
+          "rate": 0.09013282732447818,
+          "maxMiss": 64
+        },
+        "validation": {
+          "count": 351,
+          "hits": 22,
+          "rate": 0.06267806267806268,
+          "maxMiss": 51
+        },
+        "finalHoldout": {
+          "count": 351,
+          "hits": 16,
+          "rate": 0.045584045584045586,
+          "maxMiss": 54
+        },
+        "live": {
+          "count": 58,
+          "hits": 4,
+          "rate": 0.06896551724137931,
+          "maxMiss": 20
+        },
+        "nextPool": "13458"
+      },
+      "candidates": 18144,
+      "robustCandidates": 2
+    },
+    "fc3d-pool6": {
+      "selected": {
+        "step": 173,
+        "offset": 191,
+        "development": {
+          "count": 1054,
+          "hits": 162,
+          "rate": 0.15370018975332067,
+          "maxMiss": 28
+        },
+        "validation": {
+          "count": 351,
+          "hits": 55,
+          "rate": 0.15669515669515668,
+          "maxMiss": 22
+        },
+        "finalHoldout": {
+          "count": 351,
+          "hits": 37,
+          "rate": 0.10541310541310542,
+          "maxMiss": 38
+        },
+        "live": {
+          "count": 58,
+          "hits": 13,
+          "rate": 0.22413793103448276,
+          "maxMiss": 11
+        },
+        "nextPool": "134589"
+      },
+      "candidates": 10080,
+      "robustCandidates": 7
+    },
+    "pl3-pool5": {
+      "selected": {
+        "step": 25,
+        "offset": 8,
+        "development": {
+          "count": 1054,
+          "hits": 91,
+          "rate": 0.08633776091081594,
+          "maxMiss": 48
+        },
+        "validation": {
+          "count": 351,
+          "hits": 28,
+          "rate": 0.07977207977207977,
+          "maxMiss": 56
+        },
+        "finalHoldout": {
+          "count": 351,
+          "hits": 33,
+          "rate": 0.09401709401709402,
+          "maxMiss": 45
+        },
+        "live": {
+          "count": 58,
+          "hits": 4,
+          "rate": 0.06896551724137931,
+          "maxMiss": 39
+        },
+        "nextPool": "01578"
+      },
+      "candidates": 18144,
+      "robustCandidates": 8
+    },
+    "pl3-pool6": {
+      "selected": {
+        "step": 151,
+        "offset": 49,
+        "development": {
+          "count": 1054,
+          "hits": 162,
+          "rate": 0.15370018975332067,
+          "maxMiss": 48
+        },
+        "validation": {
+          "count": 351,
+          "hits": 42,
+          "rate": 0.11965811965811966,
+          "maxMiss": 30
+        },
+        "finalHoldout": {
+          "count": 351,
+          "hits": 41,
+          "rate": 0.1168091168091168,
+          "maxMiss": 25
+        },
+        "live": {
+          "count": 58,
+          "hits": 8,
+          "rate": 0.13793103448275862,
+          "maxMiss": 16
+        },
+        "nextPool": "123469"
+      },
+      "candidates": 10080,
+      "robustCandidates": 2
+    }
+  }
+}
