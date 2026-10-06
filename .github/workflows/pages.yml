@@ -20,7 +20,8 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # 晚间多次补抓可能被 GitHub 集中延迟触发；只保留最新一次，避免旧任务堆积。
+  cancel-in-progress: true
 
 jobs:
   build:
