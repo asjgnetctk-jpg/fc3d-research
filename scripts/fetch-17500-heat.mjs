@@ -71,17 +71,26 @@ async function fetchExactCounts(issue) {
   };
 }
 
-const response = await fetch(source, {
-  headers: {
-    "user-agent": `Mozilla/5.0 (compatible; ${game}-research-data-bot/1.0)`,
-    accept: "text/html,application/xhtml+xml",
-  },
-  signal: AbortSignal.timeout(30_000),
-});
-if (!response.ok) throw new Error(`17500 returned HTTP ${response.status}`);
-const html = await response.text();
+const previous = await existingPayload();
+let html = null;
+let listFetchError = null;
+try {
+  const response = await fetch(source, {
+    headers: {
+      "user-agent": `Mozilla/5.0 (compatible; ${game}-research-data-bot/1.0)`,
+      accept: "text/html,application/xhtml+xml",
+    },
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) throw new Error(`17500 returned HTTP ${response.status}`);
+  html = await response.text();
+} catch (error) {
+  listFetchError = error;
+  if (!insidePreDrawCaptureWindow || !previous?.rows?.length) throw error;
+  console.warn(`17500 ${game} list unavailable, trying current-issue detail fallback: ${error.message}`);
+}
 const rows = [];
-for (const match of html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
+for (const match of (html ?? "").matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
   const cells = [...match[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((cell) => clean(cell[1]));
   if (cells.length !== 43 || !/^\d{3}$/.test(cells[0]) || !/^\d{4}-\d{2}-\d{2}$/.test(cells[1])) continue;
   const draw = (cells[2].match(/\d/g) ?? []).join("");
@@ -96,10 +105,9 @@ for (const match of html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
   }
 }
 rows.sort((left, right) => left.date.localeCompare(right.date));
-const officialRows = rows.filter((row) => row.draw);
+const officialRows = html ? rows.filter((row) => row.draw) : [...previous.rows];
 if (officialRows.length < 3_000) throw new Error(`17500 validation failed: only ${officialRows.length} official rows`);
 
-const previous = await existingPayload();
 const previousLast = previous?.rows?.at(-1);
 const latest = officialRows.at(-1);
 if (previousLast && latest.date < previousLast.date) {
@@ -126,6 +134,41 @@ if (
     captureWindow: "20:20—21:10",
   });
   snapshotAdded = true;
+}
+
+// The summary table is occasionally rate-limited while the issue detail page
+// remains available. Build the same three positional rankings from the exact
+// pre-draw counts so a transient HTTP 429 cannot suppress the evening matrix.
+if (
+  insidePreDrawCaptureWindow
+  && !preDrawSnapshots.some((row) => row.date === beijingDate)
+  && latest
+) {
+  const latestYear = Number(String(latest.date).slice(0, 4));
+  const nextShortIssue = latestYear === Number(beijingParts.year) ? Number(latest.issue) + 1 : 1;
+  const nextIssue = String(nextShortIssue).padStart(3, "0");
+  try {
+    const exact = await fetchExactCounts(nextIssue);
+    if (exact) {
+      const digits = Array.from({ length: 10 }, (_, digit) => digit);
+      const rankCounts = (counts) => [...digits].sort((left, right) => counts[right] - counts[left] || left - right);
+      const aggregateCounts = digits.map((digit) => exact.positionCounts.reduce((sum, counts) => sum + counts[digit], 0));
+      preDrawSnapshots.push({
+        issue: nextIssue,
+        date: beijingDate,
+        rankings: [...exact.positionCounts.map(rankCounts), rankCounts(aggregateCounts)],
+        capturedAt,
+        capturedAtBeijing: `${beijingDate} ${beijingParts.hour}:${beijingParts.minute}`,
+        captureWindow: "20:20—21:10",
+        captureRoute: listFetchError ? "issue-detail-fallback-after-list-error" : "issue-detail-fallback",
+        ...exact,
+      });
+      snapshotAdded = true;
+      snapshotEnriched = true;
+    }
+  } catch (error) {
+    console.warn(`17500 ${game} current-issue detail fallback unavailable: ${error.message}`);
+  }
 }
 
 if (insidePreDrawCaptureWindow) {
