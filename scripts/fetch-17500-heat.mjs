@@ -47,27 +47,65 @@ async function existingPayload() {
 async function fetchExactCounts(issue) {
   const fullIssue = /^\d{7}$/.test(issue) ? issue : `${beijingParts.year}${String(issue).padStart(3, "0")}`;
   const detailSource = `${detailBase}?issue=${fullIssue}`;
-  const detailResponse = await fetch(detailSource, {
-    headers: {
-      "user-agent": `Mozilla/5.0 (compatible; ${game}-research-data-bot/1.0)`,
-      accept: "text/html,application/xhtml+xml",
-    },
+  try {
+    const detailResponse = await fetch(detailSource, {
+      headers: {
+        "user-agent": `Mozilla/5.0 (compatible; ${game}-research-data-bot/1.0)`,
+        accept: "text/html,application/xhtml+xml",
+      },
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!detailResponse.ok) throw new Error(`17500 detail returned HTTP ${detailResponse.status}`);
+    const detailHtml = await detailResponse.text();
+    const marker = new RegExp(`<p[^>]*>\\s*${fullIssue}\\s*---\\s*统计：\\s*<i>(\\d+)<\\/i>注<\\/p>`, "i");
+    const markerMatch = marker.exec(detailHtml);
+    if (markerMatch) {
+      const afterMarker = detailHtml.slice(markerMatch.index + markerMatch[0].length);
+      const countRow = afterMarker.match(/<tr[^>]*class=["'][^"']*\btdzz\b[^"']*["'][^>]*>([\s\S]*?)<\/tr>/i);
+      const values = countRow
+        ? [...countRow[1].matchAll(/<td[^>]*>\s*(\d+)\s*<span/gi)].map((match) => Number(match[1]))
+        : [];
+      if (values.length === 30 && values.every((value) => Number.isFinite(value) && value >= 0)) {
+        return {
+          source: detailSource,
+          captureTransport: "direct-detail",
+          totalSelections: Number(markerMatch[1]),
+          positionCounts: [values.slice(0, 10), values.slice(10, 20), values.slice(20, 30)],
+        };
+      }
+    }
+  } catch (error) {
+    console.warn(`17500 ${game} direct detail unavailable: ${error.message}`);
+  }
+
+  // Reader fallback uses the same public detail page through a read-only
+  // renderer. This bypasses source-IP rate limits without inventing values.
+  const readerSource = `https://r.jina.ai/http://${new URL(detailSource).host}${new URL(detailSource).pathname}${new URL(detailSource).search}`;
+  const readerResponse = await fetch(readerSource, {
+    headers: { accept: "text/plain" },
     signal: AbortSignal.timeout(30_000),
   });
-  if (!detailResponse.ok) throw new Error(`17500 detail returned HTTP ${detailResponse.status}`);
-  const detailHtml = await detailResponse.text();
-  const marker = new RegExp(`<p[^>]*>\\s*${fullIssue}\\s*---\\s*统计：\\s*<i>(\\d+)<\\/i>注<\\/p>`, "i");
-  const markerMatch = marker.exec(detailHtml);
-  if (!markerMatch) return null;
-  const afterMarker = detailHtml.slice(markerMatch.index + markerMatch[0].length);
-  const countRow = afterMarker.match(/<tr[^>]*class=["'][^"']*\btdzz\b[^"']*["'][^>]*>([\s\S]*?)<\/tr>/i);
-  if (!countRow) return null;
-  const values = [...countRow[1].matchAll(/<td[^>]*>\s*(\d+)\s*<span/gi)].map((match) => Number(match[1]));
-  if (values.length !== 30 || values.some((value) => !Number.isFinite(value) || value < 0)) return null;
+  if (!readerResponse.ok) throw new Error(`17500 reader fallback returned HTTP ${readerResponse.status}`);
+  const markdown = await readerResponse.text();
+  const positionCounts = [];
+  let totalSelections = null;
+  for (const heading of ["百位排序", "十位排序", "个位排序"]) {
+    const section = new RegExp(`\\*\\*${heading}\\*\\*[\\s\\S]*?${fullIssue}\\s*---\\s*统计：_?(\\d+)_?\\s*注\\s*\\r?\\n([0-9 ]+)\\r?\\n([0-9 ]+)`, "i").exec(markdown);
+    if (!section) return null;
+    const rankedCounts = section[2].trim().split(/\s+/).map(Number);
+    const rankedDigits = section[3].trim().split(/\s+/).map(Number);
+    if (rankedCounts.length !== 10 || rankedDigits.length !== 10 || [...rankedDigits].sort((a, b) => a - b).join("") !== "0123456789") return null;
+    const counts = Array(10).fill(0);
+    rankedDigits.forEach((digit, index) => { counts[digit] = rankedCounts[index]; });
+    positionCounts.push(counts);
+    totalSelections ??= Number(section[1]);
+  }
   return {
     source: detailSource,
-    totalSelections: Number(markerMatch[1]),
-    positionCounts: [values.slice(0, 10), values.slice(10, 20), values.slice(20, 30)],
+    readerSource,
+    captureTransport: "reader-detail",
+    totalSelections,
+    positionCounts,
   };
 }
 
