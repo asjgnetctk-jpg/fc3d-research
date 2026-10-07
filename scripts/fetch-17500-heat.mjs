@@ -24,7 +24,10 @@ const beijingParts = new Intl.DateTimeFormat("en-CA", {
 }).formatToParts(now).reduce((result, part) => ({ ...result, [part.type]: part.value }), {});
 const beijingDate = `${beijingParts.year}-${beijingParts.month}-${beijingParts.day}`;
 const beijingMinute = Number(beijingParts.hour) * 60 + Number(beijingParts.minute);
-const insidePreDrawCaptureWindow = beijingMinute >= 20 * 60 + 20 && beijingMinute <= 21 * 60 + 10;
+// 17500 labels this user-selection statistic as closing at 20:30. GitHub's
+// scheduler can be delayed well beyond the requested cron minute, so accept
+// the unchanged published snapshot until 21:50 instead of silently missing it.
+const insidePreDrawCaptureWindow = beijingMinute >= 20 * 60 + 20 && beijingMinute <= 21 * 60 + 50;
 
 function clean(value) {
   return value
@@ -169,7 +172,7 @@ if (
     rankings: liveHeat.rankings,
     capturedAt,
     capturedAtBeijing: `${beijingDate} ${beijingParts.hour}:${beijingParts.minute}`,
-    captureWindow: "20:20—21:10",
+    captureWindow: "20:20—21:50 (source statistics close at 20:30)",
   });
   snapshotAdded = true;
 }
@@ -197,7 +200,7 @@ if (
         rankings: [...exact.positionCounts.map(rankCounts), rankCounts(aggregateCounts)],
         capturedAt,
         capturedAtBeijing: `${beijingDate} ${beijingParts.hour}:${beijingParts.minute}`,
-        captureWindow: "20:20—21:10",
+        captureWindow: "20:20—21:50 (source statistics close at 20:30)",
         captureRoute: listFetchError ? "issue-detail-fallback-after-list-error" : "issue-detail-fallback",
         ...exact,
       });
