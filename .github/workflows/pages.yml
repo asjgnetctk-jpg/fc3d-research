@@ -1,16 +1,9 @@
 name: 更新福彩3D数据并发布
 
 on:
-  schedule:
-    # 北京时间 08:17—20:17 每两小时巡检。
-    - cron: "17 0-12/2 * * *"
-    # 北京时间20:20—20:50每10分钟抓取当期热度。
-    - cron: "20,30,40,50 12 * * *"
-    # 北京时间21:00—次日01:50每10分钟补抓热度和开奖结果。
-    - cron: "*/10 13-17 * * *"
+  # Automatic schedules are paused at the owner's request. Resume only after
+  # an explicit request; no schedule or repository push may update the website.
   workflow_dispatch:
-  push:
-    branches: ["main"]
 
 permissions:
   contents: write
