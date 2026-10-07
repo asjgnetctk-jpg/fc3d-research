@@ -2,11 +2,8 @@ name: 更新福彩3D数据并发布
 
 on:
   # Automatic schedules are paused at the owner's request. Resume only after
-  # an explicit request. This push hook is enabled for the requested one-time
-  # publication of today's recommendation and will be removed after deployment.
+  # an explicit request; no schedule or repository push may update the website.
   workflow_dispatch:
-  push:
-    branches: ["main"]
 
 permissions:
   contents: write
