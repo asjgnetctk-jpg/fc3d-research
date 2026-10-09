@@ -204,7 +204,11 @@ const modelVersion = game === "pl3" || Number(targetIssue) >= 2026261 ? optimize
 const evaluationRows = [];
 const coverageRows = [];
 const replayLength = modelVersion !== "M22.1" ? 259 : 120;
-for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.length; index += 1) {
+// The heat source can already contain the current draw while the model ledgers
+// intentionally stop at the previous draw. Scan a small buffer so a row that
+// is not yet eligible for historicalSignals does not shorten the published
+// fixed-length replay window by one.
+for (let index = Math.max(1, allHeat.length - replayLength - 32); index < allHeat.length; index += 1) {
   const heatRow = allHeat[index], signals = historicalSignals(heatRow, index, modelVersion);
   const requiredSignals = [signals.v7, signals.v2, signals.v5, signals.kill, signals.position7];
   if (hasReverseModels) requiredSignals.push(signals.v9, signals.v92);
@@ -215,6 +219,8 @@ for (let index = Math.max(1, allHeat.length - replayLength); index < allHeat.len
   const drawGroup = groupKey(Number(heatRow.draw));
   coverageRows.push({ issue: heatRow.issue, date: heatRow.date, draw: heatRow.draw, numbers: coverageNumbers, hit: coverageNumbers.some((number) => groupKey(Number(number)) === drawGroup) });
 }
+if (evaluationRows.length > replayLength) evaluationRows.splice(0, evaluationRows.length - replayLength);
+if (coverageRows.length > replayLength) coverageRows.splice(0, coverageRows.length - replayLength);
 
 const priorSameTarget = previousPayload?.matrix22?.targetIssue === targetIssue;
 const targetHeatReady = Boolean(targetHeat);
