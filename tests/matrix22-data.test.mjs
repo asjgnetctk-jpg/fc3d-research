@@ -4,6 +4,8 @@ import test from "node:test";
 
 const data = JSON.parse(await readFile(new URL("../pages/heat-data.json", import.meta.url), "utf8"));
 const pl3Data = JSON.parse(await readFile(new URL("../pages/pl3-heat-data.json", import.meta.url), "utf8"));
+const positionData = JSON.parse(await readFile(new URL("../pages/meta-position-data.json", import.meta.url), "utf8"));
+const pl3PositionData = JSON.parse(await readFile(new URL("../pages/pl3-meta-position-data.json", import.meta.url), "utf8"));
 const heatSource = JSON.parse(await readFile(new URL("../scripts/data/fc3d-17500-heat.json", import.meta.url), "utf8"));
 const pl3HeatSource = JSON.parse(await readFile(new URL("../scripts/data/pl3-17500-heat.json", import.meta.url), "utf8"));
 const v7 = JSON.parse(await readFile(new URL("../pages/data.json", import.meta.url), "utf8"));
@@ -13,6 +15,24 @@ const shape = (value) => {
   return unique === 3 ? "组六" : unique === 2 ? "组三" : "豹子";
 };
 const groupKey = (value) => String(value).padStart(3, "0").split("").sort().join("");
+
+test("matrix straight, coverage and positioning publish one shared issue", () => {
+  for (const [matrixData, metaData] of [[data, positionData], [pl3Data, pl3PositionData]]) {
+    const targets = [
+      matrixData.matrix22.targetIssue,
+      matrixData.matrix22Coverage.targetIssue,
+      ...Object.values(metaData.pools).map((pool) => pool.recommendation.targetIssue),
+    ].map(String);
+    const cutoffs = [
+      matrixData.matrix22.basedOnIssue,
+      matrixData.matrix22Coverage.basedOnIssue,
+      ...Object.values(metaData.pools).map((pool) => pool.recommendation.basedOnIssue),
+    ].map(String);
+    assert.equal(new Set(targets).size, 1);
+    assert.equal(new Set(cutoffs).size, 1);
+    assert.match(matrixData.updatedThrough, new RegExp(`第${cutoffs[0]}期$`));
+  }
+});
 
 test("pre-draw exact-count snapshots contain three complete digit positions", () => {
   for (const source of [heatSource, pl3HeatSource]) {

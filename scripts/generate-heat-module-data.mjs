@@ -196,6 +196,8 @@ function metrics(history) {
 
 const allHeat = source.rows;
 const targetIssue = v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期";
+const basedOnIssue = v7.recommendation?.basedOnIssue ?? latest.issue;
+const basedOnDate = v7.recommendation?.basedOnDate ?? latest.date;
 const targetShortIssue = String(Number(String(targetIssue).slice(-3)));
 const targetHeat = preDrawSnapshots.findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
 const optimizedModel = game === "pl3" ? "P22.5-balanced-6x16-state-optimized" : "M22.5-state-optimized";
@@ -254,12 +256,15 @@ if (priorRecommendation?.modelVersion === modelVersion && priorRecommendation?.t
 }
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
-  updatedThrough: source.updatedThrough, totalRecords: source.count,
+  // The heat source can lag behind the official/model ledgers.  The page-level
+  // update marker must describe the exact cutoff shared by the published
+  // recommendations, otherwise the header and the three panels look out of sync.
+  updatedThrough: `${basedOnDate} · 第${basedOnIssue}期`, totalRecords: source.count,
   notice: modelVersion === optimizedModel ? (targetHeatReady ? `当期22组按${game === "pl3" ? "排列3" : "福彩3D"}独立状态概率、定位、杀码、遗漏校准及当期热度快照生成并锁定；概率权重使用样本收缩。` : "当前展示早盘参考22组，只使用截至上一期开奖后的模型与最近一期已公开热度；未使用本期当期热度，20:20抓取成功后才重算并锁定正式推荐。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
   matrix22: {
     modelVersion,
     status: modelVersion === optimizedModel ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "早盘参考 · 待20:20当期热度锁定") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
-    targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
+    targetIssue, basedOnIssue, basedOnDate,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveAllVersions: metrics(liveRows), liveRows,
@@ -268,7 +273,7 @@ const payload = {
   matrix22Coverage: {
     modelVersion: coverageModel,
     status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "组选早盘参考 · 待20:20当期热度锁定",
-    targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
+    targetIssue, basedOnIssue, basedOnDate,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: coverageRecommendation,
     structure: coverageRecommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 },

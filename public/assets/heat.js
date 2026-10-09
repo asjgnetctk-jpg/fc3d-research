@@ -168,11 +168,24 @@ async function loadHeat() {
     const data = await response.json();
     if (positionResponse.ok) {
       privatePositionPayload = await positionResponse.json();
+      const targets = [
+        data.matrix22?.targetIssue,
+        data.matrix22Coverage?.targetIssue,
+        ...Object.values(privatePositionPayload.pools ?? {}).map((pool) => pool.recommendation?.targetIssue ?? privatePositionPayload.targetIssue),
+      ].filter(Boolean).map(String);
+      const cutoffs = [
+        data.matrix22?.basedOnIssue,
+        data.matrix22Coverage?.basedOnIssue,
+        ...Object.values(privatePositionPayload.pools ?? {}).map((pool) => pool.recommendation?.basedOnIssue),
+      ].filter(Boolean).map(String);
+      if (new Set(targets).size !== 1 || new Set(cutoffs).size !== 1) {
+        throw new Error(`推荐数据不同步：目标期 ${[...new Set(targets)].join("/")}，数据截止期 ${[...new Set(cutoffs)].join("/")}`);
+      }
       renderPrivatePosition(7);
     } else {
       document.querySelector("#private-position-notice").textContent = `定位推荐读取失败：HTTP ${positionResponse.status}`;
     }
-    document.querySelector("#heat-through").textContent = data.updatedThrough;
+    document.querySelector("#heat-through").textContent = `数据更新至 ${data.updatedThrough} · 本页推荐第${data.matrix22.targetIssue}期`;
     document.querySelector("#heat-count").textContent = `${data.totalRecords}期数据记录`;
     document.querySelector("#heat-notice").textContent = data.notice;
     renderMatrix(data.matrix22);
