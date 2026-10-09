@@ -229,13 +229,13 @@ const recommendation = priorSameTarget && previousPayload.matrix22.numbers?.leng
   ? previousPayload.matrix22.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion)
-    : [];
+    : choose22(currentSignals(fallbackHeat), allHeat, modelVersion);
 const priorCoverageSameTarget = previousPayload?.matrix22Coverage?.targetIssue === targetIssue;
 const coverageRecommendation = priorCoverageSameTarget && previousPayload.matrix22Coverage.numbers?.length === 22 && previousPayload.matrix22Coverage.heatSnapshot
   ? previousPayload.matrix22Coverage.numbers
   : targetHeatReady
     ? choose22(currentSignals(targetHeat), allHeat, modelVersion, true)
-    : [];
+    : choose22(currentSignals(fallbackHeat), allHeat, modelVersion, true);
 const officialRows = rowList(v7);
 const officialByIssue = new Map(officialRows.map((row) => [String(row.issue), row]));
 const liveRowMap = new Map([...(forwardSeed[game] ?? []), ...(previousPayload?.matrix22?.liveRows ?? [])]
@@ -255,19 +255,19 @@ if (priorRecommendation?.modelVersion === modelVersion && priorRecommendation?.t
 const payload = {
   generatedAt: new Date().toISOString(), source: source.source, sourceLabel: source.sourceLabel,
   updatedThrough: source.updatedThrough, totalRecords: source.count,
-  notice: modelVersion === optimizedModel ? (targetHeatReady ? `当期22组按${game === "pl3" ? "排列3" : "福彩3D"}独立状态概率、定位、杀码、遗漏校准及当期热度快照生成并锁定；概率权重使用样本收缩。` : "正在等待北京时间20:20后的当期热度快照；抓取成功后才生成并锁定本期正式22组。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
+  notice: modelVersion === optimizedModel ? (targetHeatReady ? `当期22组按${game === "pl3" ? "排列3" : "福彩3D"}独立状态概率、定位、杀码、遗漏校准及当期热度快照生成并锁定；概率权重使用样本收缩。` : "当前展示早盘参考22组，只使用截至上一期开奖后的模型与最近一期已公开热度；未使用本期当期热度，20:20抓取成功后才重算并锁定正式推荐。") : (targetHeatReady ? "当期22组已使用北京时间20:20后抓取的当期热度快照生成；生成后锁定不回改。热度来自17500用户选号排名，并非官方销量。" : "当前展示早盘参考22组，使用截至上一期开奖后的模型与最近一期热度生成；北京时间20:20后抓到当期热度时会自动重算并锁定正式推荐。"),
   matrix22: {
     modelVersion,
-    status: modelVersion === optimizedModel ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "等待20:20当期热度，尚未推荐") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
+    status: modelVersion === optimizedModel ? (targetHeatReady ? "优化状态概率+当期热度 · 已锁定" : "早盘参考 · 待20:20当期热度锁定") : (targetHeatReady ? "当期热度抓取后锁定" : "早盘参考 · 等待20:20正式锁定"),
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: recommendation, structure: recommendation.length === 22 ? { group6: 16, group3: 6, triple: 0 } : { group6: 0, group3: 0, triple: 0 }, theoreticalRate: 0.022,
     replay: metrics(evaluationRows), replayRows: evaluationRows.slice().reverse(), live: metrics(liveRows.filter((row) => row.version === modelVersion)), liveAllVersions: metrics(liveRows), liveRows,
-    method: modelVersion === optimizedModel ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。直选形态与福彩一致采用16个组六、6个组三；同一组六最多保留4个高分排列，真实前瞻从本版本上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
+    method: modelVersion === optimizedModel ? (targetHeatReady ? (game === "pl3" ? "排列3独立状态概率融合：分别计算排列3 V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；融合排列3遗漏与用户选号热度，不混用福彩3D参数或V9数据。直选形态与福彩一致采用16个组六、6个组三；同一组六最多保留4个高分排列，真实前瞻从本版本上线后单列。" : "优化状态概率融合：分别计算V2/V5/V7、定位与杀码当前连中连断后的下一期可靠度，并用50个基准样本收缩；降低杀码权重、提高定位权重、校正专家重复计票，V9/V9.2按分码状态反向过滤。历史验证24/200，后置审计10/60；后置审计不是严格未见答案的独立盲测，真实前瞻成绩从本版本上线后单列且不回改。") : "早盘参考：使用截至上一期开奖后的V2/V5/V7、定位、杀码、遗漏和最近一期已公开热度生成；不含本期热度，待20:20抓取后重算锁定。") : (modelVersion !== "M22.1" ? (targetHeatReady ? "原生职责融合：V2/V5/V7负责候选覆盖；杀码执行强冲突过滤；遗漏小幅校准；当期热度已在开奖前抓取并保存快照后参与。" : "早盘参考：V2/V5/V7负责候选覆盖，杀码执行冲突过滤，遗漏小幅校准，并暂用最近一期热度。") : "九专家加权共识：正向专家投票、V9/V9.2反向过滤、热度与遗漏校准；按评分从000—999中选22组，并限制同一组选排列过度集中。"),
   },
   matrix22Coverage: {
     modelVersion: coverageModel,
-    status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "等待20:20当期热度，尚未推荐",
+    status: targetHeatReady ? "组选组合覆盖 · 已锁定" : "组选早盘参考 · 待20:20当期热度锁定",
     targetIssue, basedOnIssue: v7.recommendation?.basedOnIssue ?? latest.issue, basedOnDate: v7.recommendation?.basedOnDate ?? latest.date,
     heatSnapshot: targetHeat ? { issue: targetHeat.issue, date: targetHeat.date, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
     numbers: coverageRecommendation,
