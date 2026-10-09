@@ -56,6 +56,7 @@ const targetIndex = rows.length;
 const targetIssue = String(v7.recommendation?.targetIssue ?? v2.recommendation?.targetIssue ?? "下一期");
 const targetShortIssue = String(Number(targetIssue.slice(-3)));
 const targetHeat = (heat.preDrawSnapshots ?? []).findLast((row) => String(Number(row.issue)) === targetShortIssue) ?? null;
+const referenceHeat = targetHeat ?? heat.rows?.at(-1) ?? null;
 const current = {
   v7: v7.recommendation,
   v2: v2.recommendation,
@@ -80,7 +81,7 @@ function rankScores(probabilities, reverse) {
   return Object.fromEntries(ranked.map((item, index) => [item.digit, (9 - index) / 9]));
 }
 
-function buildRecommendation(size) {
+function buildRecommendation(size, heatRow, heatMode) {
   const rule = selected[size];
   const overlay = overlayBySize[size];
   const config = configs.find((item) => item.id === rule.configId);
@@ -92,13 +93,14 @@ function buildRecommendation(size) {
     targetIssue,
     basedOnIssue: latest.issue,
     basedOnDate: latest.date,
-    heatCapturedAt: targetHeat.capturedAtBeijing,
+    heatCapturedAt: heatRow.capturedAtBeijing ?? null,
+    heatMode,
   };
   const fusedScores = [];
   for (let position = 0; position < 3; position += 1) {
     const reverse = Boolean(rule.reverseMask & (1 << position));
     const causalScores = rankScores(probabilities[position], reverse);
-    const heatRanking = targetHeat.rankings?.[position] ?? [];
+    const heatRanking = heatRow.rankings?.[position] ?? [];
     const lastSeen = indexData.lastBefore[targetIndex][position];
     const scored = Array.from({ length: 10 }, (_, digit) => {
       const heatRank = heatRanking.indexOf(digit);
@@ -239,15 +241,20 @@ function jointMetric(items) {
 const pools = {};
 for (const size of [5, 6, 7]) {
   const priorRecommendation = previous?.pools?.[String(size)]?.recommendation;
-  const lockedSameTarget = priorRecommendation?.targetIssue === targetIssue;
-  const recommendation = lockedSameTarget ? priorRecommendation : targetHeat ? buildRecommendation(size) : null;
+  const priorWasTargetLocked = priorRecommendation?.heatMode === "target-locked" || Boolean(previous?.heatSnapshot);
+  const lockedSameTarget = priorRecommendation?.targetIssue === targetIssue && priorWasTargetLocked;
+  const recommendation = lockedSameTarget
+    ? priorRecommendation
+    : referenceHeat
+      ? buildRecommendation(size, referenceHeat, targetHeat ? "target-locked" : "previous-reference")
+      : null;
   const history = finalizeHistory(size, priorRecommendation);
   const researchHistory = buildLockedResearchHistory(size);
   const joint = jointMetric(history);
   pools[size] = {
     poolSize: size,
     recommendation,
-    status: recommendation ? "已在开奖前锁定" : "等待20:20后当期热度快照",
+    status: recommendation?.heatMode === "target-locked" ? "已在开奖前锁定" : recommendation ? "早盘参考 · 待20:20当期热度锁定" : "等待可用热度数据",
     developmentEvidence: {
       label: "五年分段锁定研究，不计入真实前瞻",
       rate: selected[size].developmentRate,
@@ -279,8 +286,11 @@ const payload = {
   dataSha256: source.canonicalSha256,
   targetIssue,
   heatSnapshot: targetHeat ? { issue: targetHeat.issue, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
+  referenceHeat: !targetHeat && referenceHeat ? { issue: referenceHeat.issue, date: referenceHeat.date } : null,
   futureGuarantee: false,
-  notice: "融合定位以因果概率模型为底层，小幅融合V2/V5/V7、V9反向、杀码、遗漏、旧定位和开奖前热度。历史研究结果不计入真实前瞻；从本版本上线后逐期锁定，开奖后只核对、不回改。",
+  notice: targetHeat
+    ? "融合定位以因果概率模型为底层，小幅融合V2/V5/V7、V9反向、杀码、遗漏、旧定位和开奖前热度；本期已使用当期热度锁定，开奖后只核对、不回改。历史研究结果不计入真实前瞻。"
+    : "当前为早盘参考融合定位，使用截至上一期开奖后的模型与最近一期已公开热度；未使用本期当期热度，20:20抓取成功后会重算并锁定正式版。历史研究结果不计入真实前瞻。",
   overlayBySize,
   selected,
   pools,
@@ -295,4 +305,4 @@ if (game === "fc3d") {
     await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
   }
 }
-console.log(`${game} ${modelVersion}: ${targetHeat ? "recommendations locked" : "waiting for target heat"}; forward ${pools[7].history.length}`);
+console.log(`${game} ${modelVersion}: ${targetHeat ? "recommendations locked" : referenceHeat ? "early reference generated" : "waiting for heat"}; forward ${pools[7].history.length}`);
