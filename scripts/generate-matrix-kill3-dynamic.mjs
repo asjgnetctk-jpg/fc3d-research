@@ -25,7 +25,7 @@ for(const [name,data] of Object.entries(sources)){
 }
 const heatMap=new Map(heat.rows.map(r=>[r.date,r]));
 const matrixMap=new Map([...(matrix.matrix22.replayRows??[]),...(matrix.matrix22.liveRows??[])].map(r=>[r.date,r]));
-const states=new Map(descriptors.map(d=>[d.id,{hits:0,misses:0,results:[],count:0}]));
+const states=new Map(descriptors.map(d=>[d.id,{hits:0,misses:0,fullMiss:0,maxMiss:0,results:[],count:0}]));
 const start=Math.max(0,draws.length-1100),evaluationStart=draws.length-730,split=draws.length-100;
 const frames=[];
 const stateKey=(s,base)=>{
@@ -38,7 +38,7 @@ function buildChannels(index,date,live=false,heatRow=null){
   for(const d of descriptors){
     const pool=live?d.current:d.records.get(date);if(pool==null||pool==='')continue;
     const s=states.get(d.id),rate=s.results.length?s.results.filter(Boolean).length/s.results.length:d.baseline;
-    channels.push({id:d.id,family:d.family,position:d.position,state:stateKey(s,d.baseline),members:Array.from({length:10},(_,digit)=>String(pool).includes(String(digit))),priorHitRate:rate,hitStreak:s.hits,missStreak:s.misses,sampleCount:s.count});present.push({d,pool});
+    channels.push({id:d.id,family:d.family,position:d.position,state:stateKey(s,d.baseline),members:Array.from({length:10},(_,digit)=>String(pool).includes(String(digit))),priorHitRate:rate,hitStreak:s.hits,missStreak:s.misses,maxMiss:s.maxMiss,missRatio:s.maxMiss?s.misses/s.maxMiss:0,sampleCount:s.count});present.push({d,pool});
   }
   const ranks=(heatRow??heatMap.get(date))?.rankings;
   if(ranks)for(let p=0;p<3;p++)channels.push({id:`heat:${p}`,family:'heat',position:p,state:'排名',members:Array.from({length:10},(_,digit)=>ranks[p]?.slice(0,3).includes(digit)??false)});
@@ -69,10 +69,14 @@ function buildChannels(index,date,live=false,heatRow=null){
 function observeStates(present,draw){
   for(const {d,pool} of present){
     const hit=d.kind==='position'?pool.includes(draw[d.position]):d.kind==='kill'?[...draw].every(v=>!pool.includes(v)):d.kind==='dan'?draw.includes(pool):new Set(draw).size===3&&[...draw].every(v=>pool.includes(v));
-    const s=states.get(d.id);s.hits=hit?s.hits+1:0;s.misses=hit?0:s.misses+1;s.results.push(hit);if(s.results.length>30)s.results.shift();s.count++;
+    const s=states.get(d.id);s.hits=hit?s.hits+1:0;s.misses=hit?0:s.misses+1;s.fullMiss=hit?0:s.fullMiss+1;s.maxMiss=Math.max(s.maxMiss,s.fullMiss);s.results.push(hit);if(s.results.length>30)s.results.shift();s.count++;
   }
 }
-for(let index=start;index<draws.length;index++){
+for(let index=0;index<draws.length;index++){
+  // Seed each play's historical maximum with earlier records, never later ones.
+  if(index<start){const date=draws[index].date;observeStates(descriptors.flatMap(d=>{const pool=d.records.get(date);return pool==null?[]:[{d,pool}];}),draws[index].draw);continue;}
+  // Maxima cover all available records; retain the original prediction window.
+  if(index===start)for(const s of states.values()){s.hits=0;s.misses=0;s.results=[];s.count=0;}
   const row=draws[index],input=buildChannels(index,row.date);
   frames.push({index,issue:row.issue,date:row.date,channels:input.channels,draw:row.draw});
   observeStates(input.present,row.draw);

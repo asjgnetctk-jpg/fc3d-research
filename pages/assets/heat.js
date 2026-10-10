@@ -137,9 +137,9 @@ function renderMatrixKill3(data) {
   const names={'data':'V7','v2-data':'V2','v5-data':'V5','v9-data':'V9','v9-2-data':'V9.2','kill3-data':'旧杀码','position7-data':'旧定位','joint-position7-data':'联合定位','trust-position7-data':'可信定位','meta-position-data':'融合定位'};
   const states=(data.currentChannelStates ?? []).filter(s=>s.sampleCount!=null).map(s=>{
     const parts=s.id.split(':');const name=[names[parts[0]]??parts[0],...parts.slice(1)].join(' ').replace(/pool([5678])/g,'$1码').replace('dan','胆码').replace('kills','杀3码').replace('hundredsPool','百位').replace('tensPool','十位').replace('unitsPool','个位');
-    return `<tr><th>${name}</th><td>${s.hitStreak ? `连中${s.hitStreak}期` : `连断${s.missStreak}期`}</td><td>${percentage(s.priorHitRate)}</td><td>${s.sampleCount}</td></tr>`;
+    return `<tr><th>${name}</th><td>${s.hitStreak ? `连中${s.hitStreak}期` : `连断${s.missStreak}期`}</td><td>${s.maxMiss ?? '—'}期</td><td>${percentage(s.missRatio ?? 0)}</td><td>${percentage(s.priorHitRate)}</td><td>${s.sampleCount}</td></tr>`;
   }).join('');
-  document.querySelector('#matrix-kill3-states').innerHTML=`<p class="section-note">此处显示各玩法自身此前的表现，不是杀3码成功率。缺少历史证据时降低其影响。</p><table><thead><tr><th>玩法</th><th>上一期状态</th><th>近30期成功率</th><th>历史样本</th></tr></thead><tbody>${states}</tbody></table>`;
+  document.querySelector('#matrix-kill3-states').innerHTML=`<p class="section-note">历史最长连断按该玩法全部可用记录统计，截至上一期；当前/最长比值仅供展示，暂不改变推荐算法。接近最长不代表下一期必然成功。缺失期不计作成功或失败，此处是各玩法自身表现，不是杀3码成功率。</p><table><thead><tr><th>玩法</th><th>上一期状态</th><th>历史最长连断</th><th>当前/最长</th><th>最近≤30条成功率</th><th>学习窗口样本</th></tr></thead><tbody>${states}</tbody></table>`;
   const row = r => `<article><div><strong>${r.issue}期</strong><span>${r.date}</span><em>开奖 ${r.draw}</em><em>${r.phase === 'forward' ? '真实前瞻' : r.phase === 'holdout' || r.phase === 'sequential-replay' ? '顺序回放' : '选模研究'}</em></div><div><span class="${r.hit ? 'matrix-hit' : 'matrix-miss'}">${r.hit ? '成功' : '失败'}</span><p>杀 ${r.kills.split('').join(' · ')} · 连断${r.missStreak}期</p></div></article>`;
   document.querySelector('#matrix-kill3-forward').innerHTML = data.forwardHistory.length ? data.forwardHistory.slice().reverse().map(row).join('') : '<p class="matrix22-empty">等待本模块首期推荐锁定并开奖。</p>';
   document.querySelector('#matrix-kill3-history').innerHTML = data.history.slice(-365).reverse().map(row).join('');

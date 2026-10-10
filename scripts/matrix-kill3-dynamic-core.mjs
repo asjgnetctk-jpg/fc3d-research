@@ -21,7 +21,7 @@ export class DynamicKill3 {
           return Math.log(Math.max(.005,probability)/.1);
         });
         const family=families.get(channel.family)??[];family.push(values);families.set(channel.family,family);
-        if(p===0||channel.position===p)effects.push({id:channel.id,state:channel.state,priorHitRate:channel.priorHitRate,hitStreak:channel.hitStreak,missStreak:channel.missStreak,sampleCount:channel.sampleCount});
+        if(p===0||channel.position===p)effects.push({id:channel.id,state:channel.state,priorHitRate:channel.priorHitRate,hitStreak:channel.hitStreak,missStreak:channel.missStreak,maxMiss:channel.maxMiss,missRatio:channel.missRatio,sampleCount:channel.sampleCount});
       }
       for(const group of families.values())for(let d=0;d<10;d++)logs[p][d]+=this.config.gain*group.reduce((s,v)=>s+v[d],0)/group.length;
     }
