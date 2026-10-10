@@ -21,13 +21,13 @@ test("matrix straight, coverage and positioning publish one shared issue", () =>
     const targets = [
       matrixData.matrix22.targetIssue,
       matrixData.matrix22Coverage.targetIssue,
-      ...Object.values(metaData.pools).map((pool) => pool.recommendation.targetIssue),
+      ...Object.values(metaData.pools).map((pool) => pool.recommendation?.targetIssue ?? metaData.targetIssue),
     ].map(String);
     const cutoffs = [
       matrixData.matrix22.basedOnIssue,
       matrixData.matrix22Coverage.basedOnIssue,
-      ...Object.values(metaData.pools).map((pool) => pool.recommendation.basedOnIssue),
-    ].map(String);
+      ...Object.values(metaData.pools).map((pool) => pool.recommendation?.basedOnIssue),
+    ].filter(Boolean).map(String);
     assert.equal(new Set(targets).size, 1);
     assert.equal(new Set(cutoffs).size, 1);
     assert.match(matrixData.updatedThrough, new RegExp(`第${cutoffs[0]}期$`));

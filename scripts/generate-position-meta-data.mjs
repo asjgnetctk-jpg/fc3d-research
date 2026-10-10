@@ -245,8 +245,8 @@ for (const size of [5, 6, 7]) {
   const lockedSameTarget = priorRecommendation?.targetIssue === targetIssue && priorWasTargetLocked;
   const recommendation = lockedSameTarget
     ? priorRecommendation
-    : referenceHeat
-      ? buildRecommendation(size, referenceHeat, targetHeat ? "target-locked" : "previous-reference")
+    : targetHeat
+      ? buildRecommendation(size, targetHeat, "target-locked")
       : null;
   const history = finalizeHistory(size, priorRecommendation);
   const researchHistory = buildLockedResearchHistory(size);
@@ -254,7 +254,7 @@ for (const size of [5, 6, 7]) {
   pools[size] = {
     poolSize: size,
     recommendation,
-    status: recommendation?.heatMode === "target-locked" ? "已在开奖前锁定" : recommendation ? "早盘参考 · 待20:20当期热度锁定" : "等待可用热度数据",
+    status: recommendation?.heatMode === "target-locked" ? "已在开奖前锁定" : "尚未推荐 · 等待20:20当期热度",
     developmentEvidence: {
       label: "五年分段锁定研究，不计入真实前瞻",
       rate: selected[size].developmentRate,
@@ -286,11 +286,11 @@ const payload = {
   dataSha256: source.canonicalSha256,
   targetIssue,
   heatSnapshot: targetHeat ? { issue: targetHeat.issue, capturedAt: targetHeat.capturedAt, capturedAtBeijing: targetHeat.capturedAtBeijing } : null,
-  referenceHeat: !targetHeat && referenceHeat ? { issue: referenceHeat.issue, date: referenceHeat.date } : null,
+  referenceHeat: null,
   futureGuarantee: false,
   notice: targetHeat
     ? "融合定位以因果概率模型为底层，小幅融合V2/V5/V7、V9反向、杀码、遗漏、旧定位和开奖前热度；本期已使用当期热度锁定，开奖后只核对、不回改。历史研究结果不计入真实前瞻。"
-    : "当前为早盘参考融合定位，使用截至上一期开奖后的模型与最近一期已公开热度；未使用本期当期热度，20:20抓取成功后会重算并锁定正式版。历史研究结果不计入真实前瞻。",
+    : "20:20前不展示参考号码；抓取到本期当期热度后才生成并锁定正式推荐。历史研究结果不计入真实前瞻。",
   overlayBySize,
   selected,
   pools,
@@ -305,4 +305,4 @@ if (game === "fc3d") {
     await copyFile(path.join(root, "pages", file), path.join(root, "public", file));
   }
 }
-console.log(`${game} ${modelVersion}: ${targetHeat ? "recommendations locked" : referenceHeat ? "early reference generated" : "waiting for heat"}; forward ${pools[7].history.length}`);
+console.log(`${game} ${modelVersion}: ${targetHeat ? "recommendations locked" : "waiting for target heat"}; forward ${pools[7].history.length}`);

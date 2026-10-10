@@ -1,8 +1,11 @@
 name: 更新福彩3D数据并发布
 
 on:
-  # Automatic schedules are paused at the owner's request. Resume only after
-  # an explicit request; no schedule or repository push may update the website.
+  # Recommendations remain hidden until an actual current-issue heat snapshot
+  # is available. Retry after 20:20 Beijing because the source can publish late.
+  schedule:
+    - cron: "20,30,40,50 12 * * *"
+    - cron: "0 13 * * *"
   workflow_dispatch:
 
 permissions:
