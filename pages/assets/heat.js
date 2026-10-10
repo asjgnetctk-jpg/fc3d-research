@@ -38,21 +38,23 @@ function privatePositionHistoryRow(row) {
     const hit = row[`${key}Hit`];
     return `<div class="position7-line"><span>${name}</span><strong>${row[`${key}Pool`]}</strong><span class="hit-badge${hit ? " is-hit" : ""}">${hit ? "中" : "未中"}</span><small>开奖号${row.draw[index]} · 断${row[`${key}MissStreak`]}</small></div>`;
   }).join("");
-  const phase = row.phase === "prospective-locked" ? "前瞻" : row.phase === "locked-forward" ? "实战" : row.phase === "locked-research" ? "锁定研究" : "训练";
+  const phase = row.phase === "prospective-locked" ? "前瞻" : row.phase === "locked-forward" ? "实战" : row.phase === "locked-research" ? "锁定研究" : row.phase === "historical-reconstruction" ? "历史顺序重放" : "训练";
   return `<article class="position7-row"><div class="history-date"><strong>${row.issue}</strong><span>${row.date.slice(5)}</span><em>${phase}</em></div><div class="position7-row-main"><div class="position7-draw">开奖 <strong>${row.draw}</strong><span class="hit-badge${row.allHit ? " is-hit" : ""}">${row.allHit ? "三位全中" : "未全中"}</span></div>${lines}</div></article>`;
 }
 
 function renderPrivatePositionHistory() {
   const result = privatePositionPayload?.pools?.[privatePositionSize];
   if (!result) return;
-  const rows = result.history.filter((row) => !privatePositionQuery || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(privatePositionQuery)).reverse();
-  document.querySelector("#private-position-history-count").textContent = `${rows.length}期`;
+  const forwardRows = result.history ?? [];
+  const reconstructionRows = result.reconstructionHistory ?? [];
+  const rows = [...forwardRows, ...reconstructionRows].filter((row) => !privatePositionQuery || [row.issue, row.date, row.draw, row.hundredsPool, row.tensPool, row.unitsPool].join(" ").includes(privatePositionQuery)).sort((a, b) => String(b.issue).localeCompare(String(a.issue)));
+  document.querySelector("#private-position-history-count").textContent = `${forwardRows.length}期前瞻 · ${reconstructionRows.length}期重放`;
   document.querySelector("#private-position-history").innerHTML = rows.length
     ? (privatePositionShowAll ? rows : rows.slice(0, 20)).map(privatePositionHistoryRow).join("")
-    : '<p class="matrix22-empty">新版融合定位尚未产生首期真实前瞻记录；北京时间20:20后锁定推荐，开奖后才会在这里新增记录。历史研究命中率不冒充真实前瞻。</p>';
+    : '<p class="matrix22-empty">新版融合定位尚未产生首期真实前瞻记录；北京时间20:20后锁定推荐，开奖后才会在这里新增记录。历史研究与历史顺序重放均不冒充真实前瞻。</p>';
   const toggle = document.querySelector("#private-position-toggle");
   toggle.hidden = rows.length <= 20;
-  toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 期`;
+  toggle.textContent = privatePositionShowAll ? "收起记录" : `查看全部 ${rows.length} 条`;
   const forwardIssues = new Set(result.history.map((row) => String(row.issue)));
   const forwardDates = new Set(result.history.map((row) => row.date));
   const researchRows = (result.researchHistory ?? []).filter((row) =>

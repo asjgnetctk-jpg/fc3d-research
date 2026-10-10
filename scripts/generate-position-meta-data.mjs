@@ -22,6 +22,8 @@ const trustworthyPosition = await readJson(`pages/${prefix}trust-position7-data.
 const v9 = game === "fc3d" ? await readJson("pages/v9-data.json") : null;
 const v92 = game === "fc3d" ? await readJson("pages/v9-2-data.json") : null;
 const outputFile = `${prefix}meta-position-data.json`;
+let reconstructions = { fc3d: {}, pl3: {} };
+try { reconstructions = await readJson("scripts/data/meta-position-reconstructions.json"); } catch {}
 let previous = null;
 try { previous = await readJson(`pages/${outputFile}`); } catch {}
 
@@ -272,6 +274,7 @@ for (const size of [5, 6, 7]) {
     },
     researchHistory,
     researchMetrics: jointMetric(researchHistory),
+    reconstructionHistory: reconstructions?.[game]?.[String(size)] ?? [],
     history,
   };
 }
