@@ -100,13 +100,13 @@ jobs:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-heat-module-data.mjs
       - name: 生成福彩矩阵融合杀3码
-        run: node scripts/generate-matrix-kill3.mjs
+        run: node scripts/generate-matrix-kill3-dynamic.mjs
       - name: 生成体彩矩阵融合杀3码
         env:
           LOTTERY_GAME: "pl3"
-        run: node scripts/generate-matrix-kill3.mjs
+        run: node scripts/generate-matrix-kill3-dynamic.mjs
       - name: 核对融合杀码逐期结果
-        run: node --test tests/matrix-kill3.test.mjs
+        run: node --test tests/matrix-kill3-dynamic.test.mjs
       - name: 发布前逐期核对数据、命中标记和连续遗漏
         run: node --test tests/published-data-integrity.test.mjs tests/combination-omissions.test.mjs tests/pl3-data.test.mjs tests/position7-data.test.mjs tests/kill3-data.test.mjs tests/v9-low-hit.test.mjs tests/v9-2-low-hit.test.mjs tests/matrix22-data.test.mjs
       - name: 保存验证后的最新开奖和页面数据

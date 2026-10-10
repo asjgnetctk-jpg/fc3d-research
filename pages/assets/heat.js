@@ -131,10 +131,16 @@ function renderMatrixKill3(data) {
     ['真实前瞻成功率', m.forward.count ? `${m.forward.hits}/${m.forward.count} · ${percentage(m.forward.rate)}` : '等待首期开奖'],
     ['真实前瞻最长 / 当前断', `${m.forward.maxMiss}期 / ${m.forward.currentMiss}期`],
     ['随机理论基线', percentage(data.theoreticalRate)],
-    ['已测试融合方案', `${data.candidateCount}套 + ${data.policyCandidateCount ?? 0}套切换策略`],
+    ['独立玩法 / 平滑参数', `${data.channelCount}种 / ${data.candidateCount}套`],
   ].map(([label,value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join('');
   document.querySelector('#matrix-kill3-notice').textContent = data.notice;
-  const row = r => `<article><div><strong>${r.issue}期</strong><span>${r.date}</span><em>开奖 ${r.draw}</em><em>${r.phase === 'forward' ? '真实前瞻' : r.phase === 'holdout' ? '后段研究' : '选模研究'}</em></div><div><span class="${r.hit ? 'matrix-hit' : 'matrix-miss'}">${r.hit ? '成功' : '失败'}</span><p>杀 ${r.kills.split('').join(' · ')} · 连断${r.missStreak}期</p></div></article>`;
+  const names={'data':'V7','v2-data':'V2','v5-data':'V5','v9-data':'V9','v9-2-data':'V9.2','kill3-data':'旧杀码','position7-data':'旧定位','joint-position7-data':'联合定位','trust-position7-data':'可信定位','meta-position-data':'融合定位'};
+  const states=(data.currentChannelStates ?? []).filter(s=>s.sampleCount!=null).map(s=>{
+    const parts=s.id.split(':');const name=[names[parts[0]]??parts[0],...parts.slice(1)].join(' ').replace(/pool([5678])/g,'$1码').replace('dan','胆码').replace('kills','杀3码').replace('hundredsPool','百位').replace('tensPool','十位').replace('unitsPool','个位');
+    return `<tr><th>${name}</th><td>${s.hitStreak ? `连中${s.hitStreak}期` : `连断${s.missStreak}期`}</td><td>${percentage(s.priorHitRate)}</td><td>${s.sampleCount}</td></tr>`;
+  }).join('');
+  document.querySelector('#matrix-kill3-states').innerHTML=`<p class="section-note">此处显示各玩法自身此前的表现，不是杀3码成功率。缺少历史证据时降低其影响。</p><table><thead><tr><th>玩法</th><th>上一期状态</th><th>近30期成功率</th><th>历史样本</th></tr></thead><tbody>${states}</tbody></table>`;
+  const row = r => `<article><div><strong>${r.issue}期</strong><span>${r.date}</span><em>开奖 ${r.draw}</em><em>${r.phase === 'forward' ? '真实前瞻' : r.phase === 'holdout' || r.phase === 'sequential-replay' ? '顺序回放' : '选模研究'}</em></div><div><span class="${r.hit ? 'matrix-hit' : 'matrix-miss'}">${r.hit ? '成功' : '失败'}</span><p>杀 ${r.kills.split('').join(' · ')} · 连断${r.missStreak}期</p></div></article>`;
   document.querySelector('#matrix-kill3-forward').innerHTML = data.forwardHistory.length ? data.forwardHistory.slice().reverse().map(row).join('') : '<p class="matrix22-empty">等待本模块首期推荐锁定并开奖。</p>';
   document.querySelector('#matrix-kill3-history').innerHTML = data.history.slice(-365).reverse().map(row).join('');
 }
@@ -220,7 +226,7 @@ async function loadHeat() {
     document.querySelector("#heat-notice").textContent = data.notice;
     renderMatrix(data.matrix22);
     renderCoverage(data.matrix22Coverage);
-    const killFile = window.LotteryGame?.file('matrix-kill3-data.json') ?? 'matrix-kill3-data.json';
+    const killFile = window.LotteryGame?.file('matrix-kill3-dynamic-data.json') ?? 'matrix-kill3-dynamic-data.json';
     try {
       const killResponse = await fetch(`./${killFile}?t=${Date.now()}`, { cache: 'no-store' });
       if (!killResponse.ok) throw new Error(`HTTP ${killResponse.status}`);
