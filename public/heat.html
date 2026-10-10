@@ -8,7 +8,7 @@
     <title>福彩3D · 22组专家矩阵</title>
     <link rel="stylesheet" href="./styles.css?v=20260929-records-v2" />
     <script src="./assets/game-switch.js?v=20260928-pl3-matrix" defer></script>
-    <script src="./assets/heat.js?v=20261010-replay-history" defer></script>
+    <script src="./assets/heat.js?v=20261010-matrix-kill3" defer></script>
   </head>
   <body>
     <div id="heat-lock" class="heat-lock">
@@ -41,7 +41,17 @@
           <button type="button" data-matrix-panel="straight" class="is-active">22组直选</button>
           <button type="button" data-matrix-panel="coverage">组选覆盖</button>
           <button type="button" data-matrix-panel="position">融合定位</button>
+          <button type="button" data-matrix-panel="kill3">融合杀3码</button>
         </nav>
+        <section class="section-block" data-matrix-panel-section="kill3" hidden>
+          <div class="section-heading"><div><p class="eyebrow">多模型融合</p><h2 id="matrix-kill3-target">融合杀3码</h2></div><span id="matrix-kill3-based" class="backfit-chip"></span></div>
+          <div id="matrix-kill3-recommendation" class="position7-current"></div>
+          <p class="section-note">杀码成功：开奖号百、十、个位都没有出现推荐排除的3个数字；任意一个出现即算失败。</p>
+          <div id="matrix-kill3-metrics" class="matrix22-metrics"></div>
+          <p id="matrix-kill3-notice" class="section-note"></p>
+          <div class="section-heading"><h3>真实前瞻记录</h3></div><div id="matrix-kill3-forward" class="matrix22-history"></div>
+          <details class="matrix22-method"><summary>查看历史研究逐期记录</summary><div id="matrix-kill3-history" class="matrix22-history"></div></details>
+        </section>
         <section class="section-block private-position-section" data-matrix-panel-section="position" hidden>
           <div class="section-heading matrix22-heading"><div><p class="eyebrow">因果底层 · 多信号融合</p><h2 id="private-position-target">融合定位七码推荐</h2></div><span id="private-position-based" class="backfit-chip"></span></div>
           <nav id="private-position-tabs" class="pool-size-tabs" aria-label="切换可信定位码"><button type="button" data-private-pool-size="5">5码</button><button type="button" data-private-pool-size="6">6码</button><button type="button" data-private-pool-size="7" class="is-active">7码</button></nav>

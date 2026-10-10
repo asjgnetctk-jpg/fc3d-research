@@ -105,7 +105,7 @@ function renderPrivatePosition(size) {
 }
 
 function selectMatrixPanel(panel) {
-  if (!["straight", "coverage", "position"].includes(panel)) panel = "straight";
+  if (!["straight", "coverage", "position", "kill3"].includes(panel)) panel = "straight";
   document.querySelectorAll("[data-matrix-panel-section]").forEach((section) => {
     section.hidden = section.dataset.matrixPanelSection !== panel;
   });
@@ -113,6 +113,30 @@ function selectMatrixPanel(panel) {
     button.classList.toggle("is-active", button.dataset.matrixPanel === panel);
   });
   sessionStorage.setItem("private-matrix-panel", panel);
+}
+
+function renderMatrixKill3(data) {
+  const rec = data.recommendation;
+  document.querySelector('#matrix-kill3-target').textContent = `第${data.targetIssue}期 · 融合杀3码`;
+  document.querySelector('#matrix-kill3-based').textContent = `基于${data.basedOnIssue}期及以前数据`;
+  document.querySelector('#matrix-kill3-recommendation').innerHTML = rec
+    ? `<article><span>建议排除3个数字</span>${positionPills(rec.kills)}<small>热度锁定 ${rec.heatCapturedAt ?? ''}</small></article>`
+    : '<p class="matrix22-empty">等待20:20后抓取当期热度，成功后锁定本期杀3码。</p>';
+  const m = data.metrics;
+  document.querySelector('#matrix-kill3-metrics').innerHTML = [
+    ['最近100期历史研究', `${m.holdout.hits}/${m.holdout.count} · ${percentage(m.holdout.rate)}`],
+    ['近365期历史研究', `${m.recentYear.hits}/${m.recentYear.count} · ${percentage(m.recentYear.rate)}`],
+    ['100期最长 / 当前断', `${m.holdout.maxMiss}期 / ${m.holdout.currentMiss}期`],
+    ['一年最长连断', `${m.recentYear.maxMiss}期`],
+    ['真实前瞻成功率', m.forward.count ? `${m.forward.hits}/${m.forward.count} · ${percentage(m.forward.rate)}` : '等待首期开奖'],
+    ['真实前瞻最长 / 当前断', `${m.forward.maxMiss}期 / ${m.forward.currentMiss}期`],
+    ['随机理论基线', percentage(data.theoreticalRate)],
+    ['已测试融合方案', `${data.candidateCount}套 + ${data.policyCandidateCount ?? 0}套切换策略`],
+  ].map(([label,value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join('');
+  document.querySelector('#matrix-kill3-notice').textContent = data.notice;
+  const row = r => `<article><div><strong>${r.issue}期</strong><span>${r.date}</span><em>开奖 ${r.draw}</em><em>${r.phase === 'forward' ? '真实前瞻' : r.phase === 'holdout' ? '后段研究' : '选模研究'}</em></div><div><span class="${r.hit ? 'matrix-hit' : 'matrix-miss'}">${r.hit ? '成功' : '失败'}</span><p>杀 ${r.kills.split('').join(' · ')} · 连断${r.missStreak}期</p></div></article>`;
+  document.querySelector('#matrix-kill3-forward').innerHTML = data.forwardHistory.length ? data.forwardHistory.slice().reverse().map(row).join('') : '<p class="matrix22-empty">等待本模块首期推荐锁定并开奖。</p>';
+  document.querySelector('#matrix-kill3-history').innerHTML = data.history.slice(-365).reverse().map(row).join('');
 }
 
 function renderMatrix(matrix) {
@@ -196,6 +220,16 @@ async function loadHeat() {
     document.querySelector("#heat-notice").textContent = data.notice;
     renderMatrix(data.matrix22);
     renderCoverage(data.matrix22Coverage);
+    const killFile = window.LotteryGame?.file('matrix-kill3-data.json') ?? 'matrix-kill3-data.json';
+    try {
+      const killResponse = await fetch(`./${killFile}?t=${Date.now()}`, { cache: 'no-store' });
+      if (!killResponse.ok) throw new Error(`HTTP ${killResponse.status}`);
+      const kill = await killResponse.json();
+      if (String(kill.targetIssue) !== String(data.matrix22.targetIssue) || String(kill.basedOnIssue) !== String(data.matrix22.basedOnIssue)) throw new Error('杀码与矩阵期号不同步');
+      renderMatrixKill3(kill);
+    } catch (cause) {
+      document.querySelector('#matrix-kill3-recommendation').textContent = `融合杀码读取失败：${cause.message}`;
+    }
     loading.hidden = true;
     error.hidden = true;
     document.querySelector("#heat-content").hidden = false;
