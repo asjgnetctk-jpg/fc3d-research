@@ -2,13 +2,16 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { configs, digitRows, buildIndex, train, predictProbabilities } from "./backtest-trustworthy-matrix22-ml.mjs";
+import { pairLifts, coordinatedPools } from "./optimize-position-joint-pairs.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const game = process.env.LOTTERY_GAME === "pl3" ? "pl3" : "fc3d";
+const prefix = game === "pl3" ? "pl3-" : "";
 const issue = String(process.argv[2] ?? "");
-if (!/^\d{7}$/.test(issue)) throw new Error("Usage: node scripts/replay-meta-position-issue.mjs <7-digit issue>");
+if (!/^\d{5,7}$/.test(issue)) throw new Error("Usage: node scripts/replay-meta-position-issue.mjs <issue>");
 const readJson = async (file) => JSON.parse(await readFile(path.join(root, file), "utf8"));
 const contains = (value, digit) => String(value ?? "").includes(String(digit));
-const rowList = (data) => data.history ?? data.rows ?? [];
+const rowList = (data) => data?.history ?? data?.rows ?? [];
 const predictionRow = (data, fields) => {
   const row = rowList(data).find((item) => String(item.issue) === issue);
   if (!row) return null;
@@ -16,21 +19,24 @@ const predictionRow = (data, fields) => {
 };
 
 const [source, heat, v7, v2, v5, kill3, legacyPosition, trustworthyPosition, v9, v92] = await Promise.all([
-  readJson("scripts/data/fc3d-full-history.json"),
-  readJson("scripts/data/fc3d-17500-heat.json"),
-  readJson("pages/data.json"),
-  readJson("pages/v2-data.json"),
-  readJson("pages/v5-data.json"),
-  readJson("pages/kill3-data.json"),
-  readJson("pages/position7-data.json"),
-  readJson("pages/trust-position7-data.json"),
-  readJson("pages/v9-data.json"),
-  readJson("pages/v9-2-data.json"),
+  readJson(`scripts/data/${game}-full-history.json`),
+  readJson(`scripts/data/${game}-17500-heat.json`),
+  readJson(`pages/${prefix}data.json`),
+  readJson(`pages/${prefix}v2-data.json`),
+  readJson(`pages/${prefix}v5-data.json`),
+  readJson(`pages/${prefix}kill3-data.json`),
+  readJson(`pages/${prefix}position7-data.json`),
+  readJson(`pages/${prefix}trust-position7-data.json`),
+  game === "fc3d" ? readJson("pages/v9-data.json") : Promise.resolve(null),
+  game === "fc3d" ? readJson("pages/v9-2-data.json") : Promise.resolve(null),
 ]);
 
 const issueYear = issue.slice(0, 4);
 const issueShort = String(Number(issue.slice(-3)));
-const heatArchive = heat.rows.find((row) => row.date.startsWith(`${issueYear}-`) && String(Number(row.issue)) === issueShort);
+const heatMatches = heat.rows.filter((row) => String(Number(row.issue)) === issueShort);
+const heatArchive = issue.length === 7
+  ? heatMatches.find((row) => row.date.startsWith(`${issueYear}-`))
+  : heatMatches.at(-1);
 if (!heatArchive?.rankings?.length) throw new Error(`No archived heat rankings for ${issue}`);
 const targetDate = heatArchive.date;
 const causalSource = { ...source, rows: source.rows.filter((row) => row.date < targetDate) };
@@ -55,11 +61,17 @@ const current = {
   v9: predictionRow(v9, ["pool5", "pool6", "pool7", "pool8"]),
   v92: predictionRow(v92, ["pool5", "pool6", "pool7", "pool8"]),
 };
-const selected = {
-  5: { configId: "grid-03", reverseMask: 1 },
-  6: { configId: "lag2-63", reverseMask: 1 },
-  7: { configId: "grid-09", reverseMask: 5 },
-};
+const selected = game === "fc3d"
+  ? {
+      5: { configId: "grid-03", reverseMask: 1 },
+      6: { configId: "lag2-63", reverseMask: 1 },
+      7: { configId: "grid-09", reverseMask: 5 },
+    }
+  : {
+      5: { configId: "cross-41", reverseMask: 1, pairWindow: 500, pairLambda: 0.5 },
+      6: { configId: "ml-b2", reverseMask: 0, pairWindow: 250, pairLambda: 1 },
+      7: { configId: "ml-b1", reverseMask: 0, pairWindow: 250, pairLambda: 1 },
+    };
 const exploratory = { trustworthyPosition: 0, legacyPosition: 0, v7: 0.005, v2: 0.005, v5: 0.003, dan: 0.003, killSafe: 0, omission: 0, heat: 0.02, v9Reverse: 0.003, v92Reverse: 0.002 };
 const overlayBySize = {
   5: { causal: 1, ...exploratory },
@@ -85,6 +97,7 @@ function buildRecommendation(size) {
   const legacy = pickPosition(legacyPosition, size);
   const trusted = pickPosition(trustworthyPosition, size);
   const recommendation = { targetIssue: issue, basedOnIssue: latest.issue, basedOnDate: latest.date, heatMode: "historical-reconstruction" };
+  const fusedScores = [];
   for (let position = 0; position < 3; position += 1) {
     const reverse = Boolean(rule.reverseMask & (1 << position));
     const causalScores = rankScores(probabilities[position], reverse);
@@ -110,7 +123,14 @@ function buildRecommendation(size) {
         - overlay.v92Reverse * reverseV92;
       return { digit, score };
     }).sort((a, b) => b.score - a.score || a.digit - b.digit);
+    fusedScores[position] = Array.from({ length: 10 });
+    scored.forEach((item) => { fusedScores[position][item.digit] = item.score; });
     recommendation[positionKeys[position]] = scored.slice(0, size).map((item) => item.digit).sort((a, b) => a - b).join("");
+  }
+  if (rule.pairWindow) {
+    const lifts = pairLifts(rows, targetIndex, rule.pairWindow);
+    const pools = coordinatedPools(fusedScores, size, 0, lifts, rule.pairLambda);
+    pools.forEach((pool, position) => { recommendation[positionKeys[position]] = [...pool].sort((a, b) => a - b).join(""); });
   }
   return recommendation;
 }
@@ -126,6 +146,7 @@ const evaluations = Object.fromEntries(Object.entries(recommendations).map(([siz
 }));
 const report = {
   generatedAt: new Date().toISOString(),
+  game,
   issue,
   date: targetDate,
   protocol: "recommendations frozen from archived heat rankings and data through the prior issue; official draw opened afterward",
@@ -138,6 +159,6 @@ const report = {
   evaluations,
 };
 await mkdir(path.join(root, "reports"), { recursive: true });
-const output = path.join(root, "reports", `meta-position-replay-${issue}.json`);
+const output = path.join(root, "reports", `${game}-meta-position-replay-${issue}.json`);
 await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, "utf8");
 console.log(JSON.stringify({ output, issue, cutoffIssue: latest.issue, evaluations }, null, 2));
