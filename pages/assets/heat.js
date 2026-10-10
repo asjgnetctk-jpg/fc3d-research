@@ -4,6 +4,8 @@ let privatePositionPayload = null;
 let privatePositionSize = 7;
 let privatePositionShowAll = false;
 let privatePositionQuery = "";
+let heatRefreshTimer = null;
+let heatLoadInFlight = false;
 
 async function sha256(value) {
   const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
@@ -155,6 +157,8 @@ function renderCoverage(matrix) {
 }
 
 async function loadHeat() {
+  if (heatLoadInFlight) return;
+  heatLoadInFlight = true;
   const loading = document.querySelector("#heat-loading");
   const error = document.querySelector("#heat-error");
   try {
@@ -191,11 +195,14 @@ async function loadHeat() {
     renderMatrix(data.matrix22);
     renderCoverage(data.matrix22Coverage);
     loading.hidden = true;
+    error.hidden = true;
     document.querySelector("#heat-content").hidden = false;
   } catch (cause) {
     loading.hidden = true;
     error.hidden = false;
     error.textContent = `矩阵数据读取失败：${cause.message}`;
+  } finally {
+    heatLoadInFlight = false;
   }
 }
 
@@ -210,7 +217,19 @@ async function reveal() {
   document.querySelector("#heat-lock").hidden = true;
   document.querySelector("#heat-app").hidden = false;
   await loadHeat();
+  if (!heatRefreshTimer) {
+    heatRefreshTimer = setInterval(() => {
+      if (!document.hidden) loadHeat();
+    }, 30_000);
+  }
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && sessionStorage.getItem("heat-module-unlocked") === "1") loadHeat();
+});
+window.addEventListener("focus", () => {
+  if (sessionStorage.getItem("heat-module-unlocked") === "1") loadHeat();
+});
 
 document.querySelector("#heat-login").addEventListener("submit", async (event) => {
   event.preventDefault();

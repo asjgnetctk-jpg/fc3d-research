@@ -120,6 +120,9 @@ test("trustworthy position recommendations are embedded inside the private matri
   assert.match(heatScript, /row\.allHit/);
   assert.match(heatScript, /data-pool-size/);
   assert.match(heatScript, /selectMatrixPanel/);
+  assert.match(heatScript, /setInterval[\s\S]*30_000/);
+  assert.match(heatScript, /visibilitychange/);
+  assert.match(heatScript, /window\.addEventListener\("focus"/);
   assert.doesNotMatch(heatHtml, /data-matrix-panel="heat"/);
   assert.doesNotMatch(heatHtml, /data-matrix-panel="evidence"/);
   assert.match(heatHtml, /data-matrix-panel-section="straight"[\s\S]*id="matrix22-live-history"/);
