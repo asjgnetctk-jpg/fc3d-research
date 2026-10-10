@@ -75,7 +75,7 @@ const selected = game === "fc3d"
 const exploratory = { trustworthyPosition: 0, legacyPosition: 0, v7: 0.005, v2: 0.005, v5: 0.003, dan: 0.003, killSafe: 0, omission: 0, heat: 0.02, v9Reverse: 0.003, v92Reverse: 0.002 };
 const overlayBySize = {
   5: { causal: 1, ...exploratory },
-  6: { causal: 1, ...exploratory, trustworthyPosition: 0.1, killSafe: 0.1, omission: 0.03 },
+  6: { causal: 1, ...exploratory, ...(game === "fc3d" ? { trustworthyPosition: 0.1, killSafe: 0.1, omission: 0.03 } : {}) },
   7: { causal: 1, ...exploratory },
 };
 const positionKeys = ["hundredsPool", "tensPool", "unitsPool"];
