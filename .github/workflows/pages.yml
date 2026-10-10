@@ -1,6 +1,9 @@
 name: 更新福彩3D数据并发布
 
 on:
+  push:
+    branches:
+      - main
   # Recommendations remain hidden until an actual current-issue heat snapshot
   # is available. Retry after 20:20 Beijing because the source can publish late.
   schedule:
