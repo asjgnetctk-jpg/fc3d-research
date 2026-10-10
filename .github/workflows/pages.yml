@@ -1,4 +1,4 @@
-name: 更新福彩3D数据并发布
+name: 更新双彩数据并发布
 
 on:
   push:
@@ -7,8 +7,12 @@ on:
   # Recommendations remain hidden until an actual current-issue heat snapshot
   # is available. Retry after 20:20 Beijing because the source can publish late.
   schedule:
+    # Beijing 20:20 onward: capture heat and lock both games; stagger off :00.
     - cron: "20,30,40,50 12 * * *"
-    - cron: "0 13 * * *"
+    - cron: "7,27,47 13 * * *"
+    # Post-draw official results, with overnight and next-day recovery.
+    - cron: "7,27,47 14 * * *"
+    - cron: "17 15,22,1 * * *"
   workflow_dispatch:
 
 permissions:
@@ -18,22 +22,38 @@ permissions:
 
 concurrency:
   group: pages
-  # 晚间多次补抓可能被 GitHub 集中延迟触发；只保留最新一次，避免旧任务堆积。
-  cancel-in-progress: true
+  # Do not cancel a partially completed capture/deploy when the next tick arrives.
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
       - name: 更新17500用户热度排名（非官方销量）
+        id: fc_heat
         continue-on-error: true
         timeout-minutes: 2
         run: node scripts/fetch-17500-heat.mjs
       - name: 更新排列3用户热度排名（非官方销量）
+        id: pl_heat
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          LOTTERY_GAME: "pl3"
+        run: node scripts/fetch-17500-heat.mjs
+      - name: 重试暂时失败的福彩热度抓取
+        if: steps.fc_heat.outcome == 'failure'
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/fetch-17500-heat.mjs
+      - name: 重试暂时失败的体彩热度抓取
+        if: steps.pl_heat.outcome == 'failure'
         continue-on-error: true
         timeout-minutes: 2
         env:
@@ -106,7 +126,7 @@ jobs:
           LOTTERY_GAME: "pl3"
         run: node scripts/generate-matrix-kill3-dynamic.mjs
       - name: 核对融合杀码逐期结果
-        run: node --test tests/matrix-kill3-dynamic.test.mjs
+        run: node --test tests/matrix-kill3-dynamic.test.mjs tests/daily-update.test.mjs
       - name: 发布前逐期核对数据、命中标记和连续遗漏
         run: node --test tests/published-data-integrity.test.mjs tests/combination-omissions.test.mjs tests/pl3-data.test.mjs tests/position7-data.test.mjs tests/kill3-data.test.mjs tests/v9-low-hit.test.mjs tests/v9-2-low-hit.test.mjs tests/matrix22-data.test.mjs
       - name: 保存验证后的最新开奖和页面数据
@@ -135,3 +155,11 @@ jobs:
       - name: 发布到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 发布后检查两彩日期、矩阵同步和正式推荐
+        run: node scripts/check-daily-update.mjs --online
