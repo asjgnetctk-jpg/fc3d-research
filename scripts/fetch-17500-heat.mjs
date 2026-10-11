@@ -245,3 +245,9 @@ if (!unchanged) {
   })}\n`, "utf8");
 }
 console.log(`17500 ${game} heat ${unchanged ? "unchanged" : "updated"}: ${officialRows.length} rows through ${latest.date}; pre-draw snapshots ${preDrawSnapshots.length}${snapshotAdded ? " (+1)" : ""}${snapshotEnriched ? " (+exact counts)" : ""}`);
+// A successful historical refresh is not a successful current-issue capture.
+// Surface missing evening heat so the workflow's retry steps actually run.
+if (insidePreDrawCaptureWindow && !preDrawSnapshots.some(row => row.date === beijingDate)) {
+  console.error(`::error title=${game}当期热度未抓取::${beijingDate} 无当期开奖前热度；保留已核验历史，不生成虚假推荐，并触发抓取重试。`);
+  process.exitCode = 1;
+}
